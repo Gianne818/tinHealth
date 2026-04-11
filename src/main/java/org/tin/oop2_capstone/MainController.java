@@ -26,7 +26,7 @@ public class MainController {
     private boolean isSideBarCollapsed = false;
 
     public void initialize(){
-//        dashboardNav.setOnMouseClicked(onNavElementClicked());
+
     }
 
     public void toggleSideBar(){
