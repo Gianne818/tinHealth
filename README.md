@@ -1,4 +1,4 @@
-# BiteCheck
+# +inHealth
 
 ## Group Members
 - Mc Cauley B. Bacalla
