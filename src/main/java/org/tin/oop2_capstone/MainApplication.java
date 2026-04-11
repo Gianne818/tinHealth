@@ -19,6 +19,12 @@ public class MainApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
 
+        primaryStage.setMinHeight(400);
+        primaryStage.setMinWidth(600);
+
+        primaryStage.setResizable(false);
+
+
         primaryStage.setTitle("Health Tracker");
         primaryStage.setScene(scene);
         primaryStage.show();

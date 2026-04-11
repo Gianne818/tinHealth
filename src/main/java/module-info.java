@@ -1,6 +1,7 @@
 module org.tin.oop2_capstone {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.desktop;
 
 
     opens org.tin.oop2_capstone to javafx.fxml;

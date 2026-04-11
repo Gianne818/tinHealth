@@ -18,6 +18,10 @@ public class LoginController {
         Scene scene = new Scene(fxmlLoader.load());
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setResizable(true);
+
+        stage.setMinWidth(1000);
+        stage.setMinHeight(800);
 
         stage.setTitle("Health Tracker");
         stage.setScene(scene);
