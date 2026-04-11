@@ -9,7 +9,7 @@
 
 ## Project Description
 +inHealth is a comprehensive health tracking application designed to help users monitor, understand, and improve their overall well-being by tracking 
-both their daily meal consumption and physical activities. Unlike other health tracking apps, inHealth actively interrupts sedentary behavior by forcing a physical activity prompt whenever any application is opened on the computer within a set amount of time. This ensures that users sitting for long hours of school, work, or leisure in their desktops are consistently reminded to move. Sedentary lifestyles and poor dietary habits remain among the leading contributors 
+both their daily meal consumption and physical activities. Unlike other health tracking apps, +inHealth actively interrupts sedentary behavior by forcing a physical activity prompt whenever any application is opened on the computer within a set amount of time. This ensures that users sitting for long hours of school, work, or leisure in their desktops are consistently reminded to move. Sedentary lifestyles and poor dietary habits remain among the leading contributors 
 to preventable diseases worldwide, including cardiovascular conditions, obesity, and diabetes. The growing consumption of unhealthy and 
 ultra-processed foods, combined with increasingly inactive daily routines, has made it more difficult for individuals to maintain a balanced and 
 healthy lifestyle. Many people lack the awareness and proper tools to evaluate whether their daily habits — both in eating and physical activity — are truly 
