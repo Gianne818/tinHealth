@@ -1,0 +1,21 @@
+@import "palettes.css";
+
+.root.light {
+    -bg-nav: -bluish-white;
+    -accent-color: -vibrant-blue;
+    -light-accent-color: -less-vibrant-blue;
+    -bg-content: -semen-white;
+
+}
+
+.light.dashboardScrollPane{
+    -bg-content: -semen-white;
+    -accent-color: -vibrant-blue;
+    -light-accent-color: -less-vibrant-blue;
+}
+
+.light.foodLogScrollPane{
+    -bg-content: -light-green;
+    -accent-color: -dark-green;
+    -light-accent-color: -green;
+}

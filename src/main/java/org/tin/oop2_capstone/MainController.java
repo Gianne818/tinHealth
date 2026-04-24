@@ -14,6 +14,7 @@ import java.io.IOException;
 
 public class MainController {
     @FXML public SplitPane splitPaneMain;
+    @FXML public AnchorPane rootAnchorPane;
     @FXML public AnchorPane anchorPaneSideBar;
     @FXML public AnchorPane anchorPaneContent;
     @FXML public ImageView imgViewCollapse;
@@ -26,7 +27,9 @@ public class MainController {
     private boolean isSideBarCollapsed = false;
 
     public void initialize(){
-
+        rootAnchorPane.getStyleClass().add("light");
+        anchorPaneSideBar.getStyleClass().add("light");
+        anchorPaneContent.getStyleClass().add("light");
     }
 
     public void toggleSideBar(){
@@ -47,28 +50,28 @@ public class MainController {
         char id = clickedBox.getId().charAt(0);
         switch(id){
             case 'd':
-                navigateToView("dashboard-view");
+                navigateToView("dashboard-view", "dashboardScrollPane");
                 break;
 
             case'f':
-                navigateToView("food-log-view");
+                navigateToView("food-log-view", "foodLogScrollPane");
                 break;
 
             case 'a':
-                navigateToView("activity-log-view");
+                navigateToView("activity-log-view", "activityLogScrollPane");
                 break;
 
             case 's':
-                navigateToView("settings-view");
+                navigateToView("settings-view", "settingsScrollPane");
                 break;
 
             case 'p':
-                navigateToView("profile-view");
+                navigateToView("profile-view", "profileScrollPane");
                 break;
         }
     }
 
-    private void navigateToView(String filename){
+    private void navigateToView(String filename, String styleClass){
         ScrollPane view = null;
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/" + filename + ".fxml"));
@@ -79,6 +82,11 @@ public class MainController {
             AnchorPane.setRightAnchor(view, 0.0);
             AnchorPane.setLeftAnchor(view, 0.0);
             anchorPaneContent.getChildren().setAll(view);
+
+            anchorPaneContent.getStyleClass().clear();
+            anchorPaneContent.getStyleClass().addAll("light", styleClass);
+            anchorPaneSideBar.getStyleClass().clear();
+            anchorPaneSideBar.getStyleClass().addAll("light", styleClass);
         } catch (IOException e) {
             System.out.println("File not found!");
         }

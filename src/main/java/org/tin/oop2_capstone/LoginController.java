@@ -17,6 +17,9 @@ public class LoginController {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
 
+        String style = getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm();
+        scene.getStylesheets().add(style);
+
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setResizable(true);
 

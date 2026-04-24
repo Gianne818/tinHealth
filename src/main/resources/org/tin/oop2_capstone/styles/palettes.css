@@ -1,0 +1,16 @@
+.root{
+    /*mostly used for sidebar light*/
+    -bluish-white: #F1F5F9;
+
+    /*mostly used for dashboard light*/
+    -semen-white: #F9FAFC;
+    -vibrant-blue: #2663EB;
+    -less-vibrant-blue: #61A5FA;
+
+    /*mostly used for food log*/
+    -light-green: #F0FDF4;
+    -green: #11B981;
+    -dark-green: #11B981;
+
+    -white: #FFFFFF;
+}
