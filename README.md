@@ -38,3 +38,9 @@ toward healthier and more informed lifestyle choices.
 - GUI: JavaFX with FXML views
 - UML: Use Case and Class Diagram included
 - Design Pattern: (Tentative)
+
+## Class Diagram
+![Class Diagram](ClassDiagram.png)
+
+## Use Case Diagram
+![Use Case Diagram](UseCaseDiagram.png)
