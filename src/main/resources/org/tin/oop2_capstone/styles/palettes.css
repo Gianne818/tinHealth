@@ -6,11 +6,13 @@
     -off-white: #F9FAFC;
     -vibrant-blue: #2663EB;
     -less-vibrant-blue: #61A5FA;
+    -pastel-blue: #DBE6FA;
 
     /*mostly used for food log*/
     -light-green: #F0FDF4;
     -green: #11B981;
-    -dark-green: #11B981;
+    -dark-green: #069668;
+    -pastel-green: #DAEDEA;
 
     -white: #FFFFFF;
 }

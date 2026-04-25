@@ -12,10 +12,13 @@
     -bg-content: -off-white;
     -accent-color: -vibrant-blue;
     -light-accent-color: -less-vibrant-blue;
+    -bg-color-accent: -pastel-blue;
 }
 
 .light.foodLogScrollPane{
     -bg-content: -light-green;
     -accent-color: -dark-green;
     -light-accent-color: -green;
+    -bg-color-accent: -pastel-green;
 }
+

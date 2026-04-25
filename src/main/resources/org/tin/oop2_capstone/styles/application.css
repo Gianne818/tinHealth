@@ -1,16 +1,21 @@
 @import "lightmode.css";
 @import "palettes.css";
+@import "fonts.css";
+
+.label{
+    -fx-font-family: "Inter 18pt";
+}
 
 #anchorPaneSideBar{
     -fx-background-color: -bg-nav;
 
 }
 
-
 #quickWorkoutButton{
     -fx-background-color: -accent-color;
     -fx-text-fill: -white;
     -fx-background-radius: 50;
+    -fx-font-size: 16;
 }
 
 #anchorPaneContent{
@@ -32,5 +37,52 @@
     -fx-effect: dropshadow(three-pass-box,darkgrey, 20, 0.7, 4, 0);
 }
 
+#thisWeekSVG{
+    -fx-stroke: -accent-color;
+}
 
+#currentStreakSVG{
+    -fx-stroke: -accent-color;
+}
+
+.lightText{
+    -fx-text-fill: grey;
+}
+
+.boldText{
+    -fx-font-weight: bold;
+}
+
+.grid{
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+.card{
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(three-pass-box,darkgrey, 10, 0, 0, 2);
+}
+
+.navButton{
+    -fx-font-size: 16;
+}
+
+.navButton:hover {
+    -fx-background-color: -bg-color-accent;
+    -fx-background-radius: 30;
+    -fx-font-size: 16;
+    -fx-font-weight: 500;
+}
+
+.navButton.active {
+    -fx-background-color: -bg-color-accent;
+    -fx-background-radius: 30;
+    -fx-font-size: 16;
+}
+
+.navButton.active .label,
+.navButton:hover .label {
+    -fx-font-family: "Inter 18pt SemiBold";
+}
 
