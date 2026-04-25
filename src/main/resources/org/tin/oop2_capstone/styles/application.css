@@ -61,8 +61,15 @@
 .card{
     -fx-background-color: white;
     -fx-background-radius: 15;
-    -fx-effect: dropshadow(three-pass-box,darkgrey, 10, 0, 0, 2);
+    -fx-effect: dropshadow(three-pass-box, darkgrey, 10, 0, 0, 2);
 }
+
+.cardContent{
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(three-pass-box, lightgrey, 20, 0, 0, 5);
+}
+
 
 .navButton{
     -fx-font-size: 16;
