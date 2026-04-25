@@ -4,12 +4,12 @@
     -bg-nav: -bluish-white;
     -accent-color: -vibrant-blue;
     -light-accent-color: -less-vibrant-blue;
-    -bg-content: -semen-white;
+    -bg-content: -off-white;
 
 }
 
 .light.dashboardScrollPane{
-    -bg-content: -semen-white;
+    -bg-content: -off-white;
     -accent-color: -vibrant-blue;
     -light-accent-color: -less-vibrant-blue;
 }
