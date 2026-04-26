@@ -35,6 +35,8 @@ public class MainController {
 
     private boolean isSideBarCollapsed = false;
 
+    @FXML private Button quickWorkoutButton;
+
     public void initialize(){
         rootAnchorPane.getStyleClass().add("light");
         anchorPaneSideBar.getStyleClass().add("light");
@@ -64,10 +66,6 @@ public class MainController {
         Pane clickedBox = (Pane) event.getSource();
         char id = clickedBox.getId().charAt(0);
         switch(id){
-            case 'n':
-                navigateToView("notification-tab-view", "notificationsScrollPane", notificationsNav);
-                break;
-
             case 'd':
                 navigateToView("dashboard-view", "dashboardScrollPane", dashboardNav);
                 break;
@@ -120,4 +118,38 @@ public class MainController {
         }
     }
 
+    @FXML
+    private void onQuickWorkoutClicked() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource(
+                            "/org/tin/oop2_capstone/views/exercise-prompt-view.fxml"
+                    )
+            );
+            StackPane overlay = loader.load();
+
+            AnchorPane.setTopAnchor(overlay, 0.0);
+            AnchorPane.setBottomAnchor(overlay, 0.0);
+            AnchorPane.setLeftAnchor(overlay, 0.0);
+            AnchorPane.setRightAnchor(overlay, 0.0);
+
+            ExercisePromptController ctrl = loader.getController();
+            ctrl.setOnDismiss(() -> {
+                rootAnchorPane.getChildren().remove(overlay);
+                splitPaneMain.setEffect(null); // remove blur
+            });
+
+            // Blur the background
+            splitPaneMain.setEffect(new javafx.scene.effect.GaussianBlur(10));
+
+            rootAnchorPane.getChildren().add(overlay);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
+
+
