@@ -93,6 +93,20 @@
     -fx-font-family: "Inter 18pt SemiBold";
 }
 
+.pulse-logo1 {
+    -fx-background-color: #ed4343;
+    -fx-background-radius: 500px;
+    -fx-alignment: center;
+    -fx-padding: 5;
+}
+.pulse-logo2 {
+    -fx-background-color: #f77216;
+    -fx-background-radius: 500px;
+    -fx-alignment: center;
+    -fx-padding: 5;
+}
+
+
 /* ── Notifications ───────────────────────────────────────────── */
 .notif-card {
     -fx-background-color: white;
@@ -236,18 +250,6 @@
     -fx-text-fill: #1E293B;
 }
 
-.notif-delete-button {
-    -fx-background-color: transparent;
-    -fx-border-color: transparent;
-    -fx-text-fill: #94A3B8;
-    -fx-font-size: 13px;
-    -fx-cursor: hand;
-    -fx-padding: 2px 6px;
-}
-
-.notif-delete-button:hover {
-    -fx-text-fill: #EF4444;
-}
 .ep-complete-button {
     -fx-background-color: #EC4899;
     -fx-text-fill: white;

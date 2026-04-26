@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.LoginController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.LoginController" styleClass="dashboardScrollPane">
    <children>
       <BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <left>
@@ -28,11 +23,17 @@
          <center>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label prefHeight="17.0" prefWidth="278.0" text="Username" />
-                  <TextField />
-                  <Label prefHeight="17.0" prefWidth="271.0" text="Password" />
-                  <TextField />
-                  <Button fx:id="buttonLogin" mnemonicParsing="false" onAction="#onLoginButtonClicked" text="Login" />
+                  <Label prefHeight="17.0" prefWidth="278.0" styleClass="ugbluetext" text="Username">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin></Label>
+                  <TextField styleClass="rounded-emailfield" />
+                  <Label prefHeight="17.0" prefWidth="271.0" styleClass="ugbluetext" text="Password" />
+                  <TextField styleClass="rounded-passwordfield" />
+                  <Button fx:id="buttonLogin" minWidth="268.0" mnemonicParsing="false" onAction="#onLoginButtonClicked" styleClass="primary-button" text="Login">
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin></Button>
                   <Label text="Don't have an account? Sign Up" />
                </children>
                <BorderPane.margin>
