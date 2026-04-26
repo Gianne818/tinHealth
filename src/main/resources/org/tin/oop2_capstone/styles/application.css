@@ -93,3 +93,41 @@
     -fx-font-family: "Inter 18pt SemiBold";
 }
 
+/* ── Notifications ───────────────────────────────────────────── */
+.notif-card {
+    -fx-background-color: white;
+    -fx-background-radius: 14px;
+    -fx-border-radius: 14px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 2);
+}
+
+.notif-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 14, 0, 0, 3);
+}
+
+.notif-mark-all-button {
+    -fx-background-color: #3B82F6;
+    -fx-text-fill: white;
+    -fx-font-family: "Inter 18pt SemiBold";
+    -fx-font-size: 13px;
+    -fx-background-radius: 10px;
+    -fx-cursor: hand;
+    -fx-padding: 8px 16px;
+}
+
+.notif-mark-all-button:hover {
+    -fx-opacity: 0.9;
+}
+
+.notif-delete-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: #94A3B8;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+    -fx-padding: 2px 6px;
+}
+
+.notif-delete-button:hover {
+    -fx-text-fill: #EF4444;
+}

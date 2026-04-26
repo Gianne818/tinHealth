@@ -40,7 +40,6 @@ public class MainApplication extends Application {
         String style = getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm();
         scene.getStylesheets().add(style);
 
-
         primaryStage.setResizable(true);
 
         primaryStage.setMinWidth(1000);

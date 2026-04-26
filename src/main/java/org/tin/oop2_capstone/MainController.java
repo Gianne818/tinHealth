@@ -29,6 +29,8 @@ public class MainController {
     @FXML public HBox settingsNav;
     @FXML public GridPane profileNav;
 
+    @FXML public HBox notificationsNav;
+
     ObservableList<Pane> navs;
 
     private boolean isSideBarCollapsed = false;
@@ -42,6 +44,7 @@ public class MainController {
         navs.addAll(dashboardNav, foodLogNav, activityLogNav, settingsNav, profileNav);
 
         navigateToView("dashboard-view", "dashboardScrollPane", dashboardNav);
+        navs.addAll(dashboardNav, foodLogNav, activityLogNav, settingsNav, profileNav, notificationsNav);
     }
 
     public void toggleSideBar(){
@@ -61,6 +64,10 @@ public class MainController {
         Pane clickedBox = (Pane) event.getSource();
         char id = clickedBox.getId().charAt(0);
         switch(id){
+            case 'n':
+                navigateToView("notification-tab-view", "notificationsScrollPane", notificationsNav);
+                break;
+
             case 'd':
                 navigateToView("dashboard-view", "dashboardScrollPane", dashboardNav);
                 break;
@@ -114,5 +121,3 @@ public class MainController {
     }
 
 }
-
-
