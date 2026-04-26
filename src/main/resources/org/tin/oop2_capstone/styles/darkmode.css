@@ -1,0 +1,14 @@
+/*TODO: Basically just copy and paste the whole lightmode.css and change the colors accordingly. additionally darkmode is accessible via adding to scene before navigating to said next scene
+    (ex.
+        scene.getStylesheets().add(
+                getClass().getResource("/org/tin/oop2_capstone/styles/darkmode.css").toExternalForm()
+        );
+    )
+    .
+    preferably will have
+    if(SerializedUser.preference_isDark == true){
+        getClass().getResource("/org/tin/oop2_capstone/styles/darkmode.css").toExternalForm()
+    } else {
+        getClass().getResource("/org/tin/oop2_capstone/styles/lightmode.css").toExternalForm()
+    }
+*/

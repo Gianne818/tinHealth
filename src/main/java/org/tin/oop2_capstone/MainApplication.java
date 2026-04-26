@@ -20,6 +20,11 @@ public class MainApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
 
+        /*set scene to use lightmode.css; change according to serialized preference but default to white*/
+        scene.getStylesheets().add(
+                getClass().getResource("/org/tin/oop2_capstone/styles/lightmode.css").toExternalForm()
+        );
+
         primaryStage.setMinHeight(400);
         primaryStage.setMinWidth(600);
 

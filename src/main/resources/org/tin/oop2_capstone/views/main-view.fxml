@@ -55,7 +55,7 @@
                         </children>
                      </GridPane>
                      <Separator />
-                     <GridPane gridLinesVisible="true" hgap="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0">
+                     <GridPane gridLinesVisible="false" hgap="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0">
                          <columnConstraints>
                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="122.0" minWidth="10.0" prefWidth="116.0" />
                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="198.0" minWidth="10.0" prefWidth="127.0" />
@@ -64,7 +64,7 @@
                              <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" vgrow="SOMETIMES" />
                          </rowConstraints>
                         <children>
-                           <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                           <VBox prefHeight="200.0" prefWidth="100.0" spacing="3.0" styleClass="navcard">
                               <children>
                                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
@@ -73,7 +73,7 @@
                                  <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Current Streak" />
                                  <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="7 Days" />
                               </children></VBox>
-                           <VBox prefHeight="100.0" prefWidth="165.0" spacing="5.0" GridPane.columnIndex="1">
+                           <VBox prefHeight="100.0" prefWidth="165.0" spacing="3.0" styleClass="navcard" GridPane.columnIndex="1">
                               <children>
                                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
@@ -91,42 +91,54 @@
                         </padding>
                      </GridPane>
                      <Separator />
-                     <VBox spacing="20.0">
+                     <VBox spacing="5.0">
                         <children>
-                            <HBox fx:id="dashboardNav" onMouseClicked="#onNavElementClicked" spacing="10.0">
+                            <HBox fx:id="dashboardNav" onMouseClicked="#onNavElementClicked" spacing="10.0" styleClass="sidepanel-option">
                                 <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
                                         <Image url="@../assets/icons/dashboard.png" />
                                     </image>
                                 </ImageView>
                                 <Label text="Dashboard" />
+                              <padding>
+                                 <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                              </padding>
                             </HBox>
 
-                            <HBox fx:id="foodLogNav" onMouseClicked="#onNavElementClicked" spacing="10.0">
+                            <HBox fx:id="foodLogNav" onMouseClicked="#onNavElementClicked" spacing="10.0" styleClass="sidepanel-option">
                                 <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
                                         <Image url="@../assets/icons/apple.png" />
                                     </image>
                                 </ImageView>
                                 <Label text="Food Log" />
+                              <padding>
+                                 <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                              </padding>
                             </HBox>
 
-                            <HBox fx:id="activityLogNav" onMouseClicked="#onNavElementClicked" spacing="10.0">
+                            <HBox fx:id="activityLogNav" onMouseClicked="#onNavElementClicked" spacing="10.0" styleClass="sidepanel-option">
                                 <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
                                         <Image url="@../assets/icons/pulse.png" />
                                     </image>
                                 </ImageView>
                                 <Label text="Activity Log" />
+                              <padding>
+                                 <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                              </padding>
                             </HBox>
 
-                            <HBox fx:id="settingsNav" onMouseClicked="#onNavElementClicked" spacing="10.0">
+                            <HBox fx:id="settingsNav" onMouseClicked="#onNavElementClicked" spacing="10.0" styleClass="sidepanel-option">
                                 <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
                                         <Image url="@../assets/icons/settings.png" />
                                     </image>
                                 </ImageView>
                                 <Label text="Settings" />
+                              <padding>
+                                 <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                              </padding>
                             </HBox>
                         </children>
                         <padding>
