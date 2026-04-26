@@ -40,7 +40,7 @@ toward healthier and more informed lifestyle choices.
 - Design Pattern: (Tentative)
 
 ## Class Diagram
-
+![Class Diagram](ClassDiagram.png)
 
 ## Use Case Diagram
 ![Use Case Diagram](UseCaseDiagram.png)
