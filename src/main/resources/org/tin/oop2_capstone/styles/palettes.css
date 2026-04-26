@@ -6,7 +6,6 @@
     -off-white: #F9FAFC;
     -vibrant-blue: #2663EB;
     -less-vibrant-blue: #61A5FA;
-    -lighter-less-vibrant-blue: #7fb5fb;
     -pastel-blue: #DBE6FA;
 
     /*mostly used for food log*/
@@ -15,14 +14,9 @@
     -dark-green: #069668;
     -pastel-green: #DAEDEA;
 
-    -white: #FFFFFF;
-
-    -ugblue: #637399;
-    -hover-blue: #d8e4f7;
-    /*dark mode colors*/
-    /*bg*/
-    -deep-blue: #0f172a;
-    /*buttons*/
-    -surface-blue: #5fa4f8;
-
+    /*mostly used for activity log*/
+    -light-pink: #FEF2F2;
+    -vibrant-red: #DB2627;
+    -orange: #F97315;
+    -pastel-red: #F2E0E3;
 }

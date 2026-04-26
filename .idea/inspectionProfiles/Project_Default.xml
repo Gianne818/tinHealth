@@ -6,7 +6,7 @@
       <option name="myIgnoreVendorSpecificProperties" value="false" />
       <option name="myCustomPropertiesList">
         <value>
-          <list size="10">
+          <list size="19">
             <item index="0" class="java.lang.String" itemvalue="-less-vibrant-blue" />
             <item index="1" class="java.lang.String" itemvalue="-pastel-blue" />
             <item index="2" class="java.lang.String" itemvalue="-light-green" />
@@ -17,6 +17,15 @@
             <item index="7" class="java.lang.String" itemvalue="-vibrant-blue" />
             <item index="8" class="java.lang.String" itemvalue="-bluish-white" />
             <item index="9" class="java.lang.String" itemvalue="-off-white" />
+            <item index="10" class="java.lang.String" itemvalue="-light-pink" />
+            <item index="11" class="java.lang.String" itemvalue="-vibrant-red" />
+            <item index="12" class="java.lang.String" itemvalue="-orange" />
+            <item index="13" class="java.lang.String" itemvalue="-pastel-red" />
+            <item index="14" class="java.lang.String" itemvalue="-bg-color-accent" />
+            <item index="15" class="java.lang.String" itemvalue="-light-accent-color" />
+            <item index="16" class="java.lang.String" itemvalue="-accent-color" />
+            <item index="17" class="java.lang.String" itemvalue="-bg-content" />
+            <item index="18" class="java.lang.String" itemvalue="-bg-nav" />
           </list>
         </value>
       </option>

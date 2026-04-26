@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.MainController">
+<AnchorPane fx:id="rootAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.MainController">
    <children>
       <SplitPane fx:id="splitPaneMain" dividerPositions="0.3" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -29,7 +38,7 @@
                               </image>
                            </ImageView>
 
-                            <HBox fx:id="notificationsNav" alignment="CENTER" onMouseClicked="#onNavElementClicked" styleClass="navButton" GridPane.columnIndex="1" GridPane.halignment="RIGHT" maxWidth="40.0" maxHeight="40.0">
+                            <HBox fx:id="notificationsNav" alignment="CENTER" maxHeight="40.0" maxWidth="40.0" onMouseClicked="#onNavElementClicked" styleClass="navButton" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
                                         <Image url="@../assets/icons/notif_bell_red.png" />
@@ -41,6 +50,9 @@
                             </HBox>
 
                         </children>
+                        <VBox.margin>
+                           <Insets bottom="10.0" />
+                        </VBox.margin>
                       </GridPane>
                      <GridPane fx:id="profileNav">
                        <columnConstraints>
@@ -65,6 +77,9 @@
                                  <Font size="12.0" />
                               </font></Label>
                         </children>
+                        <VBox.margin>
+                           <Insets bottom="10.0" />
+                        </VBox.margin>
                      </GridPane>
                      <Separator />
                      <GridPane hgap="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0">
@@ -78,7 +93,7 @@
                         <children>
                            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" styleClass="card">
                               <children>
-                                 <SVGPath fx:id="currentStreakSVG" content="M7.99992 14.6667C11.6818 14.6667 14.6666 11.6819 14.6666 8.00004C14.6666 4.31814 11.6818 1.33337 7.99992 1.33337C4.31802 1.33337 1.33325 4.31814 1.33325 8.00004C1.33325 11.6819 4.31802 14.6667 7.99992 14.6667Z M8 12C10.2091 12 12 10.2091 12 8C12 5.79086 10.2091 4 8 4C5.79086 4 4 5.79086 4 8C4 10.2091 5.79086 12 8 12Z M8.00008 9.33329C8.73646 9.33329 9.33341 8.73634 9.33341 7.99996C9.33341 7.26358 8.73646 6.66663 8.00008 6.66663C7.2637 6.66663 6.66675 7.26358 6.66675 7.99996C6.66675 8.73634 7.2637 9.33329 8.00008 9.33329Z" fill="TRANSPARENT" scaleX="1.3" scaleY="1.3" stroke="BLACK">
+                                 <SVGPath fx:id="currentStreakSVG" content="M7.99992 14.6667C11.6818 14.6667 14.6666 11.6819 14.6666 8.00004C14.6666 4.31814 11.6818 1.33337 7.99992 1.33337C4.31802 1.33337 1.33325 4.31814 1.33325 8.00004C1.33325 11.6819 4.31802 14.6667 7.99992 14.6667Z M8 12C10.2091 12 12 10.2091 12 8C12 5.79086 10.2091 4 8 4C5.79086 4 4 5.79086 4 8C4 10.2091 5.79086 12 8 12Z M8.00008 9.33329C8.73646 9.33329 9.33341 8.73634 9.33341 7.99996C9.33341 7.26358 8.73646 6.66663 8.00008 6.66663C7.2637 6.66663 6.66675 7.26358 6.66675 7.99996C6.66675 8.73634 7.2637 9.33329 8.00008 9.33329Z" fill="TRANSPARENT" scaleX="1.3" scaleY="1.3" stroke="BLACK" styleClass="currentSVG">
                                     <VBox.margin>
                                        <Insets left="5.0" right="5.0" top="5.0" />
                                     </VBox.margin>
@@ -94,7 +109,7 @@
                               </padding></VBox>
                            <VBox prefHeight="100.0" prefWidth="165.0" spacing="5.0" styleClass="card" GridPane.columnIndex="1">
                               <children>
-                                 <SVGPath fx:id="thisWeekSVG" content="M14.6666 4.66663L8.99992 10.3333L5.66659 6.99996L1.33325 11.3333 M10.6667 4.66663H14.6667V8.66663" fill="TRANSPARENT" scaleX="1.3" scaleY="1.3" scaleZ="1.3" stroke="BLACK" strokeLineCap="ROUND" strokeLineJoin="ROUND">
+                                 <SVGPath fx:id="thisWeekSVG" content="M14.6666 4.66663L8.99992 10.3333L5.66659 6.99996L1.33325 11.3333 M10.6667 4.66663H14.6667V8.66663" fill="TRANSPARENT" scaleX="1.3" scaleY="1.3" scaleZ="1.3" stroke="BLACK" strokeLineCap="ROUND" strokeLineJoin="ROUND" styleClass="currentSVG">
                                     <VBox.margin>
                                        <Insets bottom="5.0" left="5.0" top="5.0" />
                                     </VBox.margin>
@@ -110,7 +125,7 @@
                               </padding></VBox>
                         </children>
                         <VBox.margin>
-                           <Insets />
+                           <Insets bottom="35.0" top="35.0" />
                         </VBox.margin>
                         <padding>
                            <Insets left="10.0" right="10.0" />
@@ -229,13 +244,17 @@
                            <Insets />
                         </VBox.margin>
                      </Separator>
-                      <Button fx:id="quickWorkoutButton"
-                              maxHeight="1.7976931348623157E308"
-                              maxWidth="1.7976931348623157E308"
-                              mnemonicParsing="false"
-                              text="Quick Exercise"
-                              onAction="#onQuickWorkoutClicked" />
-                     <Label text="Label" />
+                      <Button fx:id="quickWorkoutButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onQuickExerciseClicked" styleClass="ctaButton" text="Quick Exercise">
+                        <padding>
+                           <Insets bottom="10.0" top="10.0" />
+                        </padding></Button>
+                     <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" spacing="2.0">
+                        <children>
+                           <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Next Prompt in" />
+                           <Label fx:id="remainingTimeNumberLabel" text="number" />
+                           <Label fx:id="remainingTimeUnitLabelk" text="units" />
+                        </children>
+                     </HBox>
                   </children>
                   <padding>
                      <Insets left="20.0" right="20.0" />

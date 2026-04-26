@@ -5,7 +5,6 @@
     -accent-color: -vibrant-blue;
     -light-accent-color: -less-vibrant-blue;
     -bg-content: -off-white;
-
 }
 
 .light.dashboardScrollPane{
@@ -20,6 +19,13 @@
     -accent-color: -dark-green;
     -light-accent-color: -green;
     -bg-color-accent: -pastel-green;
+}
+
+.light.activityLogScrollPane{
+    -bg-content: -light-pink;
+    -accent-color: -vibrant-red;
+    -light-accent-color: -orange;
+    -bg-color-accent: -pastel-red;
 }
 
 

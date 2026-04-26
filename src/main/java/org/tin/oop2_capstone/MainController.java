@@ -2,15 +2,20 @@ package org.tin.oop2_capstone;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.css.StyleClass;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
+import javafx.scene.effect.GaussianBlur;
+import javafx.scene.effect.InnerShadow;
+import javafx.scene.effect.Shadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import org.tin.oop2_capstone.screens.exercise_prompt.ExercisePromptController;
 
 import java.io.IOException;
@@ -27,7 +32,6 @@ public class MainController {
     @FXML public HBox activityLogNav;
     @FXML public HBox settingsNav;
     @FXML public GridPane profileNav;
-
     @FXML public HBox notificationsNav;
 
     ObservableList<Pane> navs;
@@ -102,6 +106,8 @@ public class MainController {
             AnchorPane.setLeftAnchor(view, 0.0);
             anchorPaneContent.getChildren().setAll(view);
 
+            // todo getUserAppearancePref() to determine if lightmode or darkmode styles, but lightmode for now
+
             anchorPaneContent.getStyleClass().clear();
             anchorPaneContent.getStyleClass().addAll("light", styleClass);
 
@@ -121,30 +127,29 @@ public class MainController {
     }
 
     @FXML
-    private void onQuickWorkoutClicked() {
+    private void onQuickExerciseClicked() {
         try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource(
-                            "/org/tin/oop2_capstone/views/exercise-prompt-view.fxml"
-                    )
-            );
-            StackPane overlay = loader.load();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/exercise-prompt-view.fxml"));
+
+            StackPane overlay = fxmlLoader.load();
+            overlay.getStyleClass().add("light");
 
             AnchorPane.setTopAnchor(overlay, 0.0);
             AnchorPane.setBottomAnchor(overlay, 0.0);
+
             AnchorPane.setLeftAnchor(overlay, 0.0);
             AnchorPane.setRightAnchor(overlay, 0.0);
 
-            ExercisePromptController ctrl = loader.getController();
-            ctrl.setOnDismiss(() -> {
+            ExercisePromptController.setOnDismiss(() -> {
                 rootAnchorPane.getChildren().remove(overlay);
-                splitPaneMain.setEffect(null); // remove blur
+                splitPaneMain.setEffect(null);
             });
 
-            // Blur the background
-            splitPaneMain.setEffect(new javafx.scene.effect.GaussianBlur(10));
+            splitPaneMain.setEffect(new GaussianBlur(10));
 
             rootAnchorPane.getChildren().add(overlay);
+
+
 
         } catch (Exception e) {
             e.printStackTrace();
