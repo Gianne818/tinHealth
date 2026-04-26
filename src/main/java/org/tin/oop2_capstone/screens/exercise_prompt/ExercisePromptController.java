@@ -3,11 +3,9 @@ package org.tin.oop2_capstone.screens.exercise_prompt;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
@@ -62,7 +60,7 @@ public class ExercisePromptController {
     // ── Handlers ──────────────────────────────────────────────────────
     @FXML
     private void onMarkComplete() {
-        completeButton.setText("Great job! 🎉");
+        completeButton.setText("Great job!");
         completeButton.setDisable(true);
         completeButton.getStyleClass().removeAll("ep-complete-button");
         completeButton.getStyleClass().add("ep-complete-button-done");
