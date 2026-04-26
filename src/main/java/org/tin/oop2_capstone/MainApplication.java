@@ -4,10 +4,12 @@ import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import javax.swing.text.Style;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class MainApplication extends Application {
 
@@ -28,8 +30,9 @@ public class MainApplication extends Application {
         primaryStage.setMinHeight(400);
         primaryStage.setMinWidth(600);
 
+        String style = getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm();
+        scene.getStylesheets().add(style);
         primaryStage.setResizable(false);
-
 
         primaryStage.setTitle("Health Tracker");
         primaryStage.setScene(scene);
