@@ -263,3 +263,60 @@
 .ep-skip-button:hover {
     -fx-text-fill: #1E293B;
 }
+
+/*primary text designs*/
+.ugbluetext{
+    -fx-text-fill: -ugblue;
+    -fx-font-weight: bold;
+
+}
+/*primary button designs*/
+.primary-button{
+    -fx-background-radius: 30;
+    -fx-padding: 5  20;
+    -fx-font-weight: bold;
+    -fx-background-color: -less-vibrant-blue;
+    -fx-min-height: 16;
+}
+.primary-button:hover{
+    -fx-background-color: -lighter-less-vibrant-blue;
+}
+
+/*text field designs*/
+.rounded-emailfield {
+    -fx-background-radius: 20, 19;
+    -fx-padding: 8px 15px 8px 35px;
+    -fx-background-image: url("/org/tin/oop2_capstone/assets/icons/email.png"); /*TODO: need to resolve missing image*/
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: left 10px center;
+    -fx-background-size: 16px 16px;
+    -fx-font-size: 14px;
+}
+.rounded-passwordfield {
+    -fx-background-radius: 20, 19;
+    -fx-padding: 8px 15px 8px 35px;
+    -fx-background-image: url("/org/tin/oop2_capstone/assets/icons/lock.png"); /*TODO: need to resolve missing image*/
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: left 10px center;
+    -fx-background-size: 16px 16px;
+    -fx-font-size: 14px;
+}
+
+.rounded-field:focused {
+    -fx-background-color: #000000, #FFFFFF;
+    -fx-background-insets: 0, 1;
+    -fx-background-radius: 20, 19;
+}
+
+/*main designs*/
+/*side panel designs*/
+.sidepanel-option{
+    -fx-background-insets: 0, 1;
+    -fx-background-radius: 20, 19;
+    -fx-background-repeat: no-repeat;
+    -fx-font-size: 14px;
+}
+
+.sidepanel-option:hover{
+    -fx-background-color: -hover-blue;
+}
