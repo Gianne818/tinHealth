@@ -10,11 +10,20 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.scene.control.Button;
 import java.io.IOException;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import org.tin.oop2_capstone.screens.exercise_prompt.ExercisePromptController;
+
 
 public class MainController {
     @FXML public SplitPane splitPaneMain;
@@ -32,6 +41,8 @@ public class MainController {
     ObservableList<Pane> navs;
 
     private boolean isSideBarCollapsed = false;
+
+    @FXML private Button quickWorkoutButton;
 
     public void initialize(){
         rootAnchorPane.getStyleClass().add("light");
@@ -112,6 +123,38 @@ public class MainController {
             System.out.println("File not found!");
         }
     }
+
+    @FXML
+    private void onQuickWorkoutClicked() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource(
+                            "/org/tin/oop2_capstone/views/exercise-prompt-view.fxml"
+                    )
+            );
+            StackPane overlay = loader.load();
+
+            AnchorPane.setTopAnchor(overlay, 0.0);
+            AnchorPane.setBottomAnchor(overlay, 0.0);
+            AnchorPane.setLeftAnchor(overlay, 0.0);
+            AnchorPane.setRightAnchor(overlay, 0.0);
+
+            ExercisePromptController ctrl = loader.getController();
+            ctrl.setOnDismiss(() -> {
+                rootAnchorPane.getChildren().remove(overlay);
+                splitPaneMain.setEffect(null); // remove blur
+            });
+
+            // Blur the background
+            splitPaneMain.setEffect(new javafx.scene.effect.GaussianBlur(10));
+
+            rootAnchorPane.getChildren().add(overlay);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }
 

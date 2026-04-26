@@ -229,7 +229,12 @@
                            <Insets />
                         </VBox.margin>
                      </Separator>
-                     <Button fx:id="quickWorkoutButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Quick Workout" />
+                      <Button fx:id="quickWorkoutButton"
+                              maxHeight="1.7976931348623157E308"
+                              maxWidth="1.7976931348623157E308"
+                              mnemonicParsing="false"
+                              text="Quick Exercise"
+                              onAction="#onQuickWorkoutClicked" />
                      <Label text="Label" />
                   </children>
                   <padding>
