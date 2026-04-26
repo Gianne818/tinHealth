@@ -4,15 +4,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
+import org.tin.oop2_capstone.screens.exercise_prompt.ExercisePromptController;
 
 import java.io.IOException;
 
@@ -35,7 +34,7 @@ public class MainController {
 
     private boolean isSideBarCollapsed = false;
 
-    @FXML private Button quickWorkoutButton;
+    @FXML public Button quickWorkoutButton;
 
     public void initialize(){
         rootAnchorPane.getStyleClass().add("light");
@@ -85,6 +84,9 @@ public class MainController {
             case 'p':
                 navigateToView("profile-view", "profileScrollPane", profileNav);
                 break;
+
+            case 'n':
+                navigateToView("notifications-view", "notificationScrollPane", notificationsNav);
         }
     }
 
