@@ -1,22 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.SVGPath?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="rootAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.MainController">
+<AnchorPane fx:id="rootAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.MainController">
    <children>
       <SplitPane fx:id="splitPaneMain" dividerPositions="0.3" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -122,9 +113,9 @@
                         </padding>
                      </GridPane>
                      <Separator />
-                     <VBox spacing="10.0">
+                     <VBox spacing="3.0">
                         <children>
-                            <HBox fx:id="dashboardNav" alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#onNavElementClicked" spacing="10.0" styleClass="navButton">
+                            <HBox fx:id="dashboardNav" alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#onNavElementClicked" spacing="10.0" styleClass="navButton, ">
                                 <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
                                         <Image url="@../assets/icons/dashboard.png" />
@@ -135,8 +126,11 @@
                                     <Font size="16.0" />
                                  </font></Label>
                               <padding>
-                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                               </padding>
+                              <VBox.margin>
+                                 <Insets />
+                              </VBox.margin>
                             </HBox>
 
                             <HBox fx:id="foodLogNav" alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#onNavElementClicked" spacing="10.0" styleClass="navButton">
@@ -150,7 +144,7 @@
                                     <Font size="16.0" />
                                  </font></Label>
                               <padding>
-                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                               </padding>
                             </HBox>
 
@@ -165,7 +159,7 @@
                                     <Font size="16.0" />
                                  </font></Label>
                               <padding>
-                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                               </padding>
                             </HBox>
 
@@ -180,7 +174,7 @@
                                     <Font size="16.0" />
                                  </font></Label>
                               <padding>
-                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                               </padding>
                             </HBox>
                         </children>

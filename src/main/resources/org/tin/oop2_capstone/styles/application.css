@@ -73,10 +73,14 @@
 
 .navButton{
     -fx-font-size: 16;
+    /*my additions*/
+    -fx-background-insets: 0, 1;
+    -fx-background-radius: 20, 19;
+    -fx-background-repeat: no-repeat;
 }
 
 .navButton:hover {
-    -fx-background-color: -bg-color-accent;
+    -fx-background-color: -hover-blue;
     -fx-background-radius: 30;
     -fx-font-size: 16;
     -fx-font-weight: 500;
@@ -92,6 +96,20 @@
 .navButton:hover .label {
     -fx-font-family: "Inter 18pt SemiBold";
 }
+
+.pulse-logo1 {
+    -fx-background-color: #ed4343;
+    -fx-background-radius: 500px;
+    -fx-alignment: center;
+    -fx-padding: 5;
+}
+.pulse-logo2 {
+    -fx-background-color: #f77216;
+    -fx-background-radius: 500px;
+    -fx-alignment: center;
+    -fx-padding: 5;
+}
+
 
 /* ── Exercise Prompt Modal ─────────────────────────────────────── */
 .exercise-prompt-root {

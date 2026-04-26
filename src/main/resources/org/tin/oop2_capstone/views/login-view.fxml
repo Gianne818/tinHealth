@@ -27,9 +27,9 @@
                      <VBox.margin>
                         <Insets />
                      </VBox.margin></Label>
-                  <TextField styleClass="rounded-field" />
+                  <TextField styleClass="rounded-emailfield" />
                   <Label prefHeight="17.0" prefWidth="271.0" styleClass="ugbluetext" text="Password" />
-                  <TextField styleClass="rounded-field" />
+                  <TextField styleClass="rounded-passwordfield" />
                   <Button fx:id="buttonLogin" minWidth="268.0" mnemonicParsing="false" onAction="#onLoginButtonClicked" styleClass="primary-button" text="Login">
                      <VBox.margin>
                         <Insets top="5.0" />
