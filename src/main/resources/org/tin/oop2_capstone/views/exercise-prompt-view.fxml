@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
+<!-- Backdrop: full-screen dimmed overlay -->
+<StackPane fx:id="backdropPane"
+           onMouseClicked="#onBackdropClicked"
+           style="-fx-background-color: rgba(0,0,0,0.5);"
+           xmlns="http://javafx.com/javafx/25"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="org.tin.oop2_capstone.screens.exercise_prompt.ExercisePromptController">
+
+    <!-- Modal card — clicks don't bubble to backdrop -->
+    <AnchorPane fx:id="modalCard"
+                maxWidth="380.0" maxHeight="-Infinity"
+                styleClass="exercise-prompt-card"
+                onMouseClicked="#onModalClicked">
+        <children>
+            <VBox alignment="TOP_CENTER" spacing="0.0"
+                  AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+                  AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+
+                <!-- Close button row -->
+                <HBox alignment="CENTER_RIGHT" prefHeight="40.0"
+                      maxWidth="1.7976931348623157E308">
+                    <Button fx:id="closeButton" mnemonicParsing="false"
+                            text="✕" styleClass="ep-close-button"
+                            onAction="#onClose">
+                        <HBox.margin><Insets right="12.0" top="8.0"/></HBox.margin>
+                    </Button>
+                </HBox>
+
+                <!-- Icon -->
+                <StackPane styleClass="ep-icon-circle">
+                    <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../assets/icons/dumbbells.png" />
+                        </image>
+                    </ImageView>
+                    <VBox.margin><Insets bottom="8.0"/></VBox.margin>
+                </StackPane>
+
+                <!-- Title -->
+                <Label text="Time for a quick activity!"
+                       styleClass="ep-title" wrapText="true"
+                       maxWidth="1.7976931348623157E308"
+                       alignment="CENTER">
+                    <font><Font size="20.0"/></font>
+                    <VBox.margin><Insets top="4.0" bottom="16.0"/></VBox.margin>
+                </Label>
+
+                <!-- "Let's do" -->
+                <Label text="Let's do" styleClass="lightText">
+                    <font><Font size="14.0"/></font>
+                </Label>
+
+                <!-- Rep count -->
+                <Label fx:id="repCountLabel" text="10" styleClass="ep-rep-count">
+                    <font><Font size="52.0"/></font>
+                    <VBox.margin><Insets top="6.0"/></VBox.margin>
+                </Label>
+
+                <!-- Exercise name -->
+                <Label fx:id="exerciseNameLabel" text="Push-Ups" styleClass="boldText">
+                    <font><Font size="24.0"/></font>
+                </Label>
+
+                <!-- Unit -->
+                <Label fx:id="unitLabel" text="(reps)" styleClass="lightText">
+                    <font><Font size="13.0"/></font>
+                    <VBox.margin><Insets top="4.0" bottom="24.0"/></VBox.margin>
+                </Label>
+
+                <!-- Complete / Great Job button -->
+                <Button fx:id="completeButton"
+                        text="Mark as Complete"
+                        styleClass="ep-complete-button"
+                        maxWidth="300.0" prefHeight="44.0"
+                        mnemonicParsing="false"
+                        onAction="#onMarkComplete">
+                    <VBox.margin><Insets left="40.0" right="40.0"/></VBox.margin>
+                </Button>
+
+                <!-- Skip -->
+                <Button fx:id="skipButton"
+                        text="Skip for now"
+                        styleClass="ep-skip-button"
+                        mnemonicParsing="false"
+                        onAction="#onClose">
+                    <VBox.margin><Insets top="10.0" bottom="20.0"/></VBox.margin>
+                </Button>
+
+            </VBox>
+        </children>
+    </AnchorPane>
+
+</StackPane>

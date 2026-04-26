@@ -93,3 +93,155 @@
     -fx-font-family: "Inter 18pt SemiBold";
 }
 
+/* ── Exercise Prompt Modal ─────────────────────────────────────── */
+.exercise-prompt-root {
+    -fx-background-color: -fx-card-bg, white;
+    -fx-background-radius: 18px;
+    -fx-border-radius: 18px;
+    -fx-border-color: #EF4444;
+    -fx-border-width: 2px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 24, 0, 0, 6);
+}
+
+.exercise-icon-label {
+    -fx-font-size: 48px;
+    -fx-padding: 16px;
+    -fx-background-color: #FEE2E2;
+    -fx-background-radius: 50%;
+    -fx-border-radius: 50%;
+}
+
+.exercise-title-label {
+    -fx-font-family: "Inter 18pt SemiBold";
+    -fx-font-size: 20px;
+    -fx-text-alignment: center;
+    -fx-text-fill: #1E293B;
+}
+
+.exercise-rep-label {
+    -fx-font-family: "Inter 18pt Bold";
+    -fx-text-fill: #EF4444;
+}
+
+.close-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: #94A3B8;
+    -fx-font-size: 16px;
+    -fx-cursor: hand;
+    -fx-padding: 4px 8px;
+}
+
+.close-button:hover {
+    -fx-text-fill: #1E293B;
+}
+
+.complete-button {
+    -fx-background-color: #EF4444;
+    -fx-text-fill: white;
+    -fx-font-family: "Inter 18pt SemiBold";
+    -fx-font-size: 14px;
+    -fx-background-radius: 10px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(239,68,68,0.4), 8, 0, 0, 2);
+}
+
+.complete-button:hover {
+    -fx-opacity: 0.9;
+}
+
+.complete-button-done {
+    -fx-background-color: #10B981;
+    -fx-effect: dropshadow(gaussian, rgba(16,185,129,0.4), 8, 0, 0, 2);
+}
+
+.skip-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: #94A3B8;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+}
+
+.skip-button:hover {
+    -fx-text-fill: #1E293B;
+}
+
+/* ── Exercise Prompt Overlay ──────────────────────────────────── */
+.exercise-prompt-card {
+    -fx-background-color: white;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+    -fx-border-color: transparent;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 32, 0, 0, 8);
+}
+
+.ep-icon-circle {
+    -fx-background-color: #EC4899;
+    -fx-background-radius: 60px;
+    -fx-min-width: 60px;
+    -fx-min-height: 60px;
+    -fx-max-width: 60px;
+    -fx-max-height: 60px;
+    -fx-effect: dropshadow(gaussian, rgba(236,72,153,0.3), 10, 0, 0, 3);
+}
+
+.ep-title {
+    -fx-font-family: "Inter 18pt Bold";
+    -fx-text-fill: #1E293B;
+    -fx-text-alignment: center;
+    -fx-font-size: 20px;
+}
+
+.ep-rep-count {
+    -fx-font-family: "Inter 18pt Bold";
+    -fx-text-fill: #EC4899;
+}
+
+.ep-close-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: #94A3B8;
+    -fx-font-size: 16px;
+    -fx-cursor: hand;
+    -fx-padding: 4px 8px;
+}
+
+.ep-close-button:hover {
+    -fx-text-fill: #1E293B;
+}
+
+.ep-complete-button {
+    -fx-background-color: #EC4899;
+    -fx-text-fill: white;
+    -fx-font-family: "Inter 18pt SemiBold";
+    -fx-font-size: 15px;
+    -fx-background-radius: 30px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(236,72,153,0.4), 10, 0, 0, 3);
+}
+
+.ep-complete-button:hover {
+    -fx-opacity: 0.9;
+}
+
+.ep-complete-button-done {
+    -fx-background-color: #0064f4;
+    -fx-text-fill: white;
+    -fx-font-family: "Inter 18pt SemiBold";
+    -fx-font-size: 15px;
+    -fx-background-radius: 30px;
+    -fx-effect: dropshadow(gaussian, rgba(16,185,129,0.4), 10, 0, 0, 3);
+}
+
+.ep-skip-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: #94A3B8;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+}
+
+.ep-skip-button:hover {
+    -fx-text-fill: #1E293B;
+}
