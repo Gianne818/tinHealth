@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+import org.tin.oop2_capstone.services.ExerciseDifficultyService;
 
 import java.util.List;
 import java.util.Random;
@@ -23,9 +24,10 @@ public class ExercisePromptController {
     /** Called by MainController so we can remove ourselves from the overlay. */
     private static Runnable onDismiss;
 
+    private ExerciseDifficultyService difficultyService;
+
     private record Exercise(String name, int baseReps, String unit) {}
 
-    // todo: customize the baseReps based on user preferences or information
     private static final List<Exercise> EXERCISES = List.of(
             new Exercise("Push-Ups",      10, "reps"),
             new Exercise("Squats",        15, "reps"),
@@ -41,7 +43,7 @@ public class ExercisePromptController {
     public void initialize() {
         Exercise ex = EXERCISES.get(new Random().nextInt(EXERCISES.size()));
         exerciseNameLabel.setText(ex.name());
-        repCountLabel.setText(String.valueOf(ex.baseReps()));
+        repCountLabel.setText(String.valueOf(resolveReps(ex.baseReps())));
         unitLabel.setText("(" + ex.unit() + ")");
 
         // Fade the whole backdrop in on open
@@ -59,6 +61,15 @@ public class ExercisePromptController {
     private void onCompleteButtonClick(ActionEvent event) {
         // todo saving current activity to the database and activity log
         dismiss();
+    }
+
+    public void setDifficultyService(ExerciseDifficultyService service) {
+        this.difficultyService = service;
+    }
+
+    private int resolveReps(int baseReps) {
+        if (difficultyService == null) return baseReps;
+        return difficultyService.adjustReps(baseReps);
     }
 
     @FXML

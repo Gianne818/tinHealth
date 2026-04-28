@@ -3,7 +3,7 @@ package org.tin.oop2_capstone.model.entities;
 // todo:  change this to hold the Activity class instead of strings
 
 public class ActivityLog {
-    private String activity;
+    private Activity activity;
     private String timeStart;
     private int duration;
 
