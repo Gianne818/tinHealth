@@ -5,7 +5,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="light" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.LoginController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="light" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.LoginController">
    <children>
       <BorderPane prefHeight="400.0" prefWidth="600.0" styleClass="light" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <left>

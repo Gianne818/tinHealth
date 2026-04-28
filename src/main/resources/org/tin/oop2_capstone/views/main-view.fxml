@@ -16,7 +16,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.MainController">
+<AnchorPane fx:id="rootAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.MainController">
    <children>
       <SplitPane fx:id="splitPaneMain" dividerPositions="0.3" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>

@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane fx:id="settingsScrollPane" fitToWidth="true" hbarPolicy="NEVER" styleClass="settingsScrollPane" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.screens.settings.SettingsController">
+<ScrollPane fx:id="settingsScrollPane" fitToWidth="true" hbarPolicy="NEVER" styleClass="settingsScrollPane" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.SettingsController">
     <content>
         <VBox spacing="20.0">
             <padding>

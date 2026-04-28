@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="notificationsScrollPane" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.screens.notification_tab.NotificationTabController">
+<ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="notificationsScrollPane" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.NotificationTabController">
 
     <content>
         <VBox maxWidth="1.7976931348623157E308" spacing="16.0">

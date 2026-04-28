@@ -1,8 +1,8 @@
 package org.tin.oop2_capstone;
 
-import org.tin.oop2_capstone.classes.Food;
-import org.tin.oop2_capstone.utils.FoodAPI;
-import org.tin.oop2_capstone.utils.FoodParser;
+import org.tin.oop2_capstone.model.entities.Food;
+import org.tin.oop2_capstone.api.FoodAPI;
+import org.tin.oop2_capstone.services.FoodParser;
 
 public class Main {
     public static void main(String[] args) {

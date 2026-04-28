@@ -8,7 +8,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.tin.oop2_capstone.screens.profile.ProfileController"
+            fx:controller="org.tin.oop2_capstone.controllers.ProfileController"
             prefHeight="400.0" prefWidth="600.0">
 
 </AnchorPane>
