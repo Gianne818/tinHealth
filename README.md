@@ -28,7 +28,7 @@ toward healthier and more informed lifestyle choices.
 ## Planned Technologies
 - Java
 - JavaFX
-- InelliJ
+- IntelliJ
 - JDBC
 - MySQL
 - Azure (tentative/may be replaced)
