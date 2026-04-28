@@ -4,5 +4,6 @@ public interface ExerciseObserver {
     /**
      * this should be triggered when monitor decides its time for an exercise prompt.
      * perhaps a method like...  onExerciseRequired(difficulty) or smth idk
+     * implemented by the ExerciseMonitor
      */
 }
