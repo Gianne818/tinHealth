@@ -167,4 +167,62 @@
     -fx-border-color: -bg-default-border2;
 }
 
+/* currently unsure if logVboxes are suitable for darkmode*/
+#logFoodVBox{
+    -fx-background-color: -green;
+}
+
+#logActivityVbox{
+    -fx-background-color: -vibrant-red;
+}
+.cardTitle{
+    -fx-font-size: 18;
+    -fx-font-family: "Inter 18pt SemiBold";
+}
+
+
+.logQuickActions{
+    -fx-border-radius: 30;
+    -fx-background-radius: 30;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(three-pass-box, darkgrey, 10, 0, 0, 2);
+
+}
+
+.logQuickActions:hover{
+    -fx-effect: dropshadow(three-pass-box, darkgrey, 20, 0.2, 0, 2);
+    -fx-scale-x: 1.005;
+    -fx-scale-y: 1.05;
+
+}
+
+.logQuickActions .label{
+    -fx-text-fill: white;
+    -fx-font-size: 16;
+    -fx-font-family: "Inter 18pt SemiBold";
+}
+
+.caloriesDashboard{
+    -fx-font-size: 30;
+    -fx-font-family: "Inter 18pt SemiBold";
+}
+
+#caloriesInLabel{
+    -fx-text-fill: -green;
+}
+
+#caloriesOutLabel{
+    -fx-text-fill: -orange;
+}
+
+#netCaloriesLabel{
+    -fx-text-fill: -purple;
+}
+
+#activityStreakLabel{
+    -fx-text-fill: -vibrant-red;
+}
+
+
+
 /* PLEASE USE COLORS FROM PALETTES.CSS, OR ADD COLORS THERE */
