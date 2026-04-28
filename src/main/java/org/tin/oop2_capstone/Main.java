@@ -6,7 +6,7 @@ import org.tin.oop2_capstone.services.FoodParser;
 
 public class Main {
     public static void main(String[] args) {
-        String json = FoodAPI.getFoodData("banana");
+        String json = FoodAPI.getFoodData("fish");
         Food food = FoodParser.parseFood(json);
         System.out.println(food);
     }
