@@ -9,12 +9,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.SVGPath;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationTabController {
-
+    // todo: everything. this is not functional, more for display lng. we need to make it into a listview instead of scrollpane, then add like.. notifications-view as a separate view per card, instead of this lengthy function
     @FXML private VBox notificationsContainer;
     @FXML private Label subtitleLabel;
     @FXML private Button markAllReadButton;
@@ -35,6 +36,8 @@ public class NotificationTabController {
         renderNotifications();
     }
 
+
+    @FXML SVGPath notificationsIcon;
     @FXML
     private void onMarkAllRead() {
         notifications.replaceAll(n -> new Notification(n.id(), n.type(), n.title(), n.message(), n.time(), true));

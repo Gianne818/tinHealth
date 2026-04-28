@@ -1,10 +1,22 @@
 @import "palettes.css";
 
+/*
+ ONLY ADD  STYLES HERE FOR LIGHT MODE COLORS.
+ THIS IS SO THAT WE CAN SWITCH FROM LIGHT MODE TO DARK MODE,
+  BY ADDING STYLECLASS LIGHT, OR DARK.
+  GO TO APPLICATIONS.CSS
+*/
+
 .root .light {
     -bg-nav: -bluish-white;
     -accent-color: -vibrant-blue;
     -light-accent-color: -less-vibrant-blue;
     -bg-content: -off-white;
+
+    -bg-default: white;
+    -bg-default2: white;
+    -bg-default-border: -even-lighter-grey;
+    -bg-default-border2: -light-grey;
 }
 
 .light .dashboardScrollPane{
@@ -28,73 +40,17 @@
     -bg-color-accent: -pastel-red;
 }
 
-/*Settings*/
-.light .settingsTitle{
-    -fx-text-fill: -deep-blue;
-    -fx-font-weight: bold;
-    -fx-font-size: 22px;
+.light .settingsScrollPane{
+    -bg-content: -off-white;
+    -accent-color: -dark-grey;
+    -light-accent-color: -grey;
+    -bg-color-accent: -even-lighter-grey;
 }
 
-.light .settingsCardLabels{
-    -fx-font-weight: bold;
-    -fx-text-fill: -deep-blue;
-    -fx-font-size: 18px;
-}
-
-.light .settingsItemLabels{
-    -fx-font-weight: bold;
-    -fx-text-fill: -deep-blue;
-    -fx-font-size: 14px;
-}
-
-.light .settingsItemDetails{
-    -fx-text-fill: -greyish-blue;
-    -fx-font-size: 11px;
-}
-
-.light .toggle-switch {
-    -fx-text-fill: transparent;
-    -fx-content-display: empty;
-    -fx-min-width: 44px;
-    -fx-min-height: 24px;
-    -fx-max-width: 44px;
-    -fx-max-height: 24px;
-    -fx-background-color: #D1D1D6, #FFFFFF;
-    -fx-background-radius: 24px, 24px;
-    -fx-background-insets: 0, 2 22 2 2;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 2, 0, 0, 1);
-    -fx-cursor: hand;
-}
-
-.light .toggle-switch:selected {
-    -fx-background-color: #6A7B8E, #FFFFFF;
-    -fx-background-insets: 0, 2 2 2 22;
-}
-
-.light .modern-choice-box {
-    -fx-background-color: #FFFFFF;
-    -fx-border-color: #E5E7EB;
-    -fx-border-width: 1px;
-    -fx-border-radius: 20px;
-    -fx-background-radius: 20px;
-    -fx-padding: 6px 10px 6px 15px;
-    -fx-cursor: hand;
-}
-
-.light .modern-choice-box:hover {
-    -fx-border-color: #D1D5DB;
-}
-
-/*arrow padding fixes*/
-.light .modern-choice-box .open-button {
-    -fx-background-color: transparent;
-    -fx-padding: 0 10px 0 10px;
-}
-
-.light .modern-choice-box .arrow {
-    -fx-background-color: #0F172A;
-
-    /*weird*/
-    -fx-shape: "M 0 0 L 5 5 L 10 0 L 9 1 L 5 4 L 1 1 Z";
+.light .notificationsScrollPane{
+    -bg-content: -light-purple;
+    -accent-color: -dark-purple;
+    -light-accent-color: -purple;
+    -bg-color-accent: -pastel-purple;
 }
 

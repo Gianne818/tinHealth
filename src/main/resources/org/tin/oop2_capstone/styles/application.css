@@ -25,6 +25,7 @@
     -fx-background-radius: 50;
     -fx-background-color: -accent-color;
     -fx-text-fill: white;
+    -fx-font-size: 16;
 }
 
 .button:hover{
@@ -47,10 +48,9 @@
 }
 
 .split-pane-divider{
-    -fx-background-color: #bdbdbd;
     -fx-pref-width: 0.5px;
     -fx-padding: 0 2;
-    -fx-effect: dropshadow(three-pass-box,darkgrey, 20, 0.7, 4, 0);
+    -fx-effect: dropshadow(three-pass-box, lightgrey, 20, 0.7, 4, 0);
 }
 
 .currentSVG{
@@ -72,13 +72,13 @@
 }
 
 .card{
-    -fx-background-color: white;
+    -fx-background-color: -bg-default;
     -fx-background-radius: 15;
     -fx-effect: dropshadow(three-pass-box, darkgrey, 10, 0, 0, 2);
 }
 
 .cardContent{
-    -fx-background-color: white;
+    -fx-background-color: -bg-default;
     -fx-background-radius: 15;
     -fx-effect: dropshadow(three-pass-box, lightgrey, 20, 0, 0, 5);
 }
@@ -101,13 +101,23 @@
     -fx-font-size: 16;
 }
 
+.navButton.active .icon-nav, .navButton.active .label{
+    -fx-text-fill: -accent-color;
+    -fx-stroke: -accent-color;
+}
+
+.navButton.active .icon-nav-dashboard, .navButton.active .icon-nav-settings{
+    -fx-fill: -accent-color;
+}
+
 .navButton.active .label,
 .navButton:hover .label {
     -fx-font-family: "Inter 18pt SemiBold";
 }
 
+
 .notif-card {
-    -fx-background-color: white;
+    -fx-background-color: -bg-default;
     -fx-background-radius: 14px;
     -fx-border-radius: 14px;
     -fx-effect: dropshadow(three-pass-box, lightgrey, 10, 0, 0, 2);
@@ -120,15 +130,41 @@
 }
 
 .popup{
-    -fx-background-color:#A9A9A950;
+    -fx-background-color:#A9A9A950; /*lightgrey but semi-transparent*/
 }
 
 .text-field{
-    -fx-background-radius: 30;
+    -fx-padding: 5 10;
 }
 
 #repCountLabel{
     -fx-text-fill: -accent-color;
+}
+
+.toggle-button {
+    -fx-background-color: -bg-color-accent, -bg-default;
+    -fx-background-radius: 24px, 24px;
+    -fx-background-insets: 0, 2 22 2 2;
+    -fx-effect: dropshadow(three-pass-box, lightgrey, 2, 0, 0, 1);
+    -fx-cursor: hand;
+}
+
+.toggle-button:selected {
+    -fx-background-color: -accent-color, -bg-default;
+    -fx-background-insets: 0, 2 2 2 22;
+}
+
+.choice-box, .text-field{
+    -fx-background-color: -bg-default2;
+    -fx-border-width: 1;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-border-color: -bg-default-border;
+    -fx-font-size: 16;
+}
+
+.choice-box:hover, .choice-box:focused, .text-field:hover, .text-field:focused{
+    -fx-border-color: -bg-default-border2;
 }
 
 /* PLEASE USE COLORS FROM PALETTES.CSS, OR ADD COLORS THERE */

@@ -90,7 +90,7 @@ public class MainController {
                 break;
 
             case 'n':
-                navigateToView("notifications-view", "notificationScrollPane", notificationsNav);
+                navigateToView("notifications-view", "notificationsScrollPane", notificationsNav);
         }
     }
 

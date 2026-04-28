@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<ScrollPane fx:id="settingsScrollPane" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.screens.settings.SettingsController">
+<ScrollPane fx:id="settingsScrollPane" fitToWidth="true" hbarPolicy="NEVER" styleClass="settingsScrollPane" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.screens.settings.SettingsController">
     <content>
         <VBox spacing="20.0">
             <padding>
@@ -82,7 +91,7 @@
                             <children>
                                 <Label styleClass="settingsItemLabels" text="Enable Exercise Prompts" GridPane.halignment="LEFT" />
                                 <Label layoutX="10.0" layoutY="9.0" styleClass="settingsItemDetails" text="Show activity reminders when opening the app" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
-                                <ToggleButton mnemonicParsing="false" styleClass="toggle-switch" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2147483647" />
+                                <ToggleButton maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="24.0" prefWidth="44.0" styleClass="toggle-switch" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2147483647" />
                             </children>
                         </GridPane>
                         <GridPane vgap="15.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
@@ -120,7 +129,7 @@
                         </GridPane>
                     </children>
                     <padding>
-                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                        <Insets bottom="40.0" left="30.0" right="40.0" top="30.0" />
                     </padding>
                 </GridPane>
 
@@ -192,7 +201,7 @@
                         </GridPane>
                     </children>
                     <padding>
-                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                        <Insets bottom="40.0" left="30.0" right="40.0" top="30.0" />
                     </padding>
                 </GridPane>
 
@@ -247,7 +256,7 @@
                             <children>
                                 <Label styleClass="settingsItemLabels" text="Exercise Reminders" GridPane.halignment="LEFT" />
                                 <Label layoutX="10.0" layoutY="9.0" styleClass="settingsItemDetails" text="Get notified about your exercise prompts" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
-                                <ToggleButton mnemonicParsing="false" styleClass="toggle-switch" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2147483647" />
+                                <ToggleButton maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="24.0" prefWidth="44.0" styleClass="toggle-switch" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2147483647" />
                             </children>
                         </GridPane>
                         <GridPane layoutX="35.0" layoutY="95.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
@@ -262,7 +271,7 @@
                             <children>
                                 <Label styleClass="settingsItemLabels" text="Meal Reminders" GridPane.halignment="LEFT" />
                                 <Label layoutX="10.0" layoutY="9.0" styleClass="settingsItemDetails" text="Reminders to log your meals" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
-                                <ToggleButton mnemonicParsing="false" styleClass="toggle-switch" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2147483647" />
+                                <ToggleButton maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="24.0" prefWidth="44.0" styleClass="toggle-switch" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2147483647" />
                             </children>
                         </GridPane>
                         <GridPane layoutX="35.0" layoutY="35.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
@@ -277,12 +286,12 @@
                             <children>
                                 <Label styleClass="settingsItemLabels" text="Achievement Notifications" GridPane.halignment="LEFT" />
                                 <Label layoutX="10.0" layoutY="9.0" styleClass="settingsItemDetails" text="Celebrate your milestones" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
-                                <ToggleButton mnemonicParsing="false" styleClass="toggle-switch" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2147483647" />
+                                <ToggleButton maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="24.0" prefWidth="44.0" styleClass="toggle-switch" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2147483647" />
                             </children>
                         </GridPane>
                     </children>
                     <padding>
-                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                        <Insets bottom="40.0" left="30.0" right="40.0" top="30.0" />
                     </padding>
                 </GridPane>
 
@@ -355,7 +364,7 @@
                         </GridPane>
                     </children>
                     <padding>
-                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                        <Insets bottom="40.0" left="30.0" right="40.0" top="30.0" />
                     </padding>
                 </GridPane>
             </children>
