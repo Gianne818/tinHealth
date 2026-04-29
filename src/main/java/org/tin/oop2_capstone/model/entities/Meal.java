@@ -4,4 +4,8 @@ public abstract class Meal {
     private NutritionDetails nutriDetails;
     private int quantity;
 
+    public Meal(NutritionDetails nutriDetails, int quantity) {
+        this.nutriDetails = nutriDetails;
+        this.quantity = quantity;
+    }
 }

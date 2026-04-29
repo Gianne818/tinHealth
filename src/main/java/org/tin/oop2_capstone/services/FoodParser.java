@@ -4,10 +4,15 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.tin.oop2_capstone.model.entities.Food;
+import org.tin.oop2_capstone.model.entities.FoodLog;
+import org.tin.oop2_capstone.model.entities.NutritionDetails;
 
 public class FoodParser {
 
+
+
     public static Food parseFood(String json) {
+
 
         JsonObject obj = JsonParser.parseString(json).getAsJsonObject();
         JsonArray foods = obj.getAsJsonArray("foods");
@@ -58,7 +63,9 @@ public class FoodParser {
             }
         }
 
-        return new Food(name, calories, protein, fat, carbs,
-                cholesterol, sodium, sugar, fiber);
+       return new Food(name, new NutritionDetails(calories, protein, fat, carbs,
+                cholesterol, sodium, sugar, fiber));
+
     }
+
 }

@@ -7,13 +7,13 @@ public class ActivityLog {
     private String timeStart;
     private int duration;
 
-    public ActivityLog(String activity, String timeStart, int duration) {
+    public ActivityLog(Activity activity, String timeStart, int duration) {
         this.activity = activity;
         this.timeStart = timeStart;
         this.duration = duration;
     }
 
-    public String getActivity() {
+    public Activity getActivity() {
         return activity;
     }
 

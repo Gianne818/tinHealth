@@ -31,4 +31,13 @@ public class NutritionDetails {
     public double getSodium() { return sodium; }
     public double getSugar() { return sugar; }
     public double getFiber() { return fiber; }
+
+    public void setCalories(double calories) { this.calories = calories; }
+    public void setProtein(double protein) { this.protein = protein; }
+    public void setFat(double fat) { this.fat = fat; }
+    public void setCarbs(double carbs) { this.carbs = carbs; }
+    public void setCholesterol(double cholesterol) { this.cholesterol = cholesterol; }
+    public void setSodium(double sodium) { this.sodium = sodium; }
+    public void setSugar(double sugar) { this.sugar = sugar; }
+    public void setFiber(double fiber) { this.fiber = fiber; }
 }
