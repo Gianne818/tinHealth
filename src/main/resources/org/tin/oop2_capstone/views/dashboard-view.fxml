@@ -20,7 +20,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fx:id="dashboardScrollPane" fitToWidth="true" hbarPolicy="NEVER" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<ScrollPane fx:id="dashboardScrollPane" fx:controller="org.tin.oop2_capstone.controllers.DashboardController" stylesheets="/org/tin/oop2_capstone/styles/dashboard.css" fitToWidth="true" hbarPolicy="NEVER" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
    <content>
        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -181,26 +181,33 @@
                            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                         </padding>
                            </VBox>
-                           <VBox prefHeight="200.0" prefWidth="100.0" styleClass="cardContent" GridPane.columnSpan="2" GridPane.rowIndex="2">
+
+                           <!-- Weekly Calorie Tracking  -->
+                           <VBox prefHeight="200.0" prefWidth="100.0"
+                                 styleClass="cardContent"
+                                 GridPane.columnSpan="2" GridPane.rowIndex="2"
+                                 style="-fx-border-color: transparent; -fx-border-width: 0; -fx-background-color: transparent;">
                                <children>
                                    <Label text="Weekly Calorie Tracking">
-                              <styleClass>
-                                 <String fx:value="boldText" />
-                                 <String fx:value="cardTitle" />
-                              </styleClass></Label>
-                                   <LineChart>
+                                       <styleClass>
+                                           <String fx:value="boldText" />
+                                           <String fx:value="cardTitle" />
+                                       </styleClass>
+                                   </Label>
+                                   <LineChart fx:id="weeklyChart" maxWidth="1.7976931348623157E308" prefHeight="400">
                                        <xAxis>
-                                           <CategoryAxis side="BOTTOM" />
+                                           <CategoryAxis side="BOTTOM" fx:id="xAxis"/>
                                        </xAxis>
                                        <yAxis>
-                                           <NumberAxis side="LEFT" />
+                                           <NumberAxis side="LEFT"/>
                                        </yAxis>
                                    </LineChart>
                                </children>
-                        <padding>
-                           <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                        </padding>
+                               <padding>
+                                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                               </padding>
                            </VBox>
+
                            <VBox styleClass="cardContent" GridPane.columnIndex="2" GridPane.rowIndex="2">
                                <children>
                                    <Label text="Macro Distribution">
