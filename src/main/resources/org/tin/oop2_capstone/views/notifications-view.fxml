@@ -13,7 +13,7 @@
 
             <!-- Header row -->
             <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" spacing="10.0">
-                <Label fx:id="titleLabel" styleClass="boldText" text="Notifications">
+                <Label fx:id="titleLabel" styleClass="tabTitle" text="Notifications">
                     <font><Font size="26.0" /></font>
                 </Label>
                 <Region HBox.hgrow="ALWAYS" />
