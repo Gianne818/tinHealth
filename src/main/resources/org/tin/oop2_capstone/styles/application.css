@@ -189,7 +189,7 @@
 }
 .cardDetails{
     -fx-font-size: 11;
-    -fx-text-fill: -grey;
+    -fx-text-fill: -light-accent-color;
     -fx-font-family: "Inter 18pt";
 }
 
@@ -236,13 +236,25 @@
     -fx-text-fill: -vibrant-red;
 }
 
+/*More profile-specific things*/
 .bmiCardContent{
-    -fx-background-color: -light-grey;
+    -fx-background-color: -bg-color-accent;
     -fx-background-radius: 15;
     -fx-effect: dropshadow(three-pass-box, lightgrey, 20, 0, 0, 5);
 }
 .bmiCardText{
-    -fx-text-fill: -dark-grey;
+    -fx-text-fill: -light-accent-color;
+    -fx-font-size: 20;
+    -fx-font-family: "Inter 18pt SemiBold";
+}
+.profileText1{
+    -fx-text-fill: -light-accent-color;
+    -fx-font-size: 14;
+    -fx-font-family: "Inter 18pt SemiBold";
+}
+.profileDefaultProfileText{
+    -fx-text-fill: -bg-content;
+    -fx-font-size: 18;
     -fx-font-family: "Inter 18pt SemiBold";
 }
 
