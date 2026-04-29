@@ -1,26 +1,31 @@
 package org.tin.oop2_capstone.model.entities;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 public class FoodLog {
-    private List<Food> foods;
+    private List<Meal> meals;
+    private LocalDate date;
 
-    public FoodLog(){
-        this.foods = new ArrayList<>();
+    public FoodLog(LocalDate date){
+        this.date = date;
+        this.meals = new ArrayList<>();
     }
 
-    public List<Food> getFoods() {
-        return foods;
+    public List<Meal> getMeals() {
+        return meals;
     }
 
-    public void addFood(Food food){
-        if(food != null) foods.add(food);
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setFoods(List<Food> foods) {
-        this.foods = foods;
+    public void addMeal(Meal meal){
+        if(meal != null) meals.add(meal);
+    }
+
+    public void setFoods(List<Meal> meals) {
+        this.meals = meals;
     }
 }

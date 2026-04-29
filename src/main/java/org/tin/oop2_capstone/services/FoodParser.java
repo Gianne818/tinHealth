@@ -8,11 +8,7 @@ import org.tin.oop2_capstone.model.entities.FoodLog;
 import org.tin.oop2_capstone.model.entities.NutritionDetails;
 
 public class FoodParser {
-
-
-
     public static Food parseFood(String json) {
-
 
         JsonObject obj = JsonParser.parseString(json).getAsJsonObject();
         JsonArray foods = obj.getAsJsonArray("foods");
@@ -64,7 +60,7 @@ public class FoodParser {
         }
 
        return new Food(name, new NutritionDetails(calories, protein, fat, carbs,
-                cholesterol, sodium, sugar, fiber));
+                cholesterol, sodium, sugar, fiber), false);
 
     }
 
