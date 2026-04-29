@@ -1,16 +1,11 @@
 package org.tin.oop2_capstone.controllers;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
+import javafx.fxml.FXML;
+import javafx.scene.control.ScrollPane;
 
-public class ProfileController extends Application {
+public class ProfileController {
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+    @FXML
+    private ScrollPane profileScrollPane;
 
-    @Override
-    public void start(Stage primaryStage) {
-
-    }
 }

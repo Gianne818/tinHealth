@@ -40,6 +40,7 @@
     -bg-color-accent: -pastel-red;
 }
 
+.light .profileScrollPane,
 .light .settingsScrollPane{
     -bg-content: -off-white;
     -accent-color: -dark-grey;
