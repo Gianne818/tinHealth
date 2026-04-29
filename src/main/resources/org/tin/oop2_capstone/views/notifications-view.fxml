@@ -5,30 +5,39 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="notificationsScrollPane" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.NotificationTabController">
+<ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="notificationsScrollPane"
+            xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.tin.oop2_capstone.controllers.NotificationTabController">
 
-    <content>
-        <VBox maxWidth="1.7976931348623157E308" spacing="16.0">
-            <padding><Insets bottom="30.0" left="30.0" right="30.0" top="30.0" /></padding>
+    <VBox maxWidth="1.7976931348623157E308" spacing="16.0">
+        <padding>
+            <Insets bottom="30.0" left="30.0" right="30.0" top="30.0"/>
+        </padding>
 
-            <!-- Header row -->
-            <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" spacing="10.0">
-                <Label fx:id="titleLabel" styleClass="tabTitle" text="Notifications">
-                    <font><Font size="26.0" /></font>
-                </Label>
-                <Region HBox.hgrow="ALWAYS" />
-                <Button fx:id="markAllReadButton" mnemonicParsing="false" onAction="#onMarkAllRead" styleClass="notif-mark-all-button" text="Mark all as read" />
-            </HBox>
-
-            <!-- Subtitle -->
-            <Label fx:id="subtitleLabel" styleClass="lightText" text="You have 2 unread notifications">
-                <font><Font size="13.0" /></font>
-                <VBox.margin><Insets top="-12.0" /></VBox.margin>
+        <!-- Header row -->
+        <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" spacing="10.0">
+            <Label fx:id="titleLabel" styleClass="tabTitle" text="Notifications">
+                <font>
+                    <Font size="26.0"/>
+                </font>
             </Label>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button fx:id="markAllReadButton" mnemonicParsing="false" onAction="#onMarkAllRead"
+                    styleClass="notif-mark-all-button" text="Mark all as read"/>
+        </HBox>
 
-            <!-- Notification cards injected here by controller -->
-            <VBox fx:id="notificationsContainer" maxWidth="1.7976931348623157E308" spacing="10.0" />
+        <!-- Subtitle -->
+        <Label fx:id="subtitleLabel" styleClass="lightText" text="You have 2 unread notifications">
+            <font>
+                <Font size="13.0"/>
+            </font>
+            <VBox.margin>
+                <Insets top="-12.0"/>
+            </VBox.margin>
+        </Label>
 
-        </VBox>
-    </content>
+        <!-- Notification cards injected here by controller -->
+        <VBox fx:id="notificationsContainer" maxWidth="1.7976931348623157E308" spacing="10.0"/>
+
+    </VBox>
 </ScrollPane>

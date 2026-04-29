@@ -177,19 +177,22 @@
 
 .tabTitle{
     -fx-font-size: 30;
+    -fx-text-fill: -title-text;
     -fx-font-family: "Inter 18pt SemiBold";
 }
 .cardTitle1{
     -fx-font-size: 18;
+    -fx-text-fill: -title-text;
     -fx-font-family: "Inter 18pt SemiBold";
 }
 .cardTitle2{
     -fx-font-size: 14;
+    -fx-text-fill: -title-text;
     -fx-font-family: "Inter 18pt SemiBold";
 }
 .cardDetails{
     -fx-font-size: 11;
-    -fx-text-fill: -light-accent-color;
+    -fx-text-fill: -grey;
     -fx-font-family: "Inter 18pt";
 }
 
@@ -248,15 +251,30 @@
     -fx-font-family: "Inter 18pt SemiBold";
 }
 .profileText1{
-    -fx-text-fill: -light-accent-color;
+    -fx-text-fill: -title-text;
     -fx-font-size: 14;
     -fx-font-family: "Inter 18pt SemiBold";
 }
 .profileDefaultProfileText{
-    -fx-text-fill: -bg-content;
+    -fx-text-fill: #FFFFFF;
     -fx-font-size: 18;
     -fx-font-family: "Inter 18pt SemiBold";
 }
+
+/*Food Log specifics*/
+.calorieCountText{
+    -fx-text-fill: -green;
+    -fx-font-family: "Inter 18pt SemiBold";
+}
+.calorieBurnCountText{
+    -fx-text-fill: -vibrant-red;
+    -fx-font-family: "Inter 18pt SemiBold";
+}
+.minuteCountText{
+    -fx-text-fill: -orange;
+    -fx-font-family: "Inter 18pt SemiBold";
+}
+
 
 
 

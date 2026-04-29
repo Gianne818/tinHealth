@@ -46,6 +46,7 @@
     -accent-color: -dark-grey;
     -light-accent-color: -grey;
     -bg-color-accent: -even-lighter-grey;
+    -title-text: -black; /*added this here so that in darkmode.css this would be -title-text: -white; if I my understanding is incorrect do feel free to remove*/
 }
 
 .light .notificationsScrollPane{

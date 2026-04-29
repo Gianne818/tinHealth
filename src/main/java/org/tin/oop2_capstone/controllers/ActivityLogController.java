@@ -7,6 +7,7 @@ import javafx.scene.control.ScrollPane;
 import java.util.List;
 
 public class ActivityLogController {
+    @FXML
     private Button buttonAddActivity;
     @FXML
     private ScrollPane activityLogScrollPane;
