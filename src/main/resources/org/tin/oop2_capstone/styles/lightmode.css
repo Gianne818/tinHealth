@@ -9,10 +9,11 @@
 
 .root .light {
     -bg-nav: -bluish-white;
-    -accent-color: -vibrant-blue;
-    -light-accent-color: -less-vibrant-blue;
+    -accent-color: -orange-to-red-orange;
+    -light-accent-color: -peach-to-orange;
     -bg-content: -off-white;
 
+    -brand-text-color: -vibrant-orange;
     -bg-default: white;
     -bg-default2: white;
     -bg-default-border: -even-lighter-grey;
@@ -21,9 +22,9 @@
 
 .light .dashboardScrollPane{
     -bg-content: -off-white;
-    -accent-color: -vibrant-blue;
+    -accent-color: -orange-to-red-orange;
     -light-accent-color: -less-vibrant-blue;
-    -bg-color-accent: -pastel-blue;
+    -bg-color-accent: -pastel-orange;
 }
 
 .light .foodLogScrollPane{
@@ -55,3 +56,9 @@
     -bg-color-accent: -pastel-purple;
 }
 
+.light .healthScrollPane{
+    -bg-content: -lighter-pink;
+    -accent-color: -hot-pink;
+    -light-accent-color: -pink;
+    -bg-color-accent: -pastel-pink;
+}

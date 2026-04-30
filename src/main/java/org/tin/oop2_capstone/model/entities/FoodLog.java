@@ -8,6 +8,7 @@ public class FoodLog {
     private List<Meal> meals;
     private LocalDate date;
 
+
     public FoodLog(LocalDate date){
         this.date = date;
         this.meals = new ArrayList<>();

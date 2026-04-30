@@ -9,31 +9,32 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<ScrollPane fx:id="dashboardScrollPane" fitToWidth="true" hbarPolicy="NEVER" stylesheets="/org/tin/oop2_capstone/styles/dashboard.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.DashboardController">
+<ScrollPane fx:id="dashboardScrollPane" fitToWidth="true" styleClass="dashboardScrollPane" stylesheets="/org/tin/oop2_capstone/styles/dashboard.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.DashboardController">
    <content>
        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                   <GridPane hgap="10.0">
+                   <GridPane hgap="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="dashboardHeader">
                        <columnConstraints>
                            <ColumnConstraints halignment="LEFT" hgrow="NEVER" minWidth="55.0" />
-                           <ColumnConstraints halignment="LEFT" maxWidth="503.0" minWidth="10.0" prefWidth="494.0" />
+                           <ColumnConstraints maxWidth="503.0" minWidth="10.0" prefWidth="494.0" />
                        </columnConstraints>
                        <rowConstraints>
-                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                           <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" valignment="TOP" vgrow="SOMETIMES" />
                        </rowConstraints>
                        <children>
-                           <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.rowSpan="2">
+                           <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" styleClass="logo" GridPane.rowSpan="2">
                                <image>
                                    <Image url="@../assets/image/logo.png" />
                                </image>
                            </ImageView>
-                           <Label styleClass="tabTitle" text="+inHealth" GridPane.columnIndex="1">
+                           <Label styleClass="appName" text="+inHealth" GridPane.columnIndex="1">
                         <font>
                            <Font size="18.0" />
-                        </font></Label>
-                           <Label styleClass="lightText" text="Adding to your health in meaningful ways." GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        </font>
+                     </Label>
+                           <Label styleClass="brandSubHeading" text="Adding to your health in meaningful ways." GridPane.columnIndex="1" GridPane.rowIndex="1" />
                        </children>
                        <VBox.margin>
                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -172,7 +173,7 @@
                            </VBox>
 
                            <!-- Weekly Calorie Tracking  -->
-                           <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: transparent; -fx-border-width: 0; -fx-background-color: transparent;" styleClass="cardContent" GridPane.columnSpan="2" GridPane.rowIndex="2">
+                           <VBox styleClass="cardContent" GridPane.columnSpan="2" GridPane.rowIndex="2">
                                <children>
                                    <Label text="Weekly Calorie Tracking">
                                        <styleClass>
