@@ -188,22 +188,21 @@
                     </padding>
 
                     <!-- Header with title and button -->
-                    <BorderPane>
-                        <left>
-                            <Label text="Weekly Calorie Tracking">
-                                <styleClass>
-                                    <String fx:value="boldText"/>
-                                    <String fx:value="cardTitle1"/>
-                                </styleClass>
-                            </Label>
-                        </left>
-                        <right>
-                            <Button text="&gt;" style="-fx-background-color: transparent; -fx-font-size: 20; -fx-text-fill: #6b7280; -fx-font-weight: bold;"
-                                    BorderPane.alignment="CENTER"
-                                    onAction="#goToHealthAnalytics"/>
-                        </right>
-                    </BorderPane>
-
+                    <HBox alignment="CENTER_LEFT">
+                        <Label text="Weekly Calorie Tracking">
+                            <styleClass>
+                                <String fx:value="boldText"/>
+                                <String fx:value="cardTitle1"/>
+                            </styleClass>
+                        </Label>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button text="&gt;"
+                                style="-fx-background-color: transparent; -fx-font-size: 20; -fx-text-fill: #6b7280; -fx-font-weight: bold; -fx-padding: 0;"
+                                onAction="#goToHealthAnalytics"/>
+                        <padding>
+                            <Insets bottom="10.0"/>
+                        </padding>
+                    </HBox>
                     <LineChart fx:id="weeklyChart" maxWidth="1.7976931348623157E308" prefHeight="400">
                         <xAxis>
                             <CategoryAxis side="BOTTOM" fx:id="xAxis"/>
@@ -213,6 +212,7 @@
                         </yAxis>
                     </LineChart>
                 </VBox>
+
 
                 <!-- Weekly Macro Distributions  -->
                 <VBox styleClass="cardContent" GridPane.columnIndex="2" GridPane.rowIndex="2" spacing="15.0">
