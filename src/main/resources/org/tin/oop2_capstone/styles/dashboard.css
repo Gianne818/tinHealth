@@ -2,18 +2,3 @@
     -fx-background-radius: 8px;
     -fx-padding: 8px;
 }
-
-/* 0: Carbs (45) - Green */
-#macroChart .default-color0.chart-pie { -fx-pie-color: #11b981; }
-#macroChart .default-color0.chart-pie-label-line { -fx-stroke: #11b981; }
-#macroChart .default-color0.chart-pie-label { -fx-fill: #11b981; -fx-font-weight: bold; -fx-font-size: 16px; }
-
-/* 1: Protein (30) - Red */
-#macroChart .default-color1.chart-pie { -fx-pie-color: #ef4444; }
-#macroChart .default-color1.chart-pie-label-line { -fx-stroke: #ef4444; }
-#macroChart .default-color1.chart-pie-label { -fx-fill: #ef4444; -fx-font-weight: bold; -fx-font-size: 16px; }
-
-/* 2: Fats (25) - Purple */
-#macroChart .default-color2.chart-pie { -fx-pie-color: #8b5cf6; }
-#macroChart .default-color2.chart-pie-label-line { -fx-stroke: #8b5cf6; }
-#macroChart .default-color2.chart-pie-label { -fx-fill: #8b5cf6; -fx-font-weight: bold; -fx-font-size: 16px; }
