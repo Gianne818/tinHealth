@@ -3,6 +3,7 @@ package org.tin.oop2_capstone.controllers;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.chart.CategoryAxis;
@@ -13,7 +14,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PopupControl;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Line;
 import javafx.util.StringConverter;
 
 public class DashboardController {
@@ -116,6 +119,11 @@ public class DashboardController {
                                     XYChart.Series<String, Number> in,
                                     XYChart.Series<String, Number> out) {
 
+        Line vLine = new Line();
+        vLine.setStrokeWidth(1);
+        vLine.setStyle("-fx-stroke: black;");
+        vLine.setManaged(false);
+
         // Custom popup
         PopupControl popup = new PopupControl();
         popup.setAutoHide(false);
@@ -140,15 +148,38 @@ public class DashboardController {
         popup.getScene().setRoot(content);
 
         Node plotArea = chart.lookup(".chart-plot-background");
+        ((Pane) plotArea.getParent()).getChildren().add(vLine);
 
         plotArea.setOnMouseMoved(event -> {
             double x = event.getX();
             double width = plotArea.getBoundsInLocal().getWidth();
+            double height = plotArea.getBoundsInLocal().getHeight();
+
             int size = in.getData().size();
 
             int index = (int) ((x / width) * size);
             index = Math.max(0, Math.min(index, size - 1));
 
+            Node node = in.getData().get(index).getNode();
+            if (node != null) {
+                // Convert node position → scene → parent (where vLine lives)
+                Bounds nodeBounds = node.localToScene(node.getBoundsInLocal());
+                Bounds parentBounds = ((Pane) plotArea.getParent()).sceneToLocal(nodeBounds);
+
+                double snappedX = parentBounds.getMinX() + parentBounds.getWidth() / 2;
+
+                vLine.setStartX(snappedX);
+                vLine.setEndX(snappedX);
+            }
+            Bounds plotBounds = plotArea.localToScene(plotArea.getBoundsInLocal());
+            Bounds parentPlotBounds = ((Pane) plotArea.getParent()).sceneToLocal(plotBounds);
+
+            vLine.setStartY(parentPlotBounds.getMinY());
+            vLine.setEndY(parentPlotBounds.getMaxY());
+            vLine.setVisible(true);
+
+
+            // Tooltip logic (unchanged)
             String day = in.getData().get(index).getXValue();
             Number inVal = in.getData().get(index).getYValue();
             Number outVal = out.getData().get(index).getYValue();
