@@ -186,15 +186,24 @@
                     <padding>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
                     </padding>
-                    <Label text="Weekly Calorie Tracking">
-                        <padding>
-                            <Insets bottom="10"/>
-                        </padding>
-                        <styleClass>
-                            <String fx:value="boldText"/>
-                            <String fx:value="cardTitle1"/>
-                        </styleClass>
-                    </Label>
+
+                    <!-- Header with title and button -->
+                    <BorderPane>
+                        <left>
+                            <Label text="Weekly Calorie Tracking">
+                                <styleClass>
+                                    <String fx:value="boldText"/>
+                                    <String fx:value="cardTitle1"/>
+                                </styleClass>
+                            </Label>
+                        </left>
+                        <right>
+                            <Button text="&gt;" style="-fx-background-color: transparent; -fx-font-size: 20; -fx-text-fill: #6b7280; -fx-font-weight: bold;"
+                                    BorderPane.alignment="CENTER"
+                                    onAction="#goToHealthAnalytics"/>
+                        </right>
+                    </BorderPane>
+
                     <LineChart fx:id="weeklyChart" maxWidth="1.7976931348623157E308" prefHeight="400">
                         <xAxis>
                             <CategoryAxis side="BOTTOM" fx:id="xAxis"/>
@@ -205,18 +214,35 @@
                     </LineChart>
                 </VBox>
 
-                <VBox styleClass="cardContent" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                <!-- Weekly Macro Distributions  -->
+                <VBox styleClass="cardContent" GridPane.columnIndex="2" GridPane.rowIndex="2" spacing="15.0">
                     <padding>
-                        <Insets bottom="10.0" left="20.0" right="20.0" top="20.0"/>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
                     </padding>
-                    <Label text="Macro Distribution">
-                        <styleClass>
-                            <String fx:value="boldText"/>
-                            <String fx:value="cardTitle1"/>
-                        </styleClass>
-                    </Label>
-                    <PieChart/>
+
+                    <!-- Header with Button -->
+                    <BorderPane>
+                        <left>
+                            <Label text="Weekly Macro Distribution" styleClass="boldText, cardTitle1" BorderPane.alignment="CENTER"/>
+                        </left>
+                        <right>
+                            <Button text="&gt;" style="-fx-background-color: transparent; -fx-font-size: 20; -fx-text-fill: #6b7280; -fx-font-weight: bold;" BorderPane.alignment="CENTER"
+                                    onAction="#goToHealthAnalytics"/>
+                        </right>
+                    </BorderPane>
+
+                    <!-- Donut Chart -->
+                    <StackPane>
+                        <PieChart fx:id="macroChart" labelsVisible="true" legendVisible="false"
+                                  prefWidth="300" prefHeight="300" /> <!-- The prefWidth and prefHeight is the OUTER DIAMETER -->
+                        <Circle fill="WHITE" radius="75.0" />  <!-- INNER DIAMETER  -->
+                    </StackPane>
+
+                    <!-- Custom Legend Area -->
+                    <VBox fx:id="macroLegendBox" spacing="10.0" />
                 </VBox>
+
+
                 <VBox styleClass="cardContent" GridPane.columnIndex="1">
                     <GridPane.margin>
                         <Insets/>

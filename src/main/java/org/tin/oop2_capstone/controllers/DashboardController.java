@@ -3,9 +3,11 @@ package org.tin.oop2_capstone.controllers;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -13,16 +15,25 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.PopupControl;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
-import javafx.util.StringConverter;
+import javafx.geometry.Pos;
+import javafx.scene.chart.PieChart;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 
 public class DashboardController {
     @FXML ScrollPane dashboardScrollPane;
     @FXML private LineChart<?, ?> weeklyChart;
     @FXML private CategoryAxis xAxis;
+
+//    For Weekly Macro Distributions
+    @FXML PieChart macroChart;
+    @FXML VBox macroLegendBox;
 
     public void initialize() {
         dashboardScrollPane.getStyleClass().add("light");
@@ -183,7 +194,6 @@ public class DashboardController {
             vLine.setEndY(parentPlotBounds.getMaxY());
             vLine.setVisible(true);
 
-
             // Tooltip logic (unchanged)
             String day = in.getData().get(index).getXValue();
             Number inVal = in.getData().get(index).getYValue();
@@ -202,16 +212,79 @@ public class DashboardController {
     }
 
     // Start of Weekly Macro Distributions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    public void weeklyMacroDistribution(){
-        // Make pi chart
-        // The top left bold text label is: Weekly Macro Distribution
-        // top right button gray color is ">" and it is pressable.... For now, no function yet.
-        // only have three elements, Protein (RED, value = 30), Carbs (Green, value = 45), Fats (Purple, value = 25)
-        // Sort DESC and display DESC ofc.
-        // no hover effect but it has a line pointing to that pie chart with same font-color of the chart
-        // Below of the pie chart is:
-        // DOT(green color dot) Carbs              45% (at the right-most side)
-        // Do the same for the other two (Protein and Fats)
+    public void weeklyMacroDistribution() {
+        macroChart.getData().clear();
+        macroLegendBox.getChildren().clear();
 
+        PieChart.Data carbs = new PieChart.Data("45", 45); // Green
+        PieChart.Data protein = new PieChart.Data("30", 30); // Red
+        PieChart.Data fats = new PieChart.Data("25", 25); // Purple
+
+        macroChart.getData().addAll(carbs, protein, fats);
+
+        macroChart.setLabelsVisible(true);
+        macroChart.setLabelLineLength(25);
+
+        Platform.runLater(() -> {
+            // 1. Slices
+            if (carbs.getNode() != null) carbs.getNode().setStyle("-fx-pie-color: #11b981;");
+            if (protein.getNode() != null) protein.getNode().setStyle("-fx-pie-color: #ef4444;");
+            if (fats.getNode() != null) fats.getNode().setStyle("-fx-pie-color: #8b5cf6;");
+
+            // 2. Text Labels (Match by string value)
+            for (Node node : macroChart.lookupAll(".chart-pie-label")) {
+                if (node instanceof javafx.scene.text.Text) {
+                    String text = ((javafx.scene.text.Text) node).getText();
+                    if (text.equals("45")) node.setStyle("-fx-fill: #11b981; -fx-font-weight: bold; -fx-font-size: 16px;");
+                    if (text.equals("30")) node.setStyle("-fx-fill: #ef4444; -fx-font-weight: bold; -fx-font-size: 16px;");
+                    if (text.equals("25")) node.setStyle("-fx-fill: #8b5cf6; -fx-font-weight: bold; -fx-font-size: 16px;");
+                }
+            }
+        });
+
+        // Build Custom Legend
+        addLegendItem("Protein", 30, "#ef4444");
+        addLegendItem("Carbs", 45, "#11b981");
+        addLegendItem("Fats", 25, "#8b5cf6");
     }
+
+    private void addLegendItem(String name, int value, String hexColor) {
+        Circle dot = new Circle(6, javafx.scene.paint.Color.web(hexColor));
+        Label nameLabel = new Label(name);
+
+        Label valueLabel = new Label(value + "%");
+        valueLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+
+        // Pushes the percentage to the right-most side
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        HBox row = new HBox(10, dot, nameLabel, spacer, valueLabel);
+        row.setAlignment(Pos.CENTER_LEFT);
+        macroLegendBox.getChildren().add(row);
+    }
+
+    public void goToHealthAnalytics() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/health-analytics-view.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+
+            // String style = getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm();
+            // scene.getStylesheets().add(style);
+
+            Stage primaryStage = (Stage) dashboardScrollPane.getScene().getWindow();
+
+            primaryStage.setResizable(true);
+            primaryStage.setMinWidth(1000);
+            primaryStage.setMinHeight(800);
+            primaryStage.setTitle("Health Tracker - Analytics");
+            primaryStage.setScene(scene);
+            primaryStage.setMaximized(true);
+            primaryStage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
