@@ -26,7 +26,12 @@ public class DashboardController {
 
     public void initialize() {
         dashboardScrollPane.getStyleClass().add("light");
+        weeklyCalorieTrack();
+        weeklyMacroDistribution();
+    }
 
+    // Start of Weekly Calorie Tracking ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    private void weeklyCalorieTrack() {
         xAxis.setStartMargin(4);
         xAxis.setEndMargin(4);
         xAxis.setGapStartAndEnd(false);
@@ -194,5 +199,19 @@ public class DashboardController {
         });
 
         plotArea.setOnMouseExited(event -> popup.hide());
+    }
+
+    // Start of Weekly Macro Distributions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    public void weeklyMacroDistribution(){
+        // Make pi chart
+        // The top left bold text label is: Weekly Macro Distribution
+        // top right button gray color is ">" and it is pressable.... For now, no function yet.
+        // only have three elements, Protein (RED, value = 30), Carbs (Green, value = 45), Fats (Purple, value = 25)
+        // Sort DESC and display DESC ofc.
+        // no hover effect but it has a line pointing to that pie chart with same font-color of the chart
+        // Below of the pie chart is:
+        // DOT(green color dot) Carbs              45% (at the right-most side)
+        // Do the same for the other two (Protein and Fats)
+
     }
 }

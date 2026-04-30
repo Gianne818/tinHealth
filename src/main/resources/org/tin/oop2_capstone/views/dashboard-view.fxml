@@ -181,12 +181,15 @@
 
                 <!-- Weekly Calorie Tracking  -->
                 <VBox prefHeight="200.0" prefWidth="100.0"
-                      style="-fx-border-color: transparent; -fx-border-width: 0; -fx-background-color: transparent;"
+                      style="-fx-border-color: transparent; -fx-border-width: 0;"
                       styleClass="cardContent" GridPane.columnSpan="2" GridPane.rowIndex="2">
                     <padding>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
                     </padding>
                     <Label text="Weekly Calorie Tracking">
+                        <padding>
+                            <Insets bottom="10"/>
+                        </padding>
                         <styleClass>
                             <String fx:value="boldText"/>
                             <String fx:value="cardTitle1"/>
