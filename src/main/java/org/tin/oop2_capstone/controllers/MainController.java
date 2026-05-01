@@ -93,7 +93,7 @@ public class MainController {
         }
     }
 
-    private void navigateToView(String filename, String styleClass, Pane button){
+    public void navigateToView(String filename, String styleClass, Pane button){
         ScrollPane view = null;
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/" + filename + ".fxml"));

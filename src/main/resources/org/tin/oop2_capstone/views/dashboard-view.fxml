@@ -34,7 +34,7 @@
                            <Font size="18.0" />
                         </font>
                      </Label>
-                           <Label styleClass="brandSubHeading" text="Adding to your health in meaningful ways." GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           <Label styleClass="lightText" text="Adding to your health in meaningful ways." GridPane.columnIndex="1" GridPane.rowIndex="1" />
                        </children>
                        <VBox.margin>
                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

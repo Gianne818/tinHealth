@@ -22,17 +22,17 @@
 }
 
 .dashboardHeader {
-    -fx-background-color: -peach-to-orange;
+    -fx-background-color: -transparent;
     -fx-border-radius: 20;
     -fx-background-radius: 20;
 }
 
-.logo{
-    -fx-effect: dropshadow(three-pass-box, #535353, 10, 0, 0, 3);
-}
+/*.logo{*/
+/*    -fx-effect: dropshadow(three-pass-box, #535353, 10, 0, 0, 3);*/
+/*}*/
 
 .appName{
-    -fx-text-fill: white;
+    -fx-text-fill: black;
     -fx-font-size: 40;
     -fx-font-family: "Inter 18pt SemiBold";
 }
@@ -130,14 +130,15 @@
     -fx-font-family: "Inter 18pt SemiBold";
 }
 
-#dashboardNav.active .label, #dashboardNav.active .icon-nav-dashboard{
+#dashboardNav.active .label, #dashboardNav.active .icon-nav-dashboard,
+#settingsNav.active .icon-nav-settings, #settingsNav.active .label {
     -fx-text-fill: -brand-text-color;
     -fx-fill: -brand-text-color;
 }
 
-.brandSubHeading{
-    -fx-text-fill: white;
-}
+/*.brandSubHeading{*/
+/*    -fx-text-fill: ;*/
+/*}*/
 
 .notif-card {
     -fx-background-color: -bg-default;
@@ -187,7 +188,7 @@
 }
 
 .choice-box:hover, .choice-box:focused, .text-field:hover, .text-field:focused{
-    -fx-border-color: -bg-default-border2;
+    -fx-border-color: -orange-to-red-orange;
 }
 
 .tabTitle{

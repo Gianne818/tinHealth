@@ -16,10 +16,20 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 
+import java.awt.event.MouseEvent;
+
 public class DashboardController {
     @FXML ScrollPane dashboardScrollPane;
     @FXML private LineChart<?, ?> weeklyChart;
     @FXML private CategoryAxis xAxis;
+    @FXML private VBox logFoodVBox;
+    @FXML private VBox logActivityVBox;
+
+
+
+    public void onLogFoodClick(MouseEvent event){
+
+    }
 
     public void initialize() {
         dashboardScrollPane.getStyleClass().add("light");
