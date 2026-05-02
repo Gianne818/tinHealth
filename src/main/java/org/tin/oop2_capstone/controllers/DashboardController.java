@@ -14,6 +14,8 @@ import  javafx.scene.chart.PieChart.Data;
 import javafx.scene.shape.Circle;
 
 import java.io.IOException;
+import javafx.scene.shape.Line;
+import javafx.scene.layout.Pane;
 
 public class DashboardController {
     @FXML ScrollPane dashboardScrollPane;
@@ -86,12 +88,21 @@ public class DashboardController {
         macroDistPieChart.setData(macroDistData);
         macroDistPieChart.setLegendVisible(false);
         macroDistInnerHoleCircle.radiusProperty().bind(macroDistPieChart.widthProperty().divide(3.5));
+
+
     }
 
     private void initCaloriesLineChart(){
         xAxis.setCategories(FXCollections.observableArrayList(
                 "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"
         ));
+
+        xAxis.setStartMargin(4);
+        xAxis.setEndMargin(4);
+        xAxis.setGapStartAndEnd(false);
+        xAxis.setTickMarkVisible(false);
+        xAxis.setTickLabelsVisible(true);
+        xAxis.setStyle("-fx-border-color: transparent; -fx-border-width: 0;");
 
         LineChart<String, Number> chart = (LineChart<String, Number>) weeklyChart;
 
@@ -102,7 +113,8 @@ public class DashboardController {
                 new XYChart.Data<>("Wed", 1950),
                 new XYChart.Data<>("Thu", 2050),
                 new XYChart.Data<>("Fri", 1900),
-                new XYChart.Data<>("Sat", 2200)
+                new XYChart.Data<>("Sat", 2200),
+                new XYChart.Data<>("Sun", 770)
         );
 
         XYChart.Series<String, Number> calOut = new XYChart.Series<>();
@@ -112,7 +124,8 @@ public class DashboardController {
                 new XYChart.Data<>("Wed", 450),
                 new XYChart.Data<>("Thu", 400),
                 new XYChart.Data<>("Fri", 520),
-                new XYChart.Data<>("Sat", 350)
+                new XYChart.Data<>("Sat", 350),
+                new XYChart.Data<>("Sun", 465)
         );
         chart.getData().addAll(calIn, calOut);
         chart.setLegendVisible(false);

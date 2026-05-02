@@ -18,15 +18,35 @@ public class MainApplication extends Application {
     }
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/login-view.fxml"));
+//        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/login-view.fxml"));
+//        Scene scene = new Scene(fxmlLoader.load());
+//
+//        primaryStage.setMinHeight(400);
+//        primaryStage.setMinWidth(600);
+//
+//        String style = getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm();
+//        scene.getStylesheets().add(style);
+//        primaryStage.setResizable(false);
+//
+//        primaryStage.setTitle("Health Tracker");
+//        primaryStage.setScene(scene);
+//        primaryStage.show();
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setMinHeight(400);
-        stage.setMinWidth(600);
+
         String style = getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm();
         scene.getStylesheets().add(style);
-        stage.setResizable(false);
+
+        stage.setResizable(true);
+
+        stage.setMinWidth(1000);
+        stage.setMinHeight(800);
+
         stage.setTitle("Health Tracker");
         stage.setScene(scene);
+
+        stage.setMaximized(true);
         stage.show();
     }
 }
