@@ -20,7 +20,7 @@
    <children>
       <SplitPane fx:id="splitPaneMain" dividerPositions="0.3" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
-          <AnchorPane fx:id="anchorPaneSideBar" maxWidth="300.0" minWidth="300.0" SplitPane.resizableWithParent="false">
+          <AnchorPane fx:id="anchorPaneSideBar" maxWidth="300.0" minWidth="300.0" prefWidth="300.0" SplitPane.resizableWithParent="false">
               <VBox prefHeight="591.0" prefWidth="422.0" spacing="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                   <children>
                       <GridPane prefHeight="31.0" prefWidth="221.0">
@@ -64,7 +64,7 @@
                          <RowConstraints maxHeight="29.0" minHeight="10.0" prefHeight="29.0" vgrow="SOMETIMES" />
                        </rowConstraints>
                         <children>
-                           <ImageView fx:id="proifileGridPane" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.rowSpan="2">
+                           <ImageView fx:id="profileGridPane" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.rowSpan="2">
                               <image>
                                  <Image url="@../assets/icons/user.png" />
                               </image>
