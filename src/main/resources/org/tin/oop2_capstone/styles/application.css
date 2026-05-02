@@ -27,10 +27,6 @@
     -fx-background-radius: 20;
 }
 
-/*.logo{*/
-/*    -fx-effect: dropshadow(three-pass-box, #535353, 10, 0, 0, 3);*/
-/*}*/
-
 .appName{
     -fx-text-fill: black;
     -fx-font-size: 40;
@@ -135,10 +131,6 @@
     -fx-text-fill: -brand-text-color;
     -fx-fill: -brand-text-color;
 }
-
-/*.brandSubHeading{*/
-/*    -fx-text-fill: ;*/
-/*}*/
 
 .notif-card {
     -fx-background-color: -bg-default;
