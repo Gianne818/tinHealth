@@ -21,11 +21,19 @@
     -fx-font-family: "Inter 18pt SemiBold";
 }
 
+.plusAppName{
+    -fx-text-fill: -bg-default3;
+    -fx-font-size: 50;
+    -fx-font-family: "Inter 18pt SemiBold";
+}
 
-.appName{
-    -fx-text-fill: -brand-text-color;
+.appName, .inAppName{
     -fx-font-size: 40;
     -fx-font-family: "Inter 18pt SemiBold";
+}
+
+.appName{
+    -fx-text-fill: -orange-to-red-orange;
 }
 
 .button{

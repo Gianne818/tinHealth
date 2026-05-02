@@ -30,24 +30,33 @@
                    <GridPane hgap="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="dashboardHeader">
                        <columnConstraints>
                            <ColumnConstraints halignment="LEFT" hgrow="NEVER" minWidth="55.0" />
-                           <ColumnConstraints maxWidth="503.0" minWidth="10.0" prefWidth="494.0" />
+                           <ColumnConstraints maxWidth="1.7976931348623157E308" minWidth="10.0" />
                        </columnConstraints>
                        <rowConstraints>
-                           <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
                            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" valignment="TOP" vgrow="SOMETIMES" />
                        </rowConstraints>
                        <children>
-                           <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" styleClass="logo" GridPane.rowSpan="2">
+                           <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" styleClass="logo" GridPane.rowSpan="2">
                                <image>
                                    <Image url="@../assets/image/logo.png" />
                                </image>
                            </ImageView>
-                           <Label styleClass="appName" text="+inHealth" GridPane.columnIndex="1">
-                        <font>
-                           <Font size="18.0" />
-                        </font>
-                     </Label>
                            <Label styleClass="lightText" text="Adding to your health in meaningful ways." GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                     <HBox alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" pickOnBounds="false" GridPane.columnIndex="1">
+                        <children>
+                           <Label styleClass="inAppName" text="in">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                           </Label>
+                           <Label minHeight="-Infinity" minWidth="-Infinity" styleClass="appName" text="Health">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                           </Label>
+                        </children>
+                     </HBox>
                        </children>
                        <VBox.margin>
                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -440,7 +449,7 @@
                </GridPane>
                </children>
                <padding>
-                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                   <Insets bottom="10.0" left="10.0" right="10.0" />
                </padding>
            </VBox>
        </AnchorPane>
