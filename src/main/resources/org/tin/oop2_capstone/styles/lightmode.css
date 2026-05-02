@@ -16,6 +16,7 @@
     -brand-text-color: -dark-orange;
     -bg-default: white;
     -bg-default2: white;
+    -bg-default3: black;
     -bg-default-border: -even-lighter-grey;
     -bg-default-border2: -light-grey;
 }
@@ -25,7 +26,7 @@
 .light .settingsScrollPane{
     -bg-content: -off-white;
     -accent-color: -orange-to-red-orange;
-    -light-accent-color: -less-vibrant-blue;
+    -light-accent-color: -light-orange;
     -bg-color-accent: -pastel-orange;
 }
 
