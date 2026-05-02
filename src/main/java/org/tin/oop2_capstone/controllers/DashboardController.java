@@ -28,6 +28,8 @@ public class DashboardController {
     public void initialize() {
         dashboardScrollPane.getStyleClass().add("light");
         macroDistData = FXCollections.observableArrayList();
+
+        // todo: use real data for the charts
         macroDistData.add(new Data("Protein", 30.0));
         macroDistData.add(new Data("Carbs", 30.0));
         macroDistData.add(new Data("Fats", 30.0));
