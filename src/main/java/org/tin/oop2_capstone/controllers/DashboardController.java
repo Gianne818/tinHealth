@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.chart.*;
 import javafx.scene.control.PopupControl;
@@ -12,7 +13,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.chart.XYChart.Series;
 import  javafx.scene.chart.PieChart.Data;
 import javafx.scene.shape.Circle;
-
 import java.io.IOException;
 import javafx.scene.shape.Line;
 import javafx.scene.layout.Pane;
@@ -56,23 +56,53 @@ public class DashboardController {
         }
 
         Node plotArea = chart.lookup(".chart-plot-background");
+        Node chartContent = chart.lookup(".chart-content");
 
-        plotArea.setOnMouseMoved( e->{
+        // Create vertical line
+        Line verticalLine = new Line();
+        verticalLine.setStyle("-fx-stroke: black; -fx-stroke-width: 1.5;");
+        verticalLine.setManaged(false);
+        verticalLine.setVisible(false);
+        ((Pane) chartContent).getChildren().add(verticalLine);
+
+        plotArea.setOnMouseMoved(e -> {
             double xInAxis = xAxis.sceneToLocal(e.getSceneX(), e.getSceneY()).getX();
             String day = xAxis.getValueForDisplay(xInAxis);
 
-            if(day!=null){
-                XYChart.Data<String, Number> inData = findData(in,day);
+            if (day != null) {
+                // Get X position of the category
+                double xPos = xAxis.getDisplayPosition(day);
+                Point2D scenePoint = xAxis.localToScene(xPos, 0);
+                Point2D chartPoint = chartContent.sceneToLocal(scenePoint);
+
+                // Get Y bounds of plot area in chartContent coordinates
+                Point2D plotTopLeft = plotArea.localToScene(0, 0);
+                Point2D plotBottomLeft = plotArea.localToScene(0, plotArea.getBoundsInLocal().getHeight());
+                Point2D chartTopLeft = chartContent.sceneToLocal(plotTopLeft);
+                Point2D chartBottomLeft = chartContent.sceneToLocal(plotBottomLeft);
+
+                verticalLine.setVisible(true);
+                verticalLine.setStartX(chartPoint.getX());
+                verticalLine.setStartY(chartTopLeft.getY());
+                verticalLine.setEndX(chartPoint.getX());
+                verticalLine.setEndY(chartBottomLeft.getY());
+
+                XYChart.Data<String, Number> inData = findData(in, day);
                 XYChart.Data<String, Number> outData = findData(out, day);
 
-                if (inData!=null && outData!=null){
+                if (inData != null && outData != null){
                     toolTipController.setData(day, inData.getYValue(), outData.getYValue());
-                    popup.show(plotArea, e.getScreenX()+15, e.getScreenY()+15);
+                    popup.show(plotArea, e.getScreenX() + 15, e.getScreenY() + 15);
                 }
+            } else {
+                verticalLine.setVisible(false);
             }
         });
 
-        plotArea.setOnMouseExited(e->popup.hide());
+        plotArea.setOnMouseExited(e -> {
+            popup.hide();
+            verticalLine.setVisible(false);
+        });
     }
 
     private XYChart.Data<String, Number> findData(Series<String, Number> series, String category){
@@ -127,4 +157,3 @@ public class DashboardController {
         setupGlobalTooltip(chart, calIn, calOut);
     }
 }
-
