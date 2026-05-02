@@ -14,7 +14,7 @@ public class Main {
     public static void main(String[] args) {
 
         List<Food> foods = new ArrayList<>();
-        String[] queries = {"fish", "beef", "banana", "apple"};
+        String[] queries = {"slice+of+bread", "beef", "banana", "apple"};
 
         for (String query : queries) {
             String json = FoodAPI.getFoodData(query);

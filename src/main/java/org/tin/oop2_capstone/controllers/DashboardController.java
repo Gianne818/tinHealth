@@ -30,9 +30,11 @@ public class DashboardController {
     public void initialize() {
         dashboardScrollPane.getStyleClass().add("light");
         macroDistData = FXCollections.observableArrayList();
-        macroDistData.add(new Data("Protein", 30.0));
+
+        // todo: use real data for the charts
+        macroDistData.add(new Data("Protein", 50.0));
         macroDistData.add(new Data("Carbs", 30.0));
-        macroDistData.add(new Data("Fats", 30.0));
+        macroDistData.add(new Data("Fats", 20.0));
         initCaloriesLineChart();
         initMacroDist();
     }
@@ -94,13 +96,8 @@ public class DashboardController {
         xAxis.setCategories(FXCollections.observableArrayList(
                 "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"
         ));
-
-        xAxis.setStartMargin(4);
-        xAxis.setEndMargin(4);
         xAxis.setGapStartAndEnd(false);
         xAxis.setTickMarkVisible(false);
-        xAxis.setTickLabelsVisible(true);
-        xAxis.setStyle("-fx-border-color: transparent; -fx-border-width: 0;");
 
         LineChart<String, Number> chart = (LineChart<String, Number>) weeklyChart;
 

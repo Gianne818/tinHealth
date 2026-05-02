@@ -21,11 +21,19 @@
     -fx-font-family: "Inter 18pt SemiBold";
 }
 
+.plusAppName{
+    -fx-text-fill: -bg-default3;
+    -fx-font-size: 50;
+    -fx-font-family: "Inter 18pt SemiBold";
+}
 
-.appName{
-    -fx-text-fill: -brand-text-color;
+.appName, .inAppName{
     -fx-font-size: 40;
     -fx-font-family: "Inter 18pt SemiBold";
+}
+
+.appName{
+    -fx-text-fill: -orange-to-red-orange;
 }
 
 .button{
@@ -296,15 +304,14 @@
     -fx-border-width: 2;
 }
 
-/* yes waley pako nag use sa COLORS FROM PALETTES.CSS */
 .default-color0.chart-pie {
-    -fx-pie-color: #E67E22;  /* orange */
+    -fx-pie-color: -somewhatdark-orange;
 }
 .default-color1.chart-pie {
-    -fx-pie-color: #D4AC0D;  /* mustard/gold */
+    -fx-pie-color: -abitdark-orange;
 }
 .default-color2.chart-pie {
-    -fx-pie-color: #B03A2E;  /* deep red-brown */
+    -fx-pie-color: -notdark-orange;
 }
 
 .chart-pie-label-line {

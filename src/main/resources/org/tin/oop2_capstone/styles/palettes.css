@@ -10,10 +10,11 @@
     -peach-to-orange: linear-gradient(to left, #fbb36c, #FFB659);
     -light-orange: #FFB659;
     -pastel-orange: #f8d7b8;
+    -brand-black: #35302F;
 
-    -notdark-orange: #FFBA5E;
-    -abitdark-orange: #FFA556;
-    -somewhatdark-orange: #FF904B;
+    -notdark-orange: #F7BB6B;
+    -abitdark-orange: #F2975B;
+    -somewhatdark-orange: #EE6046;
     -dark-orange: #FF8A36;
 
     /*mostly used for food log*/
