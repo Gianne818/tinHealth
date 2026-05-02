@@ -14,10 +14,17 @@
 }
 
 .ctaButton{
-    -fx-background-color: -accent-color;
+    -fx-background-color: -orange-to-red-orange;
     -fx-text-fill: white;
     -fx-background-radius: 50;
     -fx-font-size: 16;
+    -fx-font-family: "Inter 18pt SemiBold";
+}
+
+
+.appName{
+    -fx-text-fill: black;
+    -fx-font-size: 40;
     -fx-font-family: "Inter 18pt SemiBold";
 }
 
@@ -114,6 +121,11 @@
     -fx-font-family: "Inter 18pt SemiBold";
 }
 
+#dashboardNav.active .label, #dashboardNav.active .icon-nav-dashboard,
+#settingsNav.active .icon-nav-settings, #settingsNav.active .label {
+    -fx-text-fill: -brand-text-color;
+    -fx-fill: -brand-text-color;
+}
 
 .notif-card {
     -fx-background-color: -bg-default;
@@ -163,16 +175,7 @@
 }
 
 .choice-box:hover, .choice-box:focused, .text-field:hover, .text-field:focused{
-    -fx-border-color: -bg-default-border2;
-}
-
-/* currently unsure if logVboxes are suitable for darkmode*/
-#logFoodVBox{
-    -fx-background-color: -green;
-}
-
-#logActivityVbox{
-    -fx-background-color: -vibrant-red;
+    -fx-border-color: -orange-to-red-orange;
 }
 
 .tabTitle{
@@ -202,6 +205,7 @@
     -fx-background-radius: 30;
     -fx-text-fill: white;
     -fx-effect: dropshadow(three-pass-box, darkgrey, 10, 0, 0, 2);
+    -fx-background-color: -peach-to-orange;
 
 }
 
@@ -223,19 +227,23 @@
     -fx-font-family: "Inter 18pt SemiBold";
 }
 
-#caloriesInLabel{
+#caloriesInLabel, #fatLabel, #sugarLabel, #calInGridPane .label{
     -fx-text-fill: -green;
 }
 
-#caloriesOutLabel{
+#caloriesOutLabel, #calOutGridPane .label{
     -fx-text-fill: -orange;
 }
 
-#netCaloriesLabel{
+#caloriesLabel, #cholesterolLabel{
+    -fx-text-fill: -vibrant-blue;
+}
+
+#netCaloriesLabel, #carbsLabel, #fiberLabel{
     -fx-text-fill: -purple;
 }
 
-#activityStreakLabel{
+#activityStreakLabel, #proteinLabel, #sodiumLabel{
     -fx-text-fill: -vibrant-red;
 }
 
@@ -275,7 +283,49 @@
     -fx-font-family: "Inter 18pt SemiBold";
 }
 
+.progress-bar > .track {
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-border-color: transparent;
+    -fx-background-color: -bg-default-border;
 
+}
+
+.progress-bar .bar {
+    -fx-background-insets: 0;
+    -fx-background-radius: 20;
+    -fx-background-color: -pink;
+}
+
+#toolTipVbox{
+    -fx-background-color: -bg-default;
+    -fx-background-radius: 20;
+    -fx-border-color: -orange-to-red-orange;
+    -fx-border-radius: 20;
+    -fx-border-width: 2;
+}
+
+.default-color0.chart-pie{
+    -fx-pie-color: -somewhatdark-orange;
+}
+.default-color1.chart-pie{
+    -fx-pie-color: -abitdark-orange;
+}
+.default-color2.chart-pie{
+    -fx-pie-color: -notdark-orange;
+}
+
+.chart-pie-label-line {
+    -fx-stroke: transparent;
+}
+
+.chart-content{
+    -fx-padding: 0;
+}
+
+.pie-chart{
+    -fx-padding: 0;
+}
 
 
 

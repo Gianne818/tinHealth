@@ -6,7 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class FoodAPI {
-    private static final String FOOD_API_KEY = "IyFOfsOqFASMkLhvVoLpIntMChfeFviV04ucj5A6";
+    private static final String FOOD_API_KEY = System.getenv("var1");
 
     public static String getFoodData(String query) {
         try {

@@ -6,6 +6,7 @@ public abstract class Consumable {
      */
     private String name;
 
+
     public Consumable(String name){
         this.name = name;
     }

@@ -3,10 +3,18 @@
     -bluish-white: #F1F5F9;
 
     /*mostly used for dashboard light*/
+    /* brand colors */
     -off-white: #F9FAFC;
-    -vibrant-blue: #2663EB;
-    -less-vibrant-blue: #61A5FA;
-    -pastel-blue: #DBE6FA;
+    -vibrant-orange: #FF8F4B;
+    -orange-to-red-orange: linear-gradient(to left, #FF8F4B, #FFB659);
+    -peach-to-orange: linear-gradient(to left, #fbb36c, #FFB659);
+    -light-orange: #FFB659;
+    -pastel-orange: #f8d7b8;
+
+    -notdark-orange: #FFBA5E;
+    -abitdark-orange: #FFA556;
+    -somewhatdark-orange: #FF904B;
+    -dark-orange: #FF8A36;
 
     /*mostly used for food log*/
     -light-green: #F0FDF4;
@@ -32,7 +40,13 @@
     -dark-purple: #7C3AEC;
     -pastel-purple: #E9E9F9;
 
-    -black: #000000;
-    -white: #FFFFFF;
+    /*mostly used for health*/
+    -lighter-pink: #FDF2F8;
+    -pink: #EC4899;
+    -hot-pink: #DB2777;
+    -pastel-pink: #F2E0EE;
+
+    /* others */
+    -vibrant-blue: #3B82F6;
 
 }

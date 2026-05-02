@@ -28,6 +28,7 @@ public class MainController {
     @FXML public HBox settingsNav;
     @FXML public GridPane profileNav;
     @FXML public HBox notificationsNav;
+    @FXML public HBox healthNav;
 
     ObservableList<Pane> navs;
 
@@ -41,10 +42,9 @@ public class MainController {
         anchorPaneContent.getStyleClass().add("light");
 
         navs = FXCollections.observableArrayList();
-        navs.addAll(dashboardNav, foodLogNav, activityLogNav, settingsNav, profileNav);
+        navs.addAll(dashboardNav, foodLogNav, activityLogNav, settingsNav, profileNav, notificationsNav, healthNav);
 
         navigateToView("dashboard-view", "dashboardScrollPane", dashboardNav);
-        navs.addAll(dashboardNav, foodLogNav, activityLogNav, settingsNav, profileNav, notificationsNav);
     }
 
     public void toggleSideBar(){
@@ -86,10 +86,14 @@ public class MainController {
 
             case 'n':
                 navigateToView("notifications-view", "notificationsScrollPane", notificationsNav);
+                break;
+            case 'h':
+                navigateToView("health-view", "healthScrollPane", healthNav);
+                break;
         }
     }
 
-    private void navigateToView(String filename, String styleClass, Pane button){
+    public void navigateToView(String filename, String styleClass, Pane button){
         ScrollPane view = null;
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/" + filename + ".fxml"));

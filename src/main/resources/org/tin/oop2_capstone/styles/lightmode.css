@@ -7,23 +7,26 @@
   GO TO APPLICATIONS.CSS
 */
 
-.root .light {
+.light {
     -bg-nav: -bluish-white;
-    -accent-color: -vibrant-blue;
-    -light-accent-color: -less-vibrant-blue;
+    -accent-color: -orange-to-red-orange;
+    -light-accent-color: -peach-to-orange;
     -bg-content: -off-white;
 
+    -brand-text-color: -dark-orange;
     -bg-default: white;
     -bg-default2: white;
     -bg-default-border: -even-lighter-grey;
     -bg-default-border2: -light-grey;
 }
 
-.light .dashboardScrollPane{
+.light .dashboardScrollPane,
+.light .profileScrollPane,
+.light .settingsScrollPane{
     -bg-content: -off-white;
-    -accent-color: -vibrant-blue;
+    -accent-color: -orange-to-red-orange;
     -light-accent-color: -less-vibrant-blue;
-    -bg-color-accent: -pastel-blue;
+    -bg-color-accent: -pastel-orange;
 }
 
 .light .foodLogScrollPane{
@@ -40,14 +43,13 @@
     -bg-color-accent: -pastel-red;
 }
 
-.light .profileScrollPane,
-.light .settingsScrollPane{
-    -bg-content: -off-white;
-    -accent-color: -dark-grey;
-    -light-accent-color: -grey;
-    -bg-color-accent: -even-lighter-grey;
-    -title-text: -black; /*added this here so that in darkmode.css this would be -title-text: -white; if I my understanding is incorrect do feel free to remove*/
-}
+/*.light .profileScrollPane,*/
+/*.light .settingsScrollPane{*/
+/*    -bg-content: -off-white;*/
+/*    -accent-color: -dark-grey;*/
+/*    -light-accent-color: -grey;*/
+/*    -bg-color-accent: -even-lighter-grey;*/
+/*}*/
 
 .light .notificationsScrollPane{
     -bg-content: -light-purple;
@@ -56,3 +58,9 @@
     -bg-color-accent: -pastel-purple;
 }
 
+.light .healthScrollPane{
+    -bg-content: -lighter-pink;
+    -accent-color: -hot-pink;
+    -light-accent-color: -pink;
+    -bg-color-accent: -pastel-pink;
+}
