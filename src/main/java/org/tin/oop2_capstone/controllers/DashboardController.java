@@ -1,5 +1,6 @@
 package org.tin.oop2_capstone.controllers;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -7,34 +8,42 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.chart.*;
+import javafx.scene.control.Label;
 import javafx.scene.control.PopupControl;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.chart.XYChart.Series;
 import  javafx.scene.chart.PieChart.Data;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import java.io.IOException;
 import javafx.scene.shape.Line;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
 
 public class DashboardController {
     @FXML ScrollPane dashboardScrollPane;
     @FXML private LineChart<?, ?> weeklyChart;
     @FXML private CategoryAxis xAxis;
+    @FXML private NumberAxis yAxis;
+
 
     @FXML PieChart macroDistPieChart;
     @FXML Circle macroDistInnerHoleCircle;
 
     ObservableList<PieChart.Data> macroDistData;
 
+    @FXML private Label proteinLabelMacro;
+    @FXML private Label carbsLabelMacro;
+    @FXML private Label fatsLabelMacro;
+
     public void initialize() {
         dashboardScrollPane.getStyleClass().add("light");
         macroDistData = FXCollections.observableArrayList();
 
         // todo: use real data for the charts
-        macroDistData.add(new Data("Protein", 50.0));
-        macroDistData.add(new Data("Carbs", 30.0));
-        macroDistData.add(new Data("Fats", 20.0));
+        updateMacroDist(50.0, 30.0, 20.0);
+
         initCaloriesLineChart();
         initMacroDist();
     }
@@ -118,8 +127,17 @@ public class DashboardController {
         macroDistPieChart.setData(macroDistData);
         macroDistPieChart.setLegendVisible(false);
         macroDistInnerHoleCircle.radiusProperty().bind(macroDistPieChart.widthProperty().divide(3.5));
+    }
 
+    private void updateMacroDist(double protein, double carbs, double fats) {
+        macroDistData.clear();
+        macroDistData.add(new Data("Protein", protein));
+        macroDistData.add(new Data("Carbs", carbs));
+        macroDistData.add(new Data("Fats", fats));
 
+        proteinLabelMacro.setText(String.format("%.1f%%", protein));
+        carbsLabelMacro.setText(String.format("%.1f%%", carbs));
+        fatsLabelMacro.setText(String.format("%.1f%%", fats));
     }
 
     private void initCaloriesLineChart(){
@@ -152,7 +170,30 @@ public class DashboardController {
                 new XYChart.Data<>("Sat", 350),
                 new XYChart.Data<>("Sun", 465)
         );
+
+        // Find max value from both series
+        double maxIn = calIn.getData().stream().mapToDouble(d -> d.getYValue().doubleValue()).max().orElse(0);
+        double maxOut = calOut.getData().stream().mapToDouble(d -> d.getYValue().doubleValue()).max().orElse(0);
+        double maxValue = Math.max(maxIn, maxOut);
+        // Calculate upper bound rounded up to nearest 550
+        double upperBound = Math.ceil((maxValue + maxValue * 0.125) / 550) * 550;
+
+        // Only 5 yAxis Labels
+        NumberAxis yAxis = (NumberAxis) chart.getYAxis();
+        yAxis.setAutoRanging(false);
+        yAxis.setTickUnit(550);
+        yAxis.setLowerBound(0);
+        yAxis.setUpperBound(upperBound);
+        yAxis.setMinorTickCount(0);
+
         chart.getData().addAll(calIn, calOut);
+
+        // Enlargen both x and y Axis AND changed colors
+        xAxis.setTickLabelFont(Font.font(14));
+        xAxis.setTickLabelFill(Color.web("#656b75"));
+        yAxis.setTickLabelFont(Font.font(14));
+        yAxis.setTickLabelFill(Color.web("#656b75"));
+
         chart.setLegendVisible(false);
         setupGlobalTooltip(chart, calIn, calOut);
     }
