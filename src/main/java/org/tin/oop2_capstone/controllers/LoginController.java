@@ -23,7 +23,7 @@ public class LoginController {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setResizable(true);
 
-        stage.setMinWidth(1000);
+        stage.setMinWidth(900);
         stage.setMinHeight(850);
 
         stage.setTitle("Health Tracker");

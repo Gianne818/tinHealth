@@ -13,42 +13,20 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class MainApplication extends Application {
-
     public static void main(String[] args) {
         launch(args);
     }
-
     @Override
-    public void start(Stage primaryStage) throws IOException {
-//        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/login-view.fxml"));
-//        Scene scene = new Scene(fxmlLoader.load());
-//
-//        primaryStage.setMinHeight(400);
-//        primaryStage.setMinWidth(600);
-//
-//        String style = getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm();
-//        scene.getStylesheets().add(style);
-//        primaryStage.setResizable(false);
-//
-//        primaryStage.setTitle("Health Tracker");
-//        primaryStage.setScene(scene);
-//        primaryStage.show();
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/main-view.fxml"));
+    public void start(Stage stage) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-
+        stage.setMinHeight(400);
+        stage.setMinWidth(600);
         String style = getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm();
         scene.getStylesheets().add(style);
-
-        primaryStage.setResizable(true);
-
-        primaryStage.setMinWidth(1000);
-        primaryStage.setMinHeight(800);
-
-        primaryStage.setTitle("Health Tracker");
-        primaryStage.setScene(scene);
-
-        primaryStage.setMaximized(true);
-        primaryStage.show();
+        stage.setResizable(false);
+        stage.setTitle("Health Tracker");
+        stage.setScene(scene);
+        stage.show();
     }
 }

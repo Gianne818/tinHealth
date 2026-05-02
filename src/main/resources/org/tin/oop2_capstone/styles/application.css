@@ -23,7 +23,7 @@
 
 
 .appName{
-    -fx-text-fill: black;
+    -fx-text-fill: -brand-text-color;
     -fx-font-size: 40;
     -fx-font-family: "Inter 18pt SemiBold";
 }
