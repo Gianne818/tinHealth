@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -32,6 +33,22 @@ public class LoginController {
         stage.setMaximized(true);
         stage.show();
 
+    }
+
+    @FXML
+    public void onSignupClicked(MouseEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/signup-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+
+
+        String style = getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm();
+        scene.getStylesheets().add(style);
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.sizeToScene();
+        stage.centerOnScreen();
+        stage.show();
     }
 
 }
