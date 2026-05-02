@@ -255,6 +255,21 @@
     -fx-text-fill: -vibrant-red;
 }
 
+/* When profileNav being hovered */
+#profileNav:hover .image-view {
+    -fx-opacity: 0.7;
+}
+
+#profileNav:hover .lightText {
+    -fx-font-size: 12px;
+    -fx-opacity: 0.7;
+}
+
+#profileNav:hover .boldText {
+    -fx-font-size: 18px;
+    -fx-opacity: 0.7;
+}
+
 /*More profile-specific things*/
 .bmiCardContent{
     -fx-background-color: -orange-to-red-orange;
