@@ -347,6 +347,10 @@
 .default-color0.chart-line-symbol { -fx-background-color: #2ECC71, white; -fx-background-radius: 5px; -fx-padding: 5px; }
 .default-color1.chart-line-symbol { -fx-background-color: #FFB74D, white; -fx-background-radius: 5px; -fx-padding: 5px; }
 
+.vertical-line {
+    -fx-stroke: black;
+    -fx-stroke-width: 1.5;
+}
 
 
 /* PLEASE USE COLORS FROM PALETTES.CSS, OR ADD COLORS THERE */

@@ -60,7 +60,7 @@ public class DashboardController {
 
         // Create vertical line
         Line verticalLine = new Line();
-        verticalLine.setStyle("-fx-stroke: black; -fx-stroke-width: 1.5;");
+        verticalLine.getStyleClass().add("vertical-line");
         verticalLine.setManaged(false);
         verticalLine.setVisible(false);
         ((Pane) chartContent).getChildren().add(verticalLine);
