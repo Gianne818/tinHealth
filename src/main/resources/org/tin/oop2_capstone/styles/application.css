@@ -296,14 +296,15 @@
     -fx-border-width: 2;
 }
 
-.default-color0.chart-pie{
-    -fx-pie-color: -somewhatdark-orange;
+/* yes waley pako nag use sa COLORS FROM PALETTES.CSS */
+.default-color0.chart-pie {
+    -fx-pie-color: #E67E22;  /* orange */
 }
-.default-color1.chart-pie{
-    -fx-pie-color: -abitdark-orange;
+.default-color1.chart-pie {
+    -fx-pie-color: #D4AC0D;  /* mustard/gold */
 }
-.default-color2.chart-pie{
-    -fx-pie-color: -notdark-orange;
+.default-color2.chart-pie {
+    -fx-pie-color: #B03A2E;  /* deep red-brown */
 }
 
 .chart-pie-label-line {
