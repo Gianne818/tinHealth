@@ -13,12 +13,12 @@ public class ExerciseDifficultyService {
     public static final int MODERATE = 1;
     public static final int HARD     = 2;
 
-    private static final double MULTIPLIER_EASY     = 0.75;
+    private static final double MULTIPLIER_EASY = 0.75;
     private static final double MULTIPLIER_MODERATE = 1.00;
-    private static final double MULTIPLIER_HARD     = 1.50;
+    private static final double MULTIPLIER_HARD = 1.50;
 
     private static final double BMI_UNDERWEIGHT_MAX = 18.5;
-    private static final double BMI_OVERWEIGHT_MIN  = 25.0;
+    private static final double BMI_OVERWEIGHT_MIN = 25.0;
 
     private int currentDiff;
     private boolean manualSet;
