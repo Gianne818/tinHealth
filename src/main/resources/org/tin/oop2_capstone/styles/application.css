@@ -21,11 +21,6 @@
     -fx-font-family: "Inter 18pt SemiBold";
 }
 
-.dashboardHeader {
-    -fx-background-color: -transparent;
-    -fx-border-radius: 20;
-    -fx-background-radius: 20;
-}
 
 .appName{
     -fx-text-fill: black;
@@ -229,11 +224,11 @@
     -fx-font-family: "Inter 18pt SemiBold";
 }
 
-#caloriesInLabel, #fatLabel, #sugarLabel{
+#caloriesInLabel, #fatLabel, #sugarLabel, #calInGridPane .label{
     -fx-text-fill: -green;
 }
 
-#caloriesOutLabel{
+#caloriesOutLabel, #calOutGridPane .label{
     -fx-text-fill: -orange;
 }
 
@@ -273,8 +268,35 @@
     -fx-background-color: -pink;
 }
 
+#toolTipVbox{
+    -fx-background-color: -bg-default;
+    -fx-background-radius: 20;
+    -fx-border-color: -orange-to-red-orange;
+    -fx-border-radius: 20;
+    -fx-border-width: 2;
+}
 
+.default-color0.chart-pie{
+    -fx-pie-color: -somewhatdark-orange;
+}
+.default-color1.chart-pie{
+    -fx-pie-color: -abitdark-orange;
+}
+.default-color2.chart-pie{
+    -fx-pie-color: -notdark-orange;
+}
 
+.chart-pie-label-line {
+    -fx-stroke: transparent;
+}
+
+.chart-content{
+    -fx-padding: 0;
+}
+
+.pie-chart{
+    -fx-padding: 0;
+}
 
 
 

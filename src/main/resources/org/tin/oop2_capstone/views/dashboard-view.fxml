@@ -1,15 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.chart.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
 
-<ScrollPane fx:id="dashboardScrollPane" fitToWidth="true" styleClass="dashboardScrollPane" stylesheets="/org/tin/oop2_capstone/styles/dashboard.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.DashboardController">
+<ScrollPane fx:id="dashboardScrollPane" fitToWidth="true" styleClass="dashboardScrollPane" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.DashboardController">
    <content>
        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -181,13 +194,19 @@
                                            <String fx:value="cardTitle" />
                                        </styleClass>
                                    </Label>
-                                   <LineChart fx:id="weeklyChart" maxWidth="1.7976931348623157E308" prefHeight="400">
+                                   <LineChart fx:id="weeklyChart">
                                        <xAxis>
                                            <CategoryAxis side="BOTTOM" fx:id="xAxis" />
                                        </xAxis>
                                        <yAxis>
                                            <NumberAxis side="LEFT" />
                                        </yAxis>
+                              <VBox.margin>
+                                 <Insets />
+                              </VBox.margin>
+                              <padding>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </padding>
                                    </LineChart>
                                </children>
                                <padding>
@@ -202,7 +221,61 @@
                                  <String fx:value="boldText" />
                                  <String fx:value="cardTitle" />
                               </styleClass></Label>
-                                   <PieChart />
+                           <StackPane>
+                              <children>
+                                  <PieChart fx:id="macroDistPieChart" labelsVisible="false" minHeight="80.0" minWidth="80.0" />
+                                 <Circle fx:id="macroDistInnerHoleCircle" fill="WHITE" radius="75.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                              </children>
+                           </StackPane>
+                           <VBox>
+                              <children>
+                                 <GridPane hgap="8.0">
+                                   <columnConstraints>
+                                     <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
+                                     <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" />
+                                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                   </columnConstraints>
+                                   <rowConstraints>
+                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                   </rowConstraints>
+                                    <children>
+                                       <Circle fill="#f3965a" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                                       <Label text="Protein" GridPane.columnIndex="1" />
+                                       <Label text="Label" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
+                                    </children>
+                                 </GridPane>
+                                 <GridPane hgap="8.0">
+                                    <columnConstraints>
+                                       <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
+                                       <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" />
+                                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    </rowConstraints>
+                                    <children>
+                                       <Circle fill="#f4a965" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                                       <Label text="Carbs" GridPane.columnIndex="1" />
+                                       <Label text="Label" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
+                                    </children>
+                                 </GridPane>
+                                 <GridPane hgap="8.0">
+                                    <columnConstraints>
+                                       <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
+                                       <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" />
+                                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    </rowConstraints>
+                                    <children>
+                                       <Circle fill="#f6bd6e" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                                       <Label text="Fats" GridPane.columnIndex="1" />
+                                       <Label text="Label" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
+                                    </children>
+                                 </GridPane>
+                              </children>
+                           </VBox>
                                </children>
                         <padding>
                            <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
@@ -219,7 +292,7 @@
                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               </rowConstraints>
                               <children>
-                                 <Label styleClass="lightText" text="Calories out" />
+                                 <Label styleClass="lightText" text="Calories burned" />
                                  <SVGPath content="M3.75004 10.4167C4.30257 10.4167 4.83248 10.1972 5.22318 9.80648C5.61388 9.41578 5.83337 8.88588 5.83337 8.33334C5.83337 7.18334 5.41671 6.66668 5.00004 5.83334C4.10671 4.04751 4.81337 2.45501 6.66671 0.833344C7.08337 2.91668 8.33337 4.91668 10 6.25001C11.6667 7.58334 12.5 9.16668 12.5 10.8333C12.5 11.5994 12.3492 12.3579 12.056 13.0657C11.7629 13.7734 11.3332 14.4165 10.7915 14.9581C10.2498 15.4998 9.60676 15.9295 8.89903 16.2226C8.19129 16.5158 7.43275 16.6667 6.66671 16.6667C5.90066 16.6667 5.14212 16.5158 4.43439 16.2226C3.72665 15.9295 3.08359 15.4998 2.54192 14.9581C2.00024 14.4165 1.57056 13.7734 1.27741 13.0657C0.984258 12.3579 0.833374 11.5994 0.833374 10.8333C0.833374 9.87251 1.19421 8.92168 1.66671 8.33334C1.66671 8.88588 1.8862 9.41578 2.2769 9.80648C2.6676 10.1972 3.19751 10.4167 3.75004 10.4167Z" fill="TRANSPARENT" stroke="#f97315" strokeWidth="1.67" GridPane.columnIndex="1" />
                               </children>
                            </GridPane>
@@ -232,9 +305,6 @@
                               </children>
                            </HBox>
                         </children>
-                        <GridPane.margin>
-                           <Insets />
-                        </GridPane.margin>
                         <padding>
                            <Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
                         </padding>

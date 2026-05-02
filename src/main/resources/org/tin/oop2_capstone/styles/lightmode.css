@@ -7,13 +7,13 @@
   GO TO APPLICATIONS.CSS
 */
 
-.root .light {
+.light {
     -bg-nav: -bluish-white;
     -accent-color: -orange-to-red-orange;
     -light-accent-color: -peach-to-orange;
     -bg-content: -off-white;
 
-    -brand-text-color: -vibrant-orange;
+    -brand-text-color: -dark-orange;
     -bg-default: white;
     -bg-default2: white;
     -bg-default-border: -even-lighter-grey;
