@@ -13,6 +13,13 @@ public class PermissionService {
      * and then once magka internet, it will take those queued objects, requery it in the api so
      * that we can get the nutritional values
      *
-     * If user is playing a video-game, interrupt of the gaming session "exercise prompt" (FROM GUI)
+     *
+     * just ask permission to overlay, and check current app focused if it changes
+     * "     *  Here we do the observing for when user opens an app or make it the active window, app is not excluded, and x mins or hours of time has passed since the last user exercise prompt, then we do the exercise prompt
+     *      *  Perhaps we may need to ask for permissions for this, such as overlay or like... process list access?
+     *      *  Perhaps poll the os every few seconds or smth
+     *
+     * "
+     * -From exercisMonitor
      */
 }

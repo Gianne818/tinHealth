@@ -1,6 +1,6 @@
 package org.tin.oop2_capstone.services;
 
-// todo: let this thing delegate the work of other classes, like call NutritionApiAdapter, DailyLogManager, etc
+// todo: let this thing delegate the work of other classes, like call NutritionApiAdapter, Food and ACtivity Logger, etc
 
 import org.tin.oop2_capstone.api.NutritionApiAdapter;
 import org.tin.oop2_capstone.model.entities.Food;
