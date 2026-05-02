@@ -99,6 +99,12 @@ public class MainController {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/" + filename + ".fxml"));
             view = fxmlLoader.load();
 
+            // Pass MainController to DashboardController
+            Object controller = fxmlLoader.getController();
+            if (controller instanceof DashboardController) {
+                ((DashboardController) controller).setMainController(this);
+            }
+
             AnchorPane.setBottomAnchor(view, 0.0);
             AnchorPane.setTopAnchor(view, 0.0);
             AnchorPane.setRightAnchor(view, 0.0);

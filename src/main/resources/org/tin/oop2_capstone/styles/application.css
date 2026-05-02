@@ -352,5 +352,27 @@
     -fx-stroke-width: 1.5;
 }
 
+/* For Macro Distribution on Dashboard */
+#toolTipPieChart {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 20;
+    -fx-border-color: #ff8c42;
+    -fx-border-radius: 20;
+    -fx-border-width: 2;
+}
+
+#toolTipPieChart .label {
+    -fx-text-fill: #333333;
+}
+
+#macroPercentageLabel {
+    -fx-text-fill: #ff8c42;
+    -fx-font-weight: bold;
+}
+
+.clickable:hover {
+    -fx-cursor: hand;
+}
+
 
 /* PLEASE USE COLORS FROM PALETTES.CSS, OR ADD COLORS THERE */

@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.chart.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.PopupControl;
@@ -20,13 +21,16 @@ import java.io.IOException;
 import javafx.scene.shape.Line;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 public class DashboardController {
     @FXML ScrollPane dashboardScrollPane;
+    private MainController mainController;
+
     @FXML private LineChart<?, ?> weeklyChart;
     @FXML private CategoryAxis xAxis;
     @FXML private NumberAxis yAxis;
-
 
     @FXML PieChart macroDistPieChart;
     @FXML Circle macroDistInnerHoleCircle;
@@ -37,23 +41,84 @@ public class DashboardController {
     @FXML private Label carbsLabelMacro;
     @FXML private Label fatsLabelMacro;
 
+    @FXML private VBox macroDistVBox;
+    @FXML private VBox calorieTrackVBox;
+
     public void initialize() {
         dashboardScrollPane.getStyleClass().add("light");
-        macroDistData = FXCollections.observableArrayList();
+        setupClickableCards();
 
         // todo: use real data for the charts
         updateMacroDist(50.0, 30.0, 20.0);
-
         initCaloriesLineChart();
         initMacroDist();
     }
 
-    private void setupGlobalTooltip(LineChart<String, Number> chart, Series<String, Number> in, Series<String, Number> out) {
+    private void setupClickableCards(){
+        // Macro Distribution Card
+        macroDistData = FXCollections.observableArrayList();
+        macroDistVBox.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
+            goToHealthLog();
+        });
+
+        macroDistVBox.setStyle("-fx-cursor: hand;");
+
+        macroDistVBox.setOnMouseEntered(e -> {
+            macroDistVBox.setScaleX(1.02);
+            macroDistVBox.setScaleY(1.02);
+        });
+
+        macroDistVBox.setOnMouseExited(e -> {
+            macroDistVBox.setScaleX(1.0);
+            macroDistVBox.setScaleY(1.0);
+        });
+
+        // Calorie Tracking Card
+        calorieTrackVBox.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
+            goToHealthLog();
+        });
+
+        calorieTrackVBox.setStyle("-fx-cursor: hand;");
+
+        calorieTrackVBox.setOnMouseEntered(e -> {
+            calorieTrackVBox.setScaleX(1.02);
+            calorieTrackVBox.setScaleY(1.02);
+        });
+
+        calorieTrackVBox.setOnMouseExited(e -> {
+            calorieTrackVBox.setScaleX(1.0);
+            calorieTrackVBox.setScaleY(1.0);
+        });
+    }
+
+    public void setMainController(MainController main) {
+        this.mainController = main;
+    }
+
+    public void goToFoodLog() {
+        if (mainController != null) {
+            mainController.navigateToView("food-log-view", "foodLogScrollPane", mainController.foodLogNav);
+        }
+    }
+
+    public void goToActivityLog() {
+        if (mainController != null) {
+            mainController.navigateToView("activity-log-view", "activityLogScrollPane", mainController.activityLogNav);
+        }
+    }
+
+    public void goToHealthLog() {
+        if (mainController != null) {
+            mainController.navigateToView("health-view", "healthScrollPane", mainController.healthNav);
+        }
+    }
+
+    private void setupLineChartTooltip(LineChart<String, Number> chart, Series<String, Number> in, Series<String, Number> out) {
         PopupControl popup = new PopupControl();
         ToolTipController toolTipController;
 
         try{
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/tool-tip-view.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/dashboard/tool-tip-view-track.fxml"));
             VBox root = fxmlLoader.load();
             popup.getScene().getStylesheets().add(getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm());
             root.getStyleClass().add("light");
@@ -63,7 +128,6 @@ public class DashboardController {
             e.printStackTrace();
             return;
         }
-
         Node plotArea = chart.lookup(".chart-plot-background");
         Node chartContent = chart.lookup(".chart-content");
 
@@ -114,6 +178,38 @@ public class DashboardController {
         });
     }
 
+    private void setupPieChartTooltip(PieChart chart) {
+        for (PieChart.Data data : chart.getData()) {
+            Node node = data.getNode();
+            if (node != null) {
+                node.setStyle("-fx-cursor: hand;");
+                final PopupControl[] popupHolder = new PopupControl[1];
+
+                node.setOnMouseEntered(e -> {
+                    PopupControl popup = new PopupControl();
+                    popupHolder[0] = popup;
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/dashboard/tool-tip-view-macro.fxml"));
+                        VBox root = fxmlLoader.load();
+                        ToolTipController controller = fxmlLoader.getController();
+                        controller.setMacroData(data.getName(), data.getPieValue());
+                        popup.getScene().setRoot(root);
+                        popup.show(node, e.getScreenX() + 15, e.getScreenY() + 15);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                });
+
+                node.setOnMouseExited(e -> {
+                    if (popupHolder[0] != null) {
+                        popupHolder[0].hide();
+                    }
+                });
+            }
+        }
+    }
+
+
     private XYChart.Data<String, Number> findData(Series<String, Number> series, String category){
         for(XYChart.Data<String, Number> d : series.getData()){
             if(d.getXValue().equals(category)){
@@ -125,6 +221,7 @@ public class DashboardController {
 
     private void initMacroDist() {
         macroDistPieChart.setData(macroDistData);
+        Platform.runLater(() -> setupPieChartTooltip(macroDistPieChart));
         macroDistPieChart.setLegendVisible(false);
         macroDistInnerHoleCircle.radiusProperty().bind(macroDistPieChart.widthProperty().divide(3.5));
     }
@@ -195,6 +292,6 @@ public class DashboardController {
         yAxis.setTickLabelFill(Color.web("#656b75"));
 
         chart.setLegendVisible(false);
-        setupGlobalTooltip(chart, calIn, calOut);
+        setupLineChartTooltip(chart, calIn, calOut);
     }
 }
