@@ -21,8 +21,8 @@ public class MainApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
 
-        stage.setMinHeight(400);
-        stage.setMinWidth(600);
+        stage.setHeight(400);
+        stage.setWidth(650);
 
         String style = getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm();
         scene.getStylesheets().add(style);
@@ -30,6 +30,7 @@ public class MainApplication extends Application {
 
         stage.setTitle("Health Tracker");
         stage.setScene(scene);
+        stage.centerOnScreen();
         stage.show();
 //
 //        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/main-view.fxml"));

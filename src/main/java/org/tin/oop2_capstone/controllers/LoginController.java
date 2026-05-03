@@ -46,7 +46,9 @@ public class LoginController {
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
-        stage.sizeToScene();
+        stage.setHeight(700);
+        stage.setWidth(550);
+        stage.setResizable(false);
         stage.centerOnScreen();
         stage.show();
     }

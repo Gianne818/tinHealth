@@ -21,13 +21,16 @@ public class SignUpController {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
 
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setHeight(400);
+        stage.setWidth(650);
 
         String style = getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm();
         scene.getStylesheets().add(style);
+        stage.setResizable(false);
 
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setTitle("Health Tracker");
         stage.setScene(scene);
-        stage.sizeToScene();
         stage.centerOnScreen();
         stage.show();
     }

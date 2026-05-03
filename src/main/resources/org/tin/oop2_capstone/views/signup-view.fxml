@@ -2,63 +2,26 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="680.0" prefWidth="700.0" styleClass="light" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.SignUpController">
-   <StackPane alignment="TOP_CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="90.0">
-      <padding>
-         <Insets top="30.0" />
-      </padding>
-      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="10.0" styleClass="card">
-         <padding>
-            <Insets bottom="30.0" left="20.0" right="20.0" top="20.0" />
-         </padding>
-         <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="boldText" text="Create Your Account" textFill="#f1985b">
-            <font>
-               <Font size="22.0" />
-            </font>
-         </Label>
-         <Separator prefWidth="200.0">
-            <padding>
-               <Insets bottom="10.0" top="10.0" />
-            </padding>
-         </Separator>
-         <Label prefHeight="17.0" prefWidth="278.0" styleClass="boldText" text="First Name">
-            <VBox.margin>
-               <Insets />
-            </VBox.margin>
-         </Label>
-         <TextField fx:id="textFieldFirstName" />
-         <Label prefHeight="17.0" prefWidth="271.0" styleClass="boldText" text="Last Name" />
-         <TextField fx:id="textFieldLastName" />
-         <Label prefHeight="17.0" prefWidth="271.0" styleClass="boldText" text="Password" />
-         <PasswordField fx:id="passwordField" />
-         <Label prefHeight="17.0" prefWidth="271.0" styleClass="boldText" text="Confirm Password" />
-         <PasswordField fx:id="confirmPasswordField" />
-         <Button fx:id="buttonSignUp" minWidth="268.0" mnemonicParsing="false" text="Sign Up">
-            <VBox.margin>
-               <Insets top="5.0" />
-            </VBox.margin>
-         </Button>
-         <HBox alignment="CENTER" prefHeight="0.0" prefWidth="278.0">
-            <children>
-               <Label alignment="CENTER" text="Already have an account? " />
-               <Label fx:id="btnLogin" onMouseClicked="#onLoginClicked" style="-fx-text-fill: -light-orange;" text="Login" />
-            </children>
-         </HBox>
-      </VBox>
-   </StackPane>
-   <HBox alignment="CENTER_LEFT" spacing="0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+<AnchorPane styleClass="light" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.SignUpController">
+   <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
          <Image url="@../assets/image/logo.png" />
       </ImageView>
@@ -81,4 +44,122 @@
          </font>
       </Label>
    </HBox>
+   <StackPane alignment="TOP_CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+      <padding>
+         <Insets top="30.0" />
+      </padding>
+      <VBox alignment="TOP_CENTER" spacing="10.0" styleClass="card" visible="false">
+         <padding>
+            <Insets bottom="20.0" left="40.0" right="40.0" top="20.0" />
+         </padding>
+         <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="boldText" text="Create Your Account" textFill="#f1985b">
+            <font>
+               <Font size="22.0" />
+            </font>
+         </Label>
+         <Separator prefWidth="200.0">
+            <padding>
+               <Insets bottom="10.0" top="10.0" />
+            </padding>
+         </Separator>
+         <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="boldText" text="Full Name">
+            <VBox.margin>
+               <Insets />
+            </VBox.margin>
+         </Label>
+         <TextField fx:id="fullNameTextField" promptText="Alex Johnsons" />
+         <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="boldText" text="Username" />
+         <TextField fx:id="userNameTextField" />
+         <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="boldText" text="Email" />
+         <TextField fx:id="emailTextField" />
+         <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="boldText" text="Password" />
+         <PasswordField fx:id="passwordField" />
+         <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="boldText" text="Confirm Password" />
+         <PasswordField fx:id="confirmPasswordField" />
+         <Button fx:id="buttonSignUp" minWidth="268.0" mnemonicParsing="false" text="Sign Up">
+            <VBox.margin>
+               <Insets top="5.0" />
+            </VBox.margin>
+         </Button>
+         <HBox alignment="CENTER" prefHeight="0.0" prefWidth="278.0">
+            <children>
+               <Label alignment="CENTER" text="Already have an account? " />
+               <Label fx:id="btnLogin" onMouseClicked="#onLoginClicked" style="-fx-text-fill: -light-orange;" text="Login" />
+            </children>
+         </HBox>
+      </VBox>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" styleClass="card">
+         <top>
+            <VBox alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="boldText" text="Welcome!" textFill="#f1985b">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Label>
+                  <Label styleClass="lightText" text="Let's personalize your experience with a few quick questions." />
+                  <ProgressBar maxWidth="1.7976931348623157E308" progress="0.0">
+                     <VBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </VBox.margin>
+                  </ProgressBar>
+                  <Separator prefWidth="200.0">
+                     <padding>
+                        <Insets bottom="10.0" top="10.0" />
+                     </padding>
+                  </Separator>
+               </children>
+            </VBox>
+         </top>
+         <bottom>
+            <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button mnemonicParsing="false" text="Next" GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                     <padding>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                     </padding>
+                  </Button>
+                  <Button mnemonicParsing="false" text="Back">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                     <padding>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                     </padding>
+                  </Button>
+               </children>
+            </GridPane>
+         </bottom>
+         <center>
+            <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="10.0">
+                     <children>
+                        <Label styleClass="cardTitle" text="Tell us more about yourself" />
+                        <Label text="Birthdayl" />
+                        <DatePicker />
+                        <StackPane prefHeight="150.0" prefWidth="200.0" />
+                     </children>
+                  </VBox>
+               </children>
+            </StackPane>
+         </center>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </BorderPane>
+   </StackPane>
+   <padding>
+      <Insets bottom="35.0" left="40.0" right="40.0" top="20.0" />
+   </padding>
 </AnchorPane>

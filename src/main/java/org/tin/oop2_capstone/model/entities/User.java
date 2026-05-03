@@ -1,6 +1,8 @@
 package org.tin.oop2_capstone.model.entities;
 
 public class User {
+    private String fullname;
+    private String email;
     private String username;
     private double weightKg;
     private double heightM;
@@ -15,14 +17,19 @@ public class User {
         this.password = password;
     }
 
+    public String getFullname() { return fullname; }
+    public String getEmail()    { return email; }
     public String getUsername() { return username; }
     public double getWeightKg() { return weightKg; }
     public double getHeightM()  { return heightM; }
     public String getPassword() { return password; }
 
+    public void setEmail(String email)       { this.email = email; }
+    public void setFullname(String fullname) { this.fullname = fullname;}
     public void setUsername(String username) { this.username = username; }
     public void setWeightKg(double weightKg) { this.weightKg = weightKg; }
     public void setHeightM(double heightM)   { this.heightM = heightM; }
+
     public void setPassword(String password) {
         // set appropriate hashing algo here
         this.password = password;

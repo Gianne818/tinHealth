@@ -352,5 +352,36 @@
     -fx-stroke-width: 1;
 }
 
+.date-picker{
+    -fx-background-color: transparent;
+    -fx-spacing: 10;
+}
+
+.date-picker .arrow-button{
+    -fx-background-color: -bg-default;
+    -fx-background-radius: 20;
+    -fx-border-color: -bg-default-border;
+    -fx-border-radius: 20;
+    -fx-start-margin: 10;
+}
+
+.date-picker-popup .spinner > .button {
+    -fx-background-color: transparent;
+}
+
+.date-picker-popup > * > .spinner > .button:hover {
+    -fx-effect: dropshadow(three-pass-box, darkgrey, 10, 0, 0, 2);
+}
+
+.date-picker-popup > * > .spinner > .button > .left-arrow,
+.date-picker-popup > * > .spinner > .button > .right-arrow {
+    -fx-background-color: -accent-color;
+}
+
+.date-picker-popup > .month-year-pane {
+    -fx-background-color: -bg-default;
+}
+
+
 
 /* PLEASE USE COLORS FROM PALETTES.CSS, OR ADD COLORS THERE */
