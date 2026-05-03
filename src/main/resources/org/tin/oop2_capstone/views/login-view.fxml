@@ -75,7 +75,7 @@
                <HBox alignment="CENTER" prefHeight="21.0" prefWidth="268.0">
                   <children>
                      <Label text="Don't have an account? " />
-                     <Label fx:id="btnSignup" onMouseClicked="#onSignupClicked" style="-fx-text-fill: -light-orange;" text="Sign Up" />
+                     <Label fx:id="signUpLabel" onMouseClicked="#onSignupClicked" styleClass="buttonLabel" text="Sign Up" />
                   </children>
                </HBox>
             </VBox>

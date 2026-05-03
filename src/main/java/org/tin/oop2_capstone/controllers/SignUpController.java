@@ -1,38 +1,120 @@
 package org.tin.oop2_capstone.controllers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import javafx.event.ActionEvent;
+import org.tin.oop2_capstone.utils.SceneSwitcher;
+
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class SignUpController {
 
-    @FXML
-    private Button buttonSignUp;
+    @FXML Label loginLabel;
+    @FXML VBox createAccountVBox;
+    @FXML Button signUpButton;
+    @FXML BorderPane onBoardingBorderPane;
 
-    @FXML
+    @FXML VBox onBoardingVBox1;
+    @FXML VBox onBoardingVBox2;
+    @FXML VBox onBoardingVBox3;
+    ObservableList<VBox> panels;
+    @FXML Button nextButton;
+    @FXML Button backButton;
+
+    @FXML GridPane sedentaryGridPane;
+    @FXML GridPane lightlyActiveGridPane;
+    @FXML GridPane moderatelyActiveGridPane;
+    @FXML GridPane veryActiveGridPane;
+    @FXML GridPane extremelyActiveGridPane;
+    ObservableList<GridPane> activityLevels;
+
+    private GridPane currSelectedActivity;
+
+
+    int curPanel = 0;
+
+    private void changeElementAccessibility(Node n, boolean visibility, boolean disability){
+        n.setVisible(visibility);
+        n.setDisable(disability);
+    }
+
+    public void initialize(){
+        panels = FXCollections.observableArrayList();
+        activityLevels = FXCollections.observableArrayList();
+        panels.addAll(onBoardingVBox1, onBoardingVBox2, onBoardingVBox3);
+        activityLevels.addAll(sedentaryGridPane, lightlyActiveGridPane, moderatelyActiveGridPane, veryActiveGridPane, extremelyActiveGridPane);
+        changeElementAccessibility(backButton,  true, true);
+    }
+
+
+    public void onBackButtonClick(ActionEvent event){
+        changeElementAccessibility(panels.get(curPanel), false, true);
+        curPanel--;
+
+        if(curPanel == 0){
+            changeElementAccessibility(backButton,  true, true);
+        }
+
+        changeElementAccessibility(panels.get(curPanel), true, false);
+    }
+
+    public void onNextButtonClick(ActionEvent event){
+        changeElementAccessibility(panels.get(curPanel), false, true);
+        curPanel++;
+
+        if(curPanel!=0){
+            changeElementAccessibility(backButton, true, false);
+        }
+        if(curPanel == panels.size()){
+            SceneSwitcher.use(backButton, "main-view").setCss("application").setMinDimensions(900, 850).setMaximized(true).setResizeable(true).setTitle("+inHealth").switchScene();
+            return;
+        }
+
+        changeElementAccessibility(panels.get(curPanel), true, false);
+    }
+
+    public void onSignUpButtonClick(ActionEvent event){
+        // todo: create user and add to db
+        changeElementAccessibility(createAccountVBox,false, true);
+        changeElementAccessibility(onBoardingBorderPane, true, false);
+    }
+
     public void onLoginClicked(MouseEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/login-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
+        SceneSwitcher.use(loginLabel, "login-view").setCss("application").setPrefDimensions(650, 400).setTitle("+inHealth - Login").setResizeable(false).setCentered(true).switchScene();
+    }
 
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setHeight(400);
-        stage.setWidth(650);
+    public void onActivityLevelClick(MouseEvent event){
+        GridPane button = (GridPane) event.getSource();
 
-        String style = getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm();
-        scene.getStylesheets().add(style);
-        stage.setResizable(false);
+        if(button.getStyleClass().contains("activityLevelSelected")){
+            button.getStyleClass().remove("activityLevelSelected");
+            currSelectedActivity = null;
+        } else {
+            setSelectedActivityLevel(button);
+            currSelectedActivity = button;
+        }
+        // todo: based on currSelectedActivity, we set goals automatically. User can change them in settings
+    }
 
-        stage.setTitle("Health Tracker");
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.show();
+    private void setSelectedActivityLevel(Node n){
+        for(GridPane g : activityLevels){
+            g.getStyleClass().remove("activityLevelSelected");
+        }
+
+        n.getStyleClass().add("activityLevelSelected");
     }
 
 }

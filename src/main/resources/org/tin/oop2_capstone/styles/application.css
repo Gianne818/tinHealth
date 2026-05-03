@@ -386,11 +386,28 @@
     -fx-background-color: -bg-default;
 }
 
-.activityLevelSelected, .activityLevelSelected .stack-pane{
+.activityLevelSelected {
     -fx-border-radius: 14;
+    -fx-border-width: 3;
     -fx-border-color: -orange-to-red-orange;
     -fx-background-color: -pastel-orange;
-    -fx-visibility: visible;
+}
+
+.activityLevelSelected .checkCircle{
+    -fx-opacity: 1.0;
+}
+
+.checkCircle{
+    -fx-opacity: 0;
+}
+
+.buttonLabel{
+    -fx-text-fill: -light-orange;
+}
+
+.buttonLabel:hover{
+    -fx-underline: true;
+    -fx-cursor: hand;
 }
 
 

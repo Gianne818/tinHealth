@@ -51,7 +51,7 @@
       <padding>
          <Insets top="30.0" />
       </padding>
-      <VBox alignment="TOP_CENTER" spacing="10.0" styleClass="card" visible="false">
+      <VBox fx:id="createAccountVBox" alignment="TOP_CENTER" spacing="10.0" styleClass="card">
          <padding>
             <Insets bottom="20.0" left="40.0" right="40.0" top="20.0" />
          </padding>
@@ -79,7 +79,7 @@
          <PasswordField fx:id="passwordField" />
          <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="boldText" text="Confirm Password" />
          <PasswordField fx:id="confirmPasswordField" />
-         <Button fx:id="buttonSignUp" minWidth="268.0" mnemonicParsing="false" text="Sign Up">
+         <Button fx:id="signUpButton" minWidth="268.0" mnemonicParsing="false" onAction="#onSignUpButtonClick" text="Sign Up">
             <VBox.margin>
                <Insets top="5.0" />
             </VBox.margin>
@@ -87,11 +87,11 @@
          <HBox alignment="CENTER" prefHeight="0.0" prefWidth="278.0">
             <children>
                <Label alignment="CENTER" text="Already have an account? " />
-               <Label fx:id="btnLogin" onMouseClicked="#onLoginClicked" style="-fx-text-fill: -light-orange;" text="Login" />
+               <Label fx:id="loginLabel" onMouseClicked="#onLoginClicked" styleClass="buttonLabel" text="Login" />
             </children>
          </HBox>
       </VBox>
-      <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="card">
+      <BorderPane fx:id="onBoardingBorderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="card" visible="false">
          <top>
             <VBox alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
                <children>
@@ -117,7 +117,7 @@
          <center>
             <StackPane fx:id="onBoardingStackPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
                <children>
-                  <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0" visible="false">
+                  <VBox fx:id="onBoardingVBox1" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0">
                      <children>
                         <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="cardTitle" text="Tell us more about yourself">
                            <padding>
@@ -130,7 +130,7 @@
                         <ChoiceBox fx:id="genderChoiceBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
                      </children>
                   </VBox>
-                  <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0" visible="false">
+                  <VBox fx:id="onBoardingVBox2" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0" visible="false">
                      <children>
                         <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="cardTitle" text="Physical Measurements">
                            <padding>
@@ -143,7 +143,7 @@
                         <TextField fx:id="currentWeightTextField" />
                      </children>
                   </VBox>
-                  <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0">
+                  <VBox fx:id="onBoardingVBox3" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0" visible="false">
                      <children>
                         <GridPane vgap="5.0">
                           <columnConstraints>
@@ -164,7 +164,7 @@
                                  <children>
                                     <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <GridPane styleClass="notif-card" vgap="5.0">
+                                          <GridPane fx:id="sedentaryGridPane" onMousePressed="#onActivityLevelClick" styleClass="notif-card" vgap="5.0">
                                              <columnConstraints>
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -176,7 +176,7 @@
                                              <children>
                                                 <Label styleClass="fieldLabel" text="Sedentary" />
                                                 <Label styleClass="lightText" text="Little to no exercise" GridPane.rowIndex="1" />
-                                                <StackPane maxHeight="-Infinity" maxWidth="-Infinity" visible="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2" GridPane.valignment="CENTER">
+                                                <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="checkCircle" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2" GridPane.valignment="CENTER">
                                                    <children>
                                                       <Circle fill="#ff8f4b" radius="10.0" stroke="TRANSPARENT" strokeType="INSIDE" />
                                                       <Circle fill="WHITE" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" />
@@ -187,7 +187,7 @@
                                                 <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                              </padding>
                                           </GridPane>
-                                          <GridPane styleClass="notif-card" vgap="5.0">
+                                          <GridPane fx:id="lightlyActiveGridPane" onMousePressed="#onActivityLevelClick" styleClass="notif-card" vgap="5.0">
                                              <columnConstraints>
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -199,7 +199,7 @@
                                              <children>
                                                 <Label styleClass="fieldLabel" text="Lightly Active" />
                                                 <Label styleClass="lightText" text="1-3 days/week" GridPane.rowIndex="1" />
-                                                <StackPane maxHeight="-Infinity" maxWidth="-Infinity" visible="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2" GridPane.valignment="CENTER">
+                                                <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="checkCircle" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2" GridPane.valignment="CENTER">
                                                    <children>
                                                       <Circle fill="#ff8f4b" radius="10.0" stroke="TRANSPARENT" strokeType="INSIDE" />
                                                       <Circle fill="WHITE" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" />
@@ -210,7 +210,7 @@
                                                 <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                              </padding>
                                           </GridPane>
-                                          <GridPane styleClass="notif-card" vgap="5.0">
+                                          <GridPane fx:id="moderatelyActiveGridPane" onMousePressed="#onActivityLevelClick" styleClass="notif-card" vgap="5.0">
                                              <columnConstraints>
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -222,7 +222,7 @@
                                              <children>
                                                 <Label styleClass="fieldLabel" text="Moderately Active" />
                                                 <Label styleClass="lightText" text="3-5 days/week" GridPane.rowIndex="1" />
-                                                <StackPane maxHeight="-Infinity" maxWidth="-Infinity" visible="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2" GridPane.valignment="CENTER">
+                                                <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="checkCircle" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2" GridPane.valignment="CENTER">
                                                    <children>
                                                       <Circle fill="#ff8f4b" radius="10.0" stroke="TRANSPARENT" strokeType="INSIDE" />
                                                       <Circle fill="WHITE" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" />
@@ -233,7 +233,7 @@
                                                 <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                              </padding>
                                           </GridPane>
-                                          <GridPane styleClass="notif-card" vgap="5.0">
+                                          <GridPane fx:id="veryActiveGridPane" onMousePressed="#onActivityLevelClick" styleClass="notif-card" vgap="5.0">
                                              <columnConstraints>
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -245,7 +245,7 @@
                                              <children>
                                                 <Label styleClass="fieldLabel" text="Very Active" />
                                                 <Label styleClass="lightText" text="6-7 days/week" GridPane.rowIndex="1" />
-                                                <StackPane maxHeight="-Infinity" maxWidth="-Infinity" visible="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2" GridPane.valignment="CENTER">
+                                                <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="checkCircle" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2" GridPane.valignment="CENTER">
                                                    <children>
                                                       <Circle fill="#ff8f4b" radius="10.0" stroke="TRANSPARENT" strokeType="INSIDE" />
                                                       <Circle fill="WHITE" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" />
@@ -256,7 +256,7 @@
                                                 <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                              </padding>
                                           </GridPane>
-                                          <GridPane styleClass="notif-card" vgap="5.0">
+                                          <GridPane fx:id="extremelyActiveGridPane" onMousePressed="#onActivityLevelClick" styleClass="notif-card" vgap="5.0">
                                              <columnConstraints>
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -268,7 +268,7 @@
                                              <children>
                                                 <Label styleClass="fieldLabel" text="Extremely Active" />
                                                 <Label styleClass="lightText" text="Athlete/Physical Job" GridPane.rowIndex="1" />
-                                                <StackPane maxHeight="-Infinity" maxWidth="-Infinity" visible="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2" GridPane.valignment="CENTER">
+                                                <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="checkCircle" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2" GridPane.valignment="CENTER">
                                                    <children>
                                                       <Circle fill="#ff8f4b" radius="10.0" stroke="TRANSPARENT" strokeType="INSIDE" />
                                                       <Circle fill="WHITE" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" />
@@ -313,7 +313,7 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Button mnemonicParsing="false" text="Next" GridPane.columnIndex="1">
+                        <Button fx:id="nextButton" mnemonicParsing="false" onAction="#onNextButtonClick" text="Next" GridPane.columnIndex="1">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
@@ -321,7 +321,7 @@
                               <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                            </padding>
                         </Button>
-                        <Button mnemonicParsing="false" text="Back">
+                        <Button fx:id="backButton" mnemonicParsing="false" onAction="#onBackButtonClick" text="Back">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
