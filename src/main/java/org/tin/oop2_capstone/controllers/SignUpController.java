@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -26,6 +27,7 @@ public class SignUpController {
     @FXML VBox createAccountVBox;
     @FXML Button signUpButton;
     @FXML BorderPane onBoardingBorderPane;
+    @FXML ProgressBar onBoardingProgressBar;
 
     @FXML VBox onBoardingVBox1;
     @FXML VBox onBoardingVBox2;
@@ -57,6 +59,7 @@ public class SignUpController {
         panels.addAll(onBoardingVBox1, onBoardingVBox2, onBoardingVBox3);
         activityLevels.addAll(sedentaryGridPane, lightlyActiveGridPane, moderatelyActiveGridPane, veryActiveGridPane, extremelyActiveGridPane);
         changeElementAccessibility(backButton,  true, true);
+        onBoardingProgressBar.setProgress(0.05);
     }
 
 
@@ -69,6 +72,7 @@ public class SignUpController {
         }
 
         changeElementAccessibility(panels.get(curPanel), true, false);
+        onBoardingProgressBar.setProgress(onBoardingProgressBar.getProgress()-0.33);
     }
 
     public void onNextButtonClick(ActionEvent event){
@@ -84,6 +88,7 @@ public class SignUpController {
         }
 
         changeElementAccessibility(panels.get(curPanel), true, false);
+        onBoardingProgressBar.setProgress(onBoardingProgressBar.getProgress()+0.33);
     }
 
     public void onSignUpButtonClick(ActionEvent event){

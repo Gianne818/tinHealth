@@ -401,6 +401,10 @@
     -fx-opacity: 0;
 }
 
+#onBoardingProgressBar .bar{
+    -fx-background-color: -orange-to-red-orange;
+}
+
 .buttonLabel{
     -fx-text-fill: -light-orange;
 }
