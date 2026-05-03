@@ -41,7 +41,7 @@ public class DashboardController {
         dashboardScrollPane.getStyleClass().add("light");
         macroDistData = FXCollections.observableArrayList();
 
-        // todo: use real data for the charts
+        // todo: use real data for all the charts
         updateMacroDist(50.0, 30.0, 20.0);
 
         initCaloriesLineChart();
@@ -175,6 +175,7 @@ public class DashboardController {
         double maxIn = calIn.getData().stream().mapToDouble(d -> d.getYValue().doubleValue()).max().orElse(0);
         double maxOut = calOut.getData().stream().mapToDouble(d -> d.getYValue().doubleValue()).max().orElse(0);
         double maxValue = Math.max(maxIn, maxOut);
+
         // Calculate upper bound rounded up to nearest 550
         double upperBound = Math.ceil((maxValue + maxValue * 0.125) / 550) * 550;
 
@@ -187,12 +188,6 @@ public class DashboardController {
         yAxis.setMinorTickCount(0);
 
         chart.getData().addAll(calIn, calOut);
-
-        // Enlargen both x and y Axis AND changed colors
-        xAxis.setTickLabelFont(Font.font(14));
-        xAxis.setTickLabelFill(Color.web("#656b75"));
-        yAxis.setTickLabelFont(Font.font(14));
-        yAxis.setTickLabelFill(Color.web("#656b75"));
 
         chart.setLegendVisible(false);
         setupGlobalTooltip(chart, calIn, calOut);

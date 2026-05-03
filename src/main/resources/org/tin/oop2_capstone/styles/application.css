@@ -191,7 +191,7 @@
     -fx-text-fill: -bg-default3;
     -fx-font-family: "Inter 18pt SemiBold";
 }
-.cardTitle1{
+.cardTitle{
     -fx-font-size: 18;
     -fx-text-fill: -bg-default3;
     -fx-font-family: "Inter 18pt SemiBold";
@@ -235,12 +235,18 @@
     -fx-font-family: "Inter 18pt SemiBold";
 }
 
-#caloriesInLabel, #fatLabel, #sugarLabel, #calInGridPane .label{
+#caloriesInLabel, #fatLabel, #sugarLabel {
     -fx-text-fill: -green;
 }
 
+#calInGridPane .label{
+    -fx-text-fill: -dark-orange;
+    -fx-font-family: "Inter 18pt SemiBold";
+}
+
 #caloriesOutLabel, #calOutGridPane .label{
-    -fx-text-fill: -orange;
+    -fx-text-fill: -evenlighter-orange;
+    -fx-font-family: "Inter 18pt SemiBold";
 }
 
 #caloriesLabel, #cholesterolLabel{
@@ -341,15 +347,9 @@
     -fx-padding: 0;
 }
 
-.default-color0.chart-series-line { -fx-stroke: #2ECC71; }  /* calIn */
-.default-color1.chart-series-line { -fx-stroke: #FFB74D; }  /* calOut */
-
-.default-color0.chart-line-symbol { -fx-background-color: #2ECC71, white; -fx-background-radius: 5px; -fx-padding: 5px; }
-.default-color1.chart-line-symbol { -fx-background-color: #FFB74D, white; -fx-background-radius: 5px; -fx-padding: 5px; }
-
 .vertical-line {
-    -fx-stroke: black;
-    -fx-stroke-width: 1.5;
+    -fx-stroke: grey;
+    -fx-stroke-width: 1;
 }
 
 

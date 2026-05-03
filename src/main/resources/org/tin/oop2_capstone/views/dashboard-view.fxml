@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
@@ -132,11 +131,7 @@
                            </VBox>
                            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0" styleClass="cardContent" GridPane.columnSpan="2" GridPane.rowIndex="1">
                                <children>
-                           <Label text="Quick Actions">
-                              <styleClass>
-                                 <String fx:value="boldText" />
-                                 <String fx:value="cardTitle" />
-                              </styleClass></Label>
+                           <Label styleClass="cardTitle" text="Quick Actions" />
                                    <GridPane hgap="20.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                                        <columnConstraints>
                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -197,12 +192,7 @@
                            <!-- Weekly Calorie Tracking  -->
                            <VBox styleClass="cardContent" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
                                <children>
-                                   <Label text="Weekly Calorie Tracking" style="-fx-font-size: 20px; " >
-                                       <styleClass>
-                                           <String fx:value="boldText" />
-                                           <String fx:value="cardTitle" />
-                                       </styleClass>
-                                   </Label>
+                                   <Label styleClass="cardTitle" text="Weekly Calorie Tracking" />
                                    <LineChart fx:id="weeklyChart" prefHeight="425">
                                        <VBox.margin>
                                            <Insets top="25.0" />
@@ -211,7 +201,7 @@
                                            <CategoryAxis side="BOTTOM" fx:id="xAxis" />
                                        </xAxis>
                                        <yAxis>
-                                           <NumberAxis side="LEFT" fx:id="yAxis" />
+                                           <NumberAxis fx:id="yAxis" side="LEFT" />
                                        </yAxis>
                                        <padding>
                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -224,15 +214,9 @@
                            </VBox>
 
                            <!-- Weekly Macro Distribution -->
-                           <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="cardContent" GridPane.rowIndex="2"
-                                 spacing="-20"> <!-- Label Weekly Macro Distribution and PieChart closer together -->
+                           <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="-20" styleClass="cardContent" GridPane.rowIndex="2"> <!-- Label Weekly Macro Distribution and PieChart closer together -->
                                <children>
-                                   <Label text="Weekly Macro Distribution" style="-fx-font-size: 20px; -fx-font-weight: bold; "  >
-                                       <styleClass>
-                                           <String fx:value="boldText" />
-                                           <String fx:value="cardTitle" />
-                                       </styleClass>
-                                   </Label>
+                                   <Label styleClass="cardTitle" text="Weekly Macro Distribution" />
 
                                    <StackPane>
                                        <children>
@@ -254,9 +238,8 @@
                                                </rowConstraints>
                                                <children>
                                                    <Circle fill="#d85842" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-                                                   <Label text="Protein" GridPane.columnIndex="1" style="-fx-font-size: 15px; -fx-font-weight: bold;" />
-                                                   <Label fx:id="proteinLabelMacro" text="proteinLabel" GridPane.columnIndex="2" GridPane.halignment="RIGHT"
-                                                          style="-fx-font-size: 15px; -fx-font-weight: bold;" />
+                                                   <Label text="Protein" GridPane.columnIndex="1" />
+                                                   <Label fx:id="proteinLabelMacro" styleClass="boldText" text="proteinLabel" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
                                                </children>
                                            </GridPane>
 
@@ -271,9 +254,8 @@
                                                </rowConstraints>
                                                <children>
                                                    <Circle fill="#e59563" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-                                                   <Label text="Carbs" GridPane.columnIndex="1" style="-fx-font-size: 15px; -fx-font-weight: bold;" />
-                                                   <Label fx:id="carbsLabelMacro" text="carbsLabel" GridPane.columnIndex="2" GridPane.halignment="RIGHT"
-                                                          style="-fx-font-size: 15px; -fx-font-weight: bold;" />
+                                                   <Label text="Carbs" GridPane.columnIndex="1" />
+                                                   <Label fx:id="carbsLabelMacro" styleClass="boldText" text="carbsLabel" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
                                                </children>
                                            </GridPane>
 
@@ -288,9 +270,8 @@
                                                </rowConstraints>
                                                <children>
                                                    <Circle fill="#f7bb6b" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-                                                   <Label text="Fats" GridPane.columnIndex="1" style="-fx-font-size: 15px; -fx-font-weight: bold;" />
-                                                   <Label fx:id="fatsLabelMacro" text="fatsLabel" GridPane.columnIndex="2" GridPane.halignment="RIGHT"
-                                                          style="-fx-font-size: 15px; -fx-font-weight: bold;" />
+                                                   <Label text="Fats" GridPane.columnIndex="1" />
+                                                   <Label fx:id="fatsLabelMacro" styleClass="boldText" text="fatsLabel" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
                                                </children>
                                            </GridPane>
                                        </children>
