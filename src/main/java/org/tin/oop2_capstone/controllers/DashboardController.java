@@ -81,20 +81,14 @@ public class DashboardController {
             if (day != null) {
                 // Get X position of the category
                 double xPos = xAxis.getDisplayPosition(day);
-                Point2D scenePoint = xAxis.localToScene(xPos, 0);
-                Point2D chartPoint = chartContent.sceneToLocal(scenePoint);
+                Point2D chartPoint = chartContent.sceneToLocal(xAxis.localToScene(xPos, 0));
 
                 // Get Y bounds of plot area in chartContent coordinates
-                Point2D plotTopLeft = plotArea.localToScene(0, 0);
-                Point2D plotBottomLeft = plotArea.localToScene(0, plotArea.getBoundsInLocal().getHeight());
-                Point2D chartTopLeft = chartContent.sceneToLocal(plotTopLeft);
-                Point2D chartBottomLeft = chartContent.sceneToLocal(plotBottomLeft);
-
                 verticalLine.setVisible(true);
                 verticalLine.setStartX(chartPoint.getX());
-                verticalLine.setStartY(chartTopLeft.getY());
+                verticalLine.setStartY(chartContent.sceneToLocal(plotArea.localToScene(0, 0)).getY()); //top left y
                 verticalLine.setEndX(chartPoint.getX());
-                verticalLine.setEndY(chartBottomLeft.getY());
+                verticalLine.setEndY(chartContent.sceneToLocal(plotArea.localToScene(0, plotArea.getBoundsInLocal().getHeight())).getY()); // bottom left y
 
                 XYChart.Data<String, Number> inData = findData(in, day);
                 XYChart.Data<String, Number> outData = findData(out, day);
