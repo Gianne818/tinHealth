@@ -69,16 +69,12 @@
                                  <Image url="@../assets/icons/user.png" />
                               </image>
                            </ImageView>
-                           <Label fx:id="userFullNameLabel" minHeight="-Infinity" minWidth="-Infinity" styleClass="boldText" text="Alex Johnsons" GridPane.columnIndex="1" GridPane.valignment="BOTTOM">
+                           <Label fx:id="userFullNameLabel" minHeight="-Infinity" minWidth="-Infinity" styleClass="cardTitle" text="Alex Johnsons" GridPane.columnIndex="1" GridPane.valignment="BOTTOM">
                               <font>
                                  <Font size="18.0" />
                               </font>
                            </Label>
-                           <Label minHeight="-Infinity" minWidth="-Infinity" styleClass="lightText" text="View Profile" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="TOP">
-                              <font>
-                                 <Font size="12.0" />
-                              </font>
-                           </Label>
+                           <Label minHeight="-Infinity" minWidth="-Infinity" styleClass="lightText" text="View Profile" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="TOP" />
                         </children>
                         <VBox.margin>
                            <Insets bottom="10.0" />

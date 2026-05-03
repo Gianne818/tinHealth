@@ -10,11 +10,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-   <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" styleClass="light" fx:controller="org.tin.oop2_capstone.controllers.LoginController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="light" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.LoginController">
       <BorderPane prefHeight="400.0" prefWidth="600.0" styleClass="light" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <left>
             <VBox alignment="CENTER" prefHeight="400.0" prefWidth="272.0" spacing="10.0" BorderPane.alignment="CENTER">
@@ -60,13 +59,13 @@
                      <Insets bottom="10.0" top="10.0" />
                   </padding>
                </Separator>
-               <Label prefHeight="17.0" prefWidth="278.0" styleClass="boldText" text="Username">
+               <Label prefHeight="17.0" prefWidth="278.0" styleClass="fieldLabel" text="Username">
                   <VBox.margin>
                      <Insets />
                   </VBox.margin>
                </Label>
                <TextField />
-               <Label prefHeight="17.0" prefWidth="271.0" styleClass="boldText" text="Password" />
+               <Label prefHeight="17.0" prefWidth="271.0" styleClass="fieldLabel" text="Password" />
                <TextField />
                <Button fx:id="buttonLogin" minWidth="268.0" mnemonicParsing="false" onAction="#onLoginButtonClicked" text="Login">
                   <VBox.margin>

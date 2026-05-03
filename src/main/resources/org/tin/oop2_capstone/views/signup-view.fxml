@@ -2,10 +2,12 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -18,9 +20,10 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane styleClass="light" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.SignUpController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="light" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.SignUpController">
    <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
          <Image url="@../assets/image/logo.png" />
@@ -44,7 +47,7 @@
          </font>
       </Label>
    </HBox>
-   <StackPane alignment="TOP_CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+   <StackPane alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
       <padding>
          <Insets top="30.0" />
       </padding>
@@ -88,7 +91,7 @@
             </children>
          </HBox>
       </VBox>
-      <BorderPane prefHeight="200.0" prefWidth="200.0" styleClass="card">
+      <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="card">
          <top>
             <VBox alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
                <children>
@@ -98,7 +101,7 @@
                      </font>
                   </Label>
                   <Label styleClass="lightText" text="Let's personalize your experience with a few quick questions." />
-                  <ProgressBar maxWidth="1.7976931348623157E308" progress="0.0">
+                  <ProgressBar fx:id="onBoardingProgressBar" maxWidth="1.7976931348623157E308" progress="0.0">
                      <VBox.margin>
                         <Insets left="10.0" right="10.0" />
                      </VBox.margin>
@@ -111,44 +114,180 @@
                </children>
             </VBox>
          </top>
-         <bottom>
-            <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <Button mnemonicParsing="false" text="Next" GridPane.columnIndex="1">
-                     <GridPane.margin>
-                        <Insets />
-                     </GridPane.margin>
-                     <padding>
-                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-                     </padding>
-                  </Button>
-                  <Button mnemonicParsing="false" text="Back">
-                     <GridPane.margin>
-                        <Insets />
-                     </GridPane.margin>
-                     <padding>
-                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-                     </padding>
-                  </Button>
-               </children>
-            </GridPane>
-         </bottom>
          <center>
-            <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <StackPane fx:id="onBoardingStackPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
                <children>
-                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="10.0">
+                  <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0" visible="false">
                      <children>
-                        <Label styleClass="cardTitle" text="Tell us more about yourself" />
-                        <Label text="Birthdayl" />
-                        <DatePicker />
-                        <StackPane prefHeight="150.0" prefWidth="200.0" />
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="cardTitle" text="Tell us more about yourself">
+                           <padding>
+                              <Insets bottom="20.0" />
+                           </padding>
+                        </Label>
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="fieldLabel" text="Birthday" />
+                        <DatePicker fx:id="bdayDatePicker" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="fieldLabel" text="Gender" />
+                        <ChoiceBox fx:id="genderChoiceBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0" visible="false">
+                     <children>
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="cardTitle" text="Physical Measurements">
+                           <padding>
+                              <Insets bottom="20.0" />
+                           </padding>
+                        </Label>
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="fieldLabel" text="Height (cm)" />
+                        <TextField fx:id="currentHeightTextField" />
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="fieldLabel" text="Current Weight (kg)" />
+                        <TextField fx:id="currentWeightTextField" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0">
+                     <children>
+                        <GridPane vgap="5.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints />
+                            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="cardTitle" text="Activity Level" />
+                              <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="lightText" text="How active are you on a typical week?" GridPane.rowIndex="1" />
+                           </children>
+                        </GridPane>
+                        <ScrollPane fitToWidth="true" styleClass="scrollable">
+                          <content>
+                            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="scrollable">
+                                 <children>
+                                    <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <GridPane styleClass="notif-card" vgap="5.0">
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                             <children>
+                                                <Label styleClass="fieldLabel" text="Sedentary" />
+                                                <Label styleClass="lightText" text="Little to no exercise" GridPane.rowIndex="1" />
+                                                <StackPane maxHeight="-Infinity" maxWidth="-Infinity" visible="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2" GridPane.valignment="CENTER">
+                                                   <children>
+                                                      <Circle fill="#ff8f4b" radius="10.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                                                      <Circle fill="WHITE" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                                                   </children>
+                                                </StackPane>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                             </padding>
+                                          </GridPane>
+                                          <GridPane styleClass="notif-card" vgap="5.0">
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                             <children>
+                                                <Label styleClass="fieldLabel" text="Lightly Active" />
+                                                <Label styleClass="lightText" text="1-3 days/week" GridPane.rowIndex="1" />
+                                                <StackPane maxHeight="-Infinity" maxWidth="-Infinity" visible="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2" GridPane.valignment="CENTER">
+                                                   <children>
+                                                      <Circle fill="#ff8f4b" radius="10.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                                                      <Circle fill="WHITE" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                                                   </children>
+                                                </StackPane>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                             </padding>
+                                          </GridPane>
+                                          <GridPane styleClass="notif-card" vgap="5.0">
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                             <children>
+                                                <Label styleClass="fieldLabel" text="Moderately Active" />
+                                                <Label styleClass="lightText" text="3-5 days/week" GridPane.rowIndex="1" />
+                                                <StackPane maxHeight="-Infinity" maxWidth="-Infinity" visible="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2" GridPane.valignment="CENTER">
+                                                   <children>
+                                                      <Circle fill="#ff8f4b" radius="10.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                                                      <Circle fill="WHITE" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                                                   </children>
+                                                </StackPane>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                             </padding>
+                                          </GridPane>
+                                          <GridPane styleClass="notif-card" vgap="5.0">
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                             <children>
+                                                <Label styleClass="fieldLabel" text="Very Active" />
+                                                <Label styleClass="lightText" text="6-7 days/week" GridPane.rowIndex="1" />
+                                                <StackPane maxHeight="-Infinity" maxWidth="-Infinity" visible="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2" GridPane.valignment="CENTER">
+                                                   <children>
+                                                      <Circle fill="#ff8f4b" radius="10.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                                                      <Circle fill="WHITE" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                                                   </children>
+                                                </StackPane>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                             </padding>
+                                          </GridPane>
+                                          <GridPane styleClass="notif-card" vgap="5.0">
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                             <children>
+                                                <Label styleClass="fieldLabel" text="Extremely Active" />
+                                                <Label styleClass="lightText" text="Athlete/Physical Job" GridPane.rowIndex="1" />
+                                                <StackPane maxHeight="-Infinity" maxWidth="-Infinity" visible="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2" GridPane.valignment="CENTER">
+                                                   <children>
+                                                      <Circle fill="#ff8f4b" radius="10.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                                                      <Circle fill="WHITE" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                                                   </children>
+                                                </StackPane>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                             </padding>
+                                          </GridPane>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
+                                       </padding>
+                                    </VBox>
+                                 </children>
+                              </AnchorPane>
+                          </content>
+                        </ScrollPane>
                      </children>
                   </VBox>
                </children>
@@ -157,6 +296,44 @@
          <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
+         <bottom>
+            <VBox spacing="10.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Separator prefWidth="200.0">
+                     <padding>
+                        <Insets bottom="10.0" top="10.0" />
+                     </padding>
+                  </Separator>
+                  <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Button mnemonicParsing="false" text="Next" GridPane.columnIndex="1">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                           <padding>
+                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                           </padding>
+                        </Button>
+                        <Button mnemonicParsing="false" text="Back">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                           <padding>
+                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                           </padding>
+                        </Button>
+                     </children>
+                  </GridPane>
+               </children>
+            </VBox>
+         </bottom>
       </BorderPane>
    </StackPane>
    <padding>
