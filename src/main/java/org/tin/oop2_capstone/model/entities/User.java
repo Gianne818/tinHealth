@@ -1,6 +1,9 @@
 package org.tin.oop2_capstone.model.entities;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
+    private static final long serialVersionUID = 1L;
     private int uid;
     private String fullname;
     private String email;
@@ -29,6 +32,10 @@ public class User {
 
     public int getUid() {
         return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
     }
 
     public int getAge() {

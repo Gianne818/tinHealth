@@ -5,15 +5,18 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-
 import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
+
+import org.tin.oop2_capstone.model.entities.User;
+import org.tin.oop2_capstone.services.SessionManager;
 
 public class MainController {
     @FXML public SplitPane splitPaneMain;
@@ -21,6 +24,7 @@ public class MainController {
     @FXML public AnchorPane anchorPaneSideBar;
     @FXML public AnchorPane anchorPaneContent;
     @FXML public ImageView imgViewCollapse;
+    @FXML public Label userFullNameLabel;
 
     @FXML public HBox dashboardNav;
     @FXML public HBox foodLogNav;
@@ -43,6 +47,12 @@ public class MainController {
 
         navs = FXCollections.observableArrayList();
         navs.addAll(dashboardNav, foodLogNav, activityLogNav, settingsNav, profileNav, notificationsNav, healthNav);
+
+        // Set user full name from session
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+        if (currentUser != null && userFullNameLabel != null) {
+            userFullNameLabel.setText(currentUser.getFullname());
+        }
 
         navigateToView("dashboard-view", "dashboardScrollPane", dashboardNav);
     }

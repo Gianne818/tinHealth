@@ -8,8 +8,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import org.tin.oop2_capstone.database.repositories.UserRepository;
+import org.tin.oop2_capstone.model.entities.User;
 import org.tin.oop2_capstone.utils.SceneSwitcher;
-
+import org.tin.oop2_capstone.services.SessionManager;
 import java.io.IOException;
 
 public class LoginController {
@@ -27,6 +28,10 @@ public class LoginController {
         String password = passwordField.getText();
 
         if (userRepository.validateLogin(username, password)) {
+            // Get user and save to session
+            User user = userRepository.getUserByUsername(username);
+            SessionManager.getInstance().setCurrentUser(user);
+
             SceneSwitcher.use(buttonLogin, "main-view")
                     .setCss("application")
                     .setMinDimensions(900, 850)
