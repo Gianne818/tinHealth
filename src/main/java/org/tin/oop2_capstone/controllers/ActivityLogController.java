@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import org.tin.oop2_capstone.model.entities.Activity;
 import org.tin.oop2_capstone.model.entities.ActivityLog;
@@ -19,6 +20,12 @@ import java.time.LocalTime;
 import java.util.List;
 
 public class ActivityLogController {
+    @FXML Button buttonAddEntry;
+    @FXML Button buttonCancel;
+    @FXML TextField textfieldExercise;
+    @FXML TextField textfieldDuration;
+    @FXML TextField textfieldCaloriesBurned;
+    @FXML GridPane gridPaneAddEntry;
     @FXML Button buttonAddActivity;
     @FXML ScrollPane activityLogScrollPane;
     @FXML ListView <GridPane> activityLogListView;
@@ -62,8 +69,29 @@ public class ActivityLogController {
         activityLogListView.setItems(activityGridPanes);
     }
 
-
-
+    private boolean addEntryisVisible = false;
     public void onButtonAddActivityClicked(ActionEvent actionEvent) {
+        if(!addEntryisVisible){
+            gridPaneAddEntry.setVisible(true);
+        } else {
+            gridPaneAddEntry.setVisible(false);
+        }
+
+        addEntryisVisible = !addEntryisVisible;
+    }
+
+    public void onButtonAddEntryClicked(ActionEvent actionEvent) {
+        //TODO: Convert the textfield inputs into strings and add them into the database(?)
+
+        //remove the prompt box
+        gridPaneAddEntry.setVisible(false);
+        addEntryisVisible = !addEntryisVisible;
+
+        //TODO: refresh the listview if it queries from the database to load new added activity(?)
+    }
+
+    public void onButtonCancelClicked(ActionEvent actionEvent) {
+        gridPaneAddEntry.setVisible(false);
+        addEntryisVisible = !addEntryisVisible;
     }
 }
