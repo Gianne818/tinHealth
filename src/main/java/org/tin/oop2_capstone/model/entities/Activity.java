@@ -8,13 +8,16 @@ public class Activity {
     private String unit;
     private double quantity;
     private double calories;
+    private String intensity;
 
-    public Activity(String name, LocalTime logTime, String unit, double quantity, double calories) {
+    //todo: remove calorie from parameter and calculate based on intensity and user info
+    public Activity(String name, LocalTime logTime, String unit, double quantity, double calories, String intensity) {
         this.name = name;
         this.logTime = logTime;
         this.unit = unit;
         this.quantity = quantity;
         this.calories = calories;
+        this.intensity = intensity;
     }
 
 

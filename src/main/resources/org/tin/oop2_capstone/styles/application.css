@@ -142,14 +142,14 @@
     -fx-fill: -brand-text-color;
 }
 
-.notif-card {
+.notif-card  {
     -fx-background-color: -bg-default;
     -fx-background-radius: 14px;
     -fx-border-radius: 14px;
     -fx-effect: dropshadow(three-pass-box, lightgrey, 10, 0, 0, 2);
 }
 
-.notif-card:hover {
+.notif-card:hover, .list-cell:hover{
     -fx-effect: dropshadow(three-pass-box, lightgrey, 14, 0, 0, 3);
     -fx-scale-x: 1.005;
     -fx-scale-y: 1.05;
@@ -450,10 +450,15 @@
     /*inc and dec still functional. could not figure out how to disable it fully*/
 }
 
-.list-view{
+.list-view, .list-view .list-cell{
     -fx-background-color: transparent;
     -fx-border-color: transparent;
 }
+
+.list-cell{
+    -fx-padding: 0 0 15 0;
+}
+
 
 
 

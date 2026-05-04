@@ -122,6 +122,7 @@ public class MainController {
 
         } catch (IOException e) {
             System.out.println("File not found!");
+            e.printStackTrace();
         }
     }
 
