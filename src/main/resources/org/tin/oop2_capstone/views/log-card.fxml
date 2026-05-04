@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.SVGPath?>
+
+<GridPane hgap="5.0" styleClass="cardContent" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.LogCardController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="315.0" minWidth="10.0" prefWidth="315.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="183.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="103.0" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="103.0" minWidth="10.0" prefWidth="32.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <padding>
+      <Insets bottom="25.0" left="20.0" right="20.0" top="25.0" />
+   </padding>
+   <children>
+      <Label fx:id="logNameLabel" styleClass="cardTitle2" text="logNameLabel" />
+      <Label fx:id="timeLabel" styleClass="lightText" text="timeLabel" GridPane.rowIndex="1" />
+      <Label fx:id="numberLabel" styleClass="cardTitle2" text="numberLabel" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
+      <Label fx:id="unitLabel" styleClass="lightText" text="unitLabel" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+      <Label fx:id="kcalLabel" layoutX="507.0" layoutY="51.0" styleClass="calorieBurnCountText" text="kcalLabel" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
+      <Label layoutX="507.0" layoutY="51.0" styleClass="lightText" text="kcal" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+      <SVGPath fx:id="onDeleteClick" content="M2.25 4.5H15.75  M14.25 4.5V15C14.25 15.75 13.5 16.5 12.75 16.5H5.25C4.5 16.5 3.75 15.75 3.75 15V4.5 M6 4.5V3C6 2.25 6.75 1.5 7.5 1.5H10.5C11.25 1.5 12 2.25 12 3V4.5 M7.5 8.25V12.75 M10.5 8.25V12.75" fill="TRANSPARENT" stroke="#64748b" strokeWidth="1.67" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
+   </children>
+</GridPane>

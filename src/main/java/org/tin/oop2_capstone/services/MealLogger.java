@@ -1,6 +1,6 @@
 package org.tin.oop2_capstone.services;
 
-public class FoodLogger extends Logger {
+public class MealLogger extends Logger {
     // todo: implement this class. Should be a singleton
     @Override
     public boolean isValid() {

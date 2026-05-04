@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.tin.oop2_capstone.model.entities.Food;
-import org.tin.oop2_capstone.model.entities.FoodLog;
 import org.tin.oop2_capstone.model.entities.NutritionDetails;
 
 public class FoodParser {

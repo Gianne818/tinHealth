@@ -294,8 +294,8 @@
     -fx-text-fill: -green;
     -fx-font-family: "Inter 18pt SemiBold";
 }
-.calorieBurnCountText{
-    -fx-text-fill: -vibrant-red;
+#kcalLabel{
+    -fx-text-fill: -accent-color;
     -fx-font-family: "Inter 18pt SemiBold";
 }
 .minuteCountText{
@@ -450,6 +450,10 @@
     /*inc and dec still functional. could not figure out how to disable it fully*/
 }
 
+.list-view{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
 
 
 

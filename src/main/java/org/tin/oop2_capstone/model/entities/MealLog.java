@@ -4,12 +4,18 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FoodLog {
+/**
+ * Holds all Meals of the user.
+ * Data will come from logRepository, as it returns all Meals of the user
+ * Data can also come from adding new Meal In this case, add to db via MealRepository
+ */
+
+public class MealLog {
     private List<Meal> meals;
     private LocalDate date;
 
 
-    public FoodLog(LocalDate date){
+    public MealLog(LocalDate date){
         this.date = date;
         this.meals = new ArrayList<>();
     }

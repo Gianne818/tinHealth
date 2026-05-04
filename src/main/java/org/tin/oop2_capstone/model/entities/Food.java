@@ -19,6 +19,7 @@ public class Food extends Consumable{
         return super.getName();
     }
 
+
     @Override
     public NutritionDetails getNutrition() {
         return nutrition; }

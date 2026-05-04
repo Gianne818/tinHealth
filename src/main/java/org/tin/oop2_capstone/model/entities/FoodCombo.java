@@ -1,7 +1,13 @@
 package org.tin.oop2_capstone.model.entities;
 
+/**
+ * FoodCombo will be for composite foods, in order for us to query them separately
+ * If the user inputs Oreos with Milk, we get the Nutrients for both separately.
+ * It will be stored as foods[0] = Orea, foods[1] = Milk
+ */
+
 public class FoodCombo extends Consumable {
-    // name will be the raw user input, like "2 hotdogs, 1 rice"
+    // name will be the raw user input, like "Burger with Cheese"
 
     private Food[] foods;
     private NutritionDetails nutrition;

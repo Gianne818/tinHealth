@@ -11,16 +11,28 @@ public class Meal {
     private Consumable consumable;
     private LocalTime logTime;
     private NutritionDetails nutritionDetails;
+    private double quantity;
+    private String unit;
 
-    public Meal(MealType mealType, Consumable consumable, LocalTime logTime) {
+    public Meal(MealType mealType, Consumable consumable, LocalTime logTime, double quantity, String unit) {
         this.mealType = mealType;
         this.consumable = consumable;
         this.logTime = logTime;
         this.nutritionDetails = calculateTotal(consumable);
+        this.quantity = quantity;
+        this.unit = unit;
     }
      private NutritionDetails calculateTotal(Consumable consumable){
         return consumable.getNutrition();
      }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public double getQuantity() {
+        return quantity;
+    }
 
     public MealType getMealType() {
         return mealType;
