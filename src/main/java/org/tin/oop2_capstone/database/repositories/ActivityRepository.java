@@ -151,4 +151,59 @@ public class ActivityRepository {
         }
         return null;
     }
+
+    public Map<String, Double[]> getWeeklyCalories(int userId) {
+        Map<String, Double[]> weeklyData = new HashMap<>();
+
+        String query = """
+        SELECT 
+            DAYOFWEEK(m.log_timestamp) AS day,
+            COALESCE(SUM(nd.calories * m.serving_size), 0) AS calories_in,
+            COALESCE((SELECT SUM(calories) FROM Activities WHERE user_id = ? AND DAYOFWEEK(log_timestamp) = day), 0) AS calories_out
+        FROM Meals m
+        JOIN Consumables c ON m.consumable_id = c.consumable_id
+        LEFT JOIN NutritionalDetails nd ON c.nutri_id = nd.nutri_id
+        WHERE m.user_id = ? AND YEARWEEK(m.log_timestamp, 1) = YEARWEEK(CURDATE(), 1)
+        GROUP BY DAYOFWEEK(m.log_timestamp)
+        """;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, userId);
+            stmt.setInt(2, userId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int day = rs.getInt("day");
+                double caloriesIn = rs.getDouble("calories_in");
+                double caloriesOut = rs.getDouble("calories_out");
+
+                String dayName = getDayName(day);
+                weeklyData.put(dayName, new Double[]{caloriesIn, caloriesOut});
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // Fill missing days with zeros
+        String[] allDays = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+        for (String day : allDays) {
+            weeklyData.putIfAbsent(day, new Double[]{0.0, 0.0});
+        }
+
+        return weeklyData;
+    }
+
+    private String getDayName(int dayOfWeek) {
+        switch (dayOfWeek) {
+            case 2: return "Mon";
+            case 3: return "Tue";
+            case 4: return "Wed";
+            case 5: return "Thu";
+            case 6: return "Fri";
+            case 7: return "Sat";
+            case 1: return "Sun";
+            default: return "";
+        }
+    }
 }
