@@ -55,7 +55,6 @@ public class MainController {
 
     @FXML public Button quickWorkoutButton;
 
-
     public void initialize(){
         rootAnchorPane.getStyleClass().add("light");
         anchorPaneSideBar.getStyleClass().add("light");
@@ -71,7 +70,7 @@ public class MainController {
         }
 
         navigateToView("dashboard-view", "dashboardScrollPane", dashboardNav);
-        loadDashboardStats();
+        loadSideBoardStats();
     }
 
     public void toggleSideBar(){
@@ -183,11 +182,11 @@ public class MainController {
         }
     }
 
-    private void loadDashboardStats() {
+    private void loadSideBoardStats() {
         int userId = SessionManager.getInstance().getCurrentUser().getUid();
 
         // Calories
-        double calories = mealRepository.getDailyCalories(userId);
+        double calories = mealRepository.getDailyCaloriesIn(userId);
         calories_today.setText(String.valueOf((int) calories));
 
         // Weekly workouts
@@ -200,13 +199,9 @@ public class MainController {
 
         // Streak
         int streak = activityRepository.getCurrentStreak(userId);
-        String streakText = streak + " Days";
-        if(streak == 1){
-            streakText = streak + " Day";
-        }
+        String streakText = streak + (streak == 1 ? " Day" : " Days");
         curr_streak_1.setText(streakText);
         curr_streak_2.setText(streakText);
     }
-
 
 }

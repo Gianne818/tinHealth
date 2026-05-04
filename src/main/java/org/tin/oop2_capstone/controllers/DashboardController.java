@@ -17,16 +17,22 @@ import  javafx.scene.chart.PieChart.Data;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import java.io.IOException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.Map;
+
 import javafx.scene.shape.Line;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
+import org.tin.oop2_capstone.database.repositories.ActivityRepository;
+import org.tin.oop2_capstone.database.repositories.MealRepository;
+import org.tin.oop2_capstone.services.SessionManager;
 
 public class DashboardController {
     @FXML ScrollPane dashboardScrollPane;
     @FXML private LineChart<?, ?> weeklyChart;
     @FXML private CategoryAxis xAxis;
     @FXML private NumberAxis yAxis;
-
 
     @FXML PieChart macroDistPieChart;
     @FXML Circle macroDistInnerHoleCircle;
@@ -37,15 +43,21 @@ public class DashboardController {
     @FXML private Label carbsLabelMacro;
     @FXML private Label fatsLabelMacro;
 
+    private MealRepository mealRepository = new MealRepository();
+    private ActivityRepository activityRepository = new ActivityRepository();
+    @FXML public Label caloriesInLabel;
+    @FXML public Label caloriesOutLabel;
+    @FXML public Label netCaloriesLabel;
+    @FXML public Label activityStreakLabel;
+
     public void initialize() {
         dashboardScrollPane.getStyleClass().add("light");
         macroDistData = FXCollections.observableArrayList();
 
-        // todo: use real data for all the charts
-        updateMacroDist(50.0, 30.0, 20.0);
-
-        initCaloriesLineChart();
+        initDashboardHeader();
         initMacroDist();
+        initCaloriesLineChart();
+        initRecentLogs();
     }
 
     private void setupGlobalTooltip(LineChart<String, Number> chart, Series<String, Number> in, Series<String, Number> out) {
@@ -93,8 +105,13 @@ public class DashboardController {
                 XYChart.Data<String, Number> inData = findData(in, day);
                 XYChart.Data<String, Number> outData = findData(out, day);
 
-                if (inData != null && outData != null){
-                    toolTipController.setData(day, inData.getYValue(), outData.getYValue());
+                // If the inValue or outValue is null set it to zero. i.e only Monday data, no tuesday or any other dates.
+                // In this case, single dot only
+                // Another example if today is monday, it will not show a line-connect to Tuesday as that doesn't make sense.
+                if (inData != null) {
+                    double inValue = inData.getYValue() != null ? inData.getYValue().doubleValue() : 0.0;
+                    double outValue = outData != null && outData.getYValue() != null ? outData.getYValue().doubleValue() : 0.0;
+                    toolTipController.setData(day, inValue, outValue);
                     popup.show(plotArea, e.getScreenX() + 15, e.getScreenY() + 15);
                 }
             } else {
@@ -121,6 +138,88 @@ public class DashboardController {
         macroDistPieChart.setData(macroDistData);
         macroDistPieChart.setLegendVisible(false);
         macroDistInnerHoleCircle.radiusProperty().bind(macroDistPieChart.widthProperty().divide(3.5));
+
+        int userId = SessionManager.getInstance().getCurrentUser().getUid();
+        ActivityRepository.MacroData macros = activityRepository.getWeeklyMacros(userId);
+
+        double protein = macros.protein;
+        double carbs = macros.carbs;
+        double fats = macros.fats;
+        double total = protein + carbs + fats;
+
+        if (total > 0) {
+            protein = (protein / total) * 100;
+            carbs = (carbs / total) * 100;
+            fats = (fats / total) * 100;
+        }
+
+        updateMacroDist(protein, carbs, fats);
+    }
+
+    private void initCaloriesLineChart(){
+        xAxis.setCategories(FXCollections.observableArrayList(
+                "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"
+        ));
+        xAxis.setGapStartAndEnd(false);
+        xAxis.setTickMarkVisible(false);
+
+        int userId = SessionManager.getInstance().getCurrentUser().getUid();
+        Map<String, Double[]> weeklyData = activityRepository.getWeeklyCalories(userId);
+
+        LineChart<String, Number> chart = (LineChart<String, Number>) weeklyChart;
+        XYChart.Series<String, Number> calIn = new XYChart.Series<>();
+        XYChart.Series<String, Number> calOut = new XYChart.Series<>();
+
+        String[] allDays = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+        LocalDate today = LocalDate.now();
+        int currentDayIndex = today.getDayOfWeek().getValue() - 1;
+
+        for (int i = 0; i <= currentDayIndex; i++) {
+            String day = allDays[i];
+            Double[] data = weeklyData.getOrDefault(day, new Double[]{0.0, 0.0});
+            calIn.getData().add(new XYChart.Data<>(day, data[0]));
+            calOut.getData().add(new XYChart.Data<>(day, data[1]));
+        }
+
+        for (int i = currentDayIndex + 1; i < allDays.length; i++) {
+            String day = allDays[i];
+            calIn.getData().add(new XYChart.Data<>(day, null));
+            calOut.getData().add(new XYChart.Data<>(day, null));
+        }
+
+        double maxIn = calIn.getData().stream().filter(d -> d.getYValue() != null).mapToDouble(d -> d.getYValue().doubleValue()).max().orElse(0);
+        double maxOut = calOut.getData().stream().filter(d -> d.getYValue() != null).mapToDouble(d -> d.getYValue().doubleValue()).max().orElse(0);
+        double maxValue = Math.max(maxIn, maxOut);
+
+        double tickUnit = 550;
+        double minUpperBound = tickUnit * 4;
+        double calculatedBound = Math.ceil((maxValue + maxValue * 0.125) / tickUnit) * tickUnit;
+        double upperBound = Math.max(calculatedBound, minUpperBound);
+
+        NumberAxis yAxis = (NumberAxis) chart.getYAxis();
+        yAxis.setAutoRanging(false);
+        yAxis.setTickUnit(tickUnit);
+        yAxis.setLowerBound(0);
+        yAxis.setUpperBound(upperBound);
+
+        chart.getData().clear();
+        chart.getData().addAll(calIn, calOut);
+        chart.setLegendVisible(false);
+        setupGlobalTooltip(chart, calIn, calOut);
+    }
+
+    private void initDashboardHeader(){
+        int userId = SessionManager.getInstance().getCurrentUser().getUid();
+        double caloriesIn = mealRepository.getDailyCaloriesIn(userId);
+        caloriesInLabel.setText(String.valueOf((int) caloriesIn));
+
+        double caloriesOut = activityRepository.getDailyCaloriesOut(userId);
+        caloriesOutLabel.setText(String.valueOf(caloriesOut));
+
+        netCaloriesLabel.setText(String.valueOf((int) (caloriesIn - caloriesOut)));
+
+        int streak = activityRepository.getCurrentStreak(userId);
+        activityStreakLabel.setText(String.valueOf(streak));
     }
 
     private void updateMacroDist(double protein, double carbs, double fats) {
@@ -134,56 +233,7 @@ public class DashboardController {
         fatsLabelMacro.setText(String.format("%.1f%%", fats));
     }
 
-    private void initCaloriesLineChart(){
-        xAxis.setCategories(FXCollections.observableArrayList(
-                "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"
-        ));
-        xAxis.setGapStartAndEnd(false);
-        xAxis.setTickMarkVisible(false);
+    private void initRecentLogs(){
 
-        LineChart<String, Number> chart = (LineChart<String, Number>) weeklyChart;
-
-        XYChart.Series<String, Number> calIn = new XYChart.Series<>();
-        calIn.getData().addAll(
-                new XYChart.Data<>("Mon", 1850),
-                new XYChart.Data<>("Tue", 2100),
-                new XYChart.Data<>("Wed", 1950),
-                new XYChart.Data<>("Thu", 2050),
-                new XYChart.Data<>("Fri", 1900),
-                new XYChart.Data<>("Sat", 2200),
-                new XYChart.Data<>("Sun", 770)
-        );
-
-        XYChart.Series<String, Number> calOut = new XYChart.Series<>();
-        calOut.getData().addAll(
-                new XYChart.Data<>("Mon", 420),
-                new XYChart.Data<>("Tue", 380),
-                new XYChart.Data<>("Wed", 450),
-                new XYChart.Data<>("Thu", 400),
-                new XYChart.Data<>("Fri", 520),
-                new XYChart.Data<>("Sat", 350),
-                new XYChart.Data<>("Sun", 465)
-        );
-
-        // Find max value from both series
-        double maxIn = calIn.getData().stream().mapToDouble(d -> d.getYValue().doubleValue()).max().orElse(0);
-        double maxOut = calOut.getData().stream().mapToDouble(d -> d.getYValue().doubleValue()).max().orElse(0);
-        double maxValue = Math.max(maxIn, maxOut);
-
-        // Calculate upper bound rounded up to nearest 550
-        double upperBound = Math.ceil((maxValue + maxValue * 0.125) / 550) * 550;
-
-        // Only 5 yAxis Labels
-        NumberAxis yAxis = (NumberAxis) chart.getYAxis();
-        yAxis.setAutoRanging(false);
-        yAxis.setTickUnit(550);
-        yAxis.setLowerBound(0);
-        yAxis.setUpperBound(upperBound);
-        yAxis.setMinorTickCount(0);
-
-        chart.getData().addAll(calIn, calOut);
-
-        chart.setLegendVisible(false);
-        setupGlobalTooltip(chart, calIn, calOut);
     }
 }

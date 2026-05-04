@@ -11,7 +11,7 @@ public class MealRepository {
      * Validate before inserting into database.
      * sometimes, the API returns a null, or maybe the user will input bad values
      */
-    public double getDailyCalories(int userId) {
+    public double getDailyCaloriesIn(int userId) {
         String query = """
         SELECT COALESCE(SUM(
             CASE 
