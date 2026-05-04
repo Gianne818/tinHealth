@@ -20,6 +20,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.Region?>
 
 <ScrollPane fx:id="dashboardScrollPane" fitToWidth="true" styleClass="dashboardScrollPane" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.DashboardController">
    <content>
@@ -132,7 +133,7 @@
                            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0" styleClass="cardContent" GridPane.columnSpan="2" GridPane.rowIndex="1">
                                <children>
                            <Label styleClass="cardTitle" text="Quick Actions" />
-                                   <GridPane hgap="20.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                                   <GridPane onMouseClicked="#goToFoodLog" style="-fx-cursor: hand;" hgap="20.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                                        <columnConstraints>
                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -150,7 +151,7 @@
                                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                                     </padding>
                                            </VBox>
-                                           <VBox fx:id="logActivityVbox" alignment="CENTER" spacing="10.0" styleClass="logQuickActions" GridPane.columnIndex="1">
+                                           <VBox onMouseClicked="#goToActivityLog" style="-fx-cursor: hand;" fx:id="logActivityVbox" alignment="CENTER" spacing="10.0" styleClass="logQuickActions" GridPane.columnIndex="1">
                                                <children>
                                        <SVGPath content="M17.4999 9.16671H15.4333C15.0691 9.16593 14.7146 9.28446 14.4242 9.50418C14.1337 9.7239 13.9232 10.0327 13.8249 10.3834L11.8666 17.35C11.854 17.3933 11.8276 17.4313 11.7916 17.4584C11.7555 17.4854 11.7117 17.5 11.6666 17.5C11.6215 17.5 11.5776 17.4854 11.5416 17.4584C11.5055 17.4313 11.4792 17.3933 11.4666 17.35L6.86658 0.983374C6.85396 0.9401 6.82765 0.902087 6.79158 0.875041C6.75552 0.847994 6.71166 0.833374 6.66659 0.833374C6.62151 0.833374 6.57765 0.847994 6.54159 0.875041C6.50552 0.902087 6.47921 0.9401 6.46659 0.983374L4.50825 7.95004C4.41031 8.29934 4.20107 8.60714 3.91231 8.82672C3.62354 9.0463 3.27102 9.16567 2.90825 9.16671H0.833252" fill="TRANSPARENT" stroke="WHITE" strokeWidth="1.67" styleClass="icon-nav" />
                                                    <Label text="Log Activity" />
@@ -192,7 +193,15 @@
                            <!-- Weekly Calorie Tracking  -->
                            <VBox styleClass="cardContent" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
                                <children>
-                                   <Label styleClass="cardTitle" text="Weekly Calorie Tracking" />
+                                   <HBox alignment="CENTER_LEFT" spacing="10">
+                                       <Label styleClass="cardTitle" text="Weekly Calorie Tracking"  />
+                                       <Region HBox.hgrow="ALWAYS" />
+                                       <SVGPath onMouseClicked="#goToActivityLog" style="-fx-cursor: hand;" content="M9 5L14.15 10C14.4237 10.2563 14.6419 10.5659 14.791 10.9099C14.9402 11.2539 15.0171 11.625 15.0171 12C15.0171 12.375 14.9402 12.7458 14.791 13.0898C14.6419 13.4339 14.4237 13.7437 14.15 14L9 19" fill="TRANSPARENT" stroke="#000000" strokeWidth="1.5" strokeLineCap="round" strokeLineJoin="round" >
+                                           <HBox.margin>
+                                               <Insets right="20" />
+                                           </HBox.margin>
+                                       </SVGPath>
+                                   </HBox>
                                    <LineChart fx:id="weeklyChart" prefHeight="425">
                                        <VBox.margin>
                                            <Insets top="25.0" />
@@ -215,8 +224,14 @@
 
                            <!-- Weekly Macro Distribution -->
                            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="-20" styleClass="cardContent" GridPane.rowIndex="2"> <!-- Label Weekly Macro Distribution and PieChart closer together -->
-                               <children>
-                                   <Label styleClass="cardTitle" text="Weekly Macro Distribution" />
+                               <children >
+                                   <HBox alignment="CENTER_LEFT" spacing="10"  >
+                                       <Label styleClass="cardTitle" text="Weekly Macro Distribution" />
+                                       <Region HBox.hgrow="ALWAYS" />
+                                       <StackPane onMouseClicked="#goToFoodLog" style="-fx-cursor: hand; -fx-padding: 10px;">
+                                           <SVGPath content="M9 5L14.15 10C14.4237 10.2563 14.6419 10.5659 14.791 10.9099C14.9402 11.2539 15.0171 11.625 15.0171 12C15.0171 12.375 14.9402 12.7458 14.791 13.0898C14.6419 13.4339 14.4237 13.7437 14.15 14L9 19" fill="TRANSPARENT" stroke="#000000" strokeWidth="1.5" strokeLineCap="round" strokeLineJoin="round" />
+                                       </StackPane>
+                                   </HBox>
 
                                    <StackPane>
                                        <children>
@@ -324,130 +339,65 @@
                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                  </rowConstraints>
                   <children>
-                     <VBox spacing="20.0" styleClass="cardContent">
-                        <children>
-                           <GridPane>
-                               <padding>
-                                   <Insets top="15.0" bottom="15.0" />
-                               </padding>
-                             <columnConstraints>
-                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                             </columnConstraints>
-                             <rowConstraints>
-                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                             </rowConstraints>
-                              <children>
-                                  <Label text="Recent Food Logs" style="-fx-font-size: 20px; -fx-text-fill: #0bb980; -fx-font-weight: bold;" />
-                                  <Label text="View All    " style="-fx-text-fill: #0bb980; -fx-font-size: 18px;" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
-                                      <styleClass>
-                                          hover-underline
-                                      </styleClass>
-                                  </Label>
+                      <VBox fx:id="recentFoodLogsContainer" spacing="20.0" styleClass="cardContent">
+                          <children>
+                              <GridPane>
+                                  <padding>
+                                      <Insets top="15.0" bottom="15.0" />
+                                  </padding>
+                                  <columnConstraints>
+                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  </columnConstraints>
+                                  <rowConstraints>
+                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  </rowConstraints>
+                                  <children>
+                                      <Label  text="Recent Food Logs" style="-fx-font-size: 20px; -fx-text-fill: #0bb980; -fx-font-weight: bold;" />
+                                      <Label fx:id="view_all_food" onMouseClicked="#goToFoodLog" text="View All" style="-fx-cursor: hand; -fx-text-fill: #0bb980; -fx-font-size: 18px;" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                                          <padding>
+                                              <Insets right="20" />
+                                          </padding>
+                                      </Label>
+                                      <SVGPath onMouseClicked="#goToFoodLog" style="-fx-cursor: hand;" content="M9 5L14.15 10C14.4237 10.2563 14.6419 10.5659 14.791 10.9099C14.9402 11.2539 15.0171 11.625 15.0171 12C15.0171 12.375 14.9402 12.7458 14.791 13.0898C14.6419 13.4339 14.4237 13.7437 14.15 14L9 19" fill="TRANSPARENT" stroke="#0bb980" strokeWidth="1.5" strokeLineCap="round" strokeLineJoin="round" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
+                                  </children>
+                              </GridPane>
+                          </children>
+                          <padding>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
+                          </padding>
+                      </VBox>
 
-                                  <SVGPath content="M9 5L14.15 10C14.4237 10.2563 14.6419 10.5659 14.791 10.9099C14.9402 11.2539 15.0171 11.625 15.0171 12C15.0171 12.375 14.9402 12.7458 14.791 13.0898C14.6419 13.4339 14.4237 13.7437 14.15 14L9 19" fill="TRANSPARENT" stroke="#0bb980"
-                                           strokeWidth="1.5" strokeLineCap="round" strokeLineJoin="round" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
-                              </children>
-                           </GridPane>
-                           <GridPane>
-                              <columnConstraints>
-                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              </columnConstraints>
-                              <rowConstraints>
-                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              </rowConstraints>
-                              <children>
-                                 <Label text="Jaboli Spicy Chicjken" />
-                                 <Label text="400" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
-                                 <Label text="Breakfast • 8:30 AM" GridPane.rowIndex="1" />
-                                 <Label text="kcal" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                              </children>
-                           </GridPane>
-                           <Separator prefWidth="200.0" />
-                           <GridPane>
-                              <columnConstraints>
-                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              </columnConstraints>
-                              <rowConstraints>
-                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              </rowConstraints>
-                              <children>
-                                 <Label text="Pater" />
-                                 <Label text="320" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
-                                 <Label text="Lunch • 12:30 PM" GridPane.rowIndex="1" />
-                                 <Label text="kcal" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                              </children>
-                           </GridPane>
-                        </children>
-                        <padding>
-                           <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
-                        </padding>
-                     </VBox>
+                      <!-- Recent Activity Logs -->
+                      <VBox fx:id="recentActivityLogsContainer" spacing="20.0" styleClass="cardContent" GridPane.columnIndex="1">
+                          <children>
+                              <GridPane>
+                                  <padding>
+                                      <Insets top="15.0" bottom="15.0" />
+                                  </padding>
+                                  <columnConstraints>
+                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  </columnConstraints>
+                                  <rowConstraints>
+                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  </rowConstraints>
+                                  <children>
+                                      <Label text="Recent Activity Logs" styleClass="recent-activity-logs-header" />
+                                      <Label fx:id="view_all_activity" onMouseClicked="#goToActivityLog" style="-fx-cursor: hand;"  text="View All" styleClass="view-all-link-activity" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                                          <padding>
+                                              <Insets right="20" />
+                                          </padding>
+                                      </Label>
+                                      <SVGPath onMouseClicked="#goToActivityLog" style="-fx-cursor: hand;" content="M9 5L14.15 10C14.4237 10.2563 14.6419 10.5659 14.791 10.9099C14.9402 11.2539 15.0171 11.625 15.0171 12C15.0171 12.375 14.9402 12.7458 14.791 13.0898C14.6419 13.4339 14.4237 13.7437 14.15 14L9 19" fill="TRANSPARENT" stroke="#ef4444" strokeWidth="1.5" strokeLineCap="round" strokeLineJoin="round" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
+                                  </children>
+                              </GridPane>
+                          </children>
+                          <padding>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
+                          </padding>
+                      </VBox>
 
-                     <VBox spacing="20.0" styleClass="cardContent" GridPane.columnIndex="1">
-                        <children>
-                           <GridPane>
-                             <columnConstraints>
-                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                             </columnConstraints>
-                             <rowConstraints>
-                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                             </rowConstraints>
-                              <children>
-                                 <Label text="Recent Activities" />
-                                 <Label text="View All &gt;" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
-                              </children>
-                           </GridPane>
-                           <GridPane>
-                              <columnConstraints>
-                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              </columnConstraints>
-                              <rowConstraints>
-                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              </rowConstraints>
-                              <children>
-                                 <Label text="Morning Run" />
-                                 <Label text="285" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
-                                 <Label text="07:00 AM" GridPane.rowIndex="1" />
-                                 <Label text="kcal" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                                 <Label text="30" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
-                                 <Label text="min" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                              </children>
-                           </GridPane>
-                           <Separator prefWidth="200.0" />
-                           <GridPane>
-                              <columnConstraints>
-                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              </columnConstraints>
-                              <rowConstraints>
-                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              </rowConstraints>
-                              <children>
-                                 <Label text="Yoga Sesion" />
-                                 <Label text="Label" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
-                                 <Label text="06:00PM" GridPane.rowIndex="2" />
-                                 <Label text="kcal" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                                 <Label text="45" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
-                                 <Label text="min" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                              </children>
-                           </GridPane>
-                        </children>
-                        <padding>
-                           <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
-                        </padding>
-                     </VBox>
                   </children>
                   <padding>
                      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

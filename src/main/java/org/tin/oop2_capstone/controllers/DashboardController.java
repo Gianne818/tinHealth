@@ -5,13 +5,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.HPos;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.chart.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.PopupControl;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.Separator;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
 import javafx.scene.chart.XYChart.Series;
 import  javafx.scene.chart.PieChart.Data;
 import javafx.scene.paint.Color;
@@ -19,14 +23,15 @@ import javafx.scene.shape.Circle;
 import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 import javafx.scene.shape.Line;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import org.tin.oop2_capstone.database.repositories.ActivityRepository;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
 import org.tin.oop2_capstone.services.SessionManager;
+import org.tin.oop2_capstone.utils.SceneSwitcher;
 
 public class DashboardController {
     @FXML ScrollPane dashboardScrollPane;
@@ -49,6 +54,11 @@ public class DashboardController {
     @FXML public Label caloriesOutLabel;
     @FXML public Label netCaloriesLabel;
     @FXML public Label activityStreakLabel;
+
+    @FXML private VBox recentFoodLogsContainer;
+    @FXML private VBox recentActivityLogsContainer;
+
+    private MainController mainController;
 
     public void initialize() {
         dashboardScrollPane.getStyleClass().add("light");
@@ -233,7 +243,141 @@ public class DashboardController {
         fatsLabelMacro.setText(String.format("%.1f%%", fats));
     }
 
-    private void initRecentLogs(){
+    private void initRecentLogs() {
+        initRecentFoodLogs();
+        initRecentActivityLogs();
+    }
 
+    private void initRecentFoodLogs() {
+        int userId = SessionManager.getInstance().getCurrentUser().getUid();
+        List<Map<String, Object>> foodLogs = activityRepository.getTodayFoodLogs(userId);
+
+        recentFoodLogsContainer.getChildren().remove(1, recentFoodLogsContainer.getChildren().size());
+
+        for (int i = 0; i < foodLogs.size(); i++) {
+            Map<String, Object> log = foodLogs.get(i);
+
+            GridPane grid = new GridPane();
+            grid.setHgap(10);
+
+            ColumnConstraints col1 = new ColumnConstraints();
+            col1.setHgrow(Priority.ALWAYS);
+            ColumnConstraints col2 = new ColumnConstraints();
+            col2.setHgrow(Priority.NEVER);
+            col2.setPrefWidth(80);
+            grid.getColumnConstraints().addAll(col1, col2);
+
+            // Row 0: Meal name | Calories
+            Label nameLabel = new Label((String) log.get("name"));
+            nameLabel.getStyleClass().add("recent-food-name");
+            grid.add(nameLabel, 0, 0);
+
+            Label caloriesLabel = new Label(String.valueOf(log.get("total_calories")));
+            caloriesLabel.getStyleClass().add("recent-food-calories");
+            grid.add(caloriesLabel, 1, 0);
+            GridPane.setHalignment(caloriesLabel, HPos.RIGHT);
+
+            // Row 1: Meal type • time | kcal
+            Label timeLabel = new Label(log.get("meal_type") + " • " + log.get("log_time"));
+            timeLabel.getStyleClass().add("recent-food-time");
+            grid.add(timeLabel, 0, 1);
+
+            Label kcalLabel = new Label("kcal");
+            kcalLabel.getStyleClass().add("recent-food-kcal");
+            grid.add(kcalLabel, 1, 1);
+            GridPane.setHalignment(kcalLabel, HPos.RIGHT);
+
+            recentFoodLogsContainer.getChildren().add(grid);
+
+            if (i < foodLogs.size() - 1) {
+                recentFoodLogsContainer.getChildren().add(new Separator());
+            }
+        }
+    }
+
+    private void initRecentActivityLogs() {
+        int userId = SessionManager.getInstance().getCurrentUser().getUid();
+        List<Map<String, Object>> activityLogs = activityRepository.getTodayActivityLogs(userId);
+
+        recentActivityLogsContainer.getChildren().remove(1, recentActivityLogsContainer.getChildren().size());
+
+        for (int i = 0; i < activityLogs.size(); i++) {
+            Map<String, Object> log = activityLogs.get(i);
+
+            GridPane grid = new GridPane();
+            grid.setHgap(5);
+
+            ColumnConstraints col1 = new ColumnConstraints();
+            col1.setHgrow(Priority.ALWAYS);
+            ColumnConstraints col2 = new ColumnConstraints();
+            col2.setHgrow(Priority.NEVER);
+            col2.setPrefWidth(45);
+            ColumnConstraints col3 = new ColumnConstraints();
+            col3.setHgrow(Priority.NEVER);
+            col3.setPrefWidth(45);
+            grid.getColumnConstraints().addAll(col1, col2, col3);
+
+            // Row 0: Name | Minutes | Calories
+            Label nameLabel = new Label((String) log.get("name"));
+            nameLabel.getStyleClass().add("recent-activity-name");
+            grid.add(nameLabel, 0, 0);
+
+            Object quantityObj = log.get("quantity");
+            int quantity = quantityObj instanceof Number ? ((Number) quantityObj).intValue() : 0;
+            Label quantityLabel = new Label(String.valueOf(quantity));
+            quantityLabel.getStyleClass().add("recent-activity-quantity");
+            grid.add(quantityLabel, 1, 0);
+            GridPane.setHalignment(quantityLabel, HPos.CENTER);
+
+            Label caloriesLabel = new Label(String.valueOf(log.get("calories")));
+            caloriesLabel.getStyleClass().add("recent-activity-calories");
+            grid.add(caloriesLabel, 2, 0);
+            GridPane.setHalignment(caloriesLabel, HPos.RIGHT);
+
+            // Row 1: Time | "min" | "kcal"
+            Label timeLabel = new Label((String) log.get("log_time"));
+            timeLabel.getStyleClass().add("recent-activity-time");
+            grid.add(timeLabel, 0, 1);
+
+            Label unitLabel = new Label("min");
+            unitLabel.getStyleClass().add("recent-activity-unit");
+            grid.add(unitLabel, 1, 1);
+            GridPane.setHalignment(unitLabel, HPos.CENTER);
+
+            Label kcalLabel = new Label("kcal");
+            kcalLabel.getStyleClass().add("recent-activity-kcal");
+            grid.add(kcalLabel, 2, 1);
+            GridPane.setHalignment(kcalLabel, HPos.RIGHT);
+
+            recentActivityLogsContainer.getChildren().add(grid);
+
+            if (i < activityLogs.size() - 1) {
+                recentActivityLogsContainer.getChildren().add(new Separator());
+            }
+        }
+    }
+
+    @FXML
+    private void goToFoodLog(MouseEvent event) {
+        MainController main = MainController.getInstance();
+        if (main != null) {
+            main.navigateToView("food-log-view", "foodLogScrollPane", main.foodLogNav);
+        }
+    }
+
+    @FXML
+    private void goToActivityLog(MouseEvent event) {
+        MainController main = MainController.getInstance();
+        if (main != null) {
+            main.navigateToView("activity-log-view", "activityLogScrollPane", main.activityLogNav);
+        }
+    }
+
+    @FXML
+    private void goToHealthLog(MouseEvent event) {
+        MainController main = MainController.getInstance();
+        if (main != null) {
+            main.navigateToView("health-view", "healthScrollPane", main.healthNav);
+        }
     }
 }

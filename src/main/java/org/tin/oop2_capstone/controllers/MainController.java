@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -55,7 +56,10 @@ public class MainController {
 
     @FXML public Button quickWorkoutButton;
 
+    private static MainController instance;
+
     public void initialize(){
+        instance = this;
         rootAnchorPane.getStyleClass().add("light");
         anchorPaneSideBar.getStyleClass().add("light");
         anchorPaneContent.getStyleClass().add("light");
@@ -119,6 +123,10 @@ public class MainController {
         }
     }
 
+    public static MainController getInstance() {
+        return instance;
+    }
+
     public void navigateToView(String filename, String styleClass, Pane button){
         ScrollPane view = null;
         try {
@@ -130,6 +138,12 @@ public class MainController {
             AnchorPane.setRightAnchor(view, 0.0);
             AnchorPane.setLeftAnchor(view, 0.0);
             anchorPaneContent.getChildren().setAll(view);
+
+            // Set UserData on the scene (not null now)
+            Scene scene = anchorPaneContent.getScene();
+            if (scene != null) {
+                scene.setUserData(this);
+            }
 
             // todo getUserAppearancePref() to determine if lightmode or darkmode styles, but lightmode for now
 

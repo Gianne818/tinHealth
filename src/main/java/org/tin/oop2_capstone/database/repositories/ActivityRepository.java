@@ -206,4 +206,70 @@ public class ActivityRepository {
             default: return "";
         }
     }
+
+    public List<Map<String, Object>> getTodayFoodLogs(int userId) {
+        List<Map<String, Object>> logs = new ArrayList<>();
+
+        String query = """
+        SELECT m.meal_type, c.name, m.serving_size, m.serving_units, 
+               nd.calories * m.serving_size AS total_calories,
+               TIME_FORMAT(m.log_timestamp, '%h:%i %p') AS log_time
+        FROM Meals m
+        JOIN Consumables c ON m.consumable_id = c.consumable_id
+        LEFT JOIN NutritionalDetails nd ON c.nutri_id = nd.nutri_id
+        WHERE m.user_id = ? AND DATE(m.log_timestamp) = CURDATE()
+        ORDER BY m.log_timestamp DESC
+        LIMIT 5
+        """;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Map<String, Object> log = new HashMap<>();
+                log.put("meal_type", rs.getString("meal_type"));
+                log.put("name", rs.getString("name"));
+                log.put("total_calories", rs.getInt("total_calories"));
+                log.put("log_time", rs.getString("log_time"));
+                logs.add(log);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return logs;
+    }
+
+    public List<Map<String, Object>> getTodayActivityLogs(int userId) {
+        List<Map<String, Object>> logs = new ArrayList<>();
+
+        String query = """
+        SELECT at.name, a.quantity, a.calories, 
+               TIME_FORMAT(a.log_timestamp, '%h:%i %p') AS log_time
+        FROM Activities a
+        JOIN ActivityTypes at ON a.activity_type_id = at.activity_type_id
+        WHERE a.user_id = ? AND DATE(a.log_timestamp) = CURDATE()
+        ORDER BY a.log_timestamp DESC
+        LIMIT 5
+        """;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Map<String, Object> log = new HashMap<>();
+                log.put("name", rs.getString("name"));
+                log.put("quantity", rs.getDouble("quantity"));
+                log.put("calories", rs.getInt("calories"));
+                log.put("log_time", rs.getString("log_time"));
+                logs.add(log);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return logs;
+    }
 }
