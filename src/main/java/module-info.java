@@ -4,6 +4,7 @@ module org.tin.oop2_capstone {
     requires java.desktop;
     requires javafx.graphics;
     requires com.google.gson;
+    requires java.sql;
 
     opens org.tin.oop2_capstone to javafx.fxml;
     exports org.tin.oop2_capstone;

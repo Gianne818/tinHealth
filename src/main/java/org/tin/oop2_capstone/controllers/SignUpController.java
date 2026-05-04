@@ -48,7 +48,6 @@ public class SignUpController {
 
     private GridPane currSelectedActivity;
 
-
     int curPanel = 0;
 
     private void changeElementAccessibility(Node n, boolean visibility, boolean disability){
@@ -64,7 +63,6 @@ public class SignUpController {
         changeElementAccessibility(backButton,  true, true);
         onBoardingProgressBar.setProgress(0.05);
     }
-
 
     public void onBackButtonClick(ActionEvent event){
         changeElementAccessibility(panels.get(curPanel), false, true);
