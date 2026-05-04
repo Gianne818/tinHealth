@@ -41,9 +41,9 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Label style="-fx-font-size: 32;" styleClass="appName" text="Health">
+      <Label styleClass="appName" text="Health">
          <font>
-            <Font size="18.0" />
+            <Font size="32.0" />
          </font>
       </Label>
    </HBox>
@@ -101,7 +101,7 @@
                      </font>
                   </Label>
                   <Label styleClass="lightText" text="Let's personalize your experience with a few quick questions." />
-                  <ProgressBar fx:id="onBoardingProgressBar" maxWidth="1.7976931348623157E308" progress="0.0">
+                  <ProgressBar fx:id="onBoardingProgressBar" maxWidth="1.7976931348623157E308" progress="0.32">
                      <VBox.margin>
                         <Insets left="10.0" right="10.0" />
                      </VBox.margin>
@@ -335,6 +335,35 @@
             </VBox>
          </bottom>
       </BorderPane>
+      <VBox fx:id="continueVBox" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" styleClass="card" visible="false">
+         <children>
+            <ImageView fitHeight="300.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/image/mascot_smiling.png" />
+               </image>
+            </ImageView>
+            <Label styleClass="appName" text="Thank You!">
+               <padding>
+                  <Insets bottom="20.0" />
+               </padding>
+            </Label>
+            <Label styleClass="lightText" text="We have tailored your experience based on your inputs." />
+            <Label styleClass="lightText" text="You may choose to modify your preferences in the settings." />
+            <Separator prefWidth="200.0">
+               <padding>
+                  <Insets bottom="20.0" top="20.0" />
+               </padding>
+            </Separator>
+            <Button fx:id="continueButton" mnemonicParsing="false" onAction="#onContinueButtonClick" styleClass="ctaButton" text="Continue">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </Button>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </VBox>
    </StackPane>
    <padding>
       <Insets bottom="35.0" left="40.0" right="40.0" top="20.0" />

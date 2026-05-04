@@ -43,6 +43,9 @@ public class SignUpController {
     @FXML GridPane extremelyActiveGridPane;
     ObservableList<GridPane> activityLevels;
 
+    @FXML VBox continueVBox;
+    @FXML Button continueButton;
+
     private GridPane currSelectedActivity;
 
 
@@ -83,7 +86,8 @@ public class SignUpController {
             changeElementAccessibility(backButton, true, false);
         }
         if(curPanel == panels.size()){
-            SceneSwitcher.use(backButton, "main-view").setCss("application").setMinDimensions(900, 850).setMaximized(true).setResizeable(true).setTitle("+inHealth").switchScene();
+            changeElementAccessibility(onBoardingBorderPane, false, true);
+            changeElementAccessibility(continueVBox, true, false);
             return;
         }
 
@@ -114,6 +118,10 @@ public class SignUpController {
         // todo: based on currSelectedActivity, we set goals automatically. User can change them in settings
     }
 
+    public  void onContinueButtonClick(ActionEvent event){
+        SceneSwitcher.use(backButton, "main-view").setCss("application").setMinDimensions(900, 850).setMaximized(true).setResizeable(true).setTitle("+inHealth").switchScene();
+    }
+
     private void setSelectedActivityLevel(Node n){
         for(GridPane g : activityLevels){
             g.getStyleClass().remove("activityLevelSelected");
@@ -121,5 +129,6 @@ public class SignUpController {
 
         n.getStyleClass().add("activityLevelSelected");
     }
+
 
 }
