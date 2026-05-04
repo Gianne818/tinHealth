@@ -5,15 +5,25 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-
 import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.tin.oop2_capstone.database.DatabaseConnection;
+import org.tin.oop2_capstone.database.repositories.ActivityRepository;
+import org.tin.oop2_capstone.database.repositories.MealRepository;
+import org.tin.oop2_capstone.model.entities.User;
+import org.tin.oop2_capstone.services.SessionManager;
 
 public class MainController {
     @FXML public SplitPane splitPaneMain;
@@ -21,6 +31,7 @@ public class MainController {
     @FXML public AnchorPane anchorPaneSideBar;
     @FXML public AnchorPane anchorPaneContent;
     @FXML public ImageView imgViewCollapse;
+    @FXML public Label userFullNameLabel;
 
     @FXML public HBox dashboardNav;
     @FXML public HBox foodLogNav;
@@ -30,11 +41,20 @@ public class MainController {
     @FXML public HBox notificationsNav;
     @FXML public HBox healthNav;
 
+    @FXML public Label curr_streak_1;
+    @FXML public Label curr_streak_2;
+    @FXML public Label calories_today;
+    @FXML public Label this_week_workout_count;
+    @FXML public Label total_activities_count;
+    private MealRepository mealRepository = new MealRepository();
+    private ActivityRepository activityRepository = new ActivityRepository();
+
     ObservableList<Pane> navs;
 
     private boolean isSideBarCollapsed = false;
 
     @FXML public Button quickWorkoutButton;
+
 
     public void initialize(){
         rootAnchorPane.getStyleClass().add("light");
@@ -44,7 +64,14 @@ public class MainController {
         navs = FXCollections.observableArrayList();
         navs.addAll(dashboardNav, foodLogNav, activityLogNav, settingsNav, profileNav, notificationsNav, healthNav);
 
+        // Set user full name from session
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+        if (currentUser != null && userFullNameLabel != null) {
+            userFullNameLabel.setText(currentUser.getFullname());
+        }
+
         navigateToView("dashboard-view", "dashboardScrollPane", dashboardNav);
+        loadDashboardStats();
     }
 
     public void toggleSideBar(){
@@ -156,8 +183,30 @@ public class MainController {
         }
     }
 
+    private void loadDashboardStats() {
+        int userId = SessionManager.getInstance().getCurrentUser().getUid();
+
+        // Calories
+        double calories = mealRepository.getDailyCalories(userId);
+        calories_today.setText(String.valueOf((int) calories));
+
+        // Weekly workouts
+        int weeklyWorkouts = activityRepository.getWeeklyWorkoutCount(userId);
+        this_week_workout_count.setText(weeklyWorkouts + (weeklyWorkouts == 1 ? " Workout" : " Workouts"));
+
+        // Total activities
+        int totalActivities = activityRepository.getTotalActivitiesCount(userId);
+        total_activities_count.setText(String.valueOf(totalActivities));
+
+        // Streak
+        int streak = activityRepository.getCurrentStreak(userId);
+        String streakText = streak + " Days";
+        if(streak == 1){
+            streakText = streak + " Day";
+        }
+        curr_streak_1.setText(streakText);
+        curr_streak_2.setText(streakText);
+    }
 
 
 }
-
-
