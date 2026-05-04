@@ -1,5 +1,6 @@
 package org.tin.oop2_capstone.services;
 
+import org.tin.oop2_capstone.model.entities.Activity;
 import org.tin.oop2_capstone.model.entities.ActivityLog;
 import org.tin.oop2_capstone.model.observer.LogObserver;
 
@@ -36,8 +37,9 @@ public class ActivityLogger extends Logger {
     @Override
     public void notifyObservers() {
         for (LogObserver observer : observers) {
-            // log observer wala pay methods sooo...
-            // observer.notify(activityLog);
+            for (Activity activity : activityLog.getActivities()) {
+                observer.onActivityLogChanged(activity);
+            }
         }
     }
 

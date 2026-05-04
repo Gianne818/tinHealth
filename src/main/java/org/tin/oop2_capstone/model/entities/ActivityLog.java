@@ -21,6 +21,12 @@ public class ActivityLog {
         return activities;
     }
 
-    public void addActivity(Activity activity) { if(activity!=null) activities.add(activity); }
-    public  void setActivities(List<Activity> activities) { this.activities = activities; }
+    public void addActivity(Activity activity) {
+        if(activity!=null) {
+            activities.add(activity);
+        }
+    }
+    public  void setActivities(List<Activity> activities) {
+        this.activities = activities;
+    }
 }
