@@ -109,4 +109,46 @@ public class ActivityRepository {
         }
         return 0;
     }
+
+    public static class MacroData {
+        public double protein;
+        public double carbs;
+        public double fats;
+
+        public MacroData(double protein, double carbs, double fats) {
+            this.protein = protein;
+            this.carbs = carbs;
+            this.fats = fats;
+        }
+    }
+
+    public MacroData getWeeklyMacros(int userId) {
+        String query = """
+        SELECT 
+            COALESCE(SUM(nd.protein * m.serving_size), 0) AS total_protein,
+            COALESCE(SUM(nd.carbs * m.serving_size), 0) AS total_carbs,
+            COALESCE(SUM(nd.fats * m.serving_size), 0) AS total_fats
+        FROM Meals m
+        JOIN Consumables c ON m.consumable_id = c.consumable_id
+        LEFT JOIN NutritionalDetails nd ON c.nutri_id = nd.nutri_id
+        WHERE m.user_id = ?
+        AND YEARWEEK(m.log_timestamp, 1) = YEARWEEK(CURDATE(), 1)
+        """;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new MacroData (
+                        rs.getDouble("total_protein"),
+                        rs.getDouble("total_carbs"),
+                        rs.getDouble("total_fats")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

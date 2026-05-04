@@ -57,6 +57,9 @@ public class DashboardController {
         initCaloriesLineChart();
         initMacroDist();
         loadDashboardStats();
+        fetchAndUpdateMacros();
+        fetchAndUpdateCaloriesTrack();
+        fetchAndUpdateRecents();
     }
 
     private void setupGlobalTooltip(LineChart<String, Number> chart, Series<String, Number> in, Series<String, Number> out) {
@@ -211,5 +214,41 @@ public class DashboardController {
 
         int streak = activityRepository.getCurrentStreak(userId);
         activityStreakLabel.setText(String.valueOf(streak));
+    }
+
+    /** This Weekly Macros (MONDAY left boundary inclusive, to Sunday rightmost inclusive)
+     *
+     */
+    private void fetchAndUpdateMacros() {
+        int userId = SessionManager.getInstance().getCurrentUser().getUid();
+
+        ActivityRepository.MacroData macros = activityRepository.getWeeklyMacros(userId);
+
+        double protein = macros.protein;
+        double carbs = macros.carbs;
+        double fats = macros.fats;
+        double total = protein + carbs + fats;
+
+        if (total > 0) {
+            protein = (protein / total) * 100;
+            carbs = (carbs / total) * 100;
+            fats = (fats / total) * 100;
+        }
+
+        updateMacroDist(protein, carbs, fats);
+    }
+
+    /** This Weekly Calorie Tracking (MONDAY leftmost to SUNDAY righmost)
+     *
+     */
+    private void fetchAndUpdateCaloriesTrack(){
+
+    }
+
+    /**
+     *
+     */
+    private void fetchAndUpdateRecents(){
+
     }
 }
