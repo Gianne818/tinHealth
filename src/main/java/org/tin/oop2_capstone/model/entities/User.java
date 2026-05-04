@@ -65,6 +65,8 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         // set appropriate hashing algo here
+        // For now wala lang sa
+        // TODO:
         this.password = password;
     }
 
