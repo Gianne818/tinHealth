@@ -10,13 +10,6 @@ public class UserRepository {
      */
 
     public boolean validateLogin(String username, String password) {
-        // If both are empty -> allow
-        if ((username == null || username.trim().isEmpty()) &&
-                (password == null || password.trim().isEmpty())) {
-            return true;
-        }
-
-        // If either one is not empty -> verify in database
         String query = "SELECT * FROM Users WHERE username = ? AND password_hash = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
