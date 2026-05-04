@@ -1,23 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.LineChart?>
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.chart.PieChart?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ProgressBar?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.SVGPath?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 
-<ScrollPane fx:id="helathScrollPane" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/25">
+<ScrollPane fx:id="healthScrollPane" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.HealthController">
    <content>
       <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
          <children>
@@ -341,43 +330,174 @@
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                        <RowConstraints />
+                        <RowConstraints />
                     </rowConstraints>
                      <children>
-                        <VBox prefHeight="200.0" prefWidth="100.0" styleClass="cardContent">
+                        <VBox styleClass="cardContent" GridPane.vgrow="ALWAYS">
                            <children>
-                              <Label text="Weekly Calorie Tracking">
-                                 <styleClass>
-                                    <String fx:value="boldText" />
-                                    <String fx:value="cardTitle" />
-                                 </styleClass>
-                              </Label>
-                              <LineChart fx:id="weeklyChart" maxWidth="1.7976931348623157E308" prefHeight="400">
+                              <Label styleClass="cardTitle" text="Weekly Nutrition Trends" />
+                              <LineChart fx:id="weeklyChart" prefHeight="425" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+                                 <VBox.margin>
+                                    <Insets top="25.0" />
+                                 </VBox.margin>
                                  <xAxis>
                                     <CategoryAxis side="BOTTOM" fx:id="xAxis" />
                                  </xAxis>
                                  <yAxis>
-                                    <NumberAxis side="LEFT" />
+                                    <NumberAxis fx:id="yAxis" side="LEFT" />
                                  </yAxis>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
                               </LineChart>
                            </children>
                            <padding>
                               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                            </padding>
                         </VBox>
-                        <VBox styleClass="cardContent" GridPane.columnIndex="1">
+                        <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="-20" styleClass="cardContent" GridPane.columnIndex="1"> <!-- Label Weekly Macro Distribution and PieChart closer together -->
                            <children>
-                              <Label text="Macro Distribution">
-                                 <styleClass>
-                                    <String fx:value="boldText" />
-                                    <String fx:value="cardTitle" />
-                                 </styleClass>
-                              </Label>
-                              <PieChart />
+                              <Label styleClass="cardTitle, boldText" text="Today's Macros" />
+                              <StackPane>
+                                 <children>
+                                    <PieChart fx:id="macroDistPieChart" clockwise="false" labelsVisible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="80.0" minWidth="80.0" />
+                                    <Circle fx:id="macroDistInnerHoleCircle" fill="WHITE" radius="75.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <VBox>
+                                 <children>
+                                    <GridPane hgap="8.0">
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
+                                          <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <children>
+                                          <Circle fill="#d85842" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                                          <Label text="Protein" GridPane.columnIndex="1" />
+                                          <Label fx:id="proteinLabelMacro" styleClass="boldText" text="proteinLabel" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
+                                       </children>
+                                    </GridPane>
+
+                                    <GridPane hgap="8.0">
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
+                                          <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <children>
+                                          <Circle fill="#e59563" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                                          <Label text="Carbs" GridPane.columnIndex="1" />
+                                          <Label fx:id="carbsLabelMacro" styleClass="boldText" text="carbsLabel" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
+                                       </children>
+                                    </GridPane>
+
+                                    <GridPane hgap="8.0">
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
+                                          <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <children>
+                                          <Circle fill="#f7bb6b" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                                          <Label text="Fats" GridPane.columnIndex="1" />
+                                          <Label fx:id="fatsLabelMacro" styleClass="boldText" text="fatsLabel" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                              </VBox>
                            </children>
                            <padding>
                               <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
                            </padding>
                         </VBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </GridPane>
+                  <GridPane hgap="20.0" layoutX="20.0" layoutY="417.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <VBox spacing="7.0" styleClass="cardContent" GridPane.columnIndex="1">
+                           <children>
+                              <Label styleClass="cardTitle" text="Micronutrients">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin></Label>
+                              <GridPane vgap="6.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Label styleClass="cardTitle2" text="Cholesterol" />
+                                    <Label alignment="TOP_RIGHT" contentDisplay="CENTER" graphicTextGap="0.0" text="45 / 300 mg" textAlignment="RIGHT" textFill="#ec4899" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
+                                    <ProgressBar maxWidth="1.7976931348623157E308" progress="0.67" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+                                    <Label styleClass="cardTitle2" text="Sodium" GridPane.rowIndex="2" />
+                                    <Label layoutX="10.0" layoutY="45.0" text="850 / 3000 mg" textFill="#8b5cf6" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                                    <ProgressBar maxWidth="1.7976931348623157E308" progress="0.67" styleClass="bar-purple" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
+                                    <Label styleClass="cardTitle2" text="Sugar" GridPane.rowIndex="4" />
+                                    <Label layoutX="10.0" layoutY="10.0" text="12 / 50 g" textFill="#ef4444" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+                                    <ProgressBar maxWidth="1.7976931348623157E308" prefWidth="200.0" progress="0.67" styleClass="bar-red" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" />
+                                    <Label styleClass="cardTitle2" text="Fiber" GridPane.rowIndex="6" />
+                                    <Label layoutX="10.0" layoutY="10.0" text="8 / 30 g" textFill="#11b981" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
+                                    <ProgressBar maxWidth="1.7976931348623157E308" prefWidth="200.0" progress="0.67" styleClass="bar-green" GridPane.columnSpan="2147483647" GridPane.rowIndex="7" />
+                                 </children>
+                              </GridPane>
+                           </children>
+                           <padding>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </padding>
+                        </VBox>
+                        <GridPane styleClass="cardContent">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints vgrow="NEVER" />
+                            <RowConstraints vgrow="NEVER" />
+                            <RowConstraints vgrow="NEVER" />
+                          </rowConstraints>
+                           <children>
+                              <Label styleClass="cardTitle, boldText" text="Nutrient Balance Overview" GridPane.halignment="LEFT" />
+
+                              <!-- This empty pane is where we will draw the Radar Chart -->
+                              <Pane fx:id="radarChartPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="250.0" prefWidth="300.0" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+
+                              <Label styleClass="settingsItemDetails" text="Percentage of daily goals achieved" GridPane.rowIndex="2" />
+                           </children>
+                           <padding>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </padding>
+                        </GridPane>
                      </children>
                      <VBox.margin>
                         <Insets />

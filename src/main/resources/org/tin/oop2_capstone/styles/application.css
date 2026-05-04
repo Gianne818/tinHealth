@@ -303,18 +303,35 @@
     -fx-font-family: "Inter 18pt SemiBold";
 }
 
+/*default to pink progress bar color*/
+.progress-bar {
+    -fx-accent: -pink;
+}
+
 .progress-bar > .track {
     -fx-border-radius: 20;
     -fx-background-radius: 20;
     -fx-border-color: transparent;
     -fx-background-color: -bg-default-border;
-
 }
 
 .progress-bar .bar {
     -fx-background-insets: 0;
     -fx-background-radius: 20;
-    -fx-background-color: -pink;
+    -fx-background-color: -fx-accent;
+}
+/*change color according to accent*/
+.bar-green {
+    -fx-accent: -green;
+}
+.bar-red   {
+    -fx-accent: -vibrant-red;
+}
+.bar-orange{
+    -fx-accent: -orange;
+}
+.bar-purple{
+    -fx-accent: -purple;
 }
 
 #toolTipVbox{
