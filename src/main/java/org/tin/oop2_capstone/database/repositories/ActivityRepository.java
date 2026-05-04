@@ -88,4 +88,25 @@ public class ActivityRepository {
         }
         return 0;
     }
+
+    public int getDailyCaloriesOut(int userId) {
+        String query = """
+        SELECT COALESCE(SUM(calories), 0) AS total_calories
+        FROM Activities
+        WHERE user_id = ?
+        AND DATE(log_timestamp) = CURDATE()
+        """;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return (int) rs.getDouble("total_calories");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }

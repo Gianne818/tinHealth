@@ -20,6 +20,9 @@ import java.io.IOException;
 import javafx.scene.shape.Line;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
+import org.tin.oop2_capstone.database.repositories.ActivityRepository;
+import org.tin.oop2_capstone.database.repositories.MealRepository;
+import org.tin.oop2_capstone.services.SessionManager;
 
 public class DashboardController {
     @FXML ScrollPane dashboardScrollPane;
@@ -37,6 +40,13 @@ public class DashboardController {
     @FXML private Label carbsLabelMacro;
     @FXML private Label fatsLabelMacro;
 
+    private MealRepository mealRepository = new MealRepository();
+    private ActivityRepository activityRepository = new ActivityRepository();
+    @FXML public Label caloriesInLabel;
+    @FXML public Label caloriesOutLabel;
+    @FXML public Label netCaloriesLabel;
+    @FXML public Label activityStreakLabel;
+
     public void initialize() {
         dashboardScrollPane.getStyleClass().add("light");
         macroDistData = FXCollections.observableArrayList();
@@ -46,6 +56,7 @@ public class DashboardController {
 
         initCaloriesLineChart();
         initMacroDist();
+        loadDashboardStats();
     }
 
     private void setupGlobalTooltip(LineChart<String, Number> chart, Series<String, Number> in, Series<String, Number> out) {
@@ -185,5 +196,20 @@ public class DashboardController {
 
         chart.setLegendVisible(false);
         setupGlobalTooltip(chart, calIn, calOut);
+    }
+
+    private void loadDashboardStats(){
+        int userId = SessionManager.getInstance().getCurrentUser().getUid();
+        double caloriesIn = mealRepository.getDailyCaloriesIn(userId);
+        caloriesInLabel.setText(String.valueOf((int) caloriesIn));
+
+        double caloriesOut = activityRepository.getDailyCaloriesOut(userId);
+        caloriesOutLabel.setText(String.valueOf(caloriesOut));
+
+        // caloriesIn - caloriesOut
+        netCaloriesLabel.setText(String.valueOf((int) (caloriesIn - caloriesOut)));
+
+        int streak = activityRepository.getCurrentStreak(userId);
+        activityStreakLabel.setText(String.valueOf(streak));
     }
 }

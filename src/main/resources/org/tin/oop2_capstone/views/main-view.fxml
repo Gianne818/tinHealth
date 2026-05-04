@@ -218,7 +218,7 @@
                            <Label styleClass="lightText" text="Calories Today" />
                            <Label styleClass="lightText" text="Activities" GridPane.rowIndex="1" />
                            <Label styleClass="lightText" text="Streak" GridPane.rowIndex="2" />
-                           <Label fx:id="calories_today" styleClass="boldText" text="770" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
+                           <Label fx:id="calories_today" styleClass="boldText" text="0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
                            <Label fx:id="total_activities_count" styleClass="boldText" text="2" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
                            <HBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                               <children>
