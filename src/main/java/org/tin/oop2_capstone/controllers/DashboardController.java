@@ -30,6 +30,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import org.tin.oop2_capstone.database.repositories.ActivityRepository;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
+import org.tin.oop2_capstone.database.repositories.UserPrefRepository;
 import org.tin.oop2_capstone.services.SessionManager;
 import org.tin.oop2_capstone.utils.SceneSwitcher;
 
@@ -50,6 +51,7 @@ public class DashboardController {
 
     private MealRepository mealRepository = new MealRepository();
     private ActivityRepository activityRepository = new ActivityRepository();
+    private UserPrefRepository userPrefRepository = new UserPrefRepository();
     @FXML public Label caloriesInLabel;
     @FXML public Label caloriesOutLabel;
     @FXML public Label netCaloriesLabel;
@@ -58,7 +60,9 @@ public class DashboardController {
     @FXML private VBox recentFoodLogsContainer;
     @FXML private VBox recentActivityLogsContainer;
 
-    private MainController mainController;
+    @FXML private Label goalCaloriesLabelCaloriesIn;
+    @FXML private Label numActLabelCaloriesBurned;
+    @FXML private Label daysInARowHeader;
 
     public void initialize() {
         dashboardScrollPane.getStyleClass().add("light");
@@ -230,6 +234,15 @@ public class DashboardController {
 
         int streak = activityRepository.getCurrentStreak(userId);
         activityStreakLabel.setText(String.valueOf(streak));
+
+        int dailyCalorieInGoal = userPrefRepository.getDailyCalorieInGoal(userId);
+        goalCaloriesLabelCaloriesIn.setText(String.valueOf(dailyCalorieInGoal));
+
+        int todayActivitiesCount = activityRepository.getTodayActivitiesCount(userId);
+        numActLabelCaloriesBurned.setText(todayActivitiesCount + " today");
+
+        String daysStringDisplay = (streak == 1 ? "day" : "days in a row" );
+        daysInARowHeader.setText(daysStringDisplay);
     }
 
     private void updateMacroDist(double protein, double carbs, double fats) {

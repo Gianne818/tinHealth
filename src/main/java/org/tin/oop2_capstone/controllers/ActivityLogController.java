@@ -36,8 +36,6 @@ public class ActivityLogController {
     private ObservableList<Activity> activities;
     private ObservableList<GridPane> activityGridPanes;
 
-    private MainController mainController;
-
     public void initialize(){
         activities = FXCollections.observableArrayList();
         activityGridPanes = FXCollections.observableArrayList();
@@ -94,7 +92,4 @@ public class ActivityLogController {
         addEntryisVisible = !addEntryisVisible;
     }
 
-    public void setMainController(MainController main) {
-        this.mainController = main;
-    }
 }

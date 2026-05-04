@@ -16,8 +16,6 @@ public class FoodLogController {
     @FXML
     ScrollPane foodLogScrollPane;
 
-    private MainController mainController;
-
     public void initialize(){
         foodLogScrollPane.getStyleClass().add("light");
     }
@@ -33,7 +31,4 @@ public class FoodLogController {
         addEntryisVisible = !addEntryisVisible;
     }
 
-    public void setMainController(MainController main) {
-        this.mainController = main;
-    }
 }

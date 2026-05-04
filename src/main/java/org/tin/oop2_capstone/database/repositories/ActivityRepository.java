@@ -272,4 +272,20 @@ public class ActivityRepository {
         }
         return logs;
     }
+
+    public int getTodayActivitiesCount(int userId) {
+        String query = "SELECT COUNT(*) AS count FROM Activities WHERE user_id = ? AND DATE(log_timestamp) = CURDATE()";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("count");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }

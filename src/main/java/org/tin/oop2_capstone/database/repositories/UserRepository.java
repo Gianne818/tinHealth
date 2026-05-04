@@ -58,5 +58,18 @@ public class UserRepository {
         return null;
     }
 
-
+    public int getPromptFrequency(int userId) {
+        String query = "SELECT prompt_freq FROM UserPrefs WHERE user_id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("prompt_freq");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 30; // default 30 minutes
+    }
 }

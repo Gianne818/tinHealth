@@ -93,8 +93,8 @@
                            <HBox maxWidth="-Infinity" spacing="5.0">
                               <children>
                                  <Label styleClass="lightText" text="Goal:" />
-                                 <Label styleClass="lightText" text="goalCaloriesLabel" />
-                                 <Label styleClass="lightText" text="kcal" />
+                                 <Label fx:id="goalCaloriesLabelCaloriesIn" styleClass="lightText" text="0" />
+                                 <Label styleClass="lightText" text="kcal today" />
                               </children>
                            </HBox>
                                </children>
@@ -183,7 +183,7 @@
                                        </children>
                                    </GridPane>
                                    <Label fx:id="activityStreakLabel" styleClass="caloriesDashboard" text="0" />
-                                   <Label styleClass="lightText" text="days in a row" />
+                                   <Label fx:id="daysInARowHeader" styleClass="lightText" text="day or days?" />
                                </children>
                         <padding>
                            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
@@ -194,6 +194,9 @@
                            <VBox styleClass="cardContent" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
                                <children>
                                    <HBox alignment="CENTER_LEFT" spacing="10">
+                                       <padding>
+                                           <Insets top="8" /> <!-- Made Weekly Macro Distribution AND Weekly Calorie Tracking aligned horizontally!!!! -->
+                                       </padding>
                                        <Label styleClass="cardTitle" text="Weekly Calorie Tracking"  />
                                        <Region HBox.hgrow="ALWAYS" />
                                        <SVGPath onMouseClicked="#goToActivityLog" style="-fx-cursor: hand;" content="M9 5L14.15 10C14.4237 10.2563 14.6419 10.5659 14.791 10.9099C14.9402 11.2539 15.0171 11.625 15.0171 12C15.0171 12.375 14.9402 12.7458 14.791 13.0898C14.6419 13.4339 14.4237 13.7437 14.15 14L9 19" fill="TRANSPARENT" stroke="#000000" strokeWidth="1.5" strokeLineCap="round" strokeLineJoin="round" >
@@ -317,8 +320,8 @@
                            <HBox maxWidth="-Infinity" spacing="5.0" styleClass="lightText">
                               <children>
                                  <Label styleClass="lightText" text="From" />
-                                 <Label styleClass="lightText" text="numActLabel" />
-                                 <Label styleClass="lightText" text="activities" />
+                                 <Label fx:id="numActLabelCaloriesBurned" styleClass="lightText" text="0" />
+<!--                                 <Label fx:id="todayActivitiesDisplay" styleClass="lightText" text="activities today" />-->
                               </children>
                            </HBox>
                         </children>
