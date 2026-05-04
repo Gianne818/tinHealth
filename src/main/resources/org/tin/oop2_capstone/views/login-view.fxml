@@ -69,7 +69,7 @@
                 <TextField fx:id="usernameField" />
                 <Label prefHeight="17.0" prefWidth="271.0" styleClass="fieldLabel" text="Password" />
                 <PasswordField fx:id="passwordField" />
-                <Button fx:id="buttonLogin" minWidth="268.0" mnemonicParsing="false" onAction="#onLoginButtonClicked" text="Login">
+                <Button fx:id="buttonLogin" style="-fx-cursor: hand;" minWidth="268.0" mnemonicParsing="false" onAction="#onLoginButtonClicked" text="Login">
                     <VBox.margin>
                         <Insets top="5.0" />
                     </VBox.margin>
@@ -77,7 +77,7 @@
                 <HBox alignment="CENTER" prefHeight="21.0" prefWidth="268.0">
                     <children>
                         <Label text="Don't have an account? " />
-                        <Label fx:id="signUpLabel" onMouseClicked="#onSignupClicked" styleClass="buttonLabel" text="Sign Up" />
+                        <Label fx:id="signUpLabel" style="-fx-cursor: hand;" onMouseClicked="#onSignupClicked" styleClass="buttonLabel" text="Sign Up" />
                     </children>
                 </HBox>
             </VBox>
