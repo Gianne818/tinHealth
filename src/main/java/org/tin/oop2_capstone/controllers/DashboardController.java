@@ -54,12 +54,13 @@ public class DashboardController {
     public void initialize() {
         dashboardScrollPane.getStyleClass().add("light");
         macroDistData = FXCollections.observableArrayList();
-        initCaloriesLineChart();
-        initMacroDist();
+
         loadDashboardHeaderStats();
-        fetchAndUpdateMacros();
-        fetchAndUpdateCaloriesTrack();
-        fetchAndUpdateRecents();
+        initMacroDist();
+        initCaloriesLineChart();
+        initRecentLogs();
+        fetchAndUpdateMacros(); // this is kinda similar to initMacroDist bro
+        fetchAndUpdateCaloriesTrack(); // this is kinda similar to initCaloriesLineChart....
     }
 
     private void setupGlobalTooltip(LineChart<String, Number> chart, Series<String, Number> in, Series<String, Number> out) {
@@ -254,17 +255,17 @@ public class DashboardController {
         updateMacroDist(protein, carbs, fats);
     }
 
-    /** This Weekly Calorie Tracking (MONDAY leftmost to SUNDAY righmost)
+    /** This Weekly Calorie Tracking (MONDAY leftmost to SUNDAY rightmost)
      *
      */
     private void fetchAndUpdateCaloriesTrack(){
-
+        updateWeeklyCaloriesTracking();
     }
 
     /**
      *
      */
-    private void fetchAndUpdateRecents(){
+    private void initRecentLogs(){
 
     }
 }
