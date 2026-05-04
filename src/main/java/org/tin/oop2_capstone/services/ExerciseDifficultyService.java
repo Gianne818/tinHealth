@@ -29,13 +29,13 @@ public class ExerciseDifficultyService {
     }
 
     public void calculateDifficulty(User user) {
-        if (user == null || user.getHeightM() <= 0){
+        if (user == null || user.getHeightCm() <= 0){
             return;
         }
         if (manualSet){
             return;
         }
-        double bmi = computeBMI(user.getWeightKg(), user.getHeightM());
+        double bmi = computeBMI(user.getWeightKg(), user.getHeightCm());
         currentDiff = diffFromBMI(bmi);
     }
 

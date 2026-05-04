@@ -12,20 +12,14 @@ import java.util.List;
 
 public class MealLog {
     private List<Meal> meals;
-    private LocalDate date;
 
 
-    public MealLog(LocalDate date){
-        this.date = date;
+    public MealLog(){
         this.meals = new ArrayList<>();
     }
 
     public List<Meal> getMeals() {
         return meals;
-    }
-
-    public LocalDate getDate() {
-        return date;
     }
 
     public void addMeal(Meal meal){

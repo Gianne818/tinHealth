@@ -16,7 +16,9 @@ import org.tin.oop2_capstone.utils.TimeFormatter;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 public class ActivityLogController {
     @FXML Button buttonAddEntry;
@@ -42,10 +44,10 @@ public class ActivityLogController {
 
     private void setActivityLog(){
         // sample values;
-        activityLog = new ActivityLog(LocalDate.now());
-        activityLog.addActivity(new Activity("Strength Training", LocalTime.now(), "minutes", 30, 200, "Intense"));
-        activityLog.addActivity(new Activity("Jogging", LocalTime.now(), "km", 1.3, 245, "Intense"));
-        activityLog.addActivity(new Activity("Yoga", LocalTime.now(), "minutes", 50, 180, "Light"));
+        activityLog = new ActivityLog();
+        activityLog.addActivity(new Activity("Strength Training", LocalDateTime.now(), "minutes", 30, 200, "Intense"));
+        activityLog.addActivity(new Activity("Jogging", LocalDateTime.now(), "km", 1.3, 245, "Intense"));
+        activityLog.addActivity(new Activity("Yoga", LocalDateTime.now(), "minutes", 50, 180, "Light"));
 
         activities.addAll(activityLog.getActivities());
 
@@ -57,7 +59,7 @@ public class ActivityLogController {
                 root.getStyleClass().addAll("light", "activityLogScrollPane");
 
                 LogCardController logCardController = fxmlLoader.getController();
-                logCardController.setData(a.getName(), TimeFormatter.formatTo12Hour(a.getLogTime()), a.getQuantity(), a.getUnit(), a.getCalories());
+                logCardController.setData(a.getName(), TimeFormatter.formatTo12Hour(a.getLogDateTime().toLocalTime()), a.getQuantity(), a.getUnit(), a.getCalories());
                 activityGridPanes.add(root);
             } catch (IOException e){
                 System.out.println("OH NNOI");

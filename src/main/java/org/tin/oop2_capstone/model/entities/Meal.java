@@ -1,6 +1,6 @@
 package org.tin.oop2_capstone.model.entities;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 /* todo: logTime should be calculated in our controller.
     example, If user inputs food and current time==12PM, then breakfast is selected, we default to time to 6-9 AM, but they can override this
@@ -9,15 +9,15 @@ import java.time.LocalTime;
 public class Meal {
     private MealType mealType;
     private Consumable consumable;
-    private LocalTime logTime;
+    private LocalDateTime logDateTime;
     private NutritionDetails nutritionDetails;
     private double quantity;
     private String unit;
 
-    public Meal(MealType mealType, Consumable consumable, LocalTime logTime, double quantity, String unit) {
+    public Meal(MealType mealType, Consumable consumable, LocalDateTime logTime, double quantity, String unit) {
         this.mealType = mealType;
         this.consumable = consumable;
-        this.logTime = logTime;
+        this.logDateTime = logTime;
         this.nutritionDetails = calculateTotal(consumable);
         this.quantity = quantity;
         this.unit = unit;
@@ -42,8 +42,8 @@ public class Meal {
         return consumable;
     }
 
-    public LocalTime getLogTime() {
-        return logTime;
+    public LocalDateTime getLogDateTime() {
+        return logDateTime;
     }
 
     public NutritionDetails getNutritionDetails() {

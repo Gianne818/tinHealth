@@ -12,15 +12,9 @@ import java.util.List;
 
 public class ActivityLog {
     private List<Activity> activities;
-    private LocalDate date;
 
-    public ActivityLog(LocalDate date){
-        this.date = date;
+    public ActivityLog(){
         this.activities = new ArrayList<>();
-    }
-
-    public LocalDate getDate() {
-        return date;
     }
 
     public List<Activity> getActivities() {
