@@ -98,7 +98,7 @@
                                     </VBox.margin>
                                  </SVGPath>
                                  <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="lightText" text="Current Streak" />
-                                 <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="boldText" text="7 Days" />
+                                 <Label fx:id="curr_streak_1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="boldText" text="7 Days" />
                               </children>
                               <GridPane.margin>
                                  <Insets />
@@ -115,7 +115,7 @@
                                     </VBox.margin>
                                  </SVGPath>
                                  <Label minHeight="-Infinity" minWidth="-Infinity" styleClass="lightText" text="This Week" />
-                                 <Label minHeight="-Infinity" minWidth="-Infinity" styleClass="boldText" text="5 Workouts" />
+                                 <Label fx:id="this_week_workout_count" minHeight="-Infinity" minWidth="-Infinity" styleClass="boldText" text="5 Workouts" />
                               </children>
                               <GridPane.margin>
                                  <Insets />
@@ -218,8 +218,8 @@
                            <Label styleClass="lightText" text="Calories Today" />
                            <Label styleClass="lightText" text="Activities" GridPane.rowIndex="1" />
                            <Label styleClass="lightText" text="Streak" GridPane.rowIndex="2" />
-                           <Label styleClass="boldText" text="770" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
-                           <Label styleClass="boldText" text="2" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                           <Label fx:id="calories_today" styleClass="boldText" text="770" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
+                           <Label fx:id="total_activities_count" styleClass="boldText" text="2" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
                            <HBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                               <children>
                                  <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="50.0">
@@ -227,7 +227,7 @@
                                        <Image url="@../assets/icons/award.png" />
                                     </image>
                                  </ImageView>
-                                  <Label styleClass="boldText" text="7 Days" AnchorPane.rightAnchor="0.0" />
+                                  <Label fx:id="curr_streak_2" styleClass="boldText" text="7 Days" AnchorPane.rightAnchor="0.0" />
                               </children>
                            </HBox>
                         </children>

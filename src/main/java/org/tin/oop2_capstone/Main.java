@@ -16,8 +16,6 @@ public class Main {
         for (String query : queries) {
             String json = FoodAPI.getFoodData(query);
             Food food = FoodParser.parseFood(json);
-
-
             if (food != null) {
                 foods.add(food);
             }

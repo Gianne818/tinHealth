@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -14,74 +15,75 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="light" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.LoginController">
-      <BorderPane prefHeight="400.0" prefWidth="600.0" styleClass="light" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <left>
+    <BorderPane prefHeight="400.0" prefWidth="600.0" styleClass="light" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <left>
             <VBox alignment="CENTER" prefHeight="400.0" prefWidth="272.0" spacing="10.0" BorderPane.alignment="CENTER">
-               <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                  <Image url="@../assets/image/logo.png" />
-               </ImageView>
-               <HBox alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" pickOnBounds="false">
-                  <children>
-                     <Label styleClass="plusAppName" text="+">
-                        <font>
-                           <Font size="18.0" />
-                        </font>
-                     </Label>
-                     <Label styleClass="inAppName" text="in">
-                        <font>
-                           <Font size="18.0" />
-                        </font>
-                     </Label>
-                     <Label minHeight="-Infinity" minWidth="-Infinity" styleClass="appName" text="Health">
-                        <font>
-                           <Font size="18.0" />
-                        </font>
-                     </Label>
-                  </children>
-               </HBox>
-               <Label styleClass="lightText" text="Adding to your health in meaningfulll ways" />
+                <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@../assets/image/logo.png" />
+                </ImageView>
+                <HBox alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" pickOnBounds="false">
+                    <children>
+                        <Label styleClass="plusAppName" text="+">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Label>
+                        <Label styleClass="inAppName" text="in">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Label>
+                        <Label minHeight="-Infinity" minWidth="-Infinity" styleClass="appName" text="Health">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <Label styleClass="lightText" text="Adding to your health in meaningful ways" />
             </VBox>
-         </left>
-         <center>
+        </left>
+        <center>
             <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" styleClass="card" BorderPane.alignment="CENTER">
-               <BorderPane.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </BorderPane.margin>
-               <padding>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-               </padding>
-               <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="boldText" text="Enter Your  Credentials" textFill="#f1985b">
-                  <font>
-                     <Font size="18.0" />
-                  </font></Label>
-               <Separator prefWidth="200.0">
-                  <padding>
-                     <Insets bottom="10.0" top="10.0" />
-                  </padding>
-               </Separator>
-               <Label prefHeight="17.0" prefWidth="278.0" styleClass="fieldLabel" text="Username">
-                  <VBox.margin>
-                     <Insets />
-                  </VBox.margin>
-               </Label>
-               <TextField />
-               <Label prefHeight="17.0" prefWidth="271.0" styleClass="fieldLabel" text="Password" />
-               <TextField />
-               <Button fx:id="buttonLogin" minWidth="268.0" mnemonicParsing="false" onAction="#onLoginButtonClicked" text="Login">
-                  <VBox.margin>
-                     <Insets top="5.0" />
-                  </VBox.margin>
-               </Button>
-               <HBox alignment="CENTER" prefHeight="21.0" prefWidth="268.0">
-                  <children>
-                     <Label text="Don't have an account? " />
-                     <Label fx:id="signUpLabel" onMouseClicked="#onSignupClicked" styleClass="buttonLabel" text="Sign Up" />
-                  </children>
-               </HBox>
+                <BorderPane.margin>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                </BorderPane.margin>
+                <padding>
+                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                </padding>
+                <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="boldText" text="Enter Your Credentials" textFill="#f1985b">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <Separator prefWidth="200.0">
+                    <padding>
+                        <Insets bottom="10.0" top="10.0" />
+                    </padding>
+                </Separator>
+                <Label prefHeight="17.0" prefWidth="278.0" styleClass="fieldLabel" text="Username">
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+                </Label>
+                <TextField fx:id="usernameField" />
+                <Label prefHeight="17.0" prefWidth="271.0" styleClass="fieldLabel" text="Password" />
+                <PasswordField fx:id="passwordField" />
+                <Button fx:id="buttonLogin" minWidth="268.0" mnemonicParsing="false" onAction="#onLoginButtonClicked" text="Login">
+                    <VBox.margin>
+                        <Insets top="5.0" />
+                    </VBox.margin>
+                </Button>
+                <HBox alignment="CENTER" prefHeight="21.0" prefWidth="268.0">
+                    <children>
+                        <Label text="Don't have an account? " />
+                        <Label fx:id="signUpLabel" onMouseClicked="#onSignupClicked" styleClass="buttonLabel" text="Sign Up" />
+                    </children>
+                </HBox>
             </VBox>
-         </center>
-         <padding>
+        </center>
+        <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-         </padding>
-      </BorderPane>
-   </AnchorPane>
+        </padding>
+    </BorderPane>
+</AnchorPane>
