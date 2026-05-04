@@ -476,7 +476,23 @@
     -fx-padding: 0 0 15 0;
 }
 
+/*LineGraph Default Colors*/
+/*TODO: This might conflict/affect with the dashboard's Line graph colors*/
+/*Calories - Blue */
+.default-color0.chart-series-line { -fx-stroke: -vibrant-blue; }
+.default-color0.chart-line-symbol { -fx-background-color: -vibrant-blue, white; }
 
+/*Protein - Red */
+.default-color1.chart-series-line { -fx-stroke: -vibrant-red; }
+.default-color1.chart-line-symbol { -fx-background-color: -vibrant-red, white; }
+
+/*Carbs - Green */
+.default-color2.chart-series-line { -fx-stroke: -green; }
+.default-color2.chart-line-symbol { -fx-background-color: -green, white; }
+
+/*Fats - Orange */
+.default-color3.chart-series-line { -fx-stroke: -orange; }
+.default-color3.chart-line-symbol { -fx-background-color: -orange, white; }
 
 
 /* PLEASE USE COLORS FROM PALETTES.CSS, OR ADD COLORS THERE */

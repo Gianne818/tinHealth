@@ -55,6 +55,8 @@ public class HealthController {
 
         LineChart<String, Number> chart = (LineChart<String, Number>) weeklyChart;
 
+        //TODO: Change hardcoded lines to actual data.
+        //Calorie Line
         XYChart.Series<String, Number> calIn = new XYChart.Series<>();
         calIn.getData().addAll(
                 new XYChart.Data<>("Mon", 1850),
@@ -66,6 +68,45 @@ public class HealthController {
                 new XYChart.Data<>("Sun", 770)
         );
 
+        //Protein Line
+        XYChart.Series<String, Number> protIn = new XYChart.Series<>();
+        protIn.setName("Protein");
+        protIn.getData().addAll(
+                new XYChart.Data<>("Mon", 120),
+                new XYChart.Data<>("Tue", 130),
+                new XYChart.Data<>("Wed", 115),
+                new XYChart.Data<>("Thu", 125),
+                new XYChart.Data<>("Fri", 110),
+                new XYChart.Data<>("Sat", 140),
+                new XYChart.Data<>("Sun", 45)
+        );
+
+        //Carbs Line
+        XYChart.Series<String, Number> carbIn = new XYChart.Series<>();
+        carbIn.setName("Carbs");
+        carbIn.getData().addAll(
+                new XYChart.Data<>("Mon", 220),
+                new XYChart.Data<>("Tue", 240),
+                new XYChart.Data<>("Wed", 210),
+                new XYChart.Data<>("Thu", 230),
+                new XYChart.Data<>("Fri", 200),
+                new XYChart.Data<>("Sat", 250),
+                new XYChart.Data<>("Sun", 95)
+        );
+
+        //Fats Line
+        XYChart.Series<String, Number> fatIn = new XYChart.Series<>();
+        fatIn.setName("Fats");
+        fatIn.getData().addAll(
+                new XYChart.Data<>("Mon", 60),
+                new XYChart.Data<>("Tue", 70),
+                new XYChart.Data<>("Wed", 65),
+                new XYChart.Data<>("Thu", 68),
+                new XYChart.Data<>("Fri", 62),
+                new XYChart.Data<>("Sat", 75),
+                new XYChart.Data<>("Sun", 28)
+        );
+
         NumberAxis yAxis = (NumberAxis) chart.getYAxis();
         yAxis.setAutoRanging(false);
         yAxis.setTickUnit(550);
@@ -73,7 +114,7 @@ public class HealthController {
         yAxis.setUpperBound(2500);
         yAxis.setMinorTickCount(0);
 
-        chart.getData().addAll(calIn);
+        chart.getData().addAll(calIn, protIn, carbIn, fatIn);
 
         chart.setLegendVisible(false);
 

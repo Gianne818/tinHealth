@@ -356,7 +356,7 @@
                               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                            </padding>
                         </VBox>
-                        <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="-20" styleClass="cardContent" GridPane.columnIndex="1"> <!-- Label Weekly Macro Distribution and PieChart closer together -->
+                        <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="-20" styleClass="cardContent" GridPane.columnIndex="1">
                            <children>
                               <Label styleClass="cardTitle, boldText" text="Today's Macros" />
                               <StackPane>
@@ -393,7 +393,7 @@
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                        </rowConstraints>
                                        <children>
-                                          <Circle fill="#e59563" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                                          <Circle fill="#11B981" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" />
                                           <Label text="Carbs" GridPane.columnIndex="1" />
                                           <Label fx:id="carbsLabelMacro" styleClass="boldText" text="carbsLabel" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
                                        </children>
