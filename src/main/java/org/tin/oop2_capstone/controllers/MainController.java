@@ -182,16 +182,15 @@ public class MainController {
     }
 
     @FXML
-    private void onQuickExerciseClicked() {
+    public void onQuickExerciseClicked() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/exercise-prompt-view.fxml"));
-
             StackPane overlay = fxmlLoader.load();
+
             overlay.getStyleClass().add("light");
 
             AnchorPane.setTopAnchor(overlay, 0.0);
             AnchorPane.setBottomAnchor(overlay, 0.0);
-
             AnchorPane.setLeftAnchor(overlay, 0.0);
             AnchorPane.setRightAnchor(overlay, 0.0);
 
@@ -203,10 +202,8 @@ public class MainController {
             splitPaneMain.setEffect(new GaussianBlur(10));
 
             rootAnchorPane.getChildren().add(overlay);
-
-
-
         } catch (Exception e) {
+            System.out.println("ERROR: " + e.getMessage());
             e.printStackTrace();
         }
     }

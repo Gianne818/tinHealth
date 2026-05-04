@@ -274,6 +274,22 @@
     -fx-text-fill: -vibrant-red;
 }
 
+.skipButton {
+    -fx-background-color: transparent;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
+}
+
+.skipButton:hover {
+    -fx-background-color: #f0f0f0;
+    -fx-border-color: #666;
+    -fx-text-fill: #333;
+}
+
 /* When profileNav being hovered */
 #profileNav:hover {
     -fx-opacity: 0.7;
