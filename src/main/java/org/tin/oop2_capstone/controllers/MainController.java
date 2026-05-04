@@ -14,7 +14,12 @@ import javafx.scene.layout.*;
 import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
+import org.tin.oop2_capstone.database.DatabaseConnection;
 import org.tin.oop2_capstone.model.entities.User;
 import org.tin.oop2_capstone.services.SessionManager;
 
@@ -33,6 +38,12 @@ public class MainController {
     @FXML public GridPane profileNav;
     @FXML public HBox notificationsNav;
     @FXML public HBox healthNav;
+
+    @FXML public Label curr_streak_1;
+    @FXML public Label curr_streak_2;
+    @FXML public Label calories_today;
+    @FXML public Label this_week_workout_count;
+    @FXML public Label total_activities_count;
 
     ObservableList<Pane> navs;
 
@@ -55,6 +66,7 @@ public class MainController {
         }
 
         navigateToView("dashboard-view", "dashboardScrollPane", dashboardNav);
+        loadDashboardStats();
     }
 
     public void toggleSideBar(){
@@ -166,8 +178,137 @@ public class MainController {
         }
     }
 
+    private void loadDashboardStats() {
+        int userId = SessionManager.getInstance().getCurrentUser().getUid();
 
+        // CALORIES TODAY (handles food + combos)
+        String caloriesTodayQuery = """
+        SELECT COALESCE(SUM(
+            CASE 
+                -- NORMAL FOOD
+                WHEN c.type = 'food' THEN nd.calories * m.serving_size
+
+                -- FOOD COMBO (sum of items)
+                WHEN c.type = 'foodcombo' THEN (
+                    SELECT COALESCE(SUM(nd2.calories * ci.quantity), 0)
+                    FROM ComboItems ci
+                    JOIN Consumables c2 ON ci.consumable_id = c2.consumable_id
+                    LEFT JOIN NutritionalDetails nd2 ON c2.nutri_id = nd2.nutri_id
+                    WHERE ci.combo_id = c.consumable_id
+                ) * m.serving_size
+
+                ELSE 0
+            END
+        ), 0) AS total_calories
+        FROM Meals m
+        JOIN Consumables c ON m.consumable_id = c.consumable_id
+        LEFT JOIN NutritionalDetails nd ON c.nutri_id = nd.nutri_id
+        WHERE m.user_id = ?
+        AND DATE(m.log_timestamp) = CURDATE()
+        """;
+
+        String weeklyWorkoutQuery = """
+        SELECT COUNT(*) AS workout_count
+        FROM Activities
+        WHERE user_id = ?
+        AND YEARWEEK(log_timestamp, 1) = YEARWEEK(CURDATE(), 1)
+        """;
+
+        String totalActivitiesQuery = """
+        SELECT COUNT(*) AS total_count
+        FROM Activities
+        WHERE user_id = ?
+        """;
+
+        // STREAK (dates only)
+        String streakQuery = """
+        SELECT DISTINCT DATE(log_timestamp) AS activity_date
+        FROM Activities
+        WHERE user_id = ?
+        ORDER BY activity_date DESC
+        """;
+
+        try (Connection conn = DatabaseConnection.getConnection()) {
+
+            // 1. CALORIES TODAY
+            try (PreparedStatement stmt = conn.prepareStatement(caloriesTodayQuery)) {
+                stmt.setInt(1, userId);
+                ResultSet rs = stmt.executeQuery();
+
+                if (rs.next()) {
+                    int calories = (int) rs.getDouble("total_calories");
+                    calories_today.setText(String.valueOf(calories));
+                }
+            }
+
+            // 2. WEEKLY WORKOUTS
+            try (PreparedStatement stmt = conn.prepareStatement(weeklyWorkoutQuery)) {
+                stmt.setInt(1, userId);
+                ResultSet rs = stmt.executeQuery();
+
+                if (rs.next()) {
+                    int count = rs.getInt("workout_count");
+                    this_week_workout_count.setText(count + " Workouts");
+                }
+            }
+
+            // 3. TOTAL ACTIVITIES
+            try (PreparedStatement stmt = conn.prepareStatement(totalActivitiesQuery)) {
+                stmt.setInt(1, userId);
+                ResultSet rs = stmt.executeQuery();
+
+                if (rs.next()) {
+                    int total = rs.getInt("total_count");
+                    total_activities_count.setText(String.valueOf(total));
+                }
+            }
+
+            // 4. Streak (BY DAYS)
+            try (PreparedStatement stmt = conn.prepareStatement("""
+                    SELECT DISTINCT DATE(log_timestamp) AS activity_date
+                    FROM Activities
+                    WHERE user_id = ?
+                    ORDER BY activity_date DESC
+                """)) {
+
+                stmt.setInt(1, userId);
+                ResultSet rs = stmt.executeQuery();
+
+                java.util.Set<java.time.LocalDate> uniqueDates = new java.util.LinkedHashSet<>();
+
+                while (rs.next()) {
+                    uniqueDates.add(rs.getDate("activity_date").toLocalDate());
+                }
+
+                int streak = 0;
+
+                if (!uniqueDates.isEmpty()) {
+                    java.time.LocalDate today = java.time.LocalDate.now();
+                    java.time.LocalDate expected = today;
+
+                    // REQUIRE activity today
+                    if (uniqueDates.contains(today)) {
+
+                        for (java.time.LocalDate date : uniqueDates) {
+                            if (date.equals(expected)) {
+                                streak++;
+                                expected = expected.minusDays(1);
+                            } else if (date.isBefore(expected)) {
+                                // gap found → stop streak
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                String text = streak + " Days";
+                curr_streak_1.setText(text);
+                curr_streak_2.setText(text);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
-
-
