@@ -17,7 +17,6 @@ import org.tin.oop2_capstone.utils.TimeFormatter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 
 public class ActivityLogController {
     @FXML Button buttonAddEntry;
@@ -71,11 +70,7 @@ public class ActivityLogController {
 
     private boolean addEntryisVisible = false;
     public void onButtonAddActivityClicked(ActionEvent actionEvent) {
-        if(!addEntryisVisible){
-            gridPaneAddEntry.setVisible(true);
-        } else {
-            gridPaneAddEntry.setVisible(false);
-        }
+        gridPaneAddEntry.setVisible(!addEntryisVisible);
 
         addEntryisVisible = !addEntryisVisible;
     }
