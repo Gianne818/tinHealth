@@ -20,6 +20,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.tin.oop2_capstone.database.DatabaseConnection;
+import org.tin.oop2_capstone.database.repositories.ActivityRepository;
+import org.tin.oop2_capstone.database.repositories.MealRepository;
 import org.tin.oop2_capstone.model.entities.User;
 import org.tin.oop2_capstone.services.SessionManager;
 
@@ -44,12 +46,15 @@ public class MainController {
     @FXML public Label calories_today;
     @FXML public Label this_week_workout_count;
     @FXML public Label total_activities_count;
+    private MealRepository mealRepository = new MealRepository();
+    private ActivityRepository activityRepository = new ActivityRepository();
 
     ObservableList<Pane> navs;
 
     private boolean isSideBarCollapsed = false;
 
     @FXML public Button quickWorkoutButton;
+
 
     public void initialize(){
         rootAnchorPane.getStyleClass().add("light");
@@ -181,134 +186,27 @@ public class MainController {
     private void loadDashboardStats() {
         int userId = SessionManager.getInstance().getCurrentUser().getUid();
 
-        // CALORIES TODAY (handles food + combos)
-        String caloriesTodayQuery = """
-        SELECT COALESCE(SUM(
-            CASE 
-                -- NORMAL FOOD
-                WHEN c.type = 'food' THEN nd.calories * m.serving_size
+        // Calories
+        double calories = mealRepository.getDailyCalories(userId);
+        calories_today.setText(String.valueOf((int) calories));
 
-                -- FOOD COMBO (sum of items)
-                WHEN c.type = 'foodcombo' THEN (
-                    SELECT COALESCE(SUM(nd2.calories * ci.quantity), 0)
-                    FROM ComboItems ci
-                    JOIN Consumables c2 ON ci.consumable_id = c2.consumable_id
-                    LEFT JOIN NutritionalDetails nd2 ON c2.nutri_id = nd2.nutri_id
-                    WHERE ci.combo_id = c.consumable_id
-                ) * m.serving_size
+        // Weekly workouts
+        int weeklyWorkouts = activityRepository.getWeeklyWorkoutCount(userId);
+        this_week_workout_count.setText(weeklyWorkouts + (weeklyWorkouts == 1 ? " Workout" : " Workouts"));
 
-                ELSE 0
-            END
-        ), 0) AS total_calories
-        FROM Meals m
-        JOIN Consumables c ON m.consumable_id = c.consumable_id
-        LEFT JOIN NutritionalDetails nd ON c.nutri_id = nd.nutri_id
-        WHERE m.user_id = ?
-        AND DATE(m.log_timestamp) = CURDATE()
-        """;
+        // Total activities
+        int totalActivities = activityRepository.getTotalActivitiesCount(userId);
+        total_activities_count.setText(String.valueOf(totalActivities));
 
-        String weeklyWorkoutQuery = """
-        SELECT COUNT(*) AS workout_count
-        FROM Activities
-        WHERE user_id = ?
-        AND YEARWEEK(log_timestamp, 1) = YEARWEEK(CURDATE(), 1)
-        """;
-
-        String totalActivitiesQuery = """
-        SELECT COUNT(*) AS total_count
-        FROM Activities
-        WHERE user_id = ?
-        """;
-
-        // STREAK (dates only)
-        String streakQuery = """
-        SELECT DISTINCT DATE(log_timestamp) AS activity_date
-        FROM Activities
-        WHERE user_id = ?
-        ORDER BY activity_date DESC
-        """;
-
-        try (Connection conn = DatabaseConnection.getConnection()) {
-
-            // 1. CALORIES TODAY
-            try (PreparedStatement stmt = conn.prepareStatement(caloriesTodayQuery)) {
-                stmt.setInt(1, userId);
-                ResultSet rs = stmt.executeQuery();
-
-                if (rs.next()) {
-                    int calories = (int) rs.getDouble("total_calories");
-                    calories_today.setText(String.valueOf(calories));
-                }
-            }
-
-            // 2. WEEKLY WORKOUTS
-            try (PreparedStatement stmt = conn.prepareStatement(weeklyWorkoutQuery)) {
-                stmt.setInt(1, userId);
-                ResultSet rs = stmt.executeQuery();
-
-                if (rs.next()) {
-                    int count = rs.getInt("workout_count");
-                    this_week_workout_count.setText(count + " Workouts");
-                }
-            }
-
-            // 3. TOTAL ACTIVITIES
-            try (PreparedStatement stmt = conn.prepareStatement(totalActivitiesQuery)) {
-                stmt.setInt(1, userId);
-                ResultSet rs = stmt.executeQuery();
-
-                if (rs.next()) {
-                    int total = rs.getInt("total_count");
-                    total_activities_count.setText(String.valueOf(total));
-                }
-            }
-
-            // 4. Streak (BY DAYS)
-            try (PreparedStatement stmt = conn.prepareStatement("""
-                    SELECT DISTINCT DATE(log_timestamp) AS activity_date
-                    FROM Activities
-                    WHERE user_id = ?
-                    ORDER BY activity_date DESC
-                """)) {
-
-                stmt.setInt(1, userId);
-                ResultSet rs = stmt.executeQuery();
-
-                java.util.Set<java.time.LocalDate> uniqueDates = new java.util.LinkedHashSet<>();
-
-                while (rs.next()) {
-                    uniqueDates.add(rs.getDate("activity_date").toLocalDate());
-                }
-
-                int streak = 0;
-
-                if (!uniqueDates.isEmpty()) {
-                    java.time.LocalDate today = java.time.LocalDate.now();
-                    java.time.LocalDate expected = today;
-
-                    // REQUIRE activity today
-                    if (uniqueDates.contains(today)) {
-
-                        for (java.time.LocalDate date : uniqueDates) {
-                            if (date.equals(expected)) {
-                                streak++;
-                                expected = expected.minusDays(1);
-                            } else if (date.isBefore(expected)) {
-                                // gap found → stop streak
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                String text = streak + " Days";
-                curr_streak_1.setText(text);
-                curr_streak_2.setText(text);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+        // Streak
+        int streak = activityRepository.getCurrentStreak(userId);
+        String streakText = streak + " Days";
+        if(streak == 1){
+            streakText = streak + " Day";
         }
+        curr_streak_1.setText(streakText);
+        curr_streak_2.setText(streakText);
     }
+
 
 }
