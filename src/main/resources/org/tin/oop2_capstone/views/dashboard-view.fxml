@@ -313,6 +313,8 @@
                      </VBox>
                        </children>
                    </GridPane>
+
+
                <GridPane hgap="20.0" prefHeight="200.0">
                  <columnConstraints>
                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -325,6 +327,9 @@
                      <VBox spacing="20.0" styleClass="cardContent">
                         <children>
                            <GridPane>
+                               <padding>
+                                   <Insets top="15.0" bottom="15.0" />
+                               </padding>
                              <columnConstraints>
                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -333,8 +338,15 @@
                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                              </rowConstraints>
                               <children>
-                                 <Label text="Recent Food Logs" />
-                                 <Label text="View All &gt;" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
+                                  <Label text="Recent Food Logs" style="-fx-font-size: 20px; -fx-text-fill: #0bb980; -fx-font-weight: bold;" />
+                                  <Label text="View All    " style="-fx-text-fill: #0bb980; -fx-font-size: 18px;" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                                      <styleClass>
+                                          hover-underline
+                                      </styleClass>
+                                  </Label>
+
+                                  <SVGPath content="M9 5L14.15 10C14.4237 10.2563 14.6419 10.5659 14.791 10.9099C14.9402 11.2539 15.0171 11.625 15.0171 12C15.0171 12.375 14.9402 12.7458 14.791 13.0898C14.6419 13.4339 14.4237 13.7437 14.15 14L9 19" fill="TRANSPARENT" stroke="#0bb980"
+                                           strokeWidth="1.5" strokeLineCap="round" strokeLineJoin="round" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
                               </children>
                            </GridPane>
                            <GridPane>
@@ -375,6 +387,7 @@
                            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                         </padding>
                      </VBox>
+
                      <VBox spacing="20.0" styleClass="cardContent" GridPane.columnIndex="1">
                         <children>
                            <GridPane>
