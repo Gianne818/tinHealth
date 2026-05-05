@@ -45,8 +45,10 @@
             <Font size="16.0" />
          </font>
       </Label>
-       <VBox spacing="20">  <!-- Reduce spacing between buttons -->
-           <Button fx:id="completeButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onCompleteButtonClick" style="-fx-cursor: hand;" styleClass="ctaButton" text="Mark as Complete">
+       <VBox spacing="5">
+           <Button fx:id="completeButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                   mnemonicParsing="false" onAction="#onCompleteButtonClick" style="-fx-cursor: hand;"
+                   styleClass="ctaButton" text="Mark as Complete">
                <VBox.margin>
                    <Insets bottom="5" left="10.0" right="10.0" top="0" />
                </VBox.margin>
@@ -54,12 +56,16 @@
                    <Insets bottom="10.0" top="10.0" />
                </padding>
            </Button>
+
+           <Label fx:id="skipButton" onMouseClicked="#onSkipButtonClick" text="Skip for now"
+                  alignment="CENTER" maxWidth="1.7976931348623157E308"
+                  style="-fx-cursor: hand; -fx-padding: 10 0 10 0;">
+               <styleClass>
+                   <String fx:value="buttonLabel" />
+                   <String fx:value="orangeLabel" />
+               </styleClass>
+           </Label>
        </VBox>
-      <Label fx:id="skipButton" onMouseClicked="#onSkipButtonClick" text="Skip for now">
-         <styleClass>
-            <String fx:value="buttonLabel" />
-            <String fx:value="orangeLabel" />
-         </styleClass>
-      </Label>
+
    </VBox>
 </StackPane>
