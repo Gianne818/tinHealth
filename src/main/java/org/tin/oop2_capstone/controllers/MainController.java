@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -106,7 +107,7 @@ public class MainController {
     }
 
     @FXML public void onNavElementClicked(MouseEvent event){
-        Pane clickedBox = (Pane) event.getSource();
+        Node clickedBox = (Node) event.getSource();
         char id = clickedBox.getId().charAt(0);
         switch(id){
             case 'd':
@@ -142,7 +143,7 @@ public class MainController {
         return instance;
     }
 
-    public void navigateToView(String filename, String styleClass, Pane button){
+    public void navigateToView(String filename, String styleClass, Node button){
         ScrollPane view = null;
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/" + filename + ".fxml"));
@@ -169,7 +170,7 @@ public class MainController {
             anchorPaneSideBar.getStyleClass().addAll("light", styleClass);
 
 
-           for(Pane p : navs){
+           for(Node p : navs){
               p.getStyleClass().remove("active");
            }
 
