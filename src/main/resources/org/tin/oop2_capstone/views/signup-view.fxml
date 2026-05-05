@@ -77,9 +77,11 @@
          <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="boldText" text="Email" />
          <TextField fx:id="emailTextField" />
          <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="boldText" text="Password" />
-         <PasswordField fx:id="passwordField" />
+         <PasswordField fx:id="passwordTextField" />
          <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="boldText" text="Confirm Password" />
-         <PasswordField fx:id="confirmPasswordField" />
+         <PasswordField fx:id="confirmPasswordTextField" />
+         <Label fx:id="genericErrorLabel" managed="false" styleClass="redLabel" text="Make sure all fields are not empty!" visible="false" />
+         <Label fx:id="passwordErrorLabel" managed="false" styleClass="redLabel" text="Passwords do not match!" />
          <Button fx:id="signUpButton" minWidth="268.0" mnemonicParsing="false" onAction="#onSignUpButtonClick" text="Sign Up">
             <VBox.margin>
                <Insets top="5.0" />

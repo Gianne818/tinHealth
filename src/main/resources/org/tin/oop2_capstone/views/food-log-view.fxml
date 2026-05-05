@@ -82,7 +82,7 @@
                      </children>
                   </GridPane>
 
-                   <GridPane fx:id="gridPaneAddEntry" hgap="10.0" styleClass="cardContent" vgap="10.0" visible="false">
+                   <GridPane fx:id="gridPaneAddEntry" hgap="10.0"  managed="false" styleClass="cardContent" vgap="10.0" visible="false">
                        <columnConstraints>
                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="179.0" minWidth="10.0" prefWidth="52.0" />
                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="315.0" />
@@ -119,6 +119,7 @@
                         <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                      </padding>
                    </GridPane>
+                  <Label styleClass="cardTitle" text="Your Food Logs" />
 
                   <GridPane styleClass="cardContent">
                      <columnConstraints>

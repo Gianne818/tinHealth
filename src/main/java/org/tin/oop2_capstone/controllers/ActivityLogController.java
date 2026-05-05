@@ -46,8 +46,14 @@ public class ActivityLogController {
         // sample values;
         activityLog = new ActivityLog();
         activityLog.addActivity(new Activity("Strength Training", LocalDateTime.now(), "minutes", 30, 200, "Intense"));
-        activityLog.addActivity(new Activity("Jogging", LocalDateTime.now(), "km", 1.3, 245, "Intense"));
+        activityLog.addActivity(new Activity("Jogging", LocalDateTime.now(), "minutes", 45, 245, "Intense"));
         activityLog.addActivity(new Activity("Yoga", LocalDateTime.now(), "minutes", 50, 180, "Light"));
+        activityLog.addActivity(new Activity("Dumbell", LocalDateTime.now(), "minutes", 30, 200, "Intense"));
+        activityLog.addActivity(new Activity("Outdoor Walk", LocalDateTime.now(), "minutes", 60, 245, "Intense"));
+        activityLog.addActivity(new Activity("Yoga", LocalDateTime.now(), "minutes", 30, 130, "Light"));
+        activityLog.addActivity(new Activity("Strength Training", LocalDateTime.now(), "minutes", 30, 200, "Intense"));
+        activityLog.addActivity(new Activity("Biking", LocalDateTime.now(), "minutes", 50, 245, "Intense"));
+        activityLog.addActivity(new Activity("Hiking", LocalDateTime.now(), "minutes", 60, 270, "Intense"));
 
         activities.addAll(activityLog.getActivities());
 
@@ -73,6 +79,7 @@ public class ActivityLogController {
     private boolean addEntryisVisible = false;
     public void onButtonAddActivityClicked(ActionEvent actionEvent) {
         gridPaneAddEntry.setVisible(!addEntryisVisible);
+        gridPaneAddEntry.setManaged(!addEntryisVisible);
 
         addEntryisVisible = !addEntryisVisible;
     }
