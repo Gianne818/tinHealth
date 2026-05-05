@@ -10,6 +10,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
 import org.tin.oop2_capstone.model.entities.Activity;
 import org.tin.oop2_capstone.model.entities.ActivityLog;
 import org.tin.oop2_capstone.utils.TimeFormatter;
@@ -80,7 +81,6 @@ public class ActivityLogController {
     public void onButtonAddActivityClicked(ActionEvent actionEvent) {
         gridPaneAddEntry.setVisible(!addEntryisVisible);
         gridPaneAddEntry.setManaged(!addEntryisVisible);
-
         addEntryisVisible = !addEntryisVisible;
     }
 
