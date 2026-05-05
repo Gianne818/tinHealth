@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -26,9 +27,18 @@ public class SignUpController {
     @FXML Label loginLabel;
     @FXML VBox createAccountVBox;
     @FXML Button signUpButton;
+    @FXML Label passwordErrorLabel;
+    @FXML Label genericErrorLabel;
+
+    @FXML TextField fullNameTextField;
+    @FXML TextField userNameTextField;
+    @FXML TextField emailTextField;
+    @FXML TextField passwordTextField;
+    @FXML TextField confirmPasswordTextField;
+    ObservableList<TextField> fields;
+
     @FXML BorderPane onBoardingBorderPane;
     @FXML ProgressBar onBoardingProgressBar;
-
     @FXML VBox onBoardingVBox1;
     @FXML VBox onBoardingVBox2;
     @FXML VBox onBoardingVBox3;
@@ -50,53 +60,91 @@ public class SignUpController {
 
     int curPanel = 0;
 
-    private void changeElementAccessibility(Node n, boolean visibility, boolean disability){
+    private void changeElementAccessibility(Node n, boolean visibility, boolean disability, boolean manageability){
         n.setVisible(visibility);
         n.setDisable(disability);
+        n.setManaged(manageability);
     }
 
     public void initialize(){
+        fields = FXCollections.observableArrayList();
         panels = FXCollections.observableArrayList();
         activityLevels = FXCollections.observableArrayList();
+
+        fields.addAll(fullNameTextField, emailTextField, userNameTextField, passwordTextField, confirmPasswordTextField);
         panels.addAll(onBoardingVBox1, onBoardingVBox2, onBoardingVBox3);
         activityLevels.addAll(sedentaryGridPane, lightlyActiveGridPane, moderatelyActiveGridPane, veryActiveGridPane, extremelyActiveGridPane);
-        changeElementAccessibility(backButton,  true, true);
+;
+        changeElementAccessibility(backButton,  true, true, true);
         onBoardingProgressBar.setProgress(0.05);
     }
 
     public void onBackButtonClick(ActionEvent event){
-        changeElementAccessibility(panels.get(curPanel), false, true);
+        changeElementAccessibility(panels.get(curPanel), false, true, true);
         curPanel--;
 
         if(curPanel == 0){
-            changeElementAccessibility(backButton,  true, true);
+            changeElementAccessibility(backButton,  true, true, true);
         }
 
-        changeElementAccessibility(panels.get(curPanel), true, false);
+        changeElementAccessibility(panels.get(curPanel), true, false, true);
         onBoardingProgressBar.setProgress(onBoardingProgressBar.getProgress()-0.33);
     }
 
     public void onNextButtonClick(ActionEvent event){
-        changeElementAccessibility(panels.get(curPanel), false, true);
+        changeElementAccessibility(panels.get(curPanel), false, true, true);
         curPanel++;
 
         if(curPanel!=0){
-            changeElementAccessibility(backButton, true, false);
+            changeElementAccessibility(backButton, true, false, true);
         }
         if(curPanel == panels.size()){
-            changeElementAccessibility(onBoardingBorderPane, false, true);
-            changeElementAccessibility(continueVBox, true, false);
+            changeElementAccessibility(onBoardingBorderPane, false, true, true);
+            changeElementAccessibility(continueVBox, true, false, true);
             return;
         }
 
-        changeElementAccessibility(panels.get(curPanel), true, false);
+        changeElementAccessibility(panels.get(curPanel), true, false, true);
         onBoardingProgressBar.setProgress(onBoardingProgressBar.getProgress()+0.33);
     }
 
     public void onSignUpButtonClick(ActionEvent event){
         // todo: create user and add to db
-        changeElementAccessibility(createAccountVBox,false, true);
-        changeElementAccessibility(onBoardingBorderPane, true, false);
+
+        String fullName = fullNameTextField.getText();
+        String email = emailTextField.getText();
+        String userName = userNameTextField.getText();
+        String confirmPass = confirmPasswordTextField.getText();
+        String pass = passwordTextField.getText();
+
+
+        boolean allFilled = false;
+        boolean passwordsMatch = false;
+
+        for(TextField t : fields){
+            if(t.getText().isEmpty()){
+                changeElementAccessibility(genericErrorLabel, true, false, true);
+                allFilled = false;
+                break;
+            } else {
+                changeElementAccessibility(genericErrorLabel, false, true, false);
+                allFilled = true;
+            }
+        }
+
+        if(!confirmPass.equals(pass)){
+            changeElementAccessibility(passwordErrorLabel,true, false, true);
+            passwordsMatch = false;
+        } else {
+            changeElementAccessibility(passwordErrorLabel, false, true, false);
+            passwordsMatch = true;
+        }
+
+        if(allFilled && passwordsMatch) {
+            changeElementAccessibility(createAccountVBox, false, true, true);
+            changeElementAccessibility(onBoardingBorderPane, true, false, true);
+        }
+
     }
 
     public void onLoginClicked(MouseEvent event) throws IOException {

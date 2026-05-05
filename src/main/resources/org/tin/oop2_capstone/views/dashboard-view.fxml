@@ -94,7 +94,7 @@
                               <children>
                                  <Label styleClass="lightText" text="Goal:" />
                                  <Label fx:id="goalCaloriesLabelCaloriesIn" styleClass="lightText" text="0" />
-                                 <Label styleClass="lightText" text="kcal today" />
+                                 <Label styleClass="lightText" text="kcal" />
                               </children>
                            </HBox>
                                </children>
@@ -328,7 +328,7 @@
                            <HBox maxWidth="-Infinity" spacing="5.0" styleClass="lightText">
                               <children>
                                  <Label styleClass="lightText" text="From" />
-                                 <Label fx:id="numActLabelCaloriesBurned" styleClass="lightText" text="0" />
+                                 <Label fx:id="numActLabelCaloriesBurned" styleClass="lightText" text="0 " />
 <!--                                 <Label fx:id="todayActivitiesDisplay" styleClass="lightText" text="activities today" />-->
                               </children>
                            </HBox>

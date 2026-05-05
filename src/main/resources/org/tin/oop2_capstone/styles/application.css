@@ -46,7 +46,7 @@
 
 
 .button:hover{
-    -fx-effect: dropshadow(three-pass-box, darkgrey, 14, 0, 0, 3);
+    -fx-effect: dropshadow(three-pass-box, -shadow-hover, 14, 0, 0, 3);
     -fx-scale-x: 1.005;
     -fx-scale-y: 1.05;
 }
@@ -67,7 +67,7 @@
 .split-pane-divider{
     -fx-pref-width: 0.5px;
     -fx-padding: 0 2;
-    -fx-effect: dropshadow(three-pass-box, lightgrey, 20, 0.7, 4, 0);
+    -fx-effect: dropshadow(three-pass-box, -shadow-hover, 20, 0.7, 4, 0);
 }
 
 .currentSVG{
@@ -96,13 +96,13 @@
 .card{
     -fx-background-color: -bg-default;
     -fx-background-radius: 15;
-    -fx-effect: dropshadow(three-pass-box, darkgrey, 10, 0, 0, 2);
+    -fx-effect: dropshadow(three-pass-box, -shadow-plain, 10, 0, 0, 5);
 }
 
 .cardContent{
     -fx-background-color: -bg-default;
     -fx-background-radius: 15;
-    -fx-effect: dropshadow(three-pass-box, lightgrey, 20, 0, 0, 5);
+    -fx-effect: dropshadow(three-pass-box, -shadow-plain, 10, 0, 0, 5);
 }
 
 #hamburgerButton:hover {
@@ -151,11 +151,11 @@
     -fx-background-color: -bg-default;
     -fx-background-radius: 14px;
     -fx-border-radius: 14px;
-    -fx-effect: dropshadow(three-pass-box, lightgrey, 10, 0, 0, 2);
+    -fx-effect: dropshadow(three-pass-box, -shadow-plain, 10, 0, 0, 5);
 }
 
 .notif-card:hover, .list-cell:hover{
-    -fx-effect: dropshadow(three-pass-box, lightgrey, 14, 0, 0, 3);
+    /*-fx-effect: dropshadow(three-pass-box, -shadow-hover, 10, 0, 0, 5);*/
     -fx-scale-x: 1.005;
     -fx-scale-y: 1.05;
 }
@@ -177,7 +177,7 @@
     -fx-background-color: -bg-color-accent, -bg-default;
     -fx-background-radius: 24px, 24px;
     -fx-background-insets: 0, 2 22 2 2;
-    -fx-effect: dropshadow(three-pass-box, lightgrey, 2, 0, 0, 1);
+    -fx-effect: dropshadow(three-pass-box, -shadow-plain, 5, 0, 0, 2);
     -fx-cursor: hand;
 }
 
@@ -225,13 +225,13 @@
     -fx-border-radius: 30;
     -fx-background-radius: 30;
     -fx-text-fill: white;
-    -fx-effect: dropshadow(three-pass-box, darkgrey, 10, 0, 0, 2);
+    -fx-effect: dropshadow(three-pass-box, -shadow-plain, 10, 0, 0, 5);
     -fx-background-color: -peach-to-orange;
 
 }
 
 .logQuickActions:hover{
-    -fx-effect: dropshadow(three-pass-box, darkgrey, 20, 0.2, 0, 2);
+    -fx-effect: dropshadow(three-pass-box, -shadow-hover, 20, 0.2, 0, 5);
     -fx-scale-x: 1.005;
     -fx-scale-y: 1.05;
 
@@ -277,17 +277,11 @@
 .skipButton {
     -fx-background-color: transparent;
     -fx-border-color: black;
-    -fx-border-width: 1px;
+    -fx-border-width: 1;
     -fx-border-radius: 50;
     -fx-background-radius: 50;
     -fx-text-fill: black;
-    -fx-font-size: 14px;
-}
-
-.skipButton:hover {
-    -fx-background-color: #f0f0f0;
-    -fx-border-color: #666;
-    -fx-text-fill: #333;
+    -fx-font-size: 14;
 }
 
 /* When profileNav being hovered */
@@ -295,13 +289,11 @@
     -fx-opacity: 0.7;
 }
 
-
-
 /*More profile-specific things*/
 .bmiCardContent{
     -fx-background-color: -orange-to-red-orange;
     -fx-background-radius: 15;
-    -fx-effect: dropshadow(three-pass-box, lightgrey, 20, 0, 0, 5);
+    -fx-effect: dropshadow(three-pass-box, -shadow-plain, 20, 0, 0, 5);
 }
 
 .bmiCardContent .label {-fx-text-fill: white;}
@@ -404,7 +396,7 @@
 }
 
 .date-picker .arrow-button:hover, .date-picker .arrow-button:focused{
-    -fx-effect: dropshadow(three-pass-box, lightgrey, 10, 0, 0, 2);
+    -fx-effect: dropshadow(three-pass-box, -shadow-plain, 10, 0, 0, 3);
 }
 
 .date-picker-popup .spinner > .button {
@@ -412,7 +404,7 @@
 }
 
 .date-picker-popup > * > .spinner > .button:hover {
-    -fx-effect: dropshadow(three-pass-box, darkgrey, 10, 0, 0, 2);
+    -fx-effect: dropshadow(three-pass-box, -shadow-hover, 10, 0, 0, 2);
 }
 
 .date-picker-popup > * > .spinner > .button > .left-arrow,
@@ -469,8 +461,8 @@
     -fx-background-radius: 20;
 }
 
-.scroll-pane .scroll-bar .thumb:hover{
-    -fx-effect: dropshadow(three-pass-box, darkgrey, 5, 0, 0, 2);
+.scroll-pane .scroll-bar .thumb:hover, .scroll-pane .scroll-bar .thumb:pressed{
+    -fx-effect: dropshadow(three-pass-box, -shadow-hover, 5, 0, 0, 2);
 }
 
 .scroll-pane .scroll-bar .increment-button,
@@ -485,13 +477,15 @@
     /*inc and dec still functional. could not figure out how to disable it fully*/
 }
 
-.list-view, .list-view .list-cell{
+.list-view {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
 }
 
 .list-cell{
-    -fx-padding: 0 0 15 0;
+    -fx-padding: 10 10 10 10;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
 }
 
 /*LineGraph Default Colors*/

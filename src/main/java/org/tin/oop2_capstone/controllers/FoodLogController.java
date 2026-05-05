@@ -22,11 +22,8 @@ public class FoodLogController {
 
     private boolean addEntryisVisible = false;
     @FXML public void onButtonAddFoodClicked(ActionEvent event){
-        if(!addEntryisVisible){
-            gridPaneAddEntry.setVisible(true);
-        } else {
-            gridPaneAddEntry.setVisible(false);
-        }
+        gridPaneAddEntry.setVisible(!addEntryisVisible);
+        gridPaneAddEntry.setManaged(!addEntryisVisible);
 
         addEntryisVisible = !addEntryisVisible;
     }

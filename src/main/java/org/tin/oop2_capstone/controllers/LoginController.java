@@ -20,18 +20,23 @@ public class LoginController {
     @FXML TextField usernameField;
     @FXML PasswordField passwordField;
 
-    private UserRepository userRepository = new UserRepository();
+    @FXML Label invalidCredentialsLabel;
+
+
 
     @FXML
-    public void onLoginButtonClicked(ActionEvent event) throws IOException {
+    public void onLoginButtonClicked(ActionEvent event){
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-        if (userRepository.validateLogin(username, password)) {
-            // Get user and save to session
-            User user = userRepository.getUserByUsername(username);
+        User user = UserRepository.getUser(username, password);
+        if(user == null) {
+            //todo show error message
+            invalidCredentialsLabel.setManaged(true);
+            return;
+        }
+        else {
             SessionManager.getInstance().setCurrentUser(user);
-
             SceneSwitcher.use(buttonLogin, "main-view")
                     .setCss("application")
                     .setMinDimensions(900, 850)
@@ -41,6 +46,7 @@ public class LoginController {
                     .switchScene();
         }
     }
+
 
     @FXML
     public void onSignupClicked(MouseEvent event) throws IOException {

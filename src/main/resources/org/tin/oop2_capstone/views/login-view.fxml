@@ -70,6 +70,7 @@
                 <TextField fx:id="usernameField" />
                 <Label prefHeight="17.0" prefWidth="271.0" styleClass="fieldLabel" text="Password" />
                 <PasswordField fx:id="passwordField" />
+            <Label fx:id="invalidCredentialsLabel" styleClass="redLabel" managed="false" text="Invalid Credentials!" />
                 <Button fx:id="buttonLogin" minWidth="268.0" mnemonicParsing="false" onAction="#onLoginButtonClicked" style="-fx-cursor: hand;" text="Login">
                     <VBox.margin>
                         <Insets top="5.0" />
