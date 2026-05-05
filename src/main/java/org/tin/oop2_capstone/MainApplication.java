@@ -32,22 +32,5 @@ public class MainApplication extends Application {
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
-//
-//        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/main-view.fxml"));
-//        Scene scene = new Scene(fxmlLoader.load());
-//
-//        String style = getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm();
-//        scene.getStylesheets().add(style);
-//
-//        stage.setResizable(true);
-//
-//        stage.setMinWidth(1000);
-//        stage.setMinHeight(800);
-//
-//        stage.setTitle("Health Tracker");
-//        stage.setScene(scene);
-//
-//        stage.setMaximized(true);
-//        stage.show();
     }
 }

@@ -2,6 +2,7 @@ package org.tin.oop2_capstone.database.repositories;
 
 import org.tin.oop2_capstone.database.RetrieveData;
 import org.tin.oop2_capstone.model.entities.Activity;
+import org.tin.oop2_capstone.model.entities.ActivityType;
 import org.tin.oop2_capstone.model.entities.NutritionDetails;
 import java.util.*;
 
@@ -10,32 +11,79 @@ public class ActivityRepository {
     /**
      * Validate before inserting into database the activity.
      */
-    public static int getWeeklyWorkoutCount(int userId) {
-        return RetrieveData.fetchUserWeeklyWorkout(userId);
+
+    private static ActivityRepository instance;
+
+    private int weeklyWorkoutCount;
+    private int totalActivitiesCount;
+    private int currentStreak;
+    private int todayCaloriesOut;
+    private int todayActivitiesCount;
+    private NutritionDetails weeklyNutrients;
+    private Map<String, Double[]> weeklyCalories;
+    private List<Activity> todayActivities;
+    private List<ActivityType> activityTypes;
+    private List<Activity> userActivities;
+
+    public static ActivityRepository getInstance(){
+        if(instance == null) instance = new ActivityRepository();
+        return instance;
     }
 
-    public static int getTotalActivitiesCount(int userId) {
-        return RetrieveData.fetchUserTotalActivities(userId);
+    public void fetchInitialActivityData(int userId){
+        this.weeklyWorkoutCount = RetrieveData.fetchUserWeeklyWorkout(userId);
+        this.totalActivitiesCount = RetrieveData.fetchUserTotalActivities(userId);
+        this.currentStreak = RetrieveData.fetchUserCurrentStreak(userId);
+        this.todayCaloriesOut = RetrieveData.fetchUserTodayCaloriesOut(userId);
+        this.todayActivitiesCount =  RetrieveData.fetchUserTodayActivities(userId).size();
+        this.weeklyNutrients = RetrieveData.fetchUserWeeklyNutrients(userId);
+        this.weeklyCalories = RetrieveData.fetchUserWeeklyCalories(userId);
+        this.todayActivities = RetrieveData.fetchUserTodayActivities(userId);
+        this.activityTypes = RetrieveData.fetchActivityTypes();
+        this.userActivities = RetrieveData.fetchUserActivities(userId);
     }
 
-    public static int getCurrentStreak(int userId) {
-        return RetrieveData.fetchUserCurrentStreak(userId);
+    public int getWeeklyWorkoutCount() {
+        return weeklyWorkoutCount;
     }
 
-    public static int getTodayCaloriesOut(int userId) {
-        return RetrieveData.fetchUserTodayCaloriesOut(userId);
+    public int getTotalActivitiesCount() {
+        return totalActivitiesCount;
     }
 
-
-    public static NutritionDetails getWeeklyNutrients(int userId) {
-        return RetrieveData.fetchUserWeeklyNutrients(userId);
+    public int getCurrentStreak() {
+        return currentStreak;
     }
 
-    public static Map<String, Double[]> getWeeklyCalories(int userId) {
-        return RetrieveData.fetchUserWeeklyCalories(userId);
+    public int getTodayCaloriesOut() {
+        return todayCaloriesOut;
     }
 
-//    public List<Map<String, Object>> getTodayFoodLogs(int userId) {
+    public int getTodayActivitiesCount() {
+        return todayActivitiesCount;
+    }
+
+    public NutritionDetails getWeeklyNutrients() {
+        return weeklyNutrients;
+    }
+
+    public Map<String, Double[]> getWeeklyCalories() {
+        return weeklyCalories;
+    }
+
+    public List<Activity> getTodayActivities() {
+        return todayActivities;
+    }
+
+    public List<ActivityType> getActivityTypes() {
+        return activityTypes;
+    }
+
+    public List<Activity> getUserActivities() {
+        return userActivities;
+    }
+
+    //    public List<Map<String, Object>> getTodayFoodLogs(int userId) {
 //        List<Map<String, Object>> logs = new ArrayList<>();
 //
 //        String query = """
@@ -68,12 +116,4 @@ public class ActivityRepository {
 //        }
 //        return logs;
 //    }
-
-    public static List<Activity> getTodayActivities(int userId) {
-       return RetrieveData.fetchUserTodayActivities(userId);
-    }
-
-    public static int getTodayActivitiesCount(int userId) {
-        return  RetrieveData.fetchUserTodayActivities(userId).size();
-    }
 }
