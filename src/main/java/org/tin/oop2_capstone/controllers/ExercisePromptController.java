@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 import org.tin.oop2_capstone.services.ExerciseDifficultyService;
@@ -19,7 +20,7 @@ public class ExercisePromptController {
     @FXML private Label repCountLabel;
     @FXML private Label unitLabel;
     @FXML private Button completeButton;
-    @FXML private Button skipButton;
+    @FXML private Label skipButton;
 
     /** Called by MainController so we can remove ourselves from the overlay. */
     private static Runnable onDismiss;
@@ -73,7 +74,7 @@ public class ExercisePromptController {
     }
 
     @FXML
-    private void onSkipButtonClick(){
+    private void onSkipButtonClick(MouseEvent event){
         dismiss();
     }
 
