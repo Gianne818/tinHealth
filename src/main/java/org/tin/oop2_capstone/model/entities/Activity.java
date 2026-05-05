@@ -8,20 +8,18 @@ public class Activity {
     private String unit;
     private double quantity;
     private double calories;
-    private String intensity;
 
     // todo: remove calorie from parameter and calculate based on intensity and user info
     // todo: remove String name parameter on constructor and field and replace with activityType.
     // todo: when db is implemented, we just getActivityType().getName() to display in UI.
 
     private String name;
-    public Activity(String name, LocalDateTime logTime, String unit, double quantity, double calories, String intensity) {
-        this.name = name;
+    public Activity(ActivityType activityType, LocalDateTime logTime, String unit, double quantity, double calories) {
+        this.activityType = activityType;
         this.logDateTime = logTime;
         this.unit = unit;
         this.quantity = quantity;
         this.calories = calories;
-        this.intensity = intensity;
     }
 
     public ActivityType getActivityType() {

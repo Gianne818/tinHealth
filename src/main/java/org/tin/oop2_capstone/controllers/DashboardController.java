@@ -1,38 +1,30 @@
 package org.tin.oop2_capstone.controllers;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.HPos;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.chart.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.PopupControl;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Separator;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.chart.XYChart.Series;
 import  javafx.scene.chart.PieChart.Data;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import java.io.IOException;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Map;
 
 import javafx.scene.shape.Line;
-import javafx.scene.text.Font;
 import org.tin.oop2_capstone.database.repositories.ActivityRepository;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
 import org.tin.oop2_capstone.database.repositories.UserPrefRepository;
+import org.tin.oop2_capstone.model.entities.NutritionDetails;
 import org.tin.oop2_capstone.services.SessionManager;
-import org.tin.oop2_capstone.utils.SceneSwitcher;
 
 public class DashboardController {
     @FXML ScrollPane dashboardScrollPane;
@@ -49,9 +41,6 @@ public class DashboardController {
     @FXML private Label carbsLabelMacro;
     @FXML private Label fatsLabelMacro;
 
-    private MealRepository mealRepository = new MealRepository();
-    private ActivityRepository activityRepository = new ActivityRepository();
-    private UserPrefRepository userPrefRepository = new UserPrefRepository();
     @FXML public Label caloriesInLabel;
     @FXML public Label caloriesOutLabel;
     @FXML public Label netCaloriesLabel;
@@ -64,9 +53,14 @@ public class DashboardController {
     @FXML private Label numActLabelCaloriesBurned;
     @FXML private Label daysInARowHeader;
 
+    private NutritionDetails nutritionDetails;
+    private int userId;
+
     public void initialize() {
+        userId = SessionManager.getInstance().getCurrentUser().getUid();
         dashboardScrollPane.getStyleClass().add("light");
         macroDistData = FXCollections.observableArrayList();
+        nutritionDetails = ActivityRepository.getWeeklyNutrients(userId);
 
         initDashboardHeader();
         initMacroDist();
@@ -152,12 +146,9 @@ public class DashboardController {
         macroDistPieChart.setLegendVisible(false);
         macroDistInnerHoleCircle.radiusProperty().bind(macroDistPieChart.widthProperty().divide(3.5));
 
-        int userId = SessionManager.getInstance().getCurrentUser().getUid();
-        ActivityRepository.MacroData macros = activityRepository.getWeeklyMacros(userId);
-
-        double protein = macros.protein;
-        double carbs = macros.carbs;
-        double fats = macros.fats;
+        double protein = nutritionDetails.getProtein();
+        double carbs = nutritionDetails.getCarbs();
+        double fats = nutritionDetails.getFat();
         double total = protein + carbs + fats;
 
         if (total > 0) {
@@ -176,8 +167,7 @@ public class DashboardController {
         xAxis.setGapStartAndEnd(false);
         xAxis.setTickMarkVisible(false);
 
-        int userId = SessionManager.getInstance().getCurrentUser().getUid();
-        Map<String, Double[]> weeklyData = activityRepository.getWeeklyCalories(userId);
+        Map<String, Double[]> weeklyData = ActivityRepository.getWeeklyCalories(userId);
 
         LineChart<String, Number> chart = (LineChart<String, Number>) weeklyChart;
         XYChart.Series<String, Number> calIn = new XYChart.Series<>();
@@ -189,7 +179,7 @@ public class DashboardController {
 
         for (int i = 0; i <= currentDayIndex; i++) {
             String day = allDays[i];
-            Double[] data = weeklyData.getOrDefault(day, new Double[]{0.0, 0.0});
+            Double[] data = weeklyData.get(day);
             calIn.getData().add(new XYChart.Data<>(day, data[0]));
             calOut.getData().add(new XYChart.Data<>(day, data[1]));
         }
@@ -223,24 +213,24 @@ public class DashboardController {
 
     private void initDashboardHeader(){
         int userId = SessionManager.getInstance().getCurrentUser().getUid();
-        double caloriesIn = mealRepository.getDailyCaloriesIn(userId);
+        double caloriesIn = MealRepository.getTodayCaloriesIn(userId);
         caloriesInLabel.setText(String.valueOf((int) caloriesIn));
 
-        double caloriesOut = activityRepository.getDailyCaloriesOut(userId);
+        double caloriesOut = ActivityRepository.getTodayCaloriesOut(userId);
         caloriesOutLabel.setText(String.valueOf(caloriesOut));
 
         netCaloriesLabel.setText(String.valueOf((int) (caloriesIn - caloriesOut)));
 
-        int streak = activityRepository.getCurrentStreak(userId);
+        int streak = ActivityRepository.getCurrentStreak(userId);
         activityStreakLabel.setText(String.valueOf(streak));
 
-        int dailyCalorieInGoal = userPrefRepository.getDailyCalorieInGoal(userId);
+        int dailyCalorieInGoal = UserPrefRepository.getDailyCalorieInGoal(userId);
         goalCaloriesLabelCaloriesIn.setText(String.valueOf(dailyCalorieInGoal));
 
-        int todayActivitiesCount = activityRepository.getTodayActivitiesCount(userId);
-        numActLabelCaloriesBurned.setText(todayActivitiesCount + " today");
+        int todayActivitiesCount = ActivityRepository.getTodayActivitiesCount(userId);
+        numActLabelCaloriesBurned.setText(todayActivitiesCount + (todayActivitiesCount <= 1 ? " Activity" : " Activities"));
 
-        String daysStringDisplay = (streak == 1 ? "day" : "days in a row" );
+        String daysStringDisplay = (streak <= 1 ? "day" : "days in a row" );
         daysInARowHeader.setText(daysStringDisplay);
     }
 
@@ -260,6 +250,5 @@ public class DashboardController {
     private void goToView(MouseEvent event) {
         MainController main = MainController.getInstance();
         main.onNavElementClicked(event);
-//
     }
 }

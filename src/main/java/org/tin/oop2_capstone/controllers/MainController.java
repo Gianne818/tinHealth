@@ -20,12 +20,7 @@ import javafx.animation.*;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
-import org.tin.oop2_capstone.database.DatabaseConnection;
 import org.tin.oop2_capstone.database.repositories.ActivityRepository;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
 import org.tin.oop2_capstone.database.repositories.UserRepository;
@@ -53,9 +48,6 @@ public class MainController {
     @FXML public Label calories_today;
     @FXML public Label this_week_workout_count;
     @FXML public Label total_activities_count;
-    private MealRepository mealRepository = new MealRepository();
-    private ActivityRepository activityRepository = new ActivityRepository();
-    private UserRepository userRepository = new UserRepository();
 
     ObservableList<Pane> navs;
 
@@ -72,9 +64,12 @@ public class MainController {
     @FXML private Label remainingTimeUnitLabel;
     @FXML private Label remainingTimeUnitLabelk;
 
+    private int userId;
+
 
     public void initialize(){
         instance = this;
+        userId = SessionManager.getInstance().getCurrentUser().getUid();
         rootAnchorPane.getStyleClass().add("light");
         anchorPaneSideBar.getStyleClass().add("light");
         anchorPaneContent.getStyleClass().add("light");
@@ -210,22 +205,20 @@ public class MainController {
     }
 
     private void loadSideBoardStats() {
-        int userId = SessionManager.getInstance().getCurrentUser().getUid();
-
         // Calories
-        double calories = mealRepository.getDailyCaloriesIn(userId);
+        double calories = MealRepository.getTodayCaloriesIn(userId);
         calories_today.setText(String.valueOf((int) calories));
 
         // Weekly workouts
-        int weeklyWorkouts = activityRepository.getWeeklyWorkoutCount(userId);
+        int weeklyWorkouts = ActivityRepository.getWeeklyWorkoutCount(userId);
         this_week_workout_count.setText(weeklyWorkouts + (weeklyWorkouts == 1 ? " Workout" : " Workouts"));
 
         // Total activities
-        int totalActivities = activityRepository.getTotalActivitiesCount(userId);
+        int totalActivities = ActivityRepository.getTotalActivitiesCount(userId);
         total_activities_count.setText(String.valueOf(totalActivities));
 
         // Streak
-        int streak = activityRepository.getCurrentStreak(userId);
+        int streak = ActivityRepository.getCurrentStreak(userId);
         String streakText = streak + (streak == 1 ? " Day" : " Days");
         curr_streak_1.setText(streakText);
         curr_streak_2.setText(streakText);
@@ -233,7 +226,7 @@ public class MainController {
 
     private void startExercisePromptTimer() {
         int userId = SessionManager.getInstance().getCurrentUser().getUid();
-        int promptFreqMinutes = userRepository.getPromptFrequency(userId);
+        int promptFreqMinutes = UserRepository.getPromptFrequency(userId);
 
         remainingSeconds = promptFreqMinutes * 60;
         updateTimerDisplay();

@@ -11,8 +11,10 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
+import org.tin.oop2_capstone.database.RetrieveData;
 import org.tin.oop2_capstone.model.entities.Activity;
 import org.tin.oop2_capstone.model.entities.ActivityLog;
+import org.tin.oop2_capstone.model.entities.ActivityType;
 import org.tin.oop2_capstone.utils.TimeFormatter;
 
 import java.io.IOException;
@@ -46,15 +48,16 @@ public class ActivityLogController {
     private void setActivityLog(){
         // sample values;
         activityLog = new ActivityLog();
-        activityLog.addActivity(new Activity("Strength Training", LocalDateTime.now(), "minutes", 30, 200, "Intense"));
-        activityLog.addActivity(new Activity("Jogging", LocalDateTime.now(), "minutes", 45, 245, "Intense"));
-        activityLog.addActivity(new Activity("Yoga", LocalDateTime.now(), "minutes", 50, 180, "Light"));
-        activityLog.addActivity(new Activity("Dumbell", LocalDateTime.now(), "minutes", 30, 200, "Intense"));
-        activityLog.addActivity(new Activity("Outdoor Walk", LocalDateTime.now(), "minutes", 60, 245, "Intense"));
-        activityLog.addActivity(new Activity("Yoga", LocalDateTime.now(), "minutes", 30, 130, "Light"));
-        activityLog.addActivity(new Activity("Strength Training", LocalDateTime.now(), "minutes", 30, 200, "Intense"));
-        activityLog.addActivity(new Activity("Biking", LocalDateTime.now(), "minutes", 50, 245, "Intense"));
-        activityLog.addActivity(new Activity("Hiking", LocalDateTime.now(), "minutes", 60, 270, "Intense"));
+        List<ActivityType> activityTypes = RetrieveData.fetchActivityTypes();
+        activityLog.addActivity(new Activity(activityTypes.get(1), LocalDateTime.now(), "minutes", 30, 200));
+        activityLog.addActivity(new Activity(activityTypes.get(2), LocalDateTime.now(), "minutes", 45, 245));
+        activityLog.addActivity(new Activity(activityTypes.get(3), LocalDateTime.now(), "minutes", 50, 180));
+        activityLog.addActivity(new Activity(activityTypes.get(4), LocalDateTime.now(), "minutes", 30, 200));
+        activityLog.addActivity(new Activity(activityTypes.get(0), LocalDateTime.now(), "minutes", 60, 245));
+        activityLog.addActivity(new Activity(activityTypes.get(1), LocalDateTime.now(), "minutes", 30, 1));
+        activityLog.addActivity(new Activity(activityTypes.get(2), LocalDateTime.now(), "minutes", 30, 200));
+        activityLog.addActivity(new Activity(activityTypes.get(3), LocalDateTime.now(), "minutes", 50, 245));
+        activityLog.addActivity(new Activity(activityTypes.get(4), LocalDateTime.now(), "minutes", 60, 270));
 
         activities.addAll(activityLog.getActivities());
 
@@ -66,7 +69,7 @@ public class ActivityLogController {
                 root.getStyleClass().addAll("light", "activityLogScrollPane");
 
                 LogCardController logCardController = fxmlLoader.getController();
-                logCardController.setData(a.getName(), TimeFormatter.formatTo12Hour(a.getLogDateTime().toLocalTime()), a.getQuantity(), a.getUnit(), a.getCalories());
+                logCardController.setData(a.getActivityType().getName(), TimeFormatter.formatTo12Hour(a.getLogDateTime().toLocalTime()), a.getQuantity(), a.getUnit(), a.getCalories());
                 activityGridPanes.add(root);
             } catch (IOException e){
                 System.out.println("OH NNOI");
