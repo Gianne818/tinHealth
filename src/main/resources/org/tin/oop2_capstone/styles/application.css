@@ -444,8 +444,8 @@
     -fx-background-radius: 20;
 }
 
-.scroll-pane .scroll-bar .thumb:hover{
-    -fx-effect: dropshadow(three-pass-box, darkgrey, 5, 0, 0, 2);
+.scroll-pane .scroll-bar .thumb:hover, .scroll-pane .scroll-bar .thumb:pressed{
+    -fx-effect: dropshadow(three-pass-box, -shadow-hover, 5, 0, 0, 2);
 }
 
 .scroll-pane .scroll-bar .increment-button,
