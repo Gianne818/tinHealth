@@ -20,6 +20,8 @@ public class LoginController {
     @FXML TextField usernameField;
     @FXML PasswordField passwordField;
 
+    @FXML Label invalidCredentialsLabel;
+
 
 
     @FXML
@@ -30,6 +32,7 @@ public class LoginController {
         User user = UserRepository.getUser(username, password);
         if(user == null) {
             //todo show error message
+            invalidCredentialsLabel.setManaged(true);
             return;
         }
         else {
