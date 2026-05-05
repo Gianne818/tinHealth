@@ -1,9 +1,13 @@
 package org.tin.oop2_capstone.controllers;
 
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -12,6 +16,8 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.input.MouseEvent;
+import javafx.animation.*;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -22,6 +28,7 @@ import java.sql.SQLException;
 import org.tin.oop2_capstone.database.DatabaseConnection;
 import org.tin.oop2_capstone.database.repositories.ActivityRepository;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
+import org.tin.oop2_capstone.database.repositories.UserRepository;
 import org.tin.oop2_capstone.model.entities.User;
 import org.tin.oop2_capstone.services.SessionManager;
 
@@ -48,6 +55,7 @@ public class MainController {
     @FXML public Label total_activities_count;
     private MealRepository mealRepository = new MealRepository();
     private ActivityRepository activityRepository = new ActivityRepository();
+    private UserRepository userRepository = new UserRepository();
 
     ObservableList<Pane> navs;
 
@@ -55,8 +63,18 @@ public class MainController {
 
     @FXML public Button quickWorkoutButton;
 
+    private static MainController instance;
+
+    private Timeline promptTimer;
+    private int remainingSeconds;
+
+    @FXML private Label remainingTimeNumberLabel;
+    @FXML private Label remainingTimeUnitLabel;
+    @FXML private Label remainingTimeUnitLabelk;
+
 
     public void initialize(){
+        instance = this;
         rootAnchorPane.getStyleClass().add("light");
         anchorPaneSideBar.getStyleClass().add("light");
         anchorPaneContent.getStyleClass().add("light");
@@ -71,7 +89,8 @@ public class MainController {
         }
 
         navigateToView("dashboard-view", "dashboardScrollPane", dashboardNav);
-        loadDashboardStats();
+        loadSideBoardStats();
+        startExercisePromptTimer();
     }
 
     public void toggleSideBar(){
@@ -88,7 +107,7 @@ public class MainController {
     }
 
     @FXML public void onNavElementClicked(MouseEvent event){
-        Pane clickedBox = (Pane) event.getSource();
+        Node clickedBox = (Node) event.getSource();
         char id = clickedBox.getId().charAt(0);
         switch(id){
             case 'd':
@@ -120,7 +139,11 @@ public class MainController {
         }
     }
 
-    public void navigateToView(String filename, String styleClass, Pane button){
+    public static MainController getInstance() {
+        return instance;
+    }
+
+    public void navigateToView(String filename, String styleClass, Node button){
         ScrollPane view = null;
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/" + filename + ".fxml"));
@@ -132,6 +155,12 @@ public class MainController {
             AnchorPane.setLeftAnchor(view, 0.0);
             anchorPaneContent.getChildren().setAll(view);
 
+            // Set UserData on the scene (not null now)
+            Scene scene = anchorPaneContent.getScene();
+            if (scene != null) {
+                scene.setUserData(this);
+            }
+
             // todo getUserAppearancePref() to determine if lightmode or darkmode styles, but lightmode for now
 
             anchorPaneContent.getStyleClass().clear();
@@ -141,7 +170,7 @@ public class MainController {
             anchorPaneSideBar.getStyleClass().addAll("light", styleClass);
 
 
-           for(Pane p : navs){
+           for(Node p : navs){
               p.getStyleClass().remove("active");
            }
 
@@ -154,16 +183,15 @@ public class MainController {
     }
 
     @FXML
-    private void onQuickExerciseClicked() {
+    public void onQuickExerciseClicked() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/exercise-prompt-view.fxml"));
-
             StackPane overlay = fxmlLoader.load();
+
             overlay.getStyleClass().add("light");
 
             AnchorPane.setTopAnchor(overlay, 0.0);
             AnchorPane.setBottomAnchor(overlay, 0.0);
-
             AnchorPane.setLeftAnchor(overlay, 0.0);
             AnchorPane.setRightAnchor(overlay, 0.0);
 
@@ -175,19 +203,17 @@ public class MainController {
             splitPaneMain.setEffect(new GaussianBlur(10));
 
             rootAnchorPane.getChildren().add(overlay);
-
-
-
         } catch (Exception e) {
+            System.out.println("ERROR: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    private void loadDashboardStats() {
+    private void loadSideBoardStats() {
         int userId = SessionManager.getInstance().getCurrentUser().getUid();
 
         // Calories
-        double calories = mealRepository.getDailyCalories(userId);
+        double calories = mealRepository.getDailyCaloriesIn(userId);
         calories_today.setText(String.valueOf((int) calories));
 
         // Weekly workouts
@@ -200,13 +226,80 @@ public class MainController {
 
         // Streak
         int streak = activityRepository.getCurrentStreak(userId);
-        String streakText = streak + " Days";
-        if(streak == 1){
-            streakText = streak + " Day";
-        }
+        String streakText = streak + (streak == 1 ? " Day" : " Days");
         curr_streak_1.setText(streakText);
         curr_streak_2.setText(streakText);
     }
 
+    private void startExercisePromptTimer() {
+        int userId = SessionManager.getInstance().getCurrentUser().getUid();
+        int promptFreqMinutes = userRepository.getPromptFrequency(userId);
 
+        remainingSeconds = promptFreqMinutes * 60;
+        updateTimerDisplay();
+
+        if (promptTimer != null) {
+            promptTimer.stop();
+        }
+
+        promptTimer = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+            if (remainingSeconds > 0) {
+                remainingSeconds--;
+                updateTimerDisplay();
+
+                // Check if time reaches 00:00
+                if (remainingSeconds == 0) {
+                    showExercisePrompt();
+                    // Reset timer
+                    remainingSeconds = promptFreqMinutes * 60;
+                    updateTimerDisplay();
+                }
+            }
+        }));
+        promptTimer.setCycleCount(Timeline.INDEFINITE);
+        promptTimer.play();
+    }
+
+    private void updateTimerDisplay() {
+        int hours = remainingSeconds / 3600;
+        int minutes = (remainingSeconds % 3600) / 60;
+        int seconds = remainingSeconds % 60;
+
+        if (hours > 0) {
+            remainingTimeNumberLabel.setText(String.format("%d:%02d:%02d", hours, minutes, seconds));
+            remainingTimeUnitLabelk.setText("hr");
+        } else if (minutes > 0) {
+            remainingTimeNumberLabel.setText(String.format("%d:%02d", minutes, seconds));
+            remainingTimeUnitLabelk.setText("min");
+        } else {
+            remainingTimeNumberLabel.setText(String.valueOf(seconds));
+            remainingTimeUnitLabelk.setText("sec");
+        }
+    }
+
+    private void showExercisePrompt() {
+        Platform.runLater(() -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/exercise-prompt-view.fxml"));
+                StackPane overlay = loader.load();
+                overlay.getStyleClass().add("light");
+
+                AnchorPane.setTopAnchor(overlay, 0.0);
+                AnchorPane.setBottomAnchor(overlay, 0.0);
+                AnchorPane.setLeftAnchor(overlay, 0.0);
+                AnchorPane.setRightAnchor(overlay, 0.0);
+
+                ExercisePromptController.setOnDismiss(() -> {
+                    rootAnchorPane.getChildren().remove(overlay);
+                    splitPaneMain.setEffect(null);
+                });
+
+                splitPaneMain.setEffect(new GaussianBlur(10));
+                rootAnchorPane.getChildren().add(overlay);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
 }

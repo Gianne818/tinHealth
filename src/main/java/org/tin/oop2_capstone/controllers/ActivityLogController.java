@@ -91,4 +91,5 @@ public class ActivityLogController {
         gridPaneAddEntry.setVisible(false);
         addEntryisVisible = !addEntryisVisible;
     }
+
 }

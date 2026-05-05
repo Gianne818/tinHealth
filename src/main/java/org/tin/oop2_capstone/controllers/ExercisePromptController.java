@@ -19,7 +19,7 @@ public class ExercisePromptController {
     @FXML private Label repCountLabel;
     @FXML private Label unitLabel;
     @FXML private Button completeButton;
-    @FXML private Label skipButton;
+    @FXML private Button skipButton;
 
     /** Called by MainController so we can remove ourselves from the overlay. */
     private static Runnable onDismiss;
@@ -73,7 +73,7 @@ public class ExercisePromptController {
     }
 
     @FXML
-    private void onSkipLabelClick(){
+    private void onSkipButtonClick(){
         dismiss();
     }
 

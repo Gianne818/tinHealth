@@ -105,6 +105,11 @@
     -fx-effect: dropshadow(three-pass-box, lightgrey, 20, 0, 0, 5);
 }
 
+#hamburgerButton:hover {
+    -fx-background-color: -bg-color-accent;
+    -fx-background-radius: 30;
+}
+
 .navButton{
     -fx-font-size: 16;
 }
@@ -243,7 +248,7 @@
     -fx-font-family: "Inter 18pt SemiBold";
 }
 
-#caloriesInLabel, #fatLabel, #sugarLabel {
+#caloriesInLabel, #fatLabel, #sugarLabel, .greenLabel {
     -fx-text-fill: -green;
 }
 
@@ -252,7 +257,7 @@
     -fx-font-family: "Inter 18pt SemiBold";
 }
 
-#caloriesOutLabel, #calOutGridPane .label{
+#caloriesOutLabel, #calOutGridPane .label, .orangeLabel{
     -fx-text-fill: -evenlighter-orange;
     -fx-font-family: "Inter 18pt SemiBold";
 }
@@ -265,8 +270,24 @@
     -fx-text-fill: -purple;
 }
 
-#activityStreakLabel, #proteinLabel, #sodiumLabel{
+#activityStreakLabel, #proteinLabel, #sodiumLabel, .redLabel{
     -fx-text-fill: -vibrant-red;
+}
+
+.skipButton {
+    -fx-background-color: transparent;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
+}
+
+.skipButton:hover {
+    -fx-background-color: #f0f0f0;
+    -fx-border-color: #666;
+    -fx-text-fill: #333;
 }
 
 /* When profileNav being hovered */
@@ -422,9 +443,6 @@
     -fx-background-color: -orange-to-red-orange;
 }
 
-.buttonLabel{
-    -fx-text-fill: -light-orange;
-}
 
 .buttonLabel:hover{
     -fx-underline: true;

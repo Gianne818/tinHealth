@@ -82,7 +82,7 @@
                     </rowConstraints>
                     <Label styleClass="cardTitle2" text="Enable Exercise Prompts" GridPane.halignment="LEFT" />
                     <Label layoutX="10.0" layoutY="9.0" styleClass="cardDetails" text="Show activity reminders when opening the app" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
-                    <ToggleButton maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="24.0" prefWidth="44.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2147483647" />
+                    <ToggleButton fx:id="exercisePrompts" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="24.0" prefWidth="44.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2147483647" />
                 </GridPane>
                 <GridPane vgap="15.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
                     <columnConstraints>
@@ -94,7 +94,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <Label styleClass="cardTitle2" text="Exercise Intensity" />
-                    <ChoiceBox maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+                    <ChoiceBox fx:id="exerciseIntensity" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
                 </GridPane>
                 <GridPane layoutX="10.0" layoutY="70.0" vgap="10.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
                     <columnConstraints>
@@ -110,7 +110,7 @@
                         <Insets />
                     </GridPane.margin>
                     <Label styleClass="cardTitle2" text="Prompt Frequency" />
-                    <Slider GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+                    <Slider fx:id="promptFrequency" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
                     <Label styleClass="cardDetails" text="Get activity prompts every #nth# hour" GridPane.rowIndex="2" />
                 </GridPane>
             </GridPane>
@@ -158,7 +158,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <Label styleClass="cardTitle2" text="Theme" />
-                    <ChoiceBox maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+                    <ChoiceBox fx:id="theme" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
                 </GridPane>
                 <GridPane layoutX="35.0" layoutY="153.0" vgap="15.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
                     <columnConstraints>
@@ -170,7 +170,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <Label styleClass="cardTitle2" text="Language" />
-                    <ChoiceBox maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+                    <ChoiceBox fx:id="language" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
                 </GridPane>
             </GridPane>
 
@@ -215,7 +215,7 @@
                     </rowConstraints>
                     <Label styleClass="cardTitle2" text="Exercise Reminders" GridPane.halignment="LEFT" />
                     <Label layoutX="10.0" layoutY="9.0" styleClass="cardDetails" text="Get notified about your exercise prompts" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
-                    <ToggleButton maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="24.0" prefWidth="44.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2147483647" />
+                    <ToggleButton fx:id="exerciseReminders" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="24.0" prefWidth="44.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2147483647" />
                 </GridPane>
                 <GridPane layoutX="35.0" layoutY="95.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
                     <columnConstraints>
@@ -228,7 +228,7 @@
                     </rowConstraints>
                     <Label styleClass="cardTitle2" text="Meal Reminders" GridPane.halignment="LEFT" />
                     <Label layoutX="10.0" layoutY="9.0" styleClass="cardDetails" text="Reminders to log your meals" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
-                    <ToggleButton maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="24.0" prefWidth="44.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2147483647" />
+                    <ToggleButton fx:id="mealReminders" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="24.0" prefWidth="44.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2147483647" />
                 </GridPane>
                 <GridPane layoutX="35.0" layoutY="35.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
                     <columnConstraints>
@@ -241,7 +241,7 @@
                     </rowConstraints>
                     <Label styleClass="cardTitle2" text="Achievement Notifications" GridPane.halignment="LEFT" />
                     <Label layoutX="10.0" layoutY="9.0" styleClass="cardDetails" text="Celebrate your milestones" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
-                    <ToggleButton maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="24.0" prefWidth="44.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2147483647" />
+                    <ToggleButton fx:id="achievementNotifications" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="24.0" prefWidth="44.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2147483647" />
                 </GridPane>
             </GridPane>
 
@@ -285,7 +285,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <Label styleClass="cardTitle2" text="Daily Calorie Goal" />
-                    <ChoiceBox maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+                    <ChoiceBox fx:id="dailyCalorieGoal" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
                 </GridPane>
                 <GridPane layoutX="35.0" layoutY="93.0" vgap="15.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
                     <columnConstraints>
@@ -297,10 +297,10 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <Label styleClass="cardTitle2" text="Weekly Activity Goal (days)" />
-                    <ChoiceBox maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+                    <ChoiceBox fx:id="weeklyActivityGoal" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
                 </GridPane>
             </GridPane>
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Save Settings" />
+            <Button fx:id="saveSettings" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSaveButtonClicked" text="Save Settings" />
         </VBox>
     </AnchorPane>
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
@@ -87,7 +88,11 @@
          <HBox alignment="CENTER" prefHeight="0.0" prefWidth="278.0">
             <children>
                <Label alignment="CENTER" text="Already have an account? " />
-               <Label fx:id="loginLabel" onMouseClicked="#onLoginClicked" styleClass="buttonLabel" text="Login" />
+               <Label fx:id="loginLabel" onMouseClicked="#onLoginClicked" text="Login">
+                  <styleClass>
+                     <String fx:value="buttonLabel" />
+                     <String fx:value="orangeLabel" />
+                  </styleClass></Label>
             </children>
          </HBox>
       </VBox>
