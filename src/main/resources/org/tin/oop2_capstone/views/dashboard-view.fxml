@@ -7,6 +7,7 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -193,17 +194,14 @@
                            <!-- Weekly Calorie Tracking  -->
                            <VBox styleClass="cardContent" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
                                <children>
-                                   <HBox fx:id="healthNavCalorie" alignment="CENTER_LEFT" spacing="10">
-                                       <padding>
-                                           <Insets top="8" /> <!-- Made Weekly Macro Distribution AND Weekly Calorie Tracking aligned horizontally!!!! -->
-                                       </padding>
+                                   <HBox fx:id="healthNavCalorie" alignment="CENTER_LEFT" onMouseClicked="#goToView" spacing="10" styleClass="navHbox">
                                        <Label fx:id="healthCalorieNav" onMouseClicked="#goToView" text="Weekly Calorie Tracking">
                                  <styleClass>
                                     <String fx:value="cardTitle" />
                                     <String fx:value="buttonLabel" />
                                  </styleClass></Label>
                                        <Region HBox.hgrow="ALWAYS" />
-                                       <SVGPath fx:id="healthArrowCalorie" content="M9 5L14.15 10C14.4237 10.2563 14.6419 10.5659 14.791 10.9099C14.9402 11.2539 15.0171 11.625 15.0171 12C15.0171 12.375 14.9402 12.7458 14.791 13.0898C14.6419 13.4339 14.4237 13.7437 14.15 14L9 19" fill="TRANSPARENT" onMouseClicked="#goToView" stroke="#000000" strokeLineCap="round" strokeLineJoin="round" strokeWidth="1.5" style="-fx-cursor: hand;">
+                                       <SVGPath fx:id="healthArrowCalorie" content="M9 5L14 10L9 15" fill="TRANSPARENT" onMouseClicked="#goToView" stroke="#000000" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="1.67" styleClass="rightArrowNav">
                                            <HBox.margin>
                                                <Insets right="20" />
                                            </HBox.margin>
@@ -225,22 +223,25 @@
                                    </LineChart>
                                </children>
                                <padding>
-                                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                   <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
                                </padding>
                            </VBox>
 
                            <!-- Weekly Macro Distribution -->
                            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="cardContent" GridPane.rowIndex="2"> <!-- Label Weekly Macro Distribution and PieChart closer together -->
                                <children>
-                                   <HBox fx:id="healthNavMacro" alignment="CENTER_LEFT" spacing="10">
+                                   <HBox fx:id="healthNavMacro" alignment="CENTER_LEFT" onMouseClicked="#goToView" spacing="10" styleClass="navHbox">
                                        <Label fx:id="healthMacroNav" onMouseClicked="#goToView" text="Weekly Macro Distribution">
                                  <styleClass>
                                     <String fx:value="cardTitle" />
                                     <String fx:value="buttonLabel" />
                                  </styleClass></Label>
                                        <Region HBox.hgrow="ALWAYS" />
-                                       <StackPane onMouseClicked="#goToView" style="-fx-cursor: hand; -fx-padding: 10px;">
-                                           <SVGPath fx:id="healthArrowMacro" content="M9 5L14.15 10C14.4237 10.2563 14.6419 10.5659 14.791 10.9099C14.9402 11.2539 15.0171 11.625 15.0171 12C15.0171 12.375 14.9402 12.7458 14.791 13.0898C14.6419 13.4339 14.4237 13.7437 14.15 14L9 19" fill="TRANSPARENT" onMouseClicked="#goToView" stroke="#000000" strokeLineCap="round" strokeLineJoin="round" strokeWidth="1.5" />
+                                       <StackPane onMouseClicked="#goToView" styleClass="rightArrowNav">
+                                           <SVGPath fx:id="healthArrowMacro" content="M9 5L14 10L9 15" fill="TRANSPARENT" onMouseClicked="#goToView" stroke="#000000" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="1.67" />
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
                                        </StackPane>
                                    </HBox>
 
@@ -341,7 +342,7 @@
                    </GridPane>
 
 
-               <GridPane hgap="20.0" prefHeight="200.0">
+               <GridPane hgap="20.0" prefHeight="355.0">
                  <columnConstraints>
                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -350,7 +351,7 @@
                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                  </rowConstraints>
                   <children>
-                      <VBox fx:id="recentFoodLogsContainer" spacing="20.0" styleClass="cardContent">
+                      <VBox fx:id="recentFoodLogsContainer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0" styleClass="cardContent">
                           <children>
                               <GridPane>
                                   <padding>
@@ -374,14 +375,14 @@
                                               <Insets right="20" />
                                           </padding>
                                     <styleClass>
-                                       <String fx:value="cardTitle" />
                                        <String fx:value="buttonLabel" />
                                        <String fx:value="greenLabel" />
                                     </styleClass>
                                       </Label>
-                                      <SVGPath fx:id="foodLogArrowNav" content="M9 5L14.15 10C14.4237 10.2563 14.6419 10.5659 14.791 10.9099C14.9402 11.2539 15.0171 11.625 15.0171 12C15.0171 12.375 14.9402 12.7458 14.791 13.0898C14.6419 13.4339 14.4237 13.7437 14.15 14L9 19" fill="TRANSPARENT" onMouseClicked="#goToView" stroke="#0bb980" strokeLineCap="round" strokeLineJoin="round" strokeWidth="1.5" style="-fx-cursor: hand;" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
+                                      <SVGPath fx:id="foodLogArrowNav" content="M9 5L14 10L9 15" fill="TRANSPARENT" onMouseClicked="#goToView" stroke="#0bb980" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="1.67" styleClass="rightArrowNav" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
                                   </children>
                               </GridPane>
+                           <ListView fx:id="recentFoodsListView" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
                           </children>
                           <padding>
                               <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
@@ -389,9 +390,9 @@
                       </VBox>
 
                       <!-- Recent Activity Logs -->
-                      <VBox fx:id="recentActivityLogsContainer" spacing="20.0" styleClass="cardContent" GridPane.columnIndex="1">
+                      <VBox fx:id="recentActivityLogsContainer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0" styleClass="cardContent" GridPane.columnIndex="1">
                           <children>
-                              <GridPane styleClass="cardTitle">
+                              <GridPane>
                                   <padding>
                                       <Insets bottom="15.0" top="15.0" />
                                   </padding>
@@ -413,14 +414,14 @@
                                               <Insets right="20" />
                                           </padding>
                                     <styleClass>
-                                       <String fx:value="cardTitle" />
                                        <String fx:value="buttonLabel" />
                                        <String fx:value="redLabel" />
                                     </styleClass>
                                       </Label>
-                                      <SVGPath fx:id="activityLogArrowNav" content="M9 5L14.15 10C14.4237 10.2563 14.6419 10.5659 14.791 10.9099C14.9402 11.2539 15.0171 11.625 15.0171 12C15.0171 12.375 14.9402 12.7458 14.791 13.0898C14.6419 13.4339 14.4237 13.7437 14.15 14L9 19" fill="TRANSPARENT" onMouseClicked="#goToView" stroke="#ef4444" strokeLineCap="round" strokeLineJoin="round" strokeWidth="1.5" style="-fx-cursor: hand;" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
+                                      <SVGPath fx:id="activityLogArrowNav" content="M9 5L14 10L9 15" fill="TRANSPARENT" onMouseClicked="#goToView" stroke="#ef4444" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="1.67" styleClass="rightArrowNav" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
                                   </children>
                               </GridPane>
+                           <ListView fx:id="recentActivityListView" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
                           </children>
                           <padding>
                               <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />

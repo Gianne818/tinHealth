@@ -4,12 +4,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.chart.*;
-import javafx.scene.control.Label;
-import javafx.scene.control.PopupControl;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.chart.XYChart.Series;
@@ -17,14 +16,18 @@ import  javafx.scene.chart.PieChart.Data;
 import javafx.scene.shape.Circle;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javafx.scene.shape.Line;
 import org.tin.oop2_capstone.database.repositories.ActivityRepository;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
 import org.tin.oop2_capstone.database.repositories.UserPrefRepository;
-import org.tin.oop2_capstone.model.entities.NutritionDetails;
+import org.tin.oop2_capstone.model.entities.*;
 import org.tin.oop2_capstone.services.SessionManager;
+import org.tin.oop2_capstone.utils.TimeFormatter;
 
 public class DashboardController {
     @FXML ScrollPane dashboardScrollPane;
@@ -53,18 +56,57 @@ public class DashboardController {
     @FXML private Label numActLabelCaloriesBurned;
     @FXML private Label daysInARowHeader;
 
+    @FXML ListView<GridPane> recentFoodsListView;
+    @FXML ListView<GridPane> recentActivityListView;
+
+    private List<Meal> meals;
+    private List<Activity> activityList;
+    private ObservableList<GridPane> mealGridPanes;
+    private ObservableList<GridPane> activityGridPanes;
+
     private NutritionDetails nutritionDetails;
     private int userId;
+
+    private ActivityRepository activityRepository = ActivityRepository.getInstance();
 
     public void initialize() {
         userId = SessionManager.getInstance().getCurrentUser().getUid();
         dashboardScrollPane.getStyleClass().add("light");
         macroDistData = FXCollections.observableArrayList();
-        nutritionDetails = ActivityRepository.getWeeklyNutrients(userId);
+        nutritionDetails = activityRepository.getWeeklyNutrients();
 
+        meals = new ArrayList<>();
+        mealGridPanes = FXCollections.observableArrayList();
+
+        activityGridPanes = FXCollections.observableArrayList();
+
+        initRecentActivitiesList();
         initDashboardHeader();
         initMacroDist();
         initCaloriesLineChart();
+    }
+
+    private void initRecentActivitiesList(){
+        activityList = activityRepository.getUserActivities();
+        for(Activity a : activityList){
+            try{
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/log-card.fxml"));
+                GridPane root = fxmlLoader.load();
+                root.getStylesheets().add(getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm());
+                root.getStyleClass().addAll("light", "activityLogScrollPane");
+                root.getStyleClass().remove("cardContent");
+
+                LogCardController logCardController = fxmlLoader.getController();
+                logCardController.setData(a.getActivityType().getName(), TimeFormatter.formatTo12Hour(a.getLogDateTime().toLocalTime()), a.getQuantity(), a.getUnit(), a.getCalories(), true);
+                root.setPadding(new Insets(0, 0, 0, 0));
+                activityGridPanes.add(root);
+            } catch (IOException e){
+                System.out.println("OH NNOI");
+                e.printStackTrace();
+            }
+        }
+
+        recentActivityListView.setItems(activityGridPanes);
     }
 
     private void setupGlobalTooltip(LineChart<String, Number> chart, Series<String, Number> in, Series<String, Number> out) {
@@ -167,7 +209,7 @@ public class DashboardController {
         xAxis.setGapStartAndEnd(false);
         xAxis.setTickMarkVisible(false);
 
-        Map<String, Double[]> weeklyData = ActivityRepository.getWeeklyCalories(userId);
+        Map<String, Double[]> weeklyData = activityRepository.getWeeklyCalories();
 
         LineChart<String, Number> chart = (LineChart<String, Number>) weeklyChart;
         XYChart.Series<String, Number> calIn = new XYChart.Series<>();
@@ -216,18 +258,18 @@ public class DashboardController {
         double caloriesIn = MealRepository.getTodayCaloriesIn(userId);
         caloriesInLabel.setText(String.valueOf((int) caloriesIn));
 
-        double caloriesOut = ActivityRepository.getTodayCaloriesOut(userId);
+        double caloriesOut = activityRepository.getTodayCaloriesOut();
         caloriesOutLabel.setText(String.valueOf(caloriesOut));
 
         netCaloriesLabel.setText(String.valueOf((int) (caloriesIn - caloriesOut)));
 
-        int streak = ActivityRepository.getCurrentStreak(userId);
+        int streak = activityRepository.getCurrentStreak();
         activityStreakLabel.setText(String.valueOf(streak));
 
         int dailyCalorieInGoal = UserPrefRepository.getDailyCalorieInGoal(userId);
         goalCaloriesLabelCaloriesIn.setText(String.valueOf(dailyCalorieInGoal));
 
-        int todayActivitiesCount = ActivityRepository.getTodayActivitiesCount(userId);
+        int todayActivitiesCount = activityRepository.getTodayActivitiesCount();
         numActLabelCaloriesBurned.setText(todayActivitiesCount + (todayActivitiesCount <= 1 ? " Activity" : " Activities"));
 
         String daysStringDisplay = (streak <= 1 ? "day" : "days in a row" );

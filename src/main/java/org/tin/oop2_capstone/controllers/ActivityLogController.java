@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import org.tin.oop2_capstone.database.RetrieveData;
+import org.tin.oop2_capstone.database.repositories.ActivityRepository;
 import org.tin.oop2_capstone.model.entities.Activity;
 import org.tin.oop2_capstone.model.entities.ActivityLog;
 import org.tin.oop2_capstone.model.entities.ActivityType;
@@ -36,8 +37,10 @@ public class ActivityLogController {
 
     // todo: get actual activityLog via logRepository
     private ActivityLog activityLog;
-    private ObservableList<Activity> activities;
+    private List<Activity> activities;
     private ObservableList<GridPane> activityGridPanes;
+
+    private ActivityRepository activityRepository = ActivityRepository.getInstance();
 
     public void initialize(){
         activities = FXCollections.observableArrayList();
@@ -47,19 +50,7 @@ public class ActivityLogController {
 
     private void setActivityLog(){
         // sample values;
-        activityLog = new ActivityLog();
-        List<ActivityType> activityTypes = RetrieveData.fetchActivityTypes();
-        activityLog.addActivity(new Activity(activityTypes.get(1), LocalDateTime.now(), "minutes", 30, 200));
-        activityLog.addActivity(new Activity(activityTypes.get(2), LocalDateTime.now(), "minutes", 45, 245));
-        activityLog.addActivity(new Activity(activityTypes.get(3), LocalDateTime.now(), "minutes", 50, 180));
-        activityLog.addActivity(new Activity(activityTypes.get(4), LocalDateTime.now(), "minutes", 30, 200));
-        activityLog.addActivity(new Activity(activityTypes.get(0), LocalDateTime.now(), "minutes", 60, 245));
-        activityLog.addActivity(new Activity(activityTypes.get(1), LocalDateTime.now(), "minutes", 30, 1));
-        activityLog.addActivity(new Activity(activityTypes.get(2), LocalDateTime.now(), "minutes", 30, 200));
-        activityLog.addActivity(new Activity(activityTypes.get(3), LocalDateTime.now(), "minutes", 50, 245));
-        activityLog.addActivity(new Activity(activityTypes.get(4), LocalDateTime.now(), "minutes", 60, 270));
-
-        activities.addAll(activityLog.getActivities());
+        activities = activityRepository.getUserActivities();
 
         for(Activity a : activities){
             try{
@@ -69,7 +60,7 @@ public class ActivityLogController {
                 root.getStyleClass().addAll("light", "activityLogScrollPane");
 
                 LogCardController logCardController = fxmlLoader.getController();
-                logCardController.setData(a.getActivityType().getName(), TimeFormatter.formatTo12Hour(a.getLogDateTime().toLocalTime()), a.getQuantity(), a.getUnit(), a.getCalories());
+                logCardController.setData(a.getActivityType().getName(), TimeFormatter.formatTo12Hour(a.getLogDateTime().toLocalTime()), a.getQuantity(), a.getUnit(), a.getCalories(), false);
                 activityGridPanes.add(root);
             } catch (IOException e){
                 System.out.println("OH NNOI");

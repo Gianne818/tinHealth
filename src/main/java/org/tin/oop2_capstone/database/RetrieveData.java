@@ -16,6 +16,38 @@ public class RetrieveData {
 
     // ----------- Activity Retrieve Operations -----------
 
+    public static List<Activity> fetchUserActivities(int userId){
+        List<Activity> activities = new ArrayList<>();
+        String query = """
+            SELECT at.met_value, at.name, a.quantity, a.calories, a.log_timestamp
+            FROM Activities a
+            JOIN ActivityTypes at ON a.activity_type_id = at.activity_type_id
+            WHERE a.user_id = ?
+        """;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, userId);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next()) {
+                activities.add(new Activity(new ActivityType(rs.getString("name"), rs.getDouble("met_value")),
+                        rs.getTimestamp("log_timestamp").toLocalDateTime(),
+                        "minutes",
+                        rs.getDouble("quantity"),
+                        rs.getDouble("calories")
+                ));
+            }
+
+            return activities;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return activities;
+    }
+
     public static int fetchUserWeeklyWorkout(int userId){
         String query = """
             SELECT COUNT(*) AS workout_count

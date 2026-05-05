@@ -61,18 +61,22 @@ public class MainController {
     private int remainingSeconds;
 
     @FXML private Label remainingTimeNumberLabel;
-    @FXML private Label remainingTimeUnitLabel;
     @FXML private Label remainingTimeUnitLabelk;
+
+    private ActivityRepository activityRepository = ActivityRepository.getInstance();
 
     private int userId;
 
 
     public void initialize(){
+        System.out.println(activityRepository==null);
         instance = this;
         userId = SessionManager.getInstance().getCurrentUser().getUid();
         rootAnchorPane.getStyleClass().add("light");
         anchorPaneSideBar.getStyleClass().add("light");
         anchorPaneContent.getStyleClass().add("light");
+
+
 
         navs = FXCollections.observableArrayList();
         navs.addAll(dashboardNav, foodLogNav, activityLogNav, settingsNav, profileNav, notificationsNav, healthNav);
@@ -210,15 +214,15 @@ public class MainController {
         calories_today.setText(String.valueOf((int) calories));
 
         // Weekly workouts
-        int weeklyWorkouts = ActivityRepository.getWeeklyWorkoutCount(userId);
+        int weeklyWorkouts = activityRepository.getWeeklyWorkoutCount();
         this_week_workout_count.setText(weeklyWorkouts + (weeklyWorkouts == 1 ? " Workout" : " Workouts"));
 
         // Total activities
-        int totalActivities = ActivityRepository.getTotalActivitiesCount(userId);
+        int totalActivities = activityRepository.getTotalActivitiesCount();
         total_activities_count.setText(String.valueOf(totalActivities));
 
         // Streak
-        int streak = ActivityRepository.getCurrentStreak(userId);
+        int streak = activityRepository.getCurrentStreak();
         String streakText = streak + (streak == 1 ? " Day" : " Days");
         curr_streak_1.setText(streakText);
         curr_streak_2.setText(streakText);

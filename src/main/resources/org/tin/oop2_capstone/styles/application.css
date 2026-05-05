@@ -418,6 +418,9 @@
     -fx-background-color: -orange-to-red-orange;
 }
 
+.buttonLabel{
+    -fx-font-family: "Inter 18pt SemiBold";
+}
 
 .buttonLabel:hover{
     -fx-underline: true;
@@ -471,5 +474,9 @@
     -fx-border-color: transparent;
 }
 
+.navHbox:hover{
+    -fx-underline: true;
+    -fx-cursor: hand;
+}
 
 /* PLEASE USE COLORS FROM PALETTES.CSS, OR ADD COLORS THERE */
