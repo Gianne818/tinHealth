@@ -248,30 +248,38 @@
     -fx-font-family: "Inter 18pt SemiBold";
 }
 
-#caloriesInLabel, #fatLabel, #sugarLabel, .greenLabel {
+/*Corrected the coloring of labels*/
+#caloriesInLabel, #carbsLabel, .greenLabel {
     -fx-text-fill: -green;
+}
+
+#fiberLabel{
+    -fx-text-fill: -dark-green;
+}
+
+#caloriesOutLabel, #fatLabel, #calOutGridPane .label, .orangeLabel{
+    -fx-text-fill: -orange;
+}
+
+#caloriesLabel {
+    -fx-text-fill: -vibrant-blue;
+}
+
+#netCaloriesLabel, #sodiumLabel {
+    -fx-text-fill: -purple;
+}
+
+#activityStreakLabel, #proteinLabel, #sugarLabel, .redLabel {
+    -fx-text-fill: -vibrant-red;
+}
+
+#cholesterolLabel {
+    -fx-text-fill: -pink;
 }
 
 #calInGridPane .label{
     -fx-text-fill: -dark-orange;
     -fx-font-family: "Inter 18pt SemiBold";
-}
-
-#caloriesOutLabel, #calOutGridPane .label, .orangeLabel{
-    -fx-text-fill: -evenlighter-orange;
-    -fx-font-family: "Inter 18pt SemiBold";
-}
-
-#caloriesLabel, #cholesterolLabel{
-    -fx-text-fill: -vibrant-blue;
-}
-
-#netCaloriesLabel, #carbsLabel, #fiberLabel{
-    -fx-text-fill: -purple;
-}
-
-#activityStreakLabel, #proteinLabel, #sodiumLabel, .redLabel{
-    -fx-text-fill: -vibrant-red;
 }
 
 .skipButton {
@@ -313,6 +321,11 @@
 }
 .minuteCountText{
     -fx-text-fill: -orange;
+    -fx-font-family: "Inter 18pt SemiBold";
+}
+
+.calorieBurnCountText{
+    -fx-text-fill: -vibrant-red;
     -fx-font-family: "Inter 18pt SemiBold";
 }
 
@@ -514,5 +527,40 @@
 .default-color3.chart-series-line { -fx-stroke: -orange; }
 .default-color3.chart-line-symbol { -fx-background-color: -orange, white; }
 
+/*dropdown style*/
+.choice-box .context-menu {
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-border-color: -bg-default-border;
+    -fx-border-width: 1;
+    -fx-padding: 5;
+    -fx-effect: dropshadow(three-pass-box, lightgrey, 15, 0, 0, 5);
+}
+
+/*options style*/
+.choice-box .menu-item {
+    -fx-padding: 8 15 8 15;
+    -fx-background-radius: 10;
+    -fx-pref-width: -fx-context-menu-pref-width;
+}
+
+/*options text style*/
+.choice-box .menu-item > .label {
+    -fx-text-fill: -bg-default3;
+    -fx-font-family: "Inter 18pt";
+    -fx-font-size: 14;
+}
+
+/*hover effects to background color*/
+.choice-box .menu-item:focused,
+.choice-box .menu-item:hover {
+    -fx-background-color: -pastel-orange;
+}
+
+/*hover effects to text color*/
+.choice-box .menu-item:focused > .label,
+.choice-box .menu-item:hover > .label {
+    -fx-text-fill: -dark-orange;
+}
 
 /* PLEASE USE COLORS FROM PALETTES.CSS, OR ADD COLORS THERE */
