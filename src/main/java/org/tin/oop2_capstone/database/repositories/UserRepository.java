@@ -5,6 +5,23 @@ import org.tin.oop2_capstone.model.entities.User;
 
 public class UserRepository {
 
+    public static volatile UserRepository instance;
+
+    private UserRepository(){
+        System.out.println("UserRepository is initialized for the first time.");
+    }
+
+    public static UserRepository getInstance(){
+        if(instance == null){
+            synchronized (UserRepository.class){
+                if(instance == null){
+                    instance = new UserRepository();
+                }
+            }
+        }
+        return instance;
+    }
+
     public static User getUser(String username, String password) {
         return RetrieveData.fetchUser(username, password);
     }

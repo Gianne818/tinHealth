@@ -12,7 +12,7 @@ public class ActivityRepository {
      * Validate before inserting into database the activity.
      */
 
-    private static ActivityRepository instance;
+    private static volatile ActivityRepository instance;
 
     private int weeklyWorkoutCount;
     private int totalActivitiesCount;
@@ -25,8 +25,18 @@ public class ActivityRepository {
     private List<ActivityType> activityTypes;
     private List<Activity> userActivities;
 
+    private ActivityRepository(){
+        System.out.println("ActivityRepository is initialized for the first time.");
+    }
+
     public static ActivityRepository getInstance(){
-        if(instance == null) instance = new ActivityRepository();
+        if(instance == null) {
+            synchronized (ActivityRepository.class) {
+                if (instance == null) {
+                    instance = new ActivityRepository();
+                }
+            }
+        }
         return instance;
     }
 
