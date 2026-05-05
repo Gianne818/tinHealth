@@ -24,7 +24,7 @@ public class UserPrefRepository {
         return instance;
     }
 
-    public  static int getDailyCalorieInGoal(int userId) {
+    public static int getDailyCalorieInGoal(int userId) {
        return RetrieveData.fetchUserDailyCalorieInGoal(userId);
     }
 }
