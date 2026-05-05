@@ -13,7 +13,7 @@
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="183.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="103.0" minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="103.0" minWidth="10.0" prefWidth="32.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="103.0" />
    </columnConstraints>
    <rowConstraints>
       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
@@ -30,7 +30,7 @@
       <Label fx:id="unitLabel" styleClass="lightText" text="unitLabel" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
       <Label fx:id="kcalLabel" layoutX="507.0" layoutY="51.0" styleClass="calorieBurnCountText" text="kcalLabel" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
       <Label layoutX="507.0" layoutY="51.0" styleClass="lightText" text="kcal" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-      <SVGPath fx:id="onDeleteClick" content="M2.25 4.5H15.75  M14.25 4.5V15C14.25 15.75 13.5 16.5 12.75 16.5H5.25C4.5 16.5 3.75 15.75 3.75 15V4.5 M6 4.5V3C6 2.25 6.75 1.5 7.5 1.5H10.5C11.25 1.5 12 2.25 12 3V4.5 M7.5 8.25V12.75 M10.5 8.25V12.75" fill="TRANSPARENT" stroke="#64748b" strokeWidth="1.67" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
+      <SVGPath fx:id="deleteSVG" content="M2.25 4.5H15.75  M14.25 4.5V15C14.25 15.75 13.5 16.5 12.75 16.5H5.25C4.5 16.5 3.75 15.75 3.75 15V4.5 M6 4.5V3C6 2.25 6.75 1.5 7.5 1.5H10.5C11.25 1.5 12 2.25 12 3V4.5 M7.5 8.25V12.75 M10.5 8.25V12.75" fill="TRANSPARENT" stroke="#64748b" strokeWidth="1.67" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
       <Separator fx:id="bottomSeparator" prefWidth="200.0" GridPane.columnSpan="4" GridPane.rowIndex="2">
          <padding>
             <Insets top="20.0" />

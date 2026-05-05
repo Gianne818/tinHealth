@@ -97,7 +97,7 @@ public class DashboardController {
                 root.getStyleClass().remove("cardContent");
 
                 LogCardController logCardController = fxmlLoader.getController();
-                logCardController.setData(a.getActivityType().getName(), TimeFormatter.formatTo12Hour(a.getLogDateTime().toLocalTime()), a.getQuantity(), a.getUnit(), a.getCalories(), true);
+                logCardController.setData(a.getActivityType().getName(), TimeFormatter.formatTo12Hour(a.getLogDateTime().toLocalTime()), a.getQuantity(), a.getUnit(), a.getCalories(), true, false);
                 root.setPadding(new Insets(0, 0, 0, 0));
                 activityGridPanes.add(root);
             } catch (IOException e){
