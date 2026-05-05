@@ -7,6 +7,22 @@ import java.sql.*;
 
 public class UserPrefRepository {
 
+    public static volatile UserPrefRepository instance;
+
+    private UserPrefRepository() {
+    }
+
+    public UserPrefRepository getInstance(){
+        if(instance == null){
+            synchronized (UserPrefRepository.class){
+                if(instance == null){
+                    instance = new UserPrefRepository();
+                }
+            }
+        }
+        return instance;
+    }
+
     public  static int getDailyCalorieInGoal(int userId) {
        return RetrieveData.fetchUserDailyCalorieInGoal(userId);
     }

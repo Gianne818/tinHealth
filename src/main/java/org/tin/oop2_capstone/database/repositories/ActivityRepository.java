@@ -12,7 +12,7 @@ public class ActivityRepository {
      * Validate before inserting into database the activity.
      */
 
-    private static ActivityRepository instance;
+    private static volatile ActivityRepository instance;
 
     private int weeklyWorkoutCount;
     private int totalActivitiesCount;

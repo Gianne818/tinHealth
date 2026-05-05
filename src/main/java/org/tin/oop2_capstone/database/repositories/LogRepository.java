@@ -4,4 +4,23 @@ public class LogRepository {
     /**
      * Gets food and activity log for current user using RetrieveData
      */
+
+    public static volatile LogRepository instance;
+
+    private LogRepository(){
+        System.out.println("LogRepository is initialized for the first time.");
+    }
+
+    public LogRepository getInstance(){
+        if(instance == null){
+            synchronized (LogRepository.class){
+                if(instance == null){
+                    return instance = new LogRepository();
+                }
+            }
+        }
+        return instance;
+    }
+
+    
 }

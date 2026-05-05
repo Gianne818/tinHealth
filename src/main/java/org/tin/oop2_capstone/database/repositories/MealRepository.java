@@ -7,6 +7,23 @@ public class MealRepository {
      * Validate before inserting into database.
      * sometimes, the API returns a null, or maybe the user will input bad values
      */
+
+    public static volatile MealRepository instance;
+
+    private MealRepository(){
+        System.out.println("LogRepository is initialized for the first time.");
+    }
+
+    public MealRepository getInstance(){
+        if(instance == null){
+            synchronized (LogRepository.class){
+                if(instance == null){
+                    return instance = new MealRepository();
+                }
+            }
+        }
+        return instance;
+    }
     public static double getTodayCaloriesIn(int userId) {
         return RetrieveData.fetchUserTodayCaloriesIn(userId);
     }

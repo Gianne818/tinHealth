@@ -12,6 +12,7 @@ public class SettingsRepository {
     /* This checks if the user inputs (the user preferences) in the settings tab are valid. This also
     stores them in the database if everything is valid.
      */
+    public static volatile SettingsRepository instance;
 
     private static final int EXERCISE_INTENSITY_MIN = 1;
     private static final int EXERCISE_INTENSITY_MAX = 10;
@@ -28,7 +29,16 @@ public class SettingsRepository {
     private static final String THEME_LIGHT = "light";
     private static final String THEME_DARK = "dark";
 
-    public SettingsRepository() {
+
+    public SettingsRepository getInstance(){
+        if(instance == null){
+            synchronized (SettingsRepository.class){
+                if(instance == null){
+                    return instance = new SettingsRepository();
+                }
+            }
+        }
+        return instance;
     }
 
     public boolean isExerciseIntensityValid(int intensity) {
