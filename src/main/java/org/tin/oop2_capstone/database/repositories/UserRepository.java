@@ -8,10 +8,10 @@ public class UserRepository {
     public static volatile UserRepository instance;
 
     private UserRepository(){
-
+        System.out.println("UserRepository is initialized for the first time.");
     }
 
-    public UserRepository getInstance(){
+    public static UserRepository getInstance(){
         if(instance == null){
             synchronized (UserRepository.class){
                 if(instance == null){

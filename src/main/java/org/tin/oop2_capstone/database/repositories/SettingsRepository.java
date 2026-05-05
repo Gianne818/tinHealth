@@ -29,8 +29,11 @@ public class SettingsRepository {
     private static final String THEME_LIGHT = "light";
     private static final String THEME_DARK = "dark";
 
+    private SettingsRepository(){
+        System.out.println("SettingsRepository is initialized for the first time.");
+    }
 
-    public SettingsRepository getInstance(){
+    public static SettingsRepository getInstance(){
         if(instance == null){
             synchronized (SettingsRepository.class){
                 if(instance == null){

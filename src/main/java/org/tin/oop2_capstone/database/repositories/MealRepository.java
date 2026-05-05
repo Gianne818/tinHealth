@@ -11,14 +11,14 @@ public class MealRepository {
     public static volatile MealRepository instance;
 
     private MealRepository(){
-        System.out.println("LogRepository is initialized for the first time.");
+        System.out.println("MealRepository is initialized for the first time.");
     }
 
-    public MealRepository getInstance(){
+    public static MealRepository getInstance(){
         if(instance == null){
-            synchronized (LogRepository.class){
+            synchronized (MealRepository.class){
                 if(instance == null){
-                    return instance = new MealRepository();
+                    instance = new MealRepository();
                 }
             }
         }

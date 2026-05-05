@@ -11,16 +11,16 @@ public class LogRepository {
         System.out.println("LogRepository is initialized for the first time.");
     }
 
-    public LogRepository getInstance(){
+    public static LogRepository getInstance(){
         if(instance == null){
             synchronized (LogRepository.class){
                 if(instance == null){
-                    return instance = new LogRepository();
+                    instance = new LogRepository();
                 }
             }
         }
         return instance;
     }
 
-    
+
 }

@@ -25,8 +25,18 @@ public class ActivityRepository {
     private List<ActivityType> activityTypes;
     private List<Activity> userActivities;
 
+    private ActivityRepository(){
+        System.out.println("ActivityRepository is initialized for the first time.");
+    }
+
     public static ActivityRepository getInstance(){
-        if(instance == null) instance = new ActivityRepository();
+        if(instance == null) {
+            synchronized (ActivityRepository.class) {
+                if (instance == null) {
+                    instance = new ActivityRepository();
+                }
+            }
+        }
         return instance;
     }
 

@@ -10,9 +10,10 @@ public class UserPrefRepository {
     public static volatile UserPrefRepository instance;
 
     private UserPrefRepository() {
+        System.out.println("UserPrefRepository is initialized for the first time.");
     }
 
-    public UserPrefRepository getInstance(){
+    public static UserPrefRepository getInstance(){
         if(instance == null){
             synchronized (UserPrefRepository.class){
                 if(instance == null){
