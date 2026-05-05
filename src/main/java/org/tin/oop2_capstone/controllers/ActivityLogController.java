@@ -60,7 +60,7 @@ public class ActivityLogController {
                 root.getStyleClass().addAll("light", "activityLogScrollPane");
 
                 LogCardController logCardController = fxmlLoader.getController();
-                logCardController.setData(a.getActivityType().getName(), TimeFormatter.formatTo12Hour(a.getLogDateTime().toLocalTime()), a.getQuantity(), a.getUnit(), a.getCalories(), false);
+                logCardController.setData(a.getActivityType().getName(), TimeFormatter.formatTo12Hour(a.getLogDateTime().toLocalTime()), a.getQuantity(), a.getUnit(), a.getCalories(), false, true);
                 activityGridPanes.add(root);
             } catch (IOException e){
                 System.out.println("OH NNOI");
