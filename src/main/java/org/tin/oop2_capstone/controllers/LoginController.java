@@ -8,6 +8,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import org.tin.oop2_capstone.database.repositories.ActivityRepository;
+import org.tin.oop2_capstone.database.repositories.MealRepository;
 import org.tin.oop2_capstone.database.repositories.UserRepository;
 import org.tin.oop2_capstone.model.entities.User;
 import org.tin.oop2_capstone.utils.SceneSwitcher;
@@ -40,6 +41,8 @@ public class LoginController {
             SessionManager.getInstance().setCurrentUser(user);
             ActivityRepository activityRepository = ActivityRepository.getInstance();
             activityRepository.fetchInitialActivityData(user.getUid());
+            MealRepository mealRepository = MealRepository.getInstance();
+            mealRepository.fetchInitialMealData(user.getUid());
             SceneSwitcher.use(buttonLogin, "main-view")
                     .setCss("application")
                     .setMinDimensions(900, 850)

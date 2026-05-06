@@ -248,30 +248,38 @@
     -fx-font-family: "Inter 18pt SemiBold";
 }
 
-#caloriesInLabel, #fatLabel, #sugarLabel, .greenLabel {
+/*Corrected the coloring of labels*/
+#caloriesInLabel, #carbsLabel, .greenLabel {
     -fx-text-fill: -green;
+}
+
+#fiberLabel{
+    -fx-text-fill: -dark-green;
+}
+
+#caloriesOutLabel, #fatLabel, #calOutGridPane .label, .orangeLabel{
+    -fx-text-fill: -orange;
+}
+
+#caloriesLabel {
+    -fx-text-fill: -vibrant-blue;
+}
+
+#netCaloriesLabel, #sodiumLabel {
+    -fx-text-fill: -purple;
+}
+
+#activityStreakLabel, #proteinLabel, #sugarLabel, .redLabel {
+    -fx-text-fill: -vibrant-red;
+}
+
+#cholesterolLabel {
+    -fx-text-fill: -pink;
 }
 
 #calInGridPane .label{
     -fx-text-fill: -dark-orange;
     -fx-font-family: "Inter 18pt SemiBold";
-}
-
-#caloriesOutLabel, #calOutGridPane .label, .orangeLabel{
-    -fx-text-fill: -evenlighter-orange;
-    -fx-font-family: "Inter 18pt SemiBold";
-}
-
-#caloriesLabel, #cholesterolLabel{
-    -fx-text-fill: -vibrant-blue;
-}
-
-#netCaloriesLabel, #carbsLabel, #fiberLabel{
-    -fx-text-fill: -purple;
-}
-
-#activityStreakLabel, #proteinLabel, #sodiumLabel, .redLabel{
-    -fx-text-fill: -vibrant-red;
 }
 
 .skipButton {
@@ -316,6 +324,16 @@
     -fx-font-family: "Inter 18pt SemiBold";
 }
 
+.calorieBurnCountText{
+    -fx-text-fill: -vibrant-red;
+    -fx-font-family: "Inter 18pt SemiBold";
+}
+
+/*default to pink progress bar color*/
+.progress-bar {
+    -fx-accent: -pink;
+}
+
 .progress-bar > .track {
     -fx-border-radius: 20;
     -fx-background-radius: 20;
@@ -327,7 +345,20 @@
 .progress-bar .bar {
     -fx-background-insets: 0;
     -fx-background-radius: 20;
-    -fx-background-color: -pink;
+    -fx-background-color: -fx-accent;
+}
+/*change color according to accent*/
+.bar-green {
+    -fx-accent: -green;
+}
+.bar-red   {
+    -fx-accent: -vibrant-red;
+}
+.bar-orange{
+    -fx-accent: -orange;
+}
+.bar-purple{
+    -fx-accent: -purple;
 }
 
 #toolTipVbox{
@@ -477,6 +508,59 @@
 .navHbox:hover{
     -fx-underline: true;
     -fx-cursor: hand;
+}
+/*LineGraph Default Colors*/
+/*TODO: This might conflict/affect with the dashboard's Line graph colors*/
+/*Calories - Blue */
+.default-color0.chart-series-line { -fx-stroke: -vibrant-blue; }
+.default-color0.chart-line-symbol { -fx-background-color: -vibrant-blue, white; }
+
+/*Protein - Red */
+.default-color1.chart-series-line { -fx-stroke: -vibrant-red; }
+.default-color1.chart-line-symbol { -fx-background-color: -vibrant-red, white; }
+
+/*Carbs - Green */
+.default-color2.chart-series-line { -fx-stroke: -green; }
+.default-color2.chart-line-symbol { -fx-background-color: -green, white; }
+
+/*Fats - Orange */
+.default-color3.chart-series-line { -fx-stroke: -orange; }
+.default-color3.chart-line-symbol { -fx-background-color: -orange, white; }
+
+/*dropdown style*/
+.choice-box .context-menu {
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-border-color: -bg-default-border;
+    -fx-border-width: 1;
+    -fx-padding: 5;
+    -fx-effect: dropshadow(three-pass-box, lightgrey, 15, 0, 0, 5);
+}
+
+/*options style*/
+.choice-box .menu-item {
+    -fx-padding: 8 15 8 15;
+    -fx-background-radius: 10;
+    -fx-pref-width: -fx-context-menu-pref-width;
+}
+
+/*options text style*/
+.choice-box .menu-item > .label {
+    -fx-text-fill: -bg-default3;
+    -fx-font-family: "Inter 18pt";
+    -fx-font-size: 14;
+}
+
+/*hover effects to background color*/
+.choice-box .menu-item:focused,
+.choice-box .menu-item:hover {
+    -fx-background-color: -pastel-orange;
+}
+
+/*hover effects to text color*/
+.choice-box .menu-item:focused > .label,
+.choice-box .menu-item:hover > .label {
+    -fx-text-fill: -dark-orange;
 }
 
 /* PLEASE USE COLORS FROM PALETTES.CSS, OR ADD COLORS THERE */
