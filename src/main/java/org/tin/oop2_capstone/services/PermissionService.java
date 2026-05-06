@@ -39,16 +39,17 @@ public class PermissionService {
             return;
         }
 
-        //
+        //main logic
         System.out.println("Syncing " + pendingFoods.size() + " pending foods...");
         for (Food food : pendingFoods) {
             try {
+
                 String json = FoodAPI.getFoodData(food.getName());
                 if (json == null) continue;
 
                 Food updatedFood = FoodParser.parseFood(json);
                 if (updatedFood == null) continue;
-
+                //adds the pending to foodNutrition
                 UpdateData.updateFoodNutrition(food.getName(), updatedFood.getNutrition());
                 UpdateData.markAsSynced(food.getName());
                 System.out.println("Synced: " + food.getName());
