@@ -66,7 +66,7 @@ public class MainController {
 
     private ActivityRepository activityRepository = ActivityRepository.getInstance();
 
-    private ExerciseMonitor exerciseMonitor = new ExerciseMonitor();
+    private ExerciseMonitor exerciseMonitor = ExerciseMonitor.getInstance();
 
     private int userId;
 

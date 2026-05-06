@@ -41,7 +41,7 @@ public class SceneSwitcher {
         return new SceneSwitcher(node, fxml);
     }
 
-    public static SceneSwitcher use(String fxml){
+    public static SceneSwitcher openNewWindow(String fxml){
         return new SceneSwitcher(fxml);
     }
 

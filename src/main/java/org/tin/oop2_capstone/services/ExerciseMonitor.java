@@ -1,5 +1,7 @@
 package org.tin.oop2_capstone.services;
 
+import javafx.application.Platform;
+import org.tin.oop2_capstone.controllers.MainController;
 import org.tin.oop2_capstone.model.observer.ExerciseObserver;
 import org.tin.oop2_capstone.utils.SceneSwitcher;
 
@@ -12,11 +14,14 @@ public class ExerciseMonitor implements ExerciseObserver {
 
     private ActiveAppService activeAppService;
     private Thread thread;
-
     private String[] excludedApps;
     private boolean timerOff;
 
-    public ExerciseMonitor(){
+    private static ExerciseMonitor instance;
+
+
+    private ExerciseMonitor(){
+        instance = this;
         this.activeAppService = new ActiveAppService(this);
         this.thread = new Thread(activeAppService);
 
@@ -27,17 +32,41 @@ public class ExerciseMonitor implements ExerciseObserver {
 
     }
 
+    public static ExerciseMonitor getInstance(){
+        if(instance == null){
+            return new ExerciseMonitor();
+        }
+        return instance;
+    }
+
+    public ActiveAppService getActiveAppService() {
+        return activeAppService;
+    }
+
     public void start(){
+        activeAppService.startMonitoring();
         thread.start();
     }
 
+    public void resume(){
+        activeAppService.resumeMonitoring();
+    }
     @Override
     public void onAppChanged(String appName) {
         System.out.println("New app: " + appName);
 
         //todo: popup exercise prompt
-        SceneSwitcher.use("exercise-prompt-view").setCentered(true).setPrefDimensions(450, 550)
-                .setCss("application").setStyleClasses(new String[]{"light", "dashboardScrollPane"}).setResizeable(false).switchScene();
 
+//        if(activeAppService.getLastAppUsed().equals("java")) return;
+        for(String s : excludedApps){
+            if(s.equals(appName)){
+                return;
+            }
+        }
+        activeAppService.pauseMonitoring();
+        Platform.runLater(() -> {
+            SceneSwitcher.openNewWindow("exercise-prompt-view").setCentered(true).setPrefDimensions(450, 550)
+                    .setCss("application").setStyleClasses(new String[]{"light", "dashboardScrollPane"}).setResizeable(false).switchScene();
+        });
     }
 }

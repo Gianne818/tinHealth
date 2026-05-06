@@ -7,8 +7,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.tin.oop2_capstone.services.ExerciseDifficultyService;
+import org.tin.oop2_capstone.services.ExerciseMonitor;
 
 import java.util.List;
 import java.util.Random;
@@ -61,7 +63,7 @@ public class ExercisePromptController {
     @FXML
     private void onCompleteButtonClick(ActionEvent event) {
         // todo saving current activity to the database and activity log
-        dismiss();
+        closeWindow(true);
     }
 
     public void setDifficultyService(ExerciseDifficultyService service) {
@@ -75,7 +77,7 @@ public class ExercisePromptController {
 
     @FXML
     private void onSkipButtonClick(MouseEvent event){
-        dismiss();
+        closeWindow(false);
     }
 
     private void dismiss() {
@@ -86,6 +88,16 @@ public class ExercisePromptController {
             if (onDismiss != null) onDismiss.run();
         });
         fadeOut.play();
+    }
+
+    private void closeWindow(boolean isCompleted){
+        if(isCompleted){
+            //todo: save on db the activity
+        }
+        ExerciseMonitor.getInstance().resume();
+        Stage stage = (Stage) completeButton.getScene().getWindow();
+
+        stage.close();
     }
 
 
