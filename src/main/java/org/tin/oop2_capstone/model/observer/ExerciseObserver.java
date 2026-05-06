@@ -6,4 +6,7 @@ public interface ExerciseObserver {
      * perhaps a method like...  onExerciseRequired(difficulty) or smth idk
      * implemented by the ExerciseMonitor
      */
+
+    public void onAppChanged(String appName);
+
 }

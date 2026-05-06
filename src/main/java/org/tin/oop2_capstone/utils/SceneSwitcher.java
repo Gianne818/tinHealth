@@ -25,14 +25,24 @@ public class SceneSwitcher {
     private boolean isResizeable;
     private String title;
     private String css;
+    private String[] styleClasses;
 
     private SceneSwitcher(Node node, String fxml){
         this.stage = (Stage) node.getScene().getWindow();
         this.fxml = fxml;
     }
 
+    private SceneSwitcher(String fxml){
+        this.stage = new Stage();
+        this.fxml = fxml;
+    }
+
     public static SceneSwitcher use(Node node, String fxml){
         return new SceneSwitcher(node, fxml);
+    }
+
+    public static SceneSwitcher use(String fxml){
+        return new SceneSwitcher(fxml);
     }
 
     public SceneSwitcher setMinDimensions(double minWidth, double minHeight){
@@ -78,6 +88,11 @@ public class SceneSwitcher {
         return this;
     }
 
+    public SceneSwitcher setStyleClasses(String[] styleClasses) {
+        this.styleClasses = styleClasses;
+        return this;
+    }
+
     public void switchScene(){
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/" + fxml + ".fxml"));
@@ -110,7 +125,9 @@ public class SceneSwitcher {
                 scene.getStylesheets().add(style);
             }
 
-
+            if(styleClasses != null){
+                scene.getRoot().getStyleClass().addAll(styleClasses);
+            }
 
             stage.show();
             if(isMaximized){

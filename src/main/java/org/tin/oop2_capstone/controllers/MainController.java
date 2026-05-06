@@ -25,6 +25,7 @@ import org.tin.oop2_capstone.database.repositories.ActivityRepository;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
 import org.tin.oop2_capstone.database.repositories.UserRepository;
 import org.tin.oop2_capstone.model.entities.User;
+import org.tin.oop2_capstone.services.ExerciseMonitor;
 import org.tin.oop2_capstone.services.SessionManager;
 
 public class MainController {
@@ -65,6 +66,8 @@ public class MainController {
 
     private ActivityRepository activityRepository = ActivityRepository.getInstance();
 
+    private ExerciseMonitor exerciseMonitor = new ExerciseMonitor();
+
     private int userId;
 
 
@@ -75,6 +78,7 @@ public class MainController {
         rootAnchorPane.getStyleClass().add("light");
         anchorPaneSideBar.getStyleClass().add("light");
         anchorPaneContent.getStyleClass().add("light");
+        exerciseMonitor.start();
 
 
 
