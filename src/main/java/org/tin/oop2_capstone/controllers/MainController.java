@@ -25,6 +25,7 @@ import org.tin.oop2_capstone.database.repositories.ActivityRepository;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
 import org.tin.oop2_capstone.database.repositories.UserRepository;
 import org.tin.oop2_capstone.model.entities.User;
+import org.tin.oop2_capstone.services.ExerciseMonitor;
 import org.tin.oop2_capstone.services.SessionManager;
 
 public class MainController {
@@ -75,7 +76,7 @@ public class MainController {
         rootAnchorPane.getStyleClass().add("light");
         anchorPaneSideBar.getStyleClass().add("light");
         anchorPaneContent.getStyleClass().add("light");
-
+        ExerciseMonitor.getInstance().startMonitoring();
 
 
         navs = FXCollections.observableArrayList();

@@ -7,8 +7,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.tin.oop2_capstone.services.ExerciseDifficultyService;
+import org.tin.oop2_capstone.services.ExerciseMonitor;
 
 import java.util.List;
 import java.util.Random;
@@ -58,24 +60,59 @@ public class ExercisePromptController {
         onDismiss = callback;
     }
 
-    @FXML
-    private void onCompleteButtonClick(ActionEvent event) {
-        // todo saving current activity to the database and activity log
-        dismiss();
-    }
-
-    public void setDifficultyService(ExerciseDifficultyService service) {
-        this.difficultyService = service;
-    }
-
+//    @FXML
+//    private void onCompleteButtonClick(ActionEvent event) {
+//        // todo saving current activity to the database and activity log
+//        dismiss();
+//    }
+//
+//    public void setDifficultyService(ExerciseDifficultyService service) {
+//        this.difficultyService = service;
+//    }
+//
     private int resolveReps(int baseReps) {
         if (difficultyService == null) return baseReps;
         return difficultyService.adjustReps(baseReps);
     }
 
+//    @FXML
+//    private void onSkipButtonClick(MouseEvent event){
+//        dismiss();
+//    }
+
+    @FXML
+    private void onCompleteButtonClick(ActionEvent event) {
+        closeWindow(true); // True means they did the exercise
+    }
+
     @FXML
     private void onSkipButtonClick(MouseEvent event){
-        dismiss();
+        closeWindow(false); // False means they skipped it
+    }
+
+    // This handles the animation, the database, and closing the stage all in one!
+    private void closeWindow(boolean isCompleted) {
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(180), backdropPane);
+        fadeOut.setFromValue(1);
+        fadeOut.setToValue(0);
+
+        fadeOut.setOnFinished(e -> {
+            if (isCompleted) {
+                // TODO: Save current activity to the database and ActivityLogger
+                System.out.println("Exercise Completed and Saved!");
+            } else {
+                System.out.println("Exercise Skipped.");
+            }
+
+            // 1. Restart the background monitor
+            ExerciseMonitor.getInstance().startMonitoring();
+
+            // 2. Close the popup window
+            Stage stage = (Stage) completeButton.getScene().getWindow();
+            stage.close();
+        });
+
+        fadeOut.play();
     }
 
     private void dismiss() {
@@ -86,6 +123,17 @@ public class ExercisePromptController {
             if (onDismiss != null) onDismiss.run();
         });
         fadeOut.play();
+    }
+
+    public void onExerciseCompleted() {
+        // 1. Log the activity to your ActivityLogger here...
+
+        // 2. Restart the background monitor
+        ExerciseMonitor.getInstance().startMonitoring();
+
+        // 3. Close the popup window
+        Stage stage = (Stage) completeButton.getScene().getWindow();
+        stage.close();
     }
 
 
