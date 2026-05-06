@@ -48,7 +48,7 @@ public class UpdateData {
     public static void markAsSynced(String foodName) {
         String query = """
             UPDATE Consumables
-            SET is_synced = TRUE
+            SET is_pending = TRUE
             WHERE name = ?
             AND type = 'food'
         """;
