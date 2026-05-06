@@ -422,4 +422,32 @@ public class RetrieveData {
         return 2000;
     }
 
+    public static List<Food> getPendingFoodsFromDB() {
+        List<Food> pending = new ArrayList<>();
+        String query = """
+            SELECT c.consumable_id, c.name
+            FROM Consumables c
+            WHERE c.type = 'food'
+            AND c.is_synced = FALSE
+        """;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                pending.add(new Food(
+                        rs.getString("name"),
+                        null,
+                        true
+                ));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return pending;
+    }
+
+
 }
