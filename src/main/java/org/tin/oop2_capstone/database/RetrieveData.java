@@ -1,9 +1,6 @@
 package org.tin.oop2_capstone.database;
 
-import org.tin.oop2_capstone.model.entities.Activity;
-import org.tin.oop2_capstone.model.entities.ActivityType;
-import org.tin.oop2_capstone.model.entities.NutritionDetails;
-import org.tin.oop2_capstone.model.entities.User;
+import org.tin.oop2_capstone.model.entities.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -382,5 +379,33 @@ public class RetrieveData {
         }
         return 2000;
     }
+
+    public static List<Food> getPendingFoodsFromDB() {
+        List<Food> pending = new ArrayList<>();
+        String query = """
+            SELECT c.consumable_id, c.name
+            FROM Consumables c
+            WHERE c.type = 'food'
+            AND c.is_synced = FALSE
+        """;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                pending.add(new Food(
+                        rs.getString("name"),
+                        null,
+                        true
+                ));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return pending;
+    }
+
 
 }
