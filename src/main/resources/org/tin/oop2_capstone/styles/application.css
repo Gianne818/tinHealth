@@ -248,38 +248,30 @@
     -fx-font-family: "Inter 18pt SemiBold";
 }
 
-/*Corrected the coloring of labels*/
-#caloriesInLabel, #carbsLabel, .greenLabel {
+#caloriesInLabel, #fatLabel, #sugarLabel, .greenLabel {
     -fx-text-fill: -green;
-}
-
-#fiberLabel{
-    -fx-text-fill: -dark-green;
-}
-
-#caloriesOutLabel, #fatLabel, #calOutGridPane .label, .orangeLabel{
-    -fx-text-fill: -orange;
-}
-
-#caloriesLabel {
-    -fx-text-fill: -vibrant-blue;
-}
-
-#netCaloriesLabel, #sodiumLabel {
-    -fx-text-fill: -purple;
-}
-
-#activityStreakLabel, #proteinLabel, #sugarLabel, .redLabel {
-    -fx-text-fill: -vibrant-red;
-}
-
-#cholesterolLabel {
-    -fx-text-fill: -pink;
 }
 
 #calInGridPane .label{
     -fx-text-fill: -dark-orange;
     -fx-font-family: "Inter 18pt SemiBold";
+}
+
+#caloriesOutLabel, #calOutGridPane .label, .orangeLabel{
+    -fx-text-fill: -evenlighter-orange;
+    -fx-font-family: "Inter 18pt SemiBold";
+}
+
+#caloriesLabel, #cholesterolLabel{
+    -fx-text-fill: -vibrant-blue;
+}
+
+#netCaloriesLabel, #carbsLabel, #fiberLabel{
+    -fx-text-fill: -purple;
+}
+
+#activityStreakLabel, #proteinLabel, #sodiumLabel, .redLabel{
+    -fx-text-fill: -vibrant-red;
 }
 
 .skipButton {
@@ -324,16 +316,6 @@
     -fx-font-family: "Inter 18pt SemiBold";
 }
 
-.calorieBurnCountText{
-    -fx-text-fill: -vibrant-red;
-    -fx-font-family: "Inter 18pt SemiBold";
-}
-
-/*default to pink progress bar color*/
-.progress-bar {
-    -fx-accent: -pink;
-}
-
 .progress-bar > .track {
     -fx-border-radius: 20;
     -fx-background-radius: 20;
@@ -345,20 +327,7 @@
 .progress-bar .bar {
     -fx-background-insets: 0;
     -fx-background-radius: 20;
-    -fx-background-color: -fx-accent;
-}
-/*change color according to accent*/
-.bar-green {
-    -fx-accent: -green;
-}
-.bar-red   {
-    -fx-accent: -vibrant-red;
-}
-.bar-orange{
-    -fx-accent: -orange;
-}
-.bar-purple{
-    -fx-accent: -purple;
+    -fx-background-color: -pink;
 }
 
 #toolTipVbox{
@@ -509,58 +478,571 @@
     -fx-underline: true;
     -fx-cursor: hand;
 }
-/*LineGraph Default Colors*/
-/*TODO: This might conflict/affect with the dashboard's Line graph colors*/
-/*Calories - Blue */
-.default-color0.chart-series-line { -fx-stroke: -vibrant-blue; }
-.default-color0.chart-line-symbol { -fx-background-color: -vibrant-blue, white; }
 
-/*Protein - Red */
-.default-color1.chart-series-line { -fx-stroke: -vibrant-red; }
-.default-color1.chart-line-symbol { -fx-background-color: -vibrant-red, white; }
+ /*PLEASE USE COLORS FROM PALETTES.CSS, OR ADD COLORS THERE */
 
-/*Carbs - Green */
-.default-color2.chart-series-line { -fx-stroke: -green; }
-.default-color2.chart-line-symbol { -fx-background-color: -green, white; }
+/*!**/
+/*@import "lightmode.css";*/
+/*@import "palettes.css";*/
+/*@import "fonts.css";*/
 
-/*Fats - Orange */
-.default-color3.chart-series-line { -fx-stroke: -orange; }
-.default-color3.chart-line-symbol { -fx-background-color: -orange, white; }
+/*!* PLEASE USE COLORS FROM PALETTES.CSS, OR ADD COLORS THERE *!*/
 
-/*dropdown style*/
-.choice-box .context-menu {
-    -fx-background-radius: 15;
-    -fx-border-radius: 15;
-    -fx-border-color: -bg-default-border;
-    -fx-border-width: 1;
-    -fx-padding: 5;
-    -fx-effect: dropshadow(three-pass-box, lightgrey, 15, 0, 0, 5);
-}
+/*.label{*/
+/*    -fx-font-family: "Inter 18pt";*/
+/*}*/
 
-/*options style*/
-.choice-box .menu-item {
-    -fx-padding: 8 15 8 15;
-    -fx-background-radius: 10;
-    -fx-pref-width: -fx-context-menu-pref-width;
-}
+/*#anchorPaneSideBar{*/
+/*    -fx-background-color: -bg-nav;*/
 
-/*options text style*/
-.choice-box .menu-item > .label {
-    -fx-text-fill: -bg-default3;
-    -fx-font-family: "Inter 18pt";
-    -fx-font-size: 14;
-}
+/*}*/
 
-/*hover effects to background color*/
-.choice-box .menu-item:focused,
-.choice-box .menu-item:hover {
-    -fx-background-color: -pastel-orange;
-}
+/*.ctaButton{*/
+/*    -fx-background-color: -orange-to-red-orange;*/
+/*    -fx-text-fill: white;*/
+/*    -fx-background-radius: 50;*/
+/*    -fx-font-size: 16;*/
+/*    -fx-font-family: "Inter 18pt SemiBold";*/
+/*}*/
 
-/*hover effects to text color*/
-.choice-box .menu-item:focused > .label,
-.choice-box .menu-item:hover > .label {
-    -fx-text-fill: -dark-orange;
-}
+/*.plusAppName{*/
+/*    -fx-text-fill: -bg-default3;*/
+/*    -fx-font-size: 50;*/
+/*    -fx-font-family: "Inter 18pt SemiBold";*/
+/*}*/
 
-/* PLEASE USE COLORS FROM PALETTES.CSS, OR ADD COLORS THERE */
+/*.appName, .inAppName{*/
+/*    -fx-font-size: 40;*/
+/*    -fx-font-family: "Inter 18pt SemiBold";*/
+/*}*/
+
+/*.appName{*/
+/*    -fx-text-fill: -orange-to-red-orange;*/
+/*}*/
+
+/*.button{*/
+/*    -fx-background-radius: 50;*/
+/*    -fx-background-color: -accent-color;*/
+/*    -fx-text-fill: white;*/
+/*    -fx-font-size: 16;*/
+/*}*/
+
+
+
+/*.button:hover{*/
+/*    -fx-effect: dropshadow(three-pass-box, -shadow-hover, 14, 0, 0, 3);*/
+/*    -fx-scale-x: 1.005;*/
+/*    -fx-scale-y: 1.05;*/
+/*}*/
+
+
+/*#anchorPaneContent{*/
+/*    -fx-background-color: -bg-content;*/
+/*}*/
+
+/*.scroll-pane{*/
+/*    -fx-background-color: -bg-content;*/
+/*}*/
+
+/*.split-pane{*/
+/*    -fx-background: -bg-content;*/
+/*}*/
+
+/*.split-pane-divider{*/
+/*    -fx-pref-width: 0.5px;*/
+/*    -fx-padding: 0 2;*/
+/*    -fx-effect: dropshadow(three-pass-box, -shadow-hover, 20, 0.7, 4, 0);*/
+/*}*/
+
+/*.currentSVG{*/
+/*    -fx-stroke: -accent-color;*/
+/*}*/
+
+
+/*.fieldLabel{*/
+/*    -fx-font-family: "Inter 18pt SemiBold";*/
+/*    -fx-font-size: 14;*/
+/*}*/
+
+/*.lightText{*/
+/*    -fx-text-fill: grey;*/
+/*}*/
+
+/*.boldText{*/
+/*    -fx-font-weight: bold;*/
+/*}*/
+
+/*.grid{*/
+/*    -fx-background-color: transparent;*/
+/*    -fx-background: transparent;*/
+/*}*/
+
+/*.card{*/
+/*    -fx-background-color: -bg-default;*/
+/*    -fx-background-radius: 15;*/
+/*    -fx-effect: dropshadow(three-pass-box, -shadow-plain, 10, 0, 0, 5);*/
+/*}*/
+
+/*.cardContent{*/
+/*    -fx-background-color: -bg-default;*/
+/*    -fx-background-radius: 15;*/
+/*    -fx-effect: dropshadow(three-pass-box, -shadow-plain, 10, 0, 0, 5);*/
+/*}*/
+
+/*#hamburgerButton:hover {*/
+/*    -fx-background-color: -bg-color-accent;*/
+/*    -fx-background-radius: 30;*/
+/*}*/
+
+/*.navButton{*/
+/*    -fx-font-size: 16;*/
+/*}*/
+
+/*.navButton:hover {*/
+/*    -fx-background-color: -bg-color-accent;*/
+/*    -fx-background-radius: 30;*/
+/*    -fx-font-size: 16;*/
+/*    -fx-font-weight: 500;*/
+/*}*/
+
+/*.navButton.active {*/
+/*    -fx-background-color: -bg-color-accent;*/
+/*    -fx-background-radius: 30;*/
+/*    -fx-font-size: 16;*/
+/*}*/
+
+/*.navButton.active .icon-nav, .navButton.active .label{*/
+/*    -fx-text-fill: -accent-color;*/
+/*    -fx-stroke: -accent-color;*/
+/*}*/
+
+/*.navButton.active .icon-nav-dashboard, .navButton.active .icon-nav-settings{*/
+/*    -fx-fill: -accent-color;*/
+/*}*/
+
+/*.navButton.active .label,*/
+/*.navButton:hover .label {*/
+/*    -fx-font-family: "Inter 18pt SemiBold";*/
+/*}*/
+
+/*#dashboardNav.active .label, #dashboardNav.active .icon-nav-dashboard,*/
+/*#settingsNav.active .icon-nav-settings, #settingsNav.active .label {*/
+/*    -fx-text-fill: -brand-text-color;*/
+/*    -fx-fill: -brand-text-color;*/
+/*}*/
+
+/*.notif-card  {*/
+/*    -fx-background-color: -bg-default;*/
+/*    -fx-background-radius: 14px;*/
+/*    -fx-border-radius: 14px;*/
+/*    -fx-effect: dropshadow(three-pass-box, -shadow-plain, 10, 0, 0, 5);*/
+/*}*/
+
+/*.notif-card:hover, .list-cell:hover{*/
+/*    !*-fx-effect: dropshadow(three-pass-box, -shadow-hover, 10, 0, 0, 5);*!*/
+/*    -fx-scale-x: 1.005;*/
+/*    -fx-scale-y: 1.05;*/
+/*}*/
+
+/*.popup{*/
+/*    -fx-background-color:#A9A9A950; !*lightgrey but semi-transparent*!*/
+/*}*/
+
+/*.text-field{*/
+/*    -fx-padding: 5 10;*/
+/*    -fx-font-family: "Inter 18pt";*/
+/*}*/
+
+/*#repCountLabel{*/
+/*    -fx-text-fill: -accent-color;*/
+/*}*/
+
+/*.toggle-button {*/
+/*    -fx-background-color: -bg-color-accent, -bg-default;*/
+/*    -fx-background-radius: 24px, 24px;*/
+/*    -fx-background-insets: 0, 2 22 2 2;*/
+/*    -fx-effect: dropshadow(three-pass-box, -shadow-plain, 5, 0, 0, 2);*/
+/*    -fx-cursor: hand;*/
+/*}*/
+
+/*.toggle-button:selected {*/
+/*    -fx-background-color: -accent-color, -bg-default;*/
+/*    -fx-background-insets: 0, 2 2 2 22;*/
+/*}*/
+
+/*.choice-box, .text-field{*/
+/*    -fx-background-color: -bg-default2;*/
+/*    -fx-border-width: 1;*/
+/*    -fx-border-radius: 20;*/
+/*    -fx-background-radius: 20;*/
+/*    -fx-border-color: -bg-default-border;*/
+/*    -fx-font-size: 14;*/
+/*}*/
+
+/*.choice-box:hover, .choice-box:focused, .text-field:hover, .text-field:focused{*/
+/*    -fx-border-color: -orange-to-red-orange;*/
+/*}*/
+
+/*.tabTitle{*/
+/*    -fx-font-size: 30;*/
+/*    -fx-text-fill: -bg-default3;*/
+/*    -fx-font-family: "Inter 18pt SemiBold";*/
+/*}*/
+/*.cardTitle{*/
+/*    -fx-font-size: 18;*/
+/*    -fx-text-fill: -bg-default3;*/
+/*    -fx-font-family: "Inter 18pt SemiBold";*/
+/*}*/
+/*.cardTitle2{*/
+/*    -fx-font-size: 14;*/
+/*    -fx-text-fill: -bg-default3;*/
+/*    -fx-font-family: "Inter 18pt SemiBold";*/
+/*}*/
+/*.cardDetails{*/
+/*    -fx-font-size: 11;*/
+/*    -fx-text-fill: -grey;*/
+/*    -fx-font-family: "Inter 18pt";*/
+/*}*/
+
+
+/*.logQuickActions{*/
+/*    -fx-border-radius: 30;*/
+/*    -fx-background-radius: 30;*/
+/*    -fx-text-fill: white;*/
+/*    -fx-effect: dropshadow(three-pass-box, -shadow-plain, 10, 0, 0, 5);*/
+/*    -fx-background-color: -peach-to-orange;*/
+
+/*}*/
+
+/*.logQuickActions:hover{*/
+/*    -fx-effect: dropshadow(three-pass-box, -shadow-hover, 20, 0.2, 0, 5);*/
+/*    -fx-scale-x: 1.005;*/
+/*    -fx-scale-y: 1.05;*/
+
+/*}*/
+
+/*.logQuickActions .label{*/
+/*    -fx-text-fill: white;*/
+/*    -fx-font-size: 16;*/
+/*    -fx-font-family: "Inter 18pt SemiBold";*/
+/*}*/
+
+/*.caloriesDashboard{*/
+/*    -fx-font-size: 30;*/
+/*    -fx-font-family: "Inter 18pt SemiBold";*/
+/*}*/
+
+/*!*Corrected the coloring of labels*!*/
+/*#caloriesInLabel, #carbsLabel, .greenLabel {*/
+/*    -fx-text-fill: -green;*/
+/*}*/
+
+/*#fiberLabel{*/
+/*    -fx-text-fill: -dark-green;*/
+/*}*/
+
+/*#caloriesOutLabel, #fatLabel, #calOutGridPane .label, .orangeLabel{*/
+/*    -fx-text-fill: -orange;*/
+/*}*/
+
+/*#caloriesLabel {*/
+/*    -fx-text-fill: -vibrant-blue;*/
+/*}*/
+
+/*#netCaloriesLabel, #sodiumLabel {*/
+/*    -fx-text-fill: -purple;*/
+/*}*/
+
+/*#activityStreakLabel, #proteinLabel, #sugarLabel, .redLabel {*/
+/*    -fx-text-fill: -vibrant-red;*/
+/*}*/
+
+/*#cholesterolLabel {*/
+/*    -fx-text-fill: -pink;*/
+/*}*/
+
+/*#calInGridPane .label{*/
+/*    -fx-text-fill: -dark-orange;*/
+/*    -fx-font-family: "Inter 18pt SemiBold";*/
+/*}*/
+
+/*.skipButton {*/
+/*    -fx-background-color: transparent;*/
+/*    -fx-border-color: black;*/
+/*    -fx-border-width: 1;*/
+/*    -fx-border-radius: 50;*/
+/*    -fx-background-radius: 50;*/
+/*    -fx-text-fill: black;*/
+/*    -fx-font-size: 14;*/
+/*}*/
+
+/*!* When profileNav being hovered *!*/
+/*#profileNav:hover {*/
+/*    -fx-opacity: 0.7;*/
+/*}*/
+
+/*!*More profile-specific things*!*/
+/*.bmiCardContent{*/
+/*    -fx-background-color: -orange-to-red-orange;*/
+/*    -fx-background-radius: 15;*/
+/*    -fx-effect: dropshadow(three-pass-box, -shadow-plain, 20, 0, 0, 5);*/
+/*}*/
+
+/*.bmiCardContent .label {-fx-text-fill: white;}*/
+
+/*.label{*/
+/*    -fx-fill: -bg-default3;*/
+/*}*/
+
+/*!*Food Log specifics*!*/
+/*.calorieCountText{*/
+/*    -fx-text-fill: -green;*/
+/*    -fx-font-family: "Inter 18pt SemiBold";*/
+/*}*/
+/*#kcalLabel{*/
+/*    -fx-text-fill: -accent-color;*/
+/*    -fx-font-family: "Inter 18pt SemiBold";*/
+/*}*/
+/*.minuteCountText{*/
+/*    -fx-text-fill: -orange;*/
+/*    -fx-font-family: "Inter 18pt SemiBold";*/
+/*}*/
+
+/*.calorieBurnCountText{*/
+/*    -fx-text-fill: -vibrant-red;*/
+/*    -fx-font-family: "Inter 18pt SemiBold";*/
+/*}*/
+
+/*!*default to pink progress bar color*!*/
+/*.progress-bar {*/
+/*    -fx-accent: -pink;*/
+/*}*/
+
+/*.progress-bar > .track {*/
+/*    -fx-border-radius: 20;*/
+/*    -fx-background-radius: 20;*/
+/*    -fx-border-color: transparent;*/
+/*    -fx-background-color: -bg-default-border;*/
+
+/*}*/
+
+/*.progress-bar .bar {*/
+/*    -fx-background-insets: 0;*/
+/*    -fx-background-radius: 20;*/
+/*    -fx-background-color: -fx-accent;*/
+/*}*/
+/*!*change color according to accent*!*/
+/*.bar-green {*/
+/*    -fx-accent: -green;*/
+/*}*/
+/*.bar-red   {*/
+/*    -fx-accent: -vibrant-red;*/
+/*}*/
+/*.bar-orange{*/
+/*    -fx-accent: -orange;*/
+/*}*/
+/*.bar-purple{*/
+/*    -fx-accent: -purple;*/
+/*}*/
+
+/*#toolTipVbox{*/
+/*    -fx-background-color: -bg-default;*/
+/*    -fx-background-radius: 20;*/
+/*    -fx-border-color: -orange-to-red-orange;*/
+/*    -fx-border-radius: 20;*/
+/*    -fx-border-width: 2;*/
+/*}*/
+
+/*.default-color0.chart-pie {*/
+/*    -fx-pie-color: -somewhatdark-orange;*/
+/*}*/
+/*.default-color1.chart-pie {*/
+/*    -fx-pie-color: -abitdark-orange;*/
+/*}*/
+/*.default-color2.chart-pie {*/
+/*    -fx-pie-color: -notdark-orange;*/
+/*}*/
+
+/*.chart-pie-label-line {*/
+/*    -fx-stroke: transparent;*/
+/*}*/
+
+/*.chart-content{*/
+/*    -fx-padding: 0;*/
+/*}*/
+
+/*.pie-chart{*/
+/*    -fx-padding: 0;*/
+/*}*/
+
+/*.vertical-line {*/
+/*    -fx-stroke: grey;*/
+/*    -fx-stroke-width: 1;*/
+/*}*/
+
+/*.date-picker{*/
+/*    -fx-background-color: transparent;*/
+/*    -fx-spacing: 10;*/
+/*}*/
+
+/*.date-picker .arrow-button{*/
+/*    -fx-background-color: -bg-default;*/
+/*    -fx-background-radius: 20;*/
+/*    -fx-border-color: -bg-default-border;*/
+/*    -fx-border-radius: 20;*/
+/*    -fx-translate-x: 5;*/
+/*}*/
+
+/*.date-picker .arrow-button:hover, .date-picker .arrow-button:focused{*/
+/*    -fx-effect: dropshadow(three-pass-box, -shadow-plain, 10, 0, 0, 3);*/
+/*}*/
+
+/*.date-picker-popup .spinner > .button {*/
+/*    -fx-background-color: transparent;*/
+/*}*/
+
+/*.date-picker-popup > * > .spinner > .button:hover {*/
+/*    -fx-effect: dropshadow(three-pass-box, -shadow-hover, 10, 0, 0, 2);*/
+/*}*/
+
+/*.date-picker-popup > * > .spinner > .button > .left-arrow,*/
+/*.date-picker-popup > * > .spinner > .button > .right-arrow {*/
+/*    -fx-background-color: -accent-color;*/
+/*}*/
+
+/*.date-picker-popup > .month-year-pane {*/
+/*    -fx-background-color: -bg-default;*/
+/*}*/
+
+/*.activityLevelSelected {*/
+/*    -fx-border-radius: 14;*/
+/*    -fx-border-width: 3;*/
+/*    -fx-border-color: -orange-to-red-orange;*/
+/*    -fx-background-color: -pastel-orange;*/
+/*}*/
+
+/*.activityLevelSelected .checkCircle{*/
+/*    -fx-opacity: 1.0;*/
+/*}*/
+
+/*.checkCircle{*/
+/*    -fx-opacity: 0;*/
+/*}*/
+
+/*#onBoardingProgressBar .bar{*/
+/*    -fx-background-color: -orange-to-red-orange;*/
+/*}*/
+
+/*.buttonLabel{*/
+/*    -fx-font-family: "Inter 18pt SemiBold";*/
+/*}*/
+
+/*.buttonLabel:hover{*/
+/*    -fx-underline: true;*/
+/*    -fx-cursor: hand;*/
+/*}*/
+
+
+/*!* custom scroll pane styles *!*/
+/*.scrollable{*/
+/*    -fx-background-color: -bg-default;*/
+/*    -fx-border-color: transparent;*/
+/*}*/
+
+/*.scroll-pane .scroll-bar:vertical,*/
+/*.scroll-pane .scroll-bar:horizontal {*/
+/*    -fx-background-color: transparent;*/
+/*    -fx-padding: 0 5 0 0;*/
+/*}*/
+
+/*.scroll-pane .scroll-bar .thumb{*/
+/*    -fx-background-color: -bg-default4;*/
+/*    -fx-border-color: -bg-default-border;*/
+/*    -fx-border-radius: 20;*/
+/*    -fx-background-radius: 20;*/
+/*}*/
+
+/*.scroll-pane .scroll-bar .thumb:hover, .scroll-pane .scroll-bar .thumb:pressed{*/
+/*    -fx-effect: dropshadow(three-pass-box, -shadow-hover, 5, 0, 0, 2);*/
+/*}*/
+
+/*.scroll-pane .scroll-bar .increment-button,*/
+/*.scroll-pane .scroll-bar .decrement-button,*/
+/*.scroll-pane .scroll-bar .increment-button > .decrement-arrow,*/
+/*.scroll-pane .scroll-bar .decrement-button > .increment-arrow{*/
+/*    -fx-background-color: transparent;*/
+/*    -fx-max-width: 0;*/
+/*    -fx-max-height: 0;*/
+/*    -fx-padding: 0;*/
+/*    -fx-opacity: 0;*/
+/*    !*inc and dec still functional. could not figure out how to disable it fully*!*/
+/*}*/
+
+/*.list-view {*/
+/*    -fx-background-color: transparent;*/
+/*    -fx-border-color: transparent;*/
+/*}*/
+
+/*.list-cell{*/
+/*    -fx-padding: 10 10 10 10;*/
+/*    -fx-background-color: transparent;*/
+/*    -fx-border-color: transparent;*/
+/*}*/
+
+/*.navHbox:hover{*/
+/*    -fx-underline: true;*/
+/*    -fx-cursor: hand;*/
+/*}*/
+/*!*LineGraph Default Colors*!*/
+/*!*TODO: This might conflict/affect with the dashboard's Line graph colors*!*/
+/*!*Calories - Blue *!*/
+/*.default-color0.chart-series-line { -fx-stroke: -vibrant-blue; }*/
+/*.default-color0.chart-line-symbol { -fx-background-color: -vibrant-blue, white; }*/
+
+/*!*Protein - Red *!*/
+/*.default-color1.chart-series-line { -fx-stroke: -vibrant-red; }*/
+/*.default-color1.chart-line-symbol { -fx-background-color: -vibrant-red, white; }*/
+
+/*!*Carbs - Green *!*/
+/*.default-color2.chart-series-line { -fx-stroke: -green; }*/
+/*.default-color2.chart-line-symbol { -fx-background-color: -green, white; }*/
+
+/*!*Fats - Orange *!*/
+/*.default-color3.chart-series-line { -fx-stroke: -orange; }*/
+/*.default-color3.chart-line-symbol { -fx-background-color: -orange, white; }*/
+
+/*!*dropdown style*!*/
+/*.choice-box .context-menu {*/
+/*    -fx-background-radius: 15;*/
+/*    -fx-border-radius: 15;*/
+/*    -fx-border-color: -bg-default-border;*/
+/*    -fx-border-width: 1;*/
+/*    -fx-padding: 5;*/
+/*    -fx-effect: dropshadow(three-pass-box, lightgrey, 15, 0, 0, 5);*/
+/*}*/
+
+/*!*options style*!*/
+/*.choice-box .menu-item {*/
+/*    -fx-padding: 8 15 8 15;*/
+/*    -fx-background-radius: 10;*/
+/*    -fx-pref-width: -fx-context-menu-pref-width;*/
+/*}*/
+
+/*!*options text style*!*/
+/*.choice-box .menu-item > .label {*/
+/*    -fx-text-fill: -bg-default3;*/
+/*    -fx-font-family: "Inter 18pt";*/
+/*    -fx-font-size: 14;*/
+/*}*/
+
+/*!*hover effects to background color*!*/
+/*.choice-box .menu-item:focused,*/
+/*.choice-box .menu-item:hover {*/
+/*    -fx-background-color: -pastel-orange;*/
+/*}*/
+
+/*!*hover effects to text color*!*/
+/*.choice-box .menu-item:focused > .label,*/
+/*.choice-box .menu-item:hover > .label {*/
+/*    -fx-text-fill: -dark-orange;*/
+/*}*/
