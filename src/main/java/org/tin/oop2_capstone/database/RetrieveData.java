@@ -1,9 +1,6 @@
 package org.tin.oop2_capstone.database;
 
-import org.tin.oop2_capstone.model.entities.Activity;
-import org.tin.oop2_capstone.model.entities.ActivityType;
-import org.tin.oop2_capstone.model.entities.NutritionDetails;
-import org.tin.oop2_capstone.model.entities.User;
+import org.tin.oop2_capstone.model.entities.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -316,6 +313,48 @@ public class RetrieveData {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    //test retrieve
+    public static List<Meal> fetchUserMeals(int userId) {
+        List<Meal> meals = new ArrayList<>();
+        String query = """
+            SELECT m.meal_type, c.name, m.serving_size, m.serving_units, m.log_timestamp,
+                   nd.calories, nd.protein, nd.fats, nd.carbs, nd.cholesterol, nd.sodium, nd.sugar, nd.fiber
+            FROM Meals m
+            JOIN Consumables c ON m.consumable_id = c.consumable_id
+            LEFT JOIN NutritionalDetails nd ON c.nutri_id = nd.nutri_id
+            WHERE m.user_id = ?
+            ORDER BY m.log_timestamp DESC
+        """;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next()) {
+                NutritionDetails nd = new NutritionDetails(
+                        rs.getDouble("calories"), rs.getDouble("protein"), rs.getDouble("fats"),
+                        rs.getDouble("carbs"), rs.getDouble("cholesterol"), rs.getDouble("sodium"),
+                        rs.getDouble("sugar"), rs.getDouble("fiber")
+                );
+
+                Food food = new Food(rs.getString("name"), nd, false);
+
+                org.tin.oop2_capstone.model.entities.MealType type =
+                        org.tin.oop2_capstone.model.entities.MealType.valueOf(rs.getString("meal_type").toUpperCase());
+
+                meals.add(new Meal(
+                        type, food, rs.getTimestamp("log_timestamp").toLocalDateTime(),
+                        rs.getDouble("serving_size"), rs.getString("serving_units")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return meals;
     }
 
 
