@@ -3,7 +3,8 @@ package org.tin.oop2_capstone.model.entities;
 import java.time.LocalDateTime;
 
 /* todo: logTime should be calculated in our controller.
-    example, If user inputs food and current time==12PM, then breakfast is selected, we default to time to 6-9 AM, but they can override this
+    example, If user inputs food and current time==12PM, then breakfast is selected, we default to time to 6-9 AM
+    else we can do a current time
  */
 
 public class Meal {

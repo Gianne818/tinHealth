@@ -16,7 +16,6 @@ import  javafx.scene.chart.PieChart.Data;
 import javafx.scene.shape.Circle;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +58,7 @@ public class DashboardController {
     @FXML ListView<GridPane> recentFoodsListView;
     @FXML ListView<GridPane> recentActivityListView;
 
-    private List<Meal> meals;
+    private List<Meal> mealsList;
     private List<Activity> activityList;
     private ObservableList<GridPane> mealGridPanes;
     private ObservableList<GridPane> activityGridPanes;
@@ -68,6 +67,7 @@ public class DashboardController {
     private int userId;
 
     private ActivityRepository activityRepository = ActivityRepository.getInstance();
+    private MealRepository mealRepository = MealRepository.getInstance();
 
     public void initialize() {
         userId = SessionManager.getInstance().getCurrentUser().getUid();
@@ -75,15 +75,40 @@ public class DashboardController {
         macroDistData = FXCollections.observableArrayList();
         nutritionDetails = activityRepository.getWeeklyNutrients();
 
-        meals = new ArrayList<>();
+        mealsList = new ArrayList<>();
         mealGridPanes = FXCollections.observableArrayList();
 
         activityGridPanes = FXCollections.observableArrayList();
 
         initRecentActivitiesList();
+        initRecentMealsList();
         initDashboardHeader();
         initMacroDist();
         initCaloriesLineChart();
+    }
+
+    private void initRecentMealsList(){
+        mealsList = mealRepository.getUserMeals();
+        for(Meal a : mealsList){
+            try{
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/log-card.fxml"));
+                GridPane root = fxmlLoader.load();
+                root.getStylesheets().add(getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm());
+                root.getStyleClass().addAll("light", "foodLogScrollPane");
+                root.getStyleClass().remove("cardContent");
+
+                LogCardController logCardController = fxmlLoader.getController();
+                logCardController.setData(a.getConsumable().getName(), TimeFormatter.formatTo12Hour(a.getLogDateTime().toLocalTime()), a.getQuantity(), a.getUnit(), a.getNutritionDetails().getCalories(), true, false);
+                root.setPadding(new Insets(0, 0, 0, 0));
+                mealGridPanes.add(root);
+                System.out.println("ADDING: " + mealGridPanes);
+            } catch (IOException e){
+                System.out.println("OH NNOI");
+                e.printStackTrace();
+            }
+        }
+
+        recentFoodsListView.setItems(mealGridPanes);
     }
 
     private void initRecentActivitiesList(){

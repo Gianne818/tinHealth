@@ -81,15 +81,12 @@ public class ActivityLogController {
     public void onButtonAddEntryClicked(ActionEvent actionEvent) {
         //TODO: Convert the textfield inputs into strings and add them into the database(?)
 
-        //remove the prompt box
-        gridPaneAddEntry.setVisible(false);
-        addEntryisVisible = !addEntryisVisible;
-
         //TODO: refresh the listview if it queries from the database to load new added activity(?)
     }
 
     public void onButtonCancelClicked(ActionEvent actionEvent) {
-        gridPaneAddEntry.setVisible(false);
+        gridPaneAddEntry.setVisible(!addEntryisVisible);
+        gridPaneAddEntry.setManaged(!addEntryisVisible);
         addEntryisVisible = !addEntryisVisible;
     }
 

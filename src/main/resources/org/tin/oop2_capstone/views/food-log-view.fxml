@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -15,7 +17,6 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.control.ListView?>
 <ScrollPane fx:id="foodLogScrollPane" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="foodLogScrollPane" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.FoodLogController">
    <content>
       <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
@@ -32,8 +33,12 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Label styleClass="tabTitle" text="Food Log" />
-                        <Label text="Track Your Daily Expenses" GridPane.rowIndex="1" />
+                        <Label text="Food Log">
+                           <styleClass>
+                              <String fx:value="tabTitle" />
+                              <String fx:value="greenLabel" />
+                           </styleClass></Label>
+                        <Label styleClass="lightText" text="Track Your Daily Expenses" GridPane.rowIndex="1" />
                         <Button fx:id="buttonAddFood" mnemonicParsing="false" onAction="#onButtonAddFoodClicked" text="+ Add Food" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2">
                            <GridPane.margin>
                               <Insets />
@@ -70,23 +75,27 @@
                               <Insets right="10.0" />
                            </GridPane.margin>
                         </StackPane>
-                        <Label text="Total Calories Today" GridPane.columnIndex="1" />
-                        <Label styleClass="calorieCountText" text="70" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Label styleClass="lightText" text="Total Calories Today" GridPane.columnIndex="1" />
+                        <Label text="70" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <font>
                               <Font size="25.0" />
-                           </font></Label>
-                        <Label text="Goal" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
-                        <Label text="2000 kcal" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                           </font>
+                           <styleClass>
+                              <String fx:value="greenLabel" />
+                              <String fx:value="caloriesDashboard" />
+                           </styleClass></Label>
+                        <Label styleClass="lightTexr" text="Goal" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
+                        <Label styleClass="cardTitle" text="2000 kcal" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font></Label>
                      </children>
                   </GridPane>
 
-                   <GridPane fx:id="gridPaneAddEntry" hgap="10.0"  managed="false" styleClass="cardContent" vgap="10.0" visible="false">
+                   <GridPane fx:id="gridPaneAddEntry" hgap="10.0" managed="false" styleClass="cardContent"  visible="false" vgap="10.0">
                        <columnConstraints>
                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="179.0" minWidth="10.0" prefWidth="52.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="315.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                        </columnConstraints>
                        <rowConstraints>
@@ -95,32 +104,40 @@
                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                        </rowConstraints>
                      <children>
-                        <Label text="New Food Entry" />
-                        <Label text="Food Name" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-                        <Label text="Calories" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" />
-                        <Label text="Meal" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" />
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add Entry" GridPane.columnSpan="2" GridPane.rowIndex="5" onAction="#onButtonAddEntryClicked">
+                        <Label styleClass="cardTitle" text="New Food Entry" />
+                        <Label styleClass="fieldLabel" text="Food Name" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+                        <Label styleClass="fieldLabel" text="Calories" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" />
+                        <Label styleClass="fieldLabel" text="Meal" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" />
+                        <Button fx:id="addEntryButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onButtonAddEntryClicked" text="Add Entry" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="TOP">
                            <GridPane.margin>
                               <Insets top="10.0" />
                            </GridPane.margin>
                         </Button>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Cancel" GridPane.columnIndex="2" GridPane.rowIndex="5" onAction="#onButtonCancelClicked">
+                        <Button fx:id="cancelButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onButtonCancelClicked" styleClass="cancelButton" text="Cancel" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="TOP">
                            <GridPane.margin>
                               <Insets top="10.0" />
                            </GridPane.margin>
                         </Button>
-                        <TextField promptText="e.g. Jaboli Spicy Chicken" GridPane.columnSpan="3" GridPane.rowIndex="2" />
-                        <TextField promptText="250" GridPane.rowIndex="4" />
-                        <ChoiceBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+                        <TextField fx:id="foodNameTextField" promptText="e.g. Jaboli Spicy Chicken" GridPane.columnSpan="3" GridPane.rowIndex="2" />
+                        <TextField fx:id="timeTextField" editable="false" focusTraversable="false" mouseTransparent="true" promptText="- -" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                        <ChoiceBox fx:id="mealChoiceBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Label layoutX="202.0" layoutY="153.0" styleClass="fieldLabel" text="Time" GridPane.columnIndex="2" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" />
+                        <TextField fx:id="caloriesTextField" editable="false" focusTraversable="false" mouseTransparent="true" promptText="- -" GridPane.rowIndex="4" />
                      </children>
                      <padding>
-                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
                      </padding>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
                    </GridPane>
-                  <Label styleClass="cardTitle" text="Your Food Logs" />
+                  <Label styleClass="cardTitle" text="Your Food Logs">
+                     <padding>
+                        <Insets top="20.0" />
+                     </padding></Label>
 
                   <ListView fx:id="foodLogListView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS" />
 

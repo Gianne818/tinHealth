@@ -57,16 +57,16 @@ public class HealthController {
 
         //TODO: Change hardcoded lines to actual data.
         //Calorie Line
-        XYChart.Series<String, Number> calIn = new XYChart.Series<>();
-        calIn.getData().addAll(
-                new XYChart.Data<>("Mon", 1850),
-                new XYChart.Data<>("Tue", 2150),
-                new XYChart.Data<>("Wed", 1950),
-                new XYChart.Data<>("Thu", 2050),
-                new XYChart.Data<>("Fri", 1900),
-                new XYChart.Data<>("Sat", 2200),
-                new XYChart.Data<>("Sun", 770)
-        );
+//        XYChart.Series<String, Number> calIn = new XYChart.Series<>();
+//        calIn.getData().addAll(
+//                new XYChart.Data<>("Mon", 1850),
+//                new XYChart.Data<>("Tue", 2150),
+//                new XYChart.Data<>("Wed", 1950),
+//                new XYChart.Data<>("Thu", 2050),
+//                new XYChart.Data<>("Fri", 1900),
+//                new XYChart.Data<>("Sat", 2200),
+//                new XYChart.Data<>("Sun", 770)
+//        );
 
         //Protein Line
         XYChart.Series<String, Number> protIn = new XYChart.Series<>();
@@ -107,18 +107,71 @@ public class HealthController {
                 new XYChart.Data<>("Sun", 28)
         );
 
+        // Cholesterol
+        XYChart.Series<String, Number> cholesterolIn = new XYChart.Series<>();
+        cholesterolIn.setName("Cholesterol");
+        cholesterolIn.getData().addAll(
+                new XYChart.Data<>("Mon", 60),
+                new XYChart.Data<>("Tue", 70),
+                new XYChart.Data<>("Wed", 65),
+                new XYChart.Data<>("Thu", 68),
+                new XYChart.Data<>("Fri", 62),
+                new XYChart.Data<>("Sat", 75),
+                new XYChart.Data<>("Sun", 28)
+        );
+
+        // just to see how gubot it will all look
+
+        XYChart.Series<String, Number> sodiumIn = new XYChart.Series<>();
+        sodiumIn.setName("Sodium");
+        sodiumIn.getData().addAll(
+                new XYChart.Data<>("Mon", 87),
+                new XYChart.Data<>("Tue", 34),
+                new XYChart.Data<>("Wed", 51),
+                new XYChart.Data<>("Thu", 75),
+                new XYChart.Data<>("Fri", 97),
+                new XYChart.Data<>("Sat", 32),
+                new XYChart.Data<>("Sun", 88)
+        );
+
+
+        XYChart.Series<String, Number> sugarIn = new XYChart.Series<>();
+        sugarIn.setName("Sugar");
+        sugarIn.getData().addAll(
+                new XYChart.Data<>("Mon", 14),
+                new XYChart.Data<>("Tue", 85),
+                new XYChart.Data<>("Wed", 45),
+                new XYChart.Data<>("Thu", 28),
+                new XYChart.Data<>("Fri", 32),
+                new XYChart.Data<>("Sat", 90),
+                new XYChart.Data<>("Sun", 87)
+        );
+
+
+        XYChart.Series<String, Number> fiberIn = new XYChart.Series<>();
+        fiberIn.setName("Fiber");
+        fiberIn.getData().addAll(
+                new XYChart.Data<>("Mon", 76),
+                new XYChart.Data<>("Tue", 90),
+                new XYChart.Data<>("Wed", 38),
+                new XYChart.Data<>("Thu", 64),
+                new XYChart.Data<>("Fri", 82),
+                new XYChart.Data<>("Sat", 74),
+                new XYChart.Data<>("Sun", 38)
+        );
+
+
         NumberAxis yAxis = (NumberAxis) chart.getYAxis();
         yAxis.setAutoRanging(false);
-        yAxis.setTickUnit(550);
+        yAxis.setTickUnit(50);
         yAxis.setLowerBound(0);
-        yAxis.setUpperBound(2500);
-        yAxis.setMinorTickCount(0);
+        yAxis.setUpperBound(300);
+        yAxis.setMinorTickCount(10);
 
-        chart.getData().addAll(calIn, protIn, carbIn, fatIn);
+        chart.getData().addAll(protIn, carbIn, fatIn, cholesterolIn, sugarIn, sodiumIn, fiberIn);
 
-        chart.setLegendVisible(false);
+        chart.setLegendVisible(true);
 
-        setupGlobalTooltip(chart, calIn);
     }
 
     private void setupGlobalTooltip(LineChart<String, Number> chart, XYChart.Series<String, Number> in) {

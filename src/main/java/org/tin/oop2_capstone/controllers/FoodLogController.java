@@ -6,11 +6,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
 import org.tin.oop2_capstone.model.entities.Meal;
+import org.tin.oop2_capstone.model.entities.MealType;
 import org.tin.oop2_capstone.utils.TimeFormatter;
 import java.io.IOException;
 import java.util.List;
@@ -20,6 +22,9 @@ public class FoodLogController {
     @FXML Button buttonAddFood;
     @FXML GridPane gridPaneAddEntry;
     @FXML ScrollPane foodLogScrollPane;
+
+    @FXML Button addEntryButton;
+    @FXML ChoiceBox<String> mealChoiceBox;
 
     private List<Meal> meals;
     private ObservableList<GridPane> foodGridPanes;
@@ -31,6 +36,9 @@ public class FoodLogController {
         meals = FXCollections.observableArrayList();
         foodGridPanes = FXCollections.observableArrayList();
         setFoodLog();
+
+        mealChoiceBox.getItems().addAll(MealType.BREAKFAST.toString(), MealType.LUNCH.toString(), MealType.DINNER.toString(), MealType.SNACK.toString());
+
     }
 
     private void setFoodLog() {
@@ -43,7 +51,7 @@ public class FoodLogController {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/log-card.fxml"));
                     GridPane root = fxmlLoader.load();
                     root.getStylesheets().add(getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm());
-                    root.getStyleClass().addAll("light", "activityLogScrollPane");
+                    root.getStyleClass().addAll("light", "foodLogScrollPane");
 
                     LogCardController logCardController = fxmlLoader.getController();
 
@@ -78,16 +86,12 @@ public class FoodLogController {
 
     public void onButtonAddEntryClicked(ActionEvent actionEvent) {
         //TODO: Convert the textfield inputs into strings and add them into the database(?)
-
-        //remove the prompt box
-        gridPaneAddEntry.setVisible(false);
-        addEntryisVisible = !addEntryisVisible;
-
         //TODO: refresh the listview if it queries from the database to load new added activity(?)
     }
 
     public void onButtonCancelClicked(ActionEvent actionEvent) {
-        gridPaneAddEntry.setVisible(false);
+        gridPaneAddEntry.setVisible(!addEntryisVisible);
+        gridPaneAddEntry.setManaged(!addEntryisVisible);
         addEntryisVisible = !addEntryisVisible;
     }
 
