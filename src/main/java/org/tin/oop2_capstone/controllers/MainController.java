@@ -23,6 +23,7 @@ import java.io.IOException;
 
 import org.tin.oop2_capstone.database.repositories.ActivityRepository;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
+import org.tin.oop2_capstone.database.repositories.UserPrefRepository;
 import org.tin.oop2_capstone.database.repositories.UserRepository;
 import org.tin.oop2_capstone.model.entities.User;
 import org.tin.oop2_capstone.services.ExerciseMonitor;
@@ -67,6 +68,8 @@ public class MainController {
     private ActivityRepository activityRepository = ActivityRepository.getInstance();
 
     private ExerciseMonitor exerciseMonitor = ExerciseMonitor.getInstance();
+
+    private UserPrefRepository userPrefRepository = UserPrefRepository.getInstance();
 
     private int userId;
 
@@ -234,7 +237,7 @@ public class MainController {
 
     private void startExercisePromptTimer() {
         int userId = SessionManager.getInstance().getCurrentUser().getUid();
-        int promptFreqMinutes = UserRepository.getPromptFrequency(userId);
+        int promptFreqMinutes = userPrefRepository.getUserPref().getPromptFrequencyMinutes()
 
         remainingSeconds = promptFreqMinutes * 60;
         updateTimerDisplay();

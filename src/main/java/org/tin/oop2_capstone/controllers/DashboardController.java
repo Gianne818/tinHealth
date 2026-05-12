@@ -69,6 +69,8 @@ public class DashboardController {
     private ActivityRepository activityRepository = ActivityRepository.getInstance();
     private MealRepository mealRepository = MealRepository.getInstance();
 
+    private UserPrefRepository userPrefRepository = UserPrefRepository.getInstance();
+
     public void initialize() {
         userId = SessionManager.getInstance().getCurrentUser().getUid();
         dashboardScrollPane.getStyleClass().add("light");
@@ -291,7 +293,7 @@ public class DashboardController {
         int streak = activityRepository.getCurrentStreak();
         activityStreakLabel.setText(String.valueOf(streak));
 
-        int dailyCalorieInGoal = UserPrefRepository.getDailyCalorieInGoal(userId);
+        double dailyCalorieInGoal = userPrefRepository.getUserPref().getDailyCalorieGoal();
         goalCaloriesLabelCaloriesIn.setText(String.valueOf(dailyCalorieInGoal));
 
         int todayActivitiesCount = activityRepository.getTodayActivitiesCount();

@@ -24,6 +24,8 @@ public class LoginController {
 
     @FXML Label invalidCredentialsLabel;
 
+    private UserRepository userRepo = UserRepository.getInstance();
+
 
 
     @FXML
@@ -31,7 +33,8 @@ public class LoginController {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-        User user = UserRepository.getUser(username, password);
+        UserRepository userRepo = UserRepository.getInstance();
+        User user = userRepo.login(username, password);
         if(user == null) {
             //todo show error message
             invalidCredentialsLabel.setManaged(true);

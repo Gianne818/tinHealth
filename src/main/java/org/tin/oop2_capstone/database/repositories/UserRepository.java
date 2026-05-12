@@ -3,9 +3,13 @@ package org.tin.oop2_capstone.database.repositories;
 import org.tin.oop2_capstone.database.RetrieveData;
 import org.tin.oop2_capstone.model.entities.User;
 
+import org.tin.oop2_capstone.database.RetrieveData;
+
 public class UserRepository {
 
-    public static volatile UserRepository instance;
+    private static volatile UserRepository instance;
+    private User currentUser;
+
 
     private UserRepository(){
         System.out.println("UserRepository is initialized for the first time.");
@@ -22,11 +26,18 @@ public class UserRepository {
         return instance;
     }
 
-    public static User getUser(String username, String password) {
+    public User login(String username, String password){
+
         return RetrieveData.fetchUser(username, password);
+
     }
 
-    public static int getPromptFrequency(int userId) {
-        return RetrieveData.fetchUserPromptFrequency(userId);
+    public User getUser() {
+        return currentUser;
     }
+
+    public int getUserID(){
+        return currentUser.getUid();
+    }
+
 }

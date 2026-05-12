@@ -9,19 +9,23 @@ public class UserPreferences implements Serializable {
 
     private boolean enableExercisePrompts;
     private int     exerciseIntensity;
-    private int     promptFrequencyHours;
+    private int     promptFrequencyMinutes;
     private String  theme;
-    private double  dailyCalorieGoal;
+    private double  dailyCalorieGoalIn;
+    private double dailyCalorieGoalOut;
+    private boolean exerciseReminder;
+
+    private boolean achievementNotifications;
     private int weeklyActivityReps;
 
     public UserPreferences() {}
 
-    public UserPreferences(boolean enableExercisePrompts, int exerciseIntensity, int promptFrequencyHours, String theme, double dailyCalorieGoal, int weeklyActivityReps) {
+    public UserPreferences(boolean enableExercisePrompts, int exerciseIntensity, int promptFrequencyMinutes, String theme, double In, int weeklyActivityReps) {
         this.enableExercisePrompts = enableExercisePrompts;
         this.exerciseIntensity = exerciseIntensity;
-        this.promptFrequencyHours = promptFrequencyHours;
+        this.promptFrequencyMinutes = promptFrequencyMinutes;
         this.theme = theme;
-        this.dailyCalorieGoal = dailyCalorieGoal;
+        this.dailyCalorieGoalIn = dailyCalorieGoalIn;
         this.weeklyActivityReps = weeklyActivityReps;
     }
 
@@ -32,8 +36,8 @@ public class UserPreferences implements Serializable {
     public int getExerciseIntensity() {
         return exerciseIntensity;
     }
-    public int getPromptFrequencyHours() {
-        return promptFrequencyHours;
+    public int getPromptFrequencyMinutes() {
+        return promptFrequencyMinutes;
     }
     public String getTheme() {
         return theme;
@@ -53,7 +57,7 @@ public class UserPreferences implements Serializable {
         this.exerciseIntensity = exerciseIntensity;
     }
     public void setPromptFrequencyHours(int promptFrequencyHours) {
-        this.promptFrequencyHours = promptFrequencyHours;
+        this.promptFrequencyMinutes = promptFrequencyMinutes;
     }
 
     public void setTheme(String theme) {

@@ -47,7 +47,7 @@ public class ActivityRepository {
         this.todayCaloriesOut = RetrieveData.fetchUserTodayCaloriesOut(userId);
         this.todayActivitiesCount =  RetrieveData.fetchUserTodayActivities(userId).size();
         this.weeklyNutrients = RetrieveData.fetchUserWeeklyNutrients(userId);
-        this.weeklyCalories = RetrieveData.fetchUserWeeklyCalories(userId);
+        this.weeklyCalories = weeklyNutrients.getCalories();
         this.todayActivities = RetrieveData.fetchUserTodayActivities(userId);
         this.activityTypes = RetrieveData.fetchActivityTypes();
         this.userActivities = RetrieveData.fetchUserActivities(userId);
