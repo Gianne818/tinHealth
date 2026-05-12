@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import org.tin.oop2_capstone.api.FoodAPI;
+import org.tin.oop2_capstone.database.InsertData;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
 import org.tin.oop2_capstone.model.entities.Food;
 import org.tin.oop2_capstone.model.entities.Meal;
@@ -43,6 +44,8 @@ public class FoodLogController {
 
     private MealRepository mealRepository = MealRepository.getInstance();
 
+    private Food fetchedFood;
+
     public void initialize(){
         foodLogScrollPane.getStyleClass().add("light");
         meals = FXCollections.observableArrayList();
@@ -65,7 +68,13 @@ public class FoodLogController {
     }
 
     private void validateAndFetchFood() {
-        String foodName = foodNameTextField.getText().trim();
+        String rawFoodName = foodNameTextField.getText().trim();
+        // Format the name first
+        String foodName = formatFoodName(rawFoodName);
+        // Update the text field with formatted name (must be on UI thread)
+        if (!rawFoodName.equals(foodName)) {
+            foodNameTextField.setText(foodName);  // This is already on UI thread since focus lost event runs on UI thread
+        }
 
         // Validate: not empty and length > 1 character
         if (foodName.isEmpty() || foodName.length() <= 1) {
@@ -93,10 +102,11 @@ public class FoodLogController {
                 // Update UI on JavaFX thread
                 javafx.application.Platform.runLater(() -> {
                     if (food != null && food.getNutrition() != null) {
+                        fetchedFood = food;  // Store the full Food object
                         fetchedCalories = food.getNutrition().getCalories();
                         caloriesTextField.setText(String.format("%.1f", fetchedCalories));
                         caloriesTextField.setStyle("-fx-text-fill: #11B981;");
-                        selectedFoodName = food.getName();
+                        selectedFoodName = formatFoodName(food.getName());
 
                         // Auto-set time based on meal type
                         updateTimeBasedOnMeal();
@@ -113,6 +123,23 @@ public class FoodLogController {
                 e.printStackTrace();
             }
         }).start();
+    }
+
+    private String formatFoodName(String rawName) {
+        if (rawName == null || rawName.isEmpty()) return rawName;
+
+        String[] words = rawName.trim().toLowerCase().split("\\s+");
+        StringBuilder formatted = new StringBuilder();
+
+        for (String word : words) {
+            if (word.length() > 0) {
+                formatted.append(Character.toUpperCase(word.charAt(0)))
+                        .append(word.substring(1))
+                        .append(" ");
+            }
+        }
+
+        return formatted.toString().trim();
     }
 
     private void updateTimeBasedOnMeal() {
@@ -177,19 +204,14 @@ public class FoodLogController {
     }
 
     private boolean addEntryisVisible = false;
-    public void onButtonAddFoodClicked(ActionEvent actionEvent) {
+    public void onButtonAddFoodClicked(ActionEvent actionEvent) { // @FXML Button addEntryButton;
         gridPaneAddEntry.setVisible(!addEntryisVisible);
         gridPaneAddEntry.setManaged(!addEntryisVisible);
         addEntryisVisible = !addEntryisVisible;
-    }
-
-    public void onButtonEntryFoodClicked(ActionEvent actionEvent){
-
+        //
     }
 
     public void onButtonAddEntryClicked(ActionEvent actionEvent) {
-        // TODO: Convert the textfield inputs into strings and add them into the database(?)
-        // TODO: refresh the listview if it queries from the database to load new added activity(?)
         // Validate all fields
         if (foodNameTextField.getText().trim().isEmpty() ||
                 foodNameTextField.getText().trim().length() <= 1) {
@@ -205,8 +227,7 @@ public class FoodLogController {
 
         // Create and save meal
         try {
-            NutritionDetails nutrition = new NutritionDetails(fetchedCalories, 0, 0, 0, 0, 0, 0, 0);
-            Food food = new Food(selectedFoodName, nutrition, false);
+            Food food = fetchedFood;
 
             MealType mealType = MealType.valueOf(mealChoiceBox.getValue().toUpperCase());
             LocalDateTime logTime = parseTimeFromTextField();
@@ -214,7 +235,21 @@ public class FoodLogController {
             Meal meal = new Meal(mealType, food, logTime, 1.0, "serving");
 
             // Save to database (implement in MealRepository)
-            mealRepository.addMeal(meal);
+            int userId = 1; // TODO: Get actual logged-in user ID from your session/UserSession class
+            boolean success = InsertData.insertMeal(userId, meal);
+
+            if (success) {
+                // Also add to repository's local list for UI updates
+                mealRepository.addMeal(meal); // You'd need to create this method
+
+                // Refresh UI
+                refreshFoodLog();
+
+                // Clear form
+                clearAddEntryForm();
+            } else {
+                showError("Failed to save to database");
+            }
 
             // Refresh UI
             refreshFoodLog();
@@ -246,7 +281,7 @@ public class FoodLogController {
         timeTextField.clear();
         selectedFoodName = null;
         fetchedCalories = 0;
-
+        fetchedFood = null;
         gridPaneAddEntry.setVisible(false);
         gridPaneAddEntry.setManaged(false);
         addEntryisVisible = false;
@@ -257,6 +292,7 @@ public class FoodLogController {
     }
 
     public void onButtonCancelClicked(ActionEvent actionEvent) {
+        // TODO: Pressing this, will empty everything...
         gridPaneAddEntry.setVisible(!addEntryisVisible);
         gridPaneAddEntry.setManaged(!addEntryisVisible);
         addEntryisVisible = !addEntryisVisible;
