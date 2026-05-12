@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<VBox fx:id="toolTipVbox" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.ToolTipController">
+<VBox fx:id="toolTipVbox" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.ToolTipController">
     <children>
         <Label fx:id="dayLabel" styleClass="boldText" text="dayLabel">
             <VBox.margin>
@@ -40,6 +37,84 @@
                 <Label fx:id="calOutLabel" text="calOutLabel" GridPane.columnIndex="1" />
             </children>
         </GridPane>
+      <GridPane fx:id="calOutGridPane1" layoutX="20.0" layoutY="87.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label text="Protein:" />
+            <Label fx:id="proteinLabel" text="proteinLabel" GridPane.columnIndex="1" />
+         </children>
+      </GridPane>
+      <GridPane fx:id="calOutGridPane11" layoutX="20.0" layoutY="117.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label text="Fat:" />
+            <Label fx:id="fatLabel" text="fatLabel" GridPane.columnIndex="1" />
+         </children>
+      </GridPane>
+      <GridPane fx:id="calOutGridPane111" layoutX="20.0" layoutY="147.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label text="Cholesterol:" />
+            <Label fx:id="cholesterolLabel" text="cholesterolLabel" GridPane.columnIndex="1" />
+         </children>
+      </GridPane>
+      <GridPane fx:id="calOutGridPane1111" layoutX="20.0" layoutY="177.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label text="Sodium:" />
+            <Label fx:id="sodiumLabel" text="sodiumLabel" GridPane.columnIndex="1" />
+         </children>
+      </GridPane>
+      <GridPane fx:id="calOutGridPane11111" layoutX="20.0" layoutY="207.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label text="Sugar:" />
+            <Label fx:id="sugarLabel" text="sugarLabel" GridPane.columnIndex="1" />
+         </children>
+      </GridPane>
+      <GridPane fx:id="calOutGridPane111111" layoutX="20.0" layoutY="237.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label text="Fiber:" />
+            <Label fx:id="fiberLabel" text="fiberLabel" GridPane.columnIndex="1" />
+         </children>
+      </GridPane>
     </children>
     <padding>
         <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
