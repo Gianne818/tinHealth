@@ -124,8 +124,8 @@
                   </rowConstraints>
                   <Label styleClass="profileText1" text="Email" GridPane.halignment="LEFT" />
                   <Label layoutX="10.0" layoutY="9.0" styleClass="profileText1" text="Date of Birth" GridPane.columnIndex="1" />
-                  <TextField GridPane.rowIndex="1" />
-                  <TextField fx:id="emailTextField" layoutX="10.0" layoutY="20.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="emailTextField" GridPane.rowIndex="1" />
+                  <TextField fx:id="birthdateTextField" layoutX="10.0" layoutY="20.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </GridPane>
                <GridPane vgap="15.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
                   <columnConstraints>
@@ -190,7 +190,7 @@
                   </rowConstraints>
                   <Label styleClass="profileText1" text="Weight (kg)" GridPane.halignment="LEFT" />
                   <Label layoutX="10.0" layoutY="9.0" styleClass="profileText1" text="Height (cm)" GridPane.columnIndex="1" />
-                  <TextField GridPane.rowIndex="1" />
+                  <TextField fx:id="weightTextField" GridPane.rowIndex="1" />
                   <TextField fx:id="heightTextField" layoutX="10.0" layoutY="20.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </GridPane>
                <!--BMI Index Card-->

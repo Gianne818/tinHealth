@@ -17,24 +17,25 @@ public class ProfileController {
     private TextField emailTextField,
             fullnameTextField,
             birthdateTextField,
+            weightTextField,
             heightTextField;
     @FXML
-    private ChoiceBox genderChoiceBox;
+    private ChoiceBox<String> genderChoiceBox;
     @FXML
     private Label fullnameLabel, emailLabel;
+
     public void initialize(){
         String gender = u.getIsMale() ? "Male" : "Female";
 //        System.out.println(u);
 
         emailTextField.setText(u.getEmail());
         fullnameTextField.setText(u.getFullname());
+        birthdateTextField.setText("");
+        weightTextField.setText(String.format("%.1f", u.getWeightKg()));
         genderChoiceBox.getItems().addAll("Male", "Female");
         genderChoiceBox.setValue(gender);
         fullnameLabel.setText(u.getUsername());
         heightTextField.setText(String.format("%.0f", u.getHeightCm()));
-
-
-
     }
 
 
