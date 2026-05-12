@@ -48,7 +48,7 @@ public class User implements Serializable {
     public double getWeightKg() { return weightKg; }
     public double getHeightCm()  { return heightCm; }
     public String getPassword() { return password; }
-
+    public boolean getIsMale(){ return isMale; }
     public void setEmail(String email)       { this.email = email; }
     public void setFullname(String fullname) { this.fullname = fullname;}
     public void setUsername(String username) { this.username = username; }
@@ -68,6 +68,22 @@ public class User implements Serializable {
         // For now wala lang sa
         // TODO:
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "uid=" + uid +
+                ", fullname='" + fullname + '\'' +
+                ", email='" + email + '\'' +
+                ", username='" + username + '\'' +
+                ", weightKg=" + weightKg +
+                ", heightCm=" + heightCm +
+                ", password='" + password + '\'' +
+                ", age=" + age +
+                ", isMale=" + isMale +
+                ", activityLevel='" + activityLevel + '\'' +
+                '}';
     }
 
     public void setAge(int age) {
