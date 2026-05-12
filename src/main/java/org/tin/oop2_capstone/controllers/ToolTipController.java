@@ -4,14 +4,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
 import org.tin.oop2_capstone.model.entities.Meal;
-
-import java.util.ArrayList;
-import java.util.HashMap;
+import org.tin.oop2_capstone.model.entities.NutritionDetails;
 import java.util.List;
-import java.util.Map;
-
-import static org.tin.oop2_capstone.database.repositories.MealRepository.getInstance;
-import static org.tin.oop2_capstone.database.repositories.MealRepository.instance;
 
 public class ToolTipController {
     @FXML Label dayLabel;
@@ -23,10 +17,6 @@ public class ToolTipController {
     @FXML Label sodiumLabel;
     @FXML Label sugarLabel;
     @FXML Label fiberLabel;
-
-    List<String> macroNames= List.of(new String[]{"protein", "fat", "cholesterol", "sodium", "sugar", "fiber"});
-
-    List<Map<String, String>> macros = new ArrayList<>();
 
     public void setData(String day, Number in, Number out){
         if(day == "Mon") day = "Monday";
@@ -41,29 +31,41 @@ public class ToolTipController {
         calInLabel.setText(in + " kcal");
         calOutLabel.setText(out + " kcal");
 
-        //test
-        List<Meal> userMeals = instance.getUserMeals();
-        Double protein = 0.0, fat = 0.0, cholesterol = 0.0, sodium = 0.0, sugar = 0.0, fiber  = 0.0;
-            for(Meal m : userMeals){
-                protein += m.getNutritionDetails().get("protein");
-                fat += m.getNutritionDetails().get("fat");
-                cholesterol += m.getNutritionDetails().get("cholesterol");
-                sodium += m.getNutritionDetails().get("sodium");
-                sugar += m.getNutritionDetails().get("sugar");
-                fiber += m.getNutritionDetails().get("fiber");
+        //Macros Display
+        List<Meal> userMeals = MealRepository.getInstance().getUserMeals();
+        double protein = 0.0, fat = 0.0, cholesterol = 0.0, sodium = 0.0, sugar = 0.0, fiber = 0.0;
+
+        for (Meal m : userMeals) {
+            NutritionDetails nd = m.getNutritionDetails();
+            if (nd != null) {
+                protein += nd.getProtein();
+                fat += nd.getFat();
+                cholesterol += nd.getCholesterol();
+                sodium += nd.getSodium();
+                sugar += nd.getSugar();
+                fiber += nd.getFiber();
             }
-            List<Double> macroValues= new ArrayList<>();
-            macroValues.add(protein);
-            macroValues.add(fat);
-            macroValues.add(cholesterol);
-            macroValues.add(sodium);
-            macroValues.add(sugar);
-            macroValues.add(fiber);
-            for(int i =0; i<7; i++){
-                Map<String, String> tmp = new HashMap<>();
-                tmp.put(macroNames.get(i), macroValues.get(i)+"");
-                macros.add(tmp);
+        }
+
+        proteinLabel.setText(String.format("%.1f g", protein));
+        fatLabel.setText(String.format("%.1f g", fat));
+        cholesterolLabel.setText(String.format("%.1f mg", cholesterol));
+        sodiumLabel.setText(String.format("%.1f mg", sodium));
+        sugarLabel.setText(String.format("%.1f g", sugar));
+        fiberLabel.setText(String.format("%.1f g", fiber));
+
+        Label[] macroLabels = {proteinLabel, fatLabel, cholesterolLabel, sodiumLabel, sugarLabel, fiberLabel};
+
+        for (Label label : macroLabels) {
+            javafx.scene.Node parentContainer = label.getParent(); //Basically gets the entire GridPane the label is in
+            if (label.getText().contains("0.0")) { //Checks if value is 0
+                parentContainer.setVisible(false);
+                parentContainer.setManaged(false);
+            } else {
+                parentContainer.setVisible(true);
+                parentContainer.setManaged(true);
             }
+        }
 
         }
     }
