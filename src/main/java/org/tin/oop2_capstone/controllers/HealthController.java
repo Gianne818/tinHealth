@@ -16,8 +16,12 @@ import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.PopupControl;
 import javafx.scene.layout.VBox;
-import java.io.IOException;
+import org.tin.oop2_capstone.database.repositories.MealRepository;
+import org.tin.oop2_capstone.model.entities.Meal;
+import org.tin.oop2_capstone.model.entities.NutritionDetails;
 
+import java.io.IOException;
+import java.util.List;
 
 
 public class HealthController {
@@ -38,10 +42,33 @@ public class HealthController {
 
     public void initialize() {
         initCaloriesLineChart();
-        //(Values should be between 0.0 and 1.0 representing 0% to 100%)
-        drawRadarChart(0.85, 0.50, 0.75, 0.90, 0.40, 0.60); //TODO: change according to actual progress
+
+        //Same Logic in ToolTipController START
+        List<Meal> userMeals = MealRepository.getInstance().getUserMeals();
+        double calories = 0.0,  protein = 0.0, fat = 0.0, cholesterol = 0.0, carbs = 0.0, sodium = 0.0, sugar = 0.0, fiber = 0.0;
+
+        for (Meal m : userMeals) {
+            NutritionDetails nd = m.getNutritionDetails();
+            if (nd != null) {
+                calories += nd.getCalories();
+                protein += nd.getProtein();
+                fat += nd.getFat();
+                cholesterol += nd.getCholesterol();
+                sodium += nd.getSodium();
+                sugar += nd.getSugar();
+                fiber += nd.getFiber();
+                carbs += nd.getCarbs();
+            }
+        }
+        //Same Logic in ToolTipController END
+
+        drawRadarChart(0.85, 0.50, 0.75, 0.90, 0.40, 0.60); //Temp sample for visualization purposes
         macroDistData = FXCollections.observableArrayList();
-        updateMacroDist(35.0, 95.0, 28.0);//TODO: change according to actual progress
+        updateMacroDist(35.0, 95.0, 28.0); //Temp sample for visualization purposes
+
+        //(Values should be between 0.0 and 1.0 representing 0% to 100% with "100%" being the goal. e.g. if protein_intake = 24g and goal_protein_intake = 67g then do protein_intake//goal_protein_intake; but add limiter to "'"1.00"'" value (100%))
+        //drawRadarChart(calories, protein, carbs, fat, fiber, sodium); //TODO: Calculate Goal and adjust values
+        //updateMacroDist(protein, carbs, fat);//TODO: Calculate Goal and adjust values
         initMacroDist();
     }
 
