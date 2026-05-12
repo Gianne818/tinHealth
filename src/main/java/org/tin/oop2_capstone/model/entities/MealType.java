@@ -5,7 +5,7 @@ import java.time.LocalTime;
 public enum MealType {
     BREAKFAST("Breakfast", 6, 9),
     LUNCH("Lunch", 12, 14),
-    DINNER("Dinner", 18, 9),
+    DINNER("Dinner", 18, 21),
     SNACK("Snack", 0, 23);
 
     private final String label;

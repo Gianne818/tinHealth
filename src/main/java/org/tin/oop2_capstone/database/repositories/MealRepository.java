@@ -40,4 +40,8 @@ public class MealRepository {
     public static double getTodayCaloriesIn(int userId) {
         return RetrieveData.fetchUserTodayCaloriesIn(userId);
     }
+
+    public void addMeal(Meal meal) {
+        userMeals.add(0, meal); // Add to beginning of list
+    }
 }
