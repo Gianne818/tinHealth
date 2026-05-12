@@ -53,8 +53,8 @@
                </padding>
                <Label styleClass="profileDefaultProfileText" text="AJ" />
             </StackPane>
-            <Label styleClass="tabTitle" text="Alex Johnson" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <Label layoutX="97.0" layoutY="96.0" text="alex.johnson@email.com" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Label fx:id="fullnameLabel" styleClass="tabTitle" text="Alex Johnson" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Label fx:id ="emailLabel" layoutX="97.0" layoutY="96.0" text="alex.johnson@email.com" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
             <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
             <Label layoutX="66.0" layoutY="142.0" text="Age" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
             <Label layoutX="35.0" layoutY="234.0" text="35 years" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
@@ -90,7 +90,7 @@
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   </rowConstraints>
                   <Label styleClass="profileText1" text="Full Name" />
-                  <TextField maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+                  <TextField fx:id="fullnameTextField"  maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
                </GridPane>
                <GridPane hgap="10.0">
                   <columnConstraints>
@@ -125,7 +125,7 @@
                   <Label styleClass="profileText1" text="Email" GridPane.halignment="LEFT" />
                   <Label layoutX="10.0" layoutY="9.0" styleClass="profileText1" text="Date of Birth" GridPane.columnIndex="1" />
                   <TextField GridPane.rowIndex="1" />
-                  <TextField layoutX="10.0" layoutY="20.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="emailTextField" layoutX="10.0" layoutY="20.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </GridPane>
                <GridPane vgap="15.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
                   <columnConstraints>
@@ -137,7 +137,7 @@
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   </rowConstraints>
                   <Label styleClass="profileText1" text="Gender" />
-                  <ChoiceBox maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+                  <ChoiceBox fx:id="genderChoiceBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
                </GridPane>
             </GridPane>
 
@@ -188,10 +188,10 @@
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   </rowConstraints>
-                  <Label styleClass="profileText1" text="Email" GridPane.halignment="LEFT" />
-                  <Label layoutX="10.0" layoutY="9.0" styleClass="profileText1" text="Date of Birth" GridPane.columnIndex="1" />
+                  <Label styleClass="profileText1" text="Weight (kg)" GridPane.halignment="LEFT" />
+                  <Label layoutX="10.0" layoutY="9.0" styleClass="profileText1" text="Height (cm)" GridPane.columnIndex="1" />
                   <TextField GridPane.rowIndex="1" />
-                  <TextField layoutX="10.0" layoutY="20.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="heightTextField" layoutX="10.0" layoutY="20.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </GridPane>
                <!--BMI Index Card-->
                <GridPane hgap="20.0" layoutX="40.0" layoutY="110.0" styleClass="bmiCardContent" vgap="20.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
