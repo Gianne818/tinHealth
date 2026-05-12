@@ -236,7 +236,7 @@ public class MainController {
         int userId = SessionManager.getInstance().getCurrentUser().getUid();
         int promptFreqMinutes = UserRepository.getPromptFrequency(userId);
 
-        remainingSeconds = promptFreqMinutes * 99999; // changed from 60 to 99999 para dili sge pop out...
+        remainingSeconds = promptFreqMinutes * 60;
         updateTimerDisplay();
 
         if (promptTimer != null) {
@@ -252,7 +252,7 @@ public class MainController {
                 if (remainingSeconds == 0) {
                     showExercisePrompt();
                     // Reset timer
-                    remainingSeconds = promptFreqMinutes * 99999; // changed from 60 to 99999 para dili sge pop out...
+                    remainingSeconds = promptFreqMinutes * 60;
                     updateTimerDisplay();
                 }
             }
