@@ -58,7 +58,7 @@ public class ToolTipController {
 
         for (Label label : macroLabels) {
             javafx.scene.Node parentContainer = label.getParent(); //Basically gets the entire GridPane the label is in
-            if (label.getText().contains("0.0")) { //Checks if value is 0
+            if (label.getText().startsWith("0.0")) { //Checks if value is 0
                 parentContainer.setVisible(false);
                 parentContainer.setManaged(false);
             } else {
