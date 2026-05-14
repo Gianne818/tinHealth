@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -25,6 +26,55 @@ import java.util.List;
 
 
 public class HealthController {
+    //PROGRESS BARS START
+    @FXML Label caloriesLabel;
+    @FXML ProgressBar caloriesProgressBar;
+    @FXML Label goalCalLabel;
+    @FXML Label caloriesProgressLabel;
+
+    @FXML Label cholesterolLabel;
+    @FXML ProgressBar cholesterolProgressBar;
+    @FXML Label goalCholLabel;
+    @FXML Label cholesterolProgressLabel;
+
+    @FXML Label proteinLabel;
+    @FXML ProgressBar proteinProgressBar;
+    @FXML Label goalProtLabel;
+    @FXML Label proteinProgressLabel;
+
+    @FXML Label sodiumLabel;
+    @FXML ProgressBar sodiumProgressBar;
+    @FXML Label goalSodLabel;
+    @FXML Label sodiumProgressLabel;
+
+    @FXML Label fatLabel;
+    @FXML ProgressBar fatProgressBar;
+    @FXML Label goalFatLabel;
+    @FXML Label fatProgressLabel;
+
+    @FXML Label sugarLabel;
+    @FXML ProgressBar sugarProgressBar;
+    @FXML Label goalSugarLabel;
+    @FXML Label sugarProgressLabel;
+
+    @FXML Label carbsLabel;
+    @FXML ProgressBar carbsProgressBar;
+    @FXML Label goalCarbsLabel;
+    @FXML Label carbsProgressLabel;
+
+    @FXML Label fiberLabel;
+    @FXML ProgressBar fiberProgressBar;
+    @FXML Label goalFiberLabel;
+    @FXML Label fiberProgressLabel;
+    //PROGRESS BARS END
+
+    //MICRONUTRIENTS START
+    @FXML ProgressBar mnCholesterolProgressBar;
+    @FXML ProgressBar mnSodiumProgressBar;
+    @FXML ProgressBar mnSugarProgressBar;
+    @FXML ProgressBar mnFiberProgressBar;
+    //MICRONUTRIENTS END
+
     @FXML PieChart macroDistPieChart;
     @FXML Circle macroDistInnerHoleCircle;
     @FXML private LineChart<?, ?> weeklyChart;
@@ -62,14 +112,70 @@ public class HealthController {
         }
         //Same Logic in ToolTipController END
 
+        //Load Values into ProgressBars
+        setLabelsAndProgressBars(calories, cholesterol, protein, sodium, fat, sugar, carbs, fiber);
+
+        //Test values for visualization
         drawRadarChart(0.85, 0.50, 0.75, 0.90, 0.40, 0.60); //Temp sample for visualization purposes
         macroDistData = FXCollections.observableArrayList();
         updateMacroDist(35.0, 95.0, 28.0); //Temp sample for visualization purposes
 
+        //Actual Values to be shown
         //(Values should be between 0.0 and 1.0 representing 0% to 100% with "100%" being the goal. e.g. if protein_intake = 24g and goal_protein_intake = 67g then do protein_intake//goal_protein_intake; but add limiter to "'"1.00"'" value (100%))
         //drawRadarChart(calories, protein, carbs, fat, fiber, sodium); //TODO: Calculate Goal and adjust values
+        //macroDistData = FXCollections.observableArrayList();
         //updateMacroDist(protein, carbs, fat);//TODO: Calculate Goal and adjust values
         initMacroDist();
+    }
+
+    private void setLabelsAndProgressBars(Double calories, Double cholesterol, Double protein, Double sodium, Double fat, Double sugar, Double carbs, Double fiber) {
+        Double universalGOAL = 1000.00; //TODO: Change the actual Goal to the REAL GOAL for each macros Through Calculations based on user GOAL e.g. Weight Loss, Weight Gain etc.
+        caloriesLabel.setText(calories+"");
+        goalCalLabel.setText(universalGOAL+"");
+        caloriesProgressLabel.setText(String.format("%.2f%%", (calories / universalGOAL * 100)));
+        caloriesProgressBar.setProgress((calories/universalGOAL));
+
+        cholesterolLabel.setText(cholesterol+"");
+        goalCholLabel.setText(universalGOAL+"");
+        cholesterolProgressLabel.setText(String.format("%.2f%%", (cholesterol / universalGOAL * 100)));
+        cholesterolProgressBar.setProgress((cholesterol/universalGOAL));
+
+        proteinLabel.setText(protein+"");
+        goalProtLabel.setText(universalGOAL+"");
+        proteinProgressLabel.setText(String.format("%.2f%%", (protein / universalGOAL * 100)));
+        proteinProgressBar.setProgress((protein/universalGOAL));
+
+        sodiumLabel.setText(sodium+"");
+        goalSodLabel.setText(universalGOAL+"");
+        sodiumProgressLabel.setText(String.format("%.2f%%", (sodium / universalGOAL * 100)));
+        sodiumProgressBar.setProgress((sodium/universalGOAL));
+
+        fatLabel.setText(fat+"");
+        goalFatLabel.setText(universalGOAL+"");
+        fatProgressLabel.setText(String.format("%.2f%%", (fat / universalGOAL * 100)));
+        fatProgressBar.setProgress((fat/universalGOAL));
+
+        sugarLabel.setText(sugar+"");
+        goalSugarLabel.setText(universalGOAL+"");
+        sugarProgressLabel.setText(String.format("%.2f%%", (sugar / universalGOAL * 100)));
+        sugarProgressBar.setProgress((sugar/universalGOAL));
+
+        carbsLabel.setText(carbs+"");
+        goalCarbsLabel.setText(universalGOAL+"");
+        carbsProgressLabel.setText(String.format("%.2f%%", (carbs / universalGOAL * 100)));
+        carbsProgressBar.setProgress((carbs/universalGOAL));
+
+        fiberLabel.setText(fiber+"");
+        goalFiberLabel.setText(universalGOAL+"");
+        fiberProgressLabel.setText(String.format("%.2f%%", (fiber / universalGOAL * 100)));
+        fiberProgressBar.setProgress((fiber/universalGOAL));
+
+        //MicroNutrients
+        mnCholesterolProgressBar.setProgress((cholesterol/universalGOAL));
+        mnSodiumProgressBar.setProgress((sodium/universalGOAL));
+        mnSugarProgressBar.setProgress((sugar/universalGOAL));
+        mnFiberProgressBar.setProgress((fiber/universalGOAL));
+
     }
 
     //For the line chart of Weekly Nutrient Trends
@@ -196,7 +302,7 @@ public class HealthController {
         yAxis.setMinorTickCount(10);
 
         chart.getData().addAll(protIn, carbIn, fatIn, cholesterolIn, sugarIn, sodiumIn, fiberIn);
-
+        //setupGlobalTooltip(chart, calIn, calOut); //TODO: Setup calIn and calOut
         chart.setLegendVisible(true);
 
     }
