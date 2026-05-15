@@ -5,7 +5,7 @@ import java.time.LocalTime;
 public enum MealType {
     BREAKFAST("Breakfast", 6, 9),
     LUNCH("Lunch", 12, 14),
-    DINNER("Dinner", 18, 9),
+    DINNER("Dinner", 18, 21),
     SNACK("Snack", 0, 23);
 
     private final String label;
@@ -35,6 +35,15 @@ public enum MealType {
     public String toString() {
         return label;
     }
+
+    public boolean isWithinRange(LocalTime time) {
+        if (this == SNACK) return true;
+        LocalTime start = getDefaultTimeStart();
+        LocalTime end = LocalTime.of(defaultTimeEnd, 59); // Covers up to the end of the hour
+        return !time.isBefore(start) && !time.isAfter(end);
+    }
+
+
 }
 
 
