@@ -31,6 +31,27 @@ public class NutritionDetails {
     public double getSodium() { return sodium; }
     public double getSugar() { return sugar; }
     public double getFiber() { return fiber; }
+    public double get(String name){
+        if(name == "protein"){
+            return protein;
+        }
+        if(name == "fat"){
+            return fat;
+        }
+        if(name == "carbs"){
+            return carbs;
+        }
+        if(name == "sodium"){
+            return sodium;
+        }
+        if(name == "sugar"){
+            return sugar;
+        }
+        if(name == "fiber"){
+            return fiber;
+        }
+        return -1;
+    }
 
     public void setCalories(double calories) { this.calories = calories; }
     public void setProtein(double protein) { this.protein = protein; }

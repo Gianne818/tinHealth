@@ -13,6 +13,11 @@ import org.tin.oop2_capstone.database.repositories.MealRepository;
 import org.tin.oop2_capstone.model.entities.Food;
 import org.tin.oop2_capstone.model.entities.Meal;
 import org.tin.oop2_capstone.model.entities.MealType;
+import org.tin.oop2_capstone.model.state.IdleState;
+import org.tin.oop2_capstone.model.state.LoadingState;
+import org.tin.oop2_capstone.model.state.State;
+import org.tin.oop2_capstone.utils.TimeFormatter;
+
 import org.tin.oop2_capstone.model.entities.NutritionDetails;
 import org.tin.oop2_capstone.services.FoodParser;
 import org.tin.oop2_capstone.utils.TimeFormatter;
@@ -44,6 +49,7 @@ public class FoodLogController {
 
     private MealRepository mealRepository = MealRepository.getInstance();
 
+    private State currentState;
     private Food fetchedFood;
 
     public void initialize(){
@@ -54,6 +60,7 @@ public class FoodLogController {
 
         mealChoiceBox.getItems().addAll(MealType.BREAKFAST.toString(), MealType.LUNCH.toString(), MealType.DINNER.toString(), MealType.SNACK.toString());
 
+        currentState = new IdleState();
         foodNameTextField.focusedProperty().addListener((obs, oldVal, newVal) -> {
             if (!newVal) { // onLostFocus
                 validateAndFetchFood();
@@ -211,6 +218,17 @@ public class FoodLogController {
     }
 
     public void onButtonAddEntryClicked(ActionEvent actionEvent) {
+        // Transition to loading state when starting API call
+        setState(new LoadingState());
+
+        // TODO: Implement API call logic here
+        // After API call completes, transition to appropriate state:
+        // - SuccessState if API returns data
+        // - PendingState if API fails but we can create pending entry
+        // - ErrorState if there's an error
+
+        // For now, simulate success after a delay (replace with actual API call)
+        // setState(new SuccessState());
         // Validate all fields
         if (foodNameTextField.getText().trim().isEmpty() ||
                 foodNameTextField.getText().trim().length() <= 1) {
@@ -299,4 +317,58 @@ public class FoodLogController {
         addEntryisVisible = !addEntryisVisible;
     }
 
+    /** Mga State Functions */
+
+    public void enableFoodLogInput() {
+        buttonAddFood.setDisable(false);
+        addEntryButton.setDisable(false);
+    }
+
+    public void disableFoodLogInput() {
+        buttonAddFood.setDisable(true);
+        addEntryButton.setDisable(true);
+    }
+
+    public void showLoadingIndicator() {
+        // TODO: Implement loading indicator visibility
+        // e.g., show a progress indicator or spinner
+    }
+
+    public void hideLoadingIndicator() {
+        // TODO: Implement loading indicator hiding
+    }
+
+    public void showErrorMessage() {
+        // TODO: Implement error message display
+        // e.g., show a label with error text
+    }
+
+    public void hideErrorMessage() {
+        // TODO: Implement error message hiding
+    }
+
+    public void showPendingIndicator() {
+        // TODO: Implement pending indicator display
+        // e.g., show a message indicating data is pending sync
+    }
+
+    public void createPendingFoodEntry() {
+        // TODO: Implement pending food entry creation
+        // Create food object with isPending = true
+        // Set API values to zero
+        // Proceed with SyncMonitor
+    }
+
+    public void populateFoodList() {
+        // Refresh the food list view
+        setFoodLog();
+    }
+
+    public void setState(State state) {
+        this.currentState = state;
+        currentState.handle(this);
+    }
+
+    /** End of State Functions */
+}
 }
