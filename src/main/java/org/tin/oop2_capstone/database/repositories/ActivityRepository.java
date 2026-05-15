@@ -1,5 +1,6 @@
 package org.tin.oop2_capstone.database.repositories;
 
+import javafx.collections.ObservableList;
 import org.tin.oop2_capstone.database.RetrieveData;
 import org.tin.oop2_capstone.model.entities.Activity;
 import org.tin.oop2_capstone.model.entities.ActivityType;
@@ -22,7 +23,7 @@ public class ActivityRepository {
     private NutritionDetails weeklyNutrients;
     private Map<String, Double[]> weeklyCalories;
     private List<Activity> todayActivities;
-    private List<ActivityType> activityTypes;
+    private ObservableList<ActivityType> activityTypes;
     private List<Activity> userActivities;
 
     private ActivityRepository(){
@@ -85,7 +86,7 @@ public class ActivityRepository {
         return todayActivities;
     }
 
-    public List<ActivityType> getActivityTypes() {
+    public ObservableList<ActivityType> getActivityTypes() {
         return activityTypes;
     }
 

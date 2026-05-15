@@ -20,5 +20,8 @@ public class ToolTipController {
         dayLabel.setText(day);
         calInLabel.setText(in + " kcal");
         calOutLabel.setText(out + " kcal");
+
+
+
     }
 }

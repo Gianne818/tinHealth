@@ -1,5 +1,7 @@
 package org.tin.oop2_capstone.database;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.tin.oop2_capstone.model.entities.*;
 
 import java.sql.Connection;
@@ -228,9 +230,9 @@ public class RetrieveData {
         return weeklyData;
     }
 
-    public static List<ActivityType> fetchActivityTypes(){
+    public static ObservableList<ActivityType> fetchActivityTypes(){
         String query = "SELECT * FROM ActivityTypes";
-        List<ActivityType> activityTypes = new ArrayList<>();
+        ObservableList<ActivityType> activityTypes = FXCollections.observableArrayList();
         try (Connection conn = DatabaseConnection.getConnection();
         PreparedStatement stmt = conn.prepareStatement(query)) {
             ResultSet rs = stmt.executeQuery();

@@ -187,7 +187,7 @@
     -fx-background-insets: 0, 2 2 2 22;
 }
 
-.choice-box, .text-field{
+.choice-box, .combo-box-base:editable, .text-field{
     -fx-background-color: -bg-default2;
     -fx-border-width: 1;
     -fx-border-radius: 20;
@@ -196,7 +196,36 @@
     -fx-font-size: 14;
 }
 
-.choice-box:hover, .choice-box:focused, .text-field:hover, .text-field:focused{
+.combo-box:editable .text-field{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.combo-box-base > .arrow-button{
+    -fx-background-color: transparent;
+}
+
+/* combo box styles */
+.combo-box > .list-cell {
+    -fx-padding: 4 8 4 8;
+    -fx-background-color: -bg-default;
+    -fx-background-radius: 20;
+}
+
+.combo-box-popup > .list-view {
+    -fx-background-color: -bg-default;
+    -fx-background-radius: 20;
+}
+
+.combo-box-popup > .list-view .list-cell:filled:selected,
+.combo-box-popup > .list-view .list-cell:hover, .choice-box-popup .list-view .list-cell:hover{
+    -fx-background-color: -orange-to-red-orange;
+    -fx-text-fill: white;
+}
+
+
+
+.choice-box:hover, .combo-box-base:hover, .choice-box:focused, .text-field:hover, .text-field:focused{
     -fx-border-color: -orange-to-red-orange;
 }
 
