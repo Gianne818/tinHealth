@@ -3,10 +3,6 @@ package org.tin.oop2_capstone.database.repositories;
 import org.tin.oop2_capstone.model.entities.UserPreferences;
 import org.tin.oop2_capstone.services.SessionManager;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-
 public class SettingsRepository {
 
     /* This checks if the user inputs (the user preferences) in the settings tab are valid. This also
@@ -76,7 +72,7 @@ public class SettingsRepository {
         }
 
         boolean isExerciseIntensityValid = isExerciseIntensityValid(preferences.getExerciseIntensity());
-        boolean isPromptFrequencyValid = isPromptFrequencyHoursValid(preferences.getPromptFrequencyHours());
+        boolean isPromptFrequencyValid = isPromptFrequencyHoursValid(preferences.getPromptFrequencyMin());
         boolean isThemeValid = isThemeValid(preferences.getTheme());
         boolean isDailyCalorieGoalValid = isDailyCalorieGoalValid(preferences.getDailyCalorieGoal());
         boolean isWeeklyActivityRepsValid = isWeeklyActivityRepsValid(preferences.getWeeklyActivityReps());
