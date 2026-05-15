@@ -1,14 +1,13 @@
 package org.tin.oop2_capstone.controllers;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import org.tin.oop2_capstone.database.RetrieveData;
@@ -23,11 +22,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class ActivityLogController {
     @FXML Button buttonAddEntry;
     @FXML Button buttonCancel;
-    @FXML TextField textfieldExercise;
+    @FXML ComboBox<String> activityTypeComboBox;
     @FXML TextField textfieldDuration;
     @FXML TextField textfieldCaloriesBurned;
     @FXML GridPane gridPaneAddEntry;
@@ -36,16 +36,82 @@ public class ActivityLogController {
     @FXML ListView <GridPane> activityLogListView;
 
     // todo: get actual activityLog via logRepository
+    private ObservableList<ActivityType> activityTypeList;
+    private ObservableList<String> activityTypeNames;
     private ActivityLog activityLog;
     private List<Activity> activities;
     private ObservableList<GridPane> activityGridPanes;
+    private FilteredList<String> filteredList;
 
     private ActivityRepository activityRepository = ActivityRepository.getInstance();
 
     public void initialize(){
         activities = FXCollections.observableArrayList();
         activityGridPanes = FXCollections.observableArrayList();
+        activityTypeList = FXCollections.observableArrayList();
+        activityTypeNames = FXCollections.observableArrayList();
+
         setActivityLog();
+        setActivityTypes();
+        initActivityTypeComboBox();
+
+        filteredList = new FilteredList<>(activityTypeNames);
+        activityTypeComboBox.setItems(filteredList);
+    }
+
+    private void initActivityTypeComboBox(){
+        activityTypeComboBox.getEditor().textProperty().addListener((obs, oldVal, newVal) -> {
+           String selected = activityTypeComboBox.getSelectionModel().getSelectedItem();
+
+            /* EXCERPT FROM FilteredList.java
+              The predicate that will match the elements that will be in this FilteredList.
+              Elements not matching the predicate will be filtered-out.
+              Null predicate means "always true" predicate, all elements will be matched.
+             */
+
+           if(selected == null || !selected.equals(newVal)){
+               filteredList.setPredicate(new Predicate<>() {
+                   @Override
+                   public boolean test(String s) {
+                       if (newVal == null) {
+                           return true; // show everything if empty
+                       }
+
+                       return s.toLowerCase().contains(newVal.toLowerCase());
+                   }
+               });
+           }
+
+           if(newVal!=null && newVal.equals(selected)){
+               if(!filteredList.isEmpty()){
+                   activityTypeComboBox.getSelectionModel().select(0);
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            activityTypeComboBox.getEditor().setText(newVal);
+                            activityTypeComboBox.getEditor().positionCaret(newVal.length());
+                        }
+                    });
+               }
+           }
+
+           if(!activityTypeComboBox.isShowing()){
+               activityTypeComboBox.show();
+           }
+
+        });
+    }
+
+
+
+    private  void setActivityTypes(){
+       activityTypeList.clear();
+       activityTypeNames.clear();
+        activityTypeList = activityRepository.getActivityTypes();
+        for(ActivityType a : activityTypeList){
+            activityTypeNames.add(a.getName());
+        }
+//        activityTypeComboBox.setItems(activityTypeNames);
     }
 
     private void setActivityLog(){
