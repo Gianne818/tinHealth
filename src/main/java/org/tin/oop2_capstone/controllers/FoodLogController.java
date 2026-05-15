@@ -79,7 +79,12 @@ public class FoodLogController {
         // Validate: not empty and length > 1 character
         if (foodName.isEmpty() || foodName.length() <= 1) {
             caloriesTextField.setText("- -");
-            caloriesTextField.setStyle("-fx-text-fill: red;");
+            caloriesTextField.setStyle(""); // Clears any previously set inline red styling
+
+            // Add the CSS class safely without duplicating it
+            if (!caloriesTextField.getStyleClass().contains("lightText")) {
+                caloriesTextField.getStyleClass().add("lightText");
+            }
             return;
         }
 
@@ -143,26 +148,18 @@ public class FoodLogController {
     }
 
     private void updateTimeBasedOnMeal() {
-        String selectedMeal = mealChoiceBox.getValue();
+        String selectedMealStr = mealChoiceBox.getValue();
         LocalTime currentTime = LocalTime.now();
 
-        if (selectedMeal != null && !selectedMeal.isEmpty()) {
-            switch (selectedMeal.toUpperCase()) {
-                case "BREAKFAST":
-                    timeTextField.setText("08:00 AM");
-                    break;
-                case "LUNCH":
-                    timeTextField.setText("12:00 PM");
-                    break;
-                case "DINNER":
-                    timeTextField.setText("07:00 PM");
-                    break;
-                default: // SNACK
-                    timeTextField.setText(TimeFormatter.formatTo12Hour(currentTime));
-                    break;
+        if (selectedMealStr != null && !selectedMealStr.isEmpty()) {
+            MealType selectedMeal = MealType.valueOf(selectedMealStr.toUpperCase());
+
+            if (selectedMeal.isWithinRange(currentTime)) {
+                timeTextField.setText(TimeFormatter.formatTo12Hour(currentTime));
+            } else {
+                timeTextField.setText(TimeFormatter.formatTo12Hour(selectedMeal.getDefaultTimeStart()));
             }
         } else {
-            // Set default time without meal selected
             timeTextField.setText(TimeFormatter.formatTo12Hour(currentTime));
         }
     }

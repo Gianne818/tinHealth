@@ -35,6 +35,15 @@ public enum MealType {
     public String toString() {
         return label;
     }
+
+    public boolean isWithinRange(LocalTime time) {
+        if (this == SNACK) return true;
+        LocalTime start = getDefaultTimeStart();
+        LocalTime end = LocalTime.of(defaultTimeEnd, 59); // Covers up to the end of the hour
+        return !time.isBefore(start) && !time.isAfter(end);
+    }
+
+
 }
 
 
