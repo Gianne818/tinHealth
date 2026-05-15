@@ -371,4 +371,4 @@ public class FoodLogController {
 
     /** End of State Functions */
 }
-}
+

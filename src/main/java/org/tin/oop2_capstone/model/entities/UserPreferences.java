@@ -17,6 +17,7 @@ public class UserPreferences implements Serializable {
     private String theme;
     private double dailyCalorieIn;
     private double dailyCalorieOut;
+    private int weeklyActivityReps;
 
     public UserPreferences() {}
 
@@ -129,5 +130,9 @@ public class UserPreferences implements Serializable {
 
     public void setDailyCalorieOut(double dailyCalorieOut) {
         this.dailyCalorieOut = dailyCalorieOut;
+    }
+
+    public int getWeeklyActivityReps() {
+        return weeklyActivityReps;
     }
 }

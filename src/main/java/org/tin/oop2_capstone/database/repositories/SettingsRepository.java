@@ -72,16 +72,16 @@ public class SettingsRepository {
         }
 
         boolean isExerciseIntensityValid = isExerciseIntensityValid(preferences.getExerciseIntensity());
-        boolean isPromptFrequencyValid = isPromptFrequencyHoursValid(preferences.getPromptFrequencyMin());
+        boolean isPromptFrequencyValid = isPromptFrequencyHoursValid(preferences.getPromptFrequencyMins());
         boolean isThemeValid = isThemeValid(preferences.getTheme());
-        boolean isDailyCalorieGoalValid = isDailyCalorieGoalValid(preferences.getDailyCalorieGoal());
-        boolean isWeeklyActivityRepsValid = isWeeklyActivityRepsValid(preferences.getWeeklyActivityReps());
+        boolean isDailyCalorieGoalInValid = isDailyCalorieGoalValid(preferences.getDailyCalorieOut());
+        boolean isDailyCalorieGoalOutValid = isDailyCalorieGoalValid(preferences.getDailyCalorieOut());
 
         return isExerciseIntensityValid
                 && isPromptFrequencyValid
                 && isThemeValid
-                && isDailyCalorieGoalValid
-                && isWeeklyActivityRepsValid;
+                && isDailyCalorieGoalInValid
+                && isDailyCalorieGoalOutValid;
     }
 
     public boolean save(UserPreferences preferences) {

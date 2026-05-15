@@ -27,9 +27,9 @@ public class UserPrefRepository {
         return instance;
     }
 //
-//    public static int getDailyCalorieInGoal(int userId) {
-//       return RetrieveData.fetchUserDailyCalorieInGoal(userId);
-//    }
+    public static int getDailyCalorieInGoal(int userId) {
+       return RetrieveData.fetchUserDailyCalorieInGoal(userId);
+    }
 
     public UserPreferences getUserPref(){
         return userPref;
@@ -37,5 +37,9 @@ public class UserPrefRepository {
 
     public void setUserPref(int uid){
         //something something
+    }
+
+    public int getPromptFrequency(int userId){
+        return RetrieveData.fetchUserPromptFrequency(userId);
     }
 }
