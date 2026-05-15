@@ -68,6 +68,7 @@ public class FoodLogController {
     }
 
     private void validateAndFetchFood() {
+        // TODO: Implement relevant changes to take States into account.
         String rawFoodName = foodNameTextField.getText().trim();
         // Format the name first
         String foodName = formatFoodName(rawFoodName);
@@ -131,6 +132,7 @@ public class FoodLogController {
     }
 
     private String formatFoodName(String rawName) {
+        // TODO: Only capitalize the first letter of each word. For example: Fried Chicken
         if (rawName == null || rawName.isEmpty()) return rawName;
 
         String[] words = rawName.trim().toLowerCase().split("\\s+");
@@ -157,7 +159,7 @@ public class FoodLogController {
             if (selectedMeal.isWithinRange(currentTime)) {
                 timeTextField.setText(TimeFormatter.formatTo12Hour(currentTime));
             } else {
-                timeTextField.setText(TimeFormatter.formatTo12Hour(selectedMeal.getDefaultTimeStart()));
+                timeTextField.setText(selectedMeal.getDefaultTimeRange());
             }
         } else {
             timeTextField.setText(TimeFormatter.formatTo12Hour(currentTime));
@@ -233,6 +235,8 @@ public class FoodLogController {
 
             // Save to database (implement in MealRepository)
             int userId = 1; // TODO: Get actual logged-in user ID from your session/UserSession class
+
+            //TODO: Run through interpreter before insertion, and behave accordingly. And also, DO NOT CALL ANY CRUD FROM NON REPOSITORY CLASSES.
             boolean success = InsertData.insertMeal(userId, meal);
 
             if (success) {
