@@ -177,7 +177,7 @@ public class UserPreferences implements Serializable {
         double proteinG = Math.max( (dailyCalorieIn * proteinRatio) / 4.0, user.getWeightKg() * proteinFloorPerKg);
         double carbG = (dailyCalorieIn * carbRatio) / 4.0;
         double fatG  = (dailyCalorieIn * fatRatio)  / 9.0;
-        double sugarG = (dailyCalorieIn * sugarPct);
+        double sugarG = (dailyCalorieIn * sugarPct) / 4;
         double fiberG = (dailyCalorieIn / 1000.0) * 14.0;
         double sodiumMg = 2300;
         double cholesterolMg = 300;
