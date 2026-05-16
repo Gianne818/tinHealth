@@ -140,7 +140,6 @@ public class HealthController {
     }
 
     private void setLabelsAndProgressBars(Double calories, Double cholesterol, Double protein, Double sodium, Double fat, Double sugar, Double carbs, Double fiber, NutritionDetails goals) {
-        Double universalGOAL = 1000.00; //TODO: Change the actual Goal to the REAL GOAL for each macros Through Calculations based on user GOAL e.g. Weight Loss, Weight Gain etc.
 
         caloriesLabel.setText(calories+"");
         goalCalLabel.setText(goals.getCalories()+"");
@@ -406,6 +405,12 @@ public class HealthController {
     //Draws the Radar Chart for Nutrient Balance Overview
     private void drawRadarChart(double calories, double protein, double carbs, double fat, double fiber, double sodium) {
         double[] dataValues = {calories, protein, carbs, fat, fiber, sodium};
+        //Avoid OverDrawing
+        for(int i=0; i<dataValues.length; i++){
+            if(dataValues[i] > 1){
+                dataValues[i] = 1;
+            }
+        }
         String[] categories = {"Calories", "Protein", "Carbs", "Fat", "Fiber", "Sodium"};
 
         // 2. Chart dimensions
