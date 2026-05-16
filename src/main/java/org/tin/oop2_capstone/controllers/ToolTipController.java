@@ -21,34 +21,12 @@ public class ToolTipController {
     @FXML Label sugarLabel;
     @FXML Label fiberLabel;
 
-    public void setData(String day, Number in, Number out){
-        if(day == "Mon") day = "Monday";
-        else if(day == "Tue") day = "Tuesday";
-        else if(day == "Wed") day = "Wednesday";
-        else if(day == "Thu") day = "Thursday";
-        else if(day == "Fri") day = "Friday";
-        else if(day == "Sat") day = "Saturday";
-        else day = "Sunday";
-
-        dayLabel.setText(day);
-        calInLabel.setText(in + " kcal");
-        calOutLabel.setText(out + " kcal");
-
-        //Macros Display
-        List<Meal> userMeals = RetrieveData.fetchUserMealsToday(SessionManager.getInstance().getCurrentUser().getUid());
-        double protein = 0.0, fat = 0.0, cholesterol = 0.0, sodium = 0.0, sugar = 0.0, fiber = 0.0;
-
-        for (Meal m : userMeals) {
-            NutritionDetails nd = m.getNutritionDetails();
-            if (nd != null) {
-                protein += nd.getProtein();
-                fat += nd.getFat();
-                cholesterol += nd.getCholesterol();
-                sodium += nd.getSodium();
-                sugar += nd.getSugar();
-                fiber += nd.getFiber();
-            }
-        }
+    public void setData(String day, double cals, double protein, double carbs,
+                        double fat, double cholesterol, double sodium,
+                        double sugar, double fiber) {
+        setDayLabel(day);
+        calInLabel.setText(String.format("%.0f kcal", cals));
+        calOutLabel.setText("--");
 
         proteinLabel.setText(String.format("%.1f g", protein));
         fatLabel.setText(String.format("%.1f g", fat));
@@ -57,20 +35,44 @@ public class ToolTipController {
         sugarLabel.setText(String.format("%.1f g", sugar));
         fiberLabel.setText(String.format("%.1f g", fiber));
 
-        Label[] macroLabels = {proteinLabel, fatLabel, cholesterolLabel, sodiumLabel, sugarLabel, fiberLabel};
-
+        Label[] macroLabels = {proteinLabel, fatLabel, cholesterolLabel,
+                sodiumLabel, sugarLabel, fiberLabel};
         for (Label label : macroLabels) {
-            javafx.scene.Node parentContainer = label.getParent(); //Basically gets the entire GridPane the label is in
-            if (label.getText().startsWith("0.0")) { //Checks if value is 0
-                parentContainer.setVisible(false);
-                parentContainer.setManaged(false);
-            } else {
-                parentContainer.setVisible(true);
-                parentContainer.setManaged(true);
-            }
+            javafx.scene.Node parent = label.getParent();
+            boolean isEmpty = label.getText().startsWith("0.0");
+            parent.setVisible(!isEmpty);
+            parent.setManaged(!isEmpty);
         }
+    }
 
+    //Overloaded method version for setData for exclusive dashboard controller use
+    public void setData(String day, Number in, Number out) {
+        setDayLabel(day);
+        calInLabel.setText(in + " kcal");
+        calOutLabel.setText(out + " kcal");
+
+        // Hide all macro rows — dashboard tooltip doesn't show them
+        Label[] macroLabels = {proteinLabel, fatLabel, cholesterolLabel,
+                sodiumLabel, sugarLabel, fiberLabel};
+        for (Label label : macroLabels) {
+            javafx.scene.Node parent = label.getParent();
+            parent.setVisible(false);
+            parent.setManaged(false);
         }
+    }
+
+    //Helper for setData(Dashboard)
+    private void setDayLabel(String day) {
+        switch (day) {
+            case "Mon": dayLabel.setText("Monday");    break;
+            case "Tue": dayLabel.setText("Tuesday");   break;
+            case "Wed": dayLabel.setText("Wednesday"); break;
+            case "Thu": dayLabel.setText("Thursday");  break;
+            case "Fri": dayLabel.setText("Friday");    break;
+            case "Sat": dayLabel.setText("Saturday");  break;
+            default:    dayLabel.setText("Sunday");    break;
+        }
+    }
 
 
     }

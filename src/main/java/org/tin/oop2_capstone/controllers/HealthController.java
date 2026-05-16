@@ -106,6 +106,16 @@ public class HealthController {
     @FXML
     private Pane radarChartPane;
 
+    //Monday's index is 0
+    double[] dailyCals = new double[7];
+    double[] dailyProt = new double[7];
+    double[] dailyCarbs = new double[7];
+    double[] dailyFats = new double[7];
+    double[] dailyChol = new double[7];
+    double[] dailySod = new double[7];
+    double[] dailySug = new double[7];
+    double[] dailyFib = new double[7];
+
     public void initialize() {
         initCaloriesLineChart();
 
@@ -249,15 +259,6 @@ public class HealthController {
         LineChart<String, Number> chart = (LineChart<String, Number>) weeklyChart;
         chart.getData().clear();
 
-        //Monday's index is 0
-        double[] dailyCals = new double[7];
-        double[] dailyProt = new double[7];
-        double[] dailyCarbs = new double[7];
-        double[] dailyFats = new double[7];
-        double[] dailyChol = new double[7];
-        double[] dailySod = new double[7];
-        double[] dailySug = new double[7];
-        double[] dailyFib = new double[7];
 
         int userId = SessionManager.getInstance().getCurrentUser().getUid();
 
@@ -327,9 +328,11 @@ public class HealthController {
         chart.getData().addAll(protIn, carbIn, fatIn, cholesterolIn, sugarIn, sodiumIn, fiberIn);
 
         chart.setLegendVisible(true);
+
+        setupGlobalTooltip(chart);
     }
 
-    private void setupGlobalTooltip(LineChart<String, Number> chart, XYChart.Series<String, Number> in) { //TODO: Setup
+    private void setupGlobalTooltip(LineChart<String, Number> chart) {
         PopupControl popup = new PopupControl();
         ToolTipController toolTipController;
 
@@ -345,6 +348,7 @@ public class HealthController {
             return;
         }
 
+        String[] days = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
         Node plotArea = chart.lookup(".chart-plot-background");
         Node chartContent = chart.lookup(".chart-content");
 
@@ -371,15 +375,25 @@ public class HealthController {
                 verticalLine.setEndX(chartPoint.getX());
                 verticalLine.setEndY(chartContent.sceneToLocal(plotArea.localToScene(0, plotArea.getBoundsInLocal().getHeight())).getY());
 
-                XYChart.Data<String, Number> inData = findData(in, day);
-
-                if (inData != null) {
-                    // Pass 0 for the outData since this chart only tracks one series
-                    toolTipController.setData(day, inData.getYValue(), 0);
+                // Find which day index (0=Mon ... 6=Sun) is being hovered
+                int idx = java.util.Arrays.asList(days).indexOf(day);
+                if (idx >= 0) {
+                    toolTipController.setData(
+                            day,
+                            dailyCals[idx],
+                            dailyProt[idx],
+                            dailyCarbs[idx],
+                            dailyFats[idx],
+                            dailyChol[idx],
+                            dailySod[idx],
+                            dailySug[idx],
+                            dailyFib[idx]
+                    );
                     popup.show(plotArea, e.getScreenX() + 15, e.getScreenY() + 15);
                 }
             } else {
                 verticalLine.setVisible(false);
+                popup.hide();
             }
         });
 
