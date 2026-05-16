@@ -30,42 +30,42 @@ import java.util.List;
 
 public class HealthController {
     //PROGRESS BARS START
-    @FXML Label caloriesLabel;
+    @FXML Label hcaloriesLabel;
     @FXML ProgressBar caloriesProgressBar;
     @FXML Label goalCalLabel;
     @FXML Label caloriesProgressLabel;
 
-    @FXML Label cholesterolLabel;
+    @FXML Label hcholesterolLabel;
     @FXML ProgressBar cholesterolProgressBar;
     @FXML Label goalCholLabel;
     @FXML Label cholesterolProgressLabel;
 
-    @FXML Label proteinLabel;
+    @FXML Label hproteinLabel;
     @FXML ProgressBar proteinProgressBar;
     @FXML Label goalProtLabel;
     @FXML Label proteinProgressLabel;
 
-    @FXML Label sodiumLabel;
+    @FXML Label hsodiumLabel;
     @FXML ProgressBar sodiumProgressBar;
     @FXML Label goalSodLabel;
     @FXML Label sodiumProgressLabel;
 
-    @FXML Label fatLabel;
+    @FXML Label hfatLabel;
     @FXML ProgressBar fatProgressBar;
     @FXML Label goalFatLabel;
     @FXML Label fatProgressLabel;
 
-    @FXML Label sugarLabel;
+    @FXML Label hsugarLabel;
     @FXML ProgressBar sugarProgressBar;
     @FXML Label goalSugarLabel;
     @FXML Label sugarProgressLabel;
 
-    @FXML Label carbsLabel;
+    @FXML Label hcarbsLabel;
     @FXML ProgressBar carbsProgressBar;
     @FXML Label goalCarbsLabel;
     @FXML Label carbsProgressLabel;
 
-    @FXML Label fiberLabel;
+    @FXML Label hfiberLabel;
     @FXML ProgressBar fiberProgressBar;
     @FXML Label goalFiberLabel;
     @FXML Label fiberProgressLabel;
@@ -134,67 +134,107 @@ public class HealthController {
         setLabelsAndProgressBars(calories, cholesterol, protein, sodium, fat, sugar, carbs, fiber, goals);
         drawRadarChart(calories/goals.getCalories(), protein/goals.getProtein(), carbs/goals.getCarbs(), fat/goals.getFat(), fiber/goals.getFiber(), sodium/goals.getSodium());
         macroDistData = FXCollections.observableArrayList();
-        updateMacroDist(protein/goals.getProtein(), carbs/goals.getCarbs(), fat/ goals.getFat());
+        updateMacroDist(protein, carbs, fat);
 
         initMacroDist();
     }
 
     private void setLabelsAndProgressBars(Double calories, Double cholesterol, Double protein, Double sodium, Double fat, Double sugar, Double carbs, Double fiber, NutritionDetails goals) {
 
-        caloriesLabel.setText(calories+"");
+        hcaloriesLabel.setText(calories+"");
         goalCalLabel.setText(goals.getCalories()+"");
         caloriesProgressLabel.setText(String.format("%.2f%%", (calories / goals.getCalories() * 100)));
-        caloriesProgressBar.setProgress((calories/goals.getCalories()));
+        caloriesProgressBar.setProgress(11);
+//        caloriesProgressBar.setProgress((calories/goals.getCalories()));
+        if(caloriesProgressBar.getProgress() > 1) {
+            caloriesProgressBar.getStyleClass().add("limitbroken");
+        }
 
-        cholesterolLabel.setText(cholesterol+"");
+        hcholesterolLabel.setText(cholesterol+"");
         goalCholLabel.setText(goals.getCholesterol()+"");
         cholesterolProgressLabel.setText(String.format("%.2f%%", (cholesterol / goals.getCholesterol() * 100)));
         cholesterolProgressBar.setProgress((cholesterol/goals.getCholesterol()));
+        if(cholesterolProgressBar.getProgress() > 1) {
+            cholesterolProgressBar.getStyleClass().add("limitbroken");
+        }
 
-        proteinLabel.setText(protein+"");
+        hproteinLabel.setText(protein+"");
         goalProtLabel.setText(goals.getProtein()+"");
         proteinProgressLabel.setText(String.format("%.2f%%", (protein / goals.getProtein() * 100)));
         proteinProgressBar.setProgress((protein/goals.getProtein()));
+        if(proteinProgressBar.getProgress() > 1) {
+            proteinProgressBar.getStyleClass().add("limitbroken");
+        }
+        proteinLabelMacro.setText(protein+"g");
 
-        sodiumLabel.setText(sodium+"");
+        hsodiumLabel.setText(sodium+"");
         goalSodLabel.setText(goals.getSodium()+"");
         sodiumProgressLabel.setText(String.format("%.2f%%", (sodium / goals.getSodium() * 100)));
         sodiumProgressBar.setProgress((sodium/goals.getSodium()));
+        if(sodiumProgressBar.getProgress() > 1) {
+            sodiumProgressBar.getStyleClass().add("limitbroken");
+        }
 
-        fatLabel.setText(fat+"");
+        hfatLabel.setText(fat+"");
         goalFatLabel.setText(goals.getFat()+"");
         fatProgressLabel.setText(String.format("%.2f%%", (fat / goals.getFat() * 100)));
         fatProgressBar.setProgress((fat/goals.getFat()));
+        if(fatProgressBar.getProgress() > 1) {
+            fatProgressBar.getStyleClass().add("limitbroken");
+        }
+        fatsLabelMacro.setText(fat+"g");
 
-        sugarLabel.setText(sugar+"");
+        hsugarLabel.setText(sugar+"");
         goalSugarLabel.setText(goals.getSugar()+"");
         sugarProgressLabel.setText(String.format("%.2f%%", (sugar / goals.getSugar() * 100)));
         sugarProgressBar.setProgress((sugar/goals.getSugar()));
+        if(sugarProgressBar.getProgress() > 1) {
+            sugarProgressBar.getStyleClass().add("limitbroken");
+        }
 
-        carbsLabel.setText(carbs+"");
+        hcarbsLabel.setText(carbs+"");
         goalCarbsLabel.setText(goals.getCarbs()+"");
         carbsProgressLabel.setText(String.format("%.2f%%", (carbs / goals.getCarbs() * 100)));
         carbsProgressBar.setProgress((carbs/goals.getCarbs()));
+        if(carbsProgressBar.getProgress() > 1) {
+            carbsProgressBar.getStyleClass().add("limitbroken");
+        }
+        carbsLabelMacro.setText(carbs+"g");
 
-        fiberLabel.setText(fiber+"");
+        hfiberLabel.setText(fiber+"");
         goalFiberLabel.setText(goals.getFiber()+"");
         fiberProgressLabel.setText(String.format("%.2f%%", (fiber / goals.getFiber() * 100)));
         fiberProgressBar.setProgress((fiber/goals.getFiber()));
+        if(fiberProgressBar.getProgress() > 1) {
+            fiberProgressBar.getStyleClass().add("limitbroken");
+        }
 
         //MicroNutrients
         mnCholesterolProgressBar.setProgress((cholesterol/goals.getCholesterol()));
+        if(mnCholesterolProgressBar.getProgress() > 1) {
+            mnCholesterolProgressBar.getStyleClass().add("limitbroken");
+        }
         mnCholesterolLabel.setText(cholesterol+"");
         mnCholesterolGoal.setText(goals.getCholesterol()+"");
 
         mnSodiumProgressBar.setProgress((sodium/goals.getSodium()));
+        if(mnSodiumProgressBar.getProgress() > 1) {
+            mnSodiumProgressBar.getStyleClass().add("limitbroken");
+        }
         mnSodiumLabel.setText(sodium+"");
         mnSodiumGoal.setText(goals.getSodium()+"");
 
         mnSugarProgressBar.setProgress((sugar/goals.getSugar()));
+        if(mnSugarProgressBar.getProgress() > 1) {
+            mnSugarProgressBar.getStyleClass().add("limitbroken");
+        }
         mnSugarLabel.setText(sugar+"");
         mnSugarGoal.setText(goals.getSugar()+"");
 
         mnFiberProgressBar.setProgress((fiber/goals.getFiber()));
+        if(mnFiberProgressBar.getProgress() > 1) {
+            mnFiberProgressBar.getStyleClass().add("limitbroken");
+        }
         mnFiberLabel.setText(fiber+"");
         mnFiberGoal.setText(goals.getFiber()+"");
 
@@ -489,9 +529,9 @@ public class HealthController {
         macroDistData.add(new PieChart.Data("Carbs", carbs));
         macroDistData.add(new PieChart.Data("Fats", fats));
 
-        proteinLabelMacro.setText(String.format("%.0fg", protein));
-        carbsLabelMacro.setText(String.format("%.0fg", carbs));
-        fatsLabelMacro.setText(String.format("%.0fg", fats));
+        proteinLabelMacro.setText(String.format("%.2fg", protein));
+        carbsLabelMacro.setText(String.format("%.2fg", carbs));
+        fatsLabelMacro.setText(String.format("%.2fg", fats));
     }
 
 }

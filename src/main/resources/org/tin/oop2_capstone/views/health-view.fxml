@@ -51,7 +51,7 @@
                   <SVGPath content="M9.99984 17.45C11.2498 17.45 12.2915 18.3333 13.3332 18.3333C15.8332 18.3333 18.3332 11.6666 18.3332 8.14998C18.3048 7.07058 17.8509 6.04617 17.0704 5.30002C16.2899 4.55387 15.2461 4.14648 14.1665 4.16665C12.3165 4.16665 10.8332 5.36665 9.99984 5.83331C9.1665 5.36665 7.68317 4.16665 5.83317 4.16665C4.75296 4.14428 3.70792 4.55094 2.92695 5.29755C2.14597 6.04416 1.69273 7.06986 1.6665 8.14998C1.6665 11.6666 4.1665 18.3333 6.6665 18.3333C7.70817 18.3333 8.74984 17.45 9.99984 17.45Z M8.3335 1.66669C9.16683 2.08335 10.0002 3.33335 10.0002 5.83335" fill="TRANSPARENT" stroke="#3B82F6" strokeWidth="1.67" GridPane.columnIndex="1" />
                </GridPane>
                <HBox alignment="CENTER_LEFT" spacing="5.0">
-                  <Label fx:id="caloriesLabel" styleClass="caloriesDashboard" text="770" />
+                  <Label fx:id="hcaloriesLabel" styleClass="caloriesDashboard" text="770" />
                   <Label text="kcal" />
                </HBox>
                <ProgressBar fx:id="caloriesProgressBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="10.0" progress="0.5" />
@@ -79,7 +79,7 @@
                   <SVGPath content="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="TRANSPARENT" stroke="#EC4899" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="1.37" GridPane.columnIndex="1" />
                </GridPane>
                <HBox alignment="CENTER_LEFT" spacing="5.0">
-                  <Label fx:id="cholesterolLabel" styleClass="caloriesDashboard" text="770" />
+                  <Label fx:id="hcholesterolLabel" styleClass="caloriesDashboard" text="770" />
                   <Label text="mg" />
                </HBox>
                <ProgressBar fx:id="cholesterolProgressBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="10.0" progress="0.5" />
@@ -107,7 +107,7 @@
                   <SVGPath content="M 3 12 L 7 12 L 10 4 L 14 20 L 17 12 L 21 12" fill="TRANSPARENT" stroke="#DB2627" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="1.67" GridPane.columnIndex="1" />
                </GridPane>
                <HBox alignment="CENTER_LEFT" spacing="5.0">
-                  <Label fx:id="proteinLabel" styleClass="caloriesDashboard" text="770" />
+                  <Label fx:id="hproteinLabel" styleClass="caloriesDashboard" text="770" />
                   <Label text="g" />
                </HBox>
                <ProgressBar fx:id="proteinProgressBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="10.0" progress="0.5" />
@@ -135,7 +135,7 @@
                   <SVGPath content="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" fill="TRANSPARENT" stroke="#8b5cf6" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="1.67" GridPane.columnIndex="1" />
                </GridPane>
                <HBox alignment="CENTER_LEFT" spacing="5.0">
-                  <Label fx:id="sodiumLabel" styleClass="caloriesDashboard" text="770" />
+                  <Label fx:id="hsodiumLabel" styleClass="caloriesDashboard" text="770" />
                   <Label text="mg" />
                </HBox>
                <ProgressBar fx:id="sodiumProgressBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="10.0" progress="0.5" />
@@ -163,7 +163,7 @@
                   <SVGPath content="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" fill="TRANSPARENT" stroke="#FBA71B" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="1.67" GridPane.columnIndex="1" />
                </GridPane>
                <HBox alignment="CENTER_LEFT" spacing="5.0">
-                  <Label fx:id="fatLabel" styleClass="caloriesDashboard" text="770" />
+                  <Label fx:id="hfatLabel" styleClass="caloriesDashboard" text="770" />
                   <Label text="g" />
                </HBox>
                <ProgressBar fx:id="fatProgressBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="10.0" progress="0.5" />
@@ -198,7 +198,7 @@
                   </Group>
                </GridPane>
                <HBox alignment="CENTER_LEFT" spacing="5.0">
-                  <Label fx:id="sugarLabel" styleClass="caloriesDashboard" text="770" />
+                  <Label fx:id="hsugarLabel" styleClass="caloriesDashboard" text="770" />
                   <Label text="g" />
                </HBox>
                <ProgressBar fx:id="sugarProgressBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="10.0" progress="0.5" />
@@ -242,7 +242,7 @@
                   </Group>
                </GridPane>
                <HBox alignment="CENTER_LEFT" spacing="5.0">
-                  <Label fx:id="carbsLabel" styleClass="caloriesDashboard" text="770" />
+                  <Label fx:id="hcarbsLabel" styleClass="caloriesDashboard" text="770" />
                   <Label text="g" />
                </HBox>
                <ProgressBar fx:id="carbsProgressBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="10.0" progress="0.5" />
@@ -273,7 +273,7 @@
                   </Group>
                </GridPane>
                <HBox alignment="CENTER_LEFT" spacing="5.0">
-                  <Label fx:id="fiberLabel" styleClass="caloriesDashboard" text="770" />
+                  <Label fx:id="hfiberLabel" styleClass="caloriesDashboard" text="770" />
                   <Label text="g" />
                </HBox>
                <ProgressBar fx:id="fiberProgressBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="10.0" progress="0.5" />

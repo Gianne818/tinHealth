@@ -182,6 +182,15 @@ public class UserPreferences implements Serializable {
         double sodiumMg = 2300;
         double cholesterolMg = 300;
 
+        //round 2 decimal places
+        calories = Math.round(calories * 100.0) / 100.0;
+        proteinG = Math.round(proteinG * 100.0) / 100.0;
+        carbG = Math.round(carbG * 100.0) / 100.0;
+        fatG = Math.round(fatG * 100.0) / 100.0;
+        sugarG = Math.round(sugarG * 100.0) / 100.0;
+        fiberG = Math.round(fiberG * 100.0) / 100.0;
+
+
         return new NutritionDetails(calories, proteinG, fatG, carbG, cholesterolMg, sodiumMg, sugarG, fiberG);
     }
 }
