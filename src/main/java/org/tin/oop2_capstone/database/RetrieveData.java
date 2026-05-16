@@ -317,7 +317,6 @@ public class RetrieveData {
         return 0;
     }
 
-    //test retrieve
     public static List<Meal> fetchUserMeals(int userId) {
         List<Meal> meals = new ArrayList<>();
         String query = """
@@ -345,8 +344,7 @@ public class RetrieveData {
 
                 Food food = new Food(rs.getString("name"), nd, false);
 
-                org.tin.oop2_capstone.model.entities.MealType type =
-                        org.tin.oop2_capstone.model.entities.MealType.valueOf(rs.getString("meal_type").toUpperCase());
+                MealType type = MealType.valueOf(rs.getString("meal_type").toUpperCase());
 
                 meals.add(new Meal(
                         type, food, rs.getTimestamp("log_timestamp").toLocalDateTime(),
@@ -357,6 +355,94 @@ public class RetrieveData {
             e.printStackTrace();
         }
         return meals;
+    }
+
+    public static List<Meal> fetchUserMealsToday(int userId) {
+        List<Meal> mealsToday = new ArrayList<>();
+        String query = """
+            SELECT *
+            FROM Meals m
+            JOIN Consumables c ON m.consumable_id = c.consumable_id
+            LEFT JOIN NutritionalDetails nd ON c.nutri_id = nd.nutri_id
+            WHERE m.user_id = ?
+            AND DATE(m.log_timestamp) = CURDATE()
+            ORDER BY m.log_timestamp DESC
+        """;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next()) {
+                NutritionDetails nd = new NutritionDetails(
+                        rs.getDouble("calories"), rs.getDouble("protein"), rs.getDouble("fats"),
+                        rs.getDouble("carbs"), rs.getDouble("cholesterol"), rs.getDouble("sodium"),
+                        rs.getDouble("sugar"), rs.getDouble("fiber")
+                );
+
+                Food food = new Food(
+                        rs.getString("name"), nd, false
+                );
+
+                MealType type =
+                        MealType.valueOf(rs.getString("meal_type").toUpperCase());
+
+                mealsToday.add(new Meal(
+                        type, food, rs.getTimestamp("log_timestamp").toLocalDateTime(),
+                        rs.getDouble("serving_size"), rs.getString("serving_units")
+                ));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return mealsToday;
+    }
+
+    public static List<Meal> fetchWeeklyUserMeals(int userId) {
+        List<Meal> mealsThisWeek = new ArrayList<>();
+        String query = """
+            SELECT *
+            FROM Meals m
+            JOIN Consumables c ON m.consumable_id = c.consumable_id
+            LEFT JOIN NutritionalDetails nd ON c.nutri_id = nd.nutri_id
+            WHERE m.user_id = ?
+            AND YEARWEEK(log_timestamp, 1) = YEARWEEK(CURDATE(), 1)
+            ORDER BY m.log_timestamp DESC
+        """;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next()) {
+                NutritionDetails nd = new NutritionDetails(
+                        rs.getDouble("calories"), rs.getDouble("protein"), rs.getDouble("fats"),
+                        rs.getDouble("carbs"), rs.getDouble("cholesterol"), rs.getDouble("sodium"),
+                        rs.getDouble("sugar"), rs.getDouble("fiber")
+                );
+
+                Food food = new Food(
+                        rs.getString("name"), nd, false
+                );
+
+                MealType type =
+                        MealType.valueOf(rs.getString("meal_type").toUpperCase());
+
+                mealsThisWeek.add(new Meal(
+                        type, food, rs.getTimestamp("log_timestamp").toLocalDateTime(),
+                        rs.getDouble("serving_size"), rs.getString("serving_units")
+                ));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return mealsThisWeek;
     }
 
 
@@ -450,6 +536,38 @@ public class RetrieveData {
             e.printStackTrace();
         }
         return pending;
+    }
+
+    public static UserPreferences fetchUserPreferences(int userId) {
+        String query = "SELECT * FROM UserPrefs WHERE user_id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                UserPreferences prefs = new UserPreferences();
+                prefs.setUserPrefID(rs.getInt("userpref_id"));
+                prefs.setGoalType(rs.getString("goal"));
+                prefs.setTargetWeightKG(rs.getDouble("target_weight_kg"));
+                prefs.setEnableExercisePrompts(rs.getBoolean("enable_exercise_prompts"));
+                //prefs.setExerciseIntensity(rs.getInt("exercise_intensity")); Column Does not Exist in DB TODO: either remove from the UserPreferences Class or Add Column to DB
+                prefs.setExerciseReminders(rs.getBoolean("exercise_reminders"));
+                prefs.setMealReminders(rs.getBoolean("meal_reminders"));
+                prefs.setAchievementNotifications(rs.getBoolean("achievement_notifications"));
+                prefs.setPromptFrequencyMins(rs.getInt("prompt_freq"));
+                prefs.setTheme(rs.getString("theme"));
+                prefs.setDailyCalorieIn(rs.getDouble("daily_calorie_in"));
+                prefs.setDailyCalorieOut(rs.getDouble("daily_calorie_out"));
+                return prefs;
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error while fetching user preferences: " + e.getMessage());
+        }
+        return null;
     }
 
 

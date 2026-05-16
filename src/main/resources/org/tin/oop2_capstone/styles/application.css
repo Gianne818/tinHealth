@@ -304,6 +304,37 @@
     -fx-text-fill: -vibrant-red;
 }
 
+/*Colors for health analytics card*/
+/*start*/
+#hcarbsLabel{
+    -fx-text-fill: -green;
+}
+
+#hfiberLabel{
+    -fx-text-fill: -dark-green;
+}
+
+#hcaloriesOutLabel, #hfatLabel{
+    -fx-text-fill: -orange;
+}
+
+#hcaloriesLabel {
+    -fx-text-fill: -vibrant-blue;
+}
+
+#hsodiumLabel {
+    -fx-text-fill: -purple;
+}
+
+#hproteinLabel, #hsugarLabel{
+    -fx-text-fill: -vibrant-red;
+}
+
+#hcholesterolLabel {
+    -fx-text-fill: -pink;
+}
+/*end*/
+
 .skipButton {
     -fx-background-color: transparent;
     -fx-border-color: black;
@@ -358,6 +389,10 @@
     -fx-background-insets: 0;
     -fx-background-radius: 20;
     -fx-background-color: -pink;
+}
+
+.limitbroken .bar {
+    -fx-background-color: #ff0b0b;
 }
 
 #toolTipVbox{
