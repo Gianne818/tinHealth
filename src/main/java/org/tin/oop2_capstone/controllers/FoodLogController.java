@@ -11,6 +11,7 @@ import javafx.scene.layout.GridPane;
 import org.tin.oop2_capstone.api.FoodAPI;
 import org.tin.oop2_capstone.database.InsertData;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
+import org.tin.oop2_capstone.database.repositories.UserRepository;
 import org.tin.oop2_capstone.model.entities.*;
 import org.tin.oop2_capstone.model.state.IdleState;
 import org.tin.oop2_capstone.model.state.LoadingState;
@@ -123,7 +124,7 @@ public class FoodLogController {
                     for(String s : jsons){
                         foodComboFoods.add(FoodParser.parseFood(s));
                     }
-                    consumable = new FoodCombo(foodName,foodComboFoods);
+                    consumable = new FoodCombo(foodName, foodComboFoods);
                 }
                 System.out.println("Consumbaalke: " + consumable.getName());
                 // Update UI on JavaFX thread
@@ -246,13 +247,11 @@ public class FoodLogController {
         // Validate all fields
         if (foodNameTextField.getText().trim().isEmpty() ||
                 foodNameTextField.getText().trim().length() <= 1) {
-            showError("Please enter a valid food name");
             return;
         }
 
         if (caloriesTextField.getText().equals("- -") ||
                 caloriesTextField.getText().equals("Not found")) {
-            showError("Please enter a valid food name first");
             return;
         }
 
@@ -266,23 +265,18 @@ public class FoodLogController {
             Meal meal = new Meal(mealType, consumable, logTime, 1.0, "serving");
 
             // Save to database (implement in MealRepository)
-            int userId = 1; // TODO: Get actual logged-in user ID from your session/UserSession class
+            int userId = UserRepository.getInstance().getUser().getUid();
 
             //TODO: Run through interpreter before insertion, and behave accordingly. And also, DO NOT CALL ANY CRUD FROM NON REPOSITORY CLASSES.
-            boolean success = InsertData.insertMeal(userId, meal);
 
-            if (success) {
                 // Also add to repository's local list for UI updates
-                mealRepository.addMeal(meal); // You'd need to create this method
-
-                // Refresh UI
+                if(mealRepository.addMeal(meal, userId)){
                 refreshFoodLog();
-
-                // Clear form
-                clearAddEntryForm();
             } else {
-                showError("Failed to save to database");
+                showError("Failed to save into database");
             }
+            // Clear form
+            clearAddEntryForm();
 
             // Refresh UI
             refreshFoodLog();
@@ -321,6 +315,7 @@ public class FoodLogController {
     }
 
     private void showError(String message) {
+        // TODO: Show error on actual UI
         System.out.println("Error: " + message);
     }
 

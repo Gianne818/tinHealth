@@ -50,6 +50,11 @@ public class FoodCombo extends Consumable {
     }
 
     @Override
+    public List<Food> getConsumables() {
+        return foods;
+    }
+
+    @Override
     public String getName() {
         return super.getName();
     }
