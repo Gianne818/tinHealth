@@ -7,11 +7,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import org.tin.oop2_capstone.database.RetrieveData;
 import org.tin.oop2_capstone.database.repositories.ActivityRepository;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
 import org.tin.oop2_capstone.database.repositories.UserPrefRepository;
 import org.tin.oop2_capstone.database.repositories.UserRepository;
 import org.tin.oop2_capstone.model.entities.User;
+import org.tin.oop2_capstone.model.entities.UserPreferences;
 import org.tin.oop2_capstone.utils.SceneSwitcher;
 import org.tin.oop2_capstone.services.SessionManager;
 import java.io.IOException;
@@ -41,6 +43,7 @@ public class LoginController {
         }
         else {
             SessionManager.getInstance().setCurrentUser(user);
+            SessionManager.getInstance().setCurrentUserPrefs(RetrieveData.fetchUserPreferences(user.getUid()));
             ActivityRepository activityRepository = ActivityRepository.getInstance();
             activityRepository.fetchInitialActivityData(user.getUid());
             MealRepository mealRepository = MealRepository.getInstance();

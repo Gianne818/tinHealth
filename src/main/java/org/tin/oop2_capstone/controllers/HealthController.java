@@ -20,6 +20,9 @@ import javafx.scene.layout.VBox;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
 import org.tin.oop2_capstone.model.entities.Meal;
 import org.tin.oop2_capstone.model.entities.NutritionDetails;
+import org.tin.oop2_capstone.model.entities.User;
+import org.tin.oop2_capstone.model.entities.UserPreferences;
+import org.tin.oop2_capstone.services.SessionManager;
 
 import java.io.IOException;
 import java.util.List;
@@ -123,78 +126,78 @@ public class HealthController {
             }
         }
         //Same Logic in ToolTipController END
+        User user = SessionManager.getInstance().getCurrentUser();
+        UserPreferences userpreferences = SessionManager.getInstance().getCurrentUserPrefs();
+        NutritionDetails goals = userpreferences.getTargetMacros(user);
 
         //Load Values into ProgressBars
-        setLabelsAndProgressBars(calories, cholesterol, protein, sodium, fat, sugar, carbs, fiber);
-        drawRadarChart(calories/1000, protein/1000, carbs/1000, fat/1000, fiber/1000, sodium/1000);//TODO Change the "1000" to their respective limits e.g. calories/calorielimit, protein/proteinlimit, ...
+        setLabelsAndProgressBars(calories, cholesterol, protein, sodium, fat, sugar, carbs, fiber, goals);
+        drawRadarChart(calories/goals.getCalories(), protein/goals.getProtein(), carbs/goals.getCarbs(), fat/goals.getFat(), fiber/goals.getFiber(), sodium/goals.getSodium());
         macroDistData = FXCollections.observableArrayList();
-        updateMacroDist(protein/1000, carbs/1000, fat/1000); //TODO Change the "1000" to their respective limits e.g. calories/calorielimit, protein/proteinlimit, ...
-
-        //Note: Actual Values to be shown
-        //(Values should be between 0.0 and 1.0 representing 0% to 100% with "100%" being the goal. e.g. if protein_intake = 24g and goal_protein_intake = 67g then do protein_intake//goal_protein_intake; but add limiter to "'"1.00"'" value (100%))
+        updateMacroDist(protein/goals.getProtein(), carbs/goals.getCarbs(), fat/ goals.getFat());
 
         initMacroDist();
     }
 
-    private void setLabelsAndProgressBars(Double calories, Double cholesterol, Double protein, Double sodium, Double fat, Double sugar, Double carbs, Double fiber) {
+    private void setLabelsAndProgressBars(Double calories, Double cholesterol, Double protein, Double sodium, Double fat, Double sugar, Double carbs, Double fiber, NutritionDetails goals) {
         Double universalGOAL = 1000.00; //TODO: Change the actual Goal to the REAL GOAL for each macros Through Calculations based on user GOAL e.g. Weight Loss, Weight Gain etc.
 
         caloriesLabel.setText(calories+"");
-        goalCalLabel.setText(universalGOAL+"");
-        caloriesProgressLabel.setText(String.format("%.2f%%", (calories / universalGOAL * 100)));
-        caloriesProgressBar.setProgress((calories/universalGOAL));
+        goalCalLabel.setText(goals.getCalories()+"");
+        caloriesProgressLabel.setText(String.format("%.2f%%", (calories / goals.getCalories() * 100)));
+        caloriesProgressBar.setProgress((calories/goals.getCalories()));
 
         cholesterolLabel.setText(cholesterol+"");
-        goalCholLabel.setText(universalGOAL+"");
-        cholesterolProgressLabel.setText(String.format("%.2f%%", (cholesterol / universalGOAL * 100)));
-        cholesterolProgressBar.setProgress((cholesterol/universalGOAL));
+        goalCholLabel.setText(goals.getCholesterol()+"");
+        cholesterolProgressLabel.setText(String.format("%.2f%%", (cholesterol / goals.getCholesterol() * 100)));
+        cholesterolProgressBar.setProgress((cholesterol/goals.getCholesterol()));
 
         proteinLabel.setText(protein+"");
-        goalProtLabel.setText(universalGOAL+"");
-        proteinProgressLabel.setText(String.format("%.2f%%", (protein / universalGOAL * 100)));
-        proteinProgressBar.setProgress((protein/universalGOAL));
+        goalProtLabel.setText(goals.getProtein()+"");
+        proteinProgressLabel.setText(String.format("%.2f%%", (protein / goals.getProtein() * 100)));
+        proteinProgressBar.setProgress((protein/goals.getProtein()));
 
         sodiumLabel.setText(sodium+"");
-        goalSodLabel.setText(universalGOAL+"");
-        sodiumProgressLabel.setText(String.format("%.2f%%", (sodium / universalGOAL * 100)));
-        sodiumProgressBar.setProgress((sodium/universalGOAL));
+        goalSodLabel.setText(goals.getSodium()+"");
+        sodiumProgressLabel.setText(String.format("%.2f%%", (sodium / goals.getSodium() * 100)));
+        sodiumProgressBar.setProgress((sodium/goals.getSodium()));
 
         fatLabel.setText(fat+"");
-        goalFatLabel.setText(universalGOAL+"");
-        fatProgressLabel.setText(String.format("%.2f%%", (fat / universalGOAL * 100)));
-        fatProgressBar.setProgress((fat/universalGOAL));
+        goalFatLabel.setText(goals.getFat()+"");
+        fatProgressLabel.setText(String.format("%.2f%%", (fat / goals.getFat() * 100)));
+        fatProgressBar.setProgress((fat/goals.getFat()));
 
         sugarLabel.setText(sugar+"");
-        goalSugarLabel.setText(universalGOAL+"");
-        sugarProgressLabel.setText(String.format("%.2f%%", (sugar / universalGOAL * 100)));
-        sugarProgressBar.setProgress((sugar/universalGOAL));
+        goalSugarLabel.setText(goals.getSugar()+"");
+        sugarProgressLabel.setText(String.format("%.2f%%", (sugar / goals.getSugar() * 100)));
+        sugarProgressBar.setProgress((sugar/goals.getSugar()));
 
         carbsLabel.setText(carbs+"");
-        goalCarbsLabel.setText(universalGOAL+"");
-        carbsProgressLabel.setText(String.format("%.2f%%", (carbs / universalGOAL * 100)));
-        carbsProgressBar.setProgress((carbs/universalGOAL));
+        goalCarbsLabel.setText(goals.getCarbs()+"");
+        carbsProgressLabel.setText(String.format("%.2f%%", (carbs / goals.getCarbs() * 100)));
+        carbsProgressBar.setProgress((carbs/goals.getCarbs()));
 
         fiberLabel.setText(fiber+"");
-        goalFiberLabel.setText(universalGOAL+"");
-        fiberProgressLabel.setText(String.format("%.2f%%", (fiber / universalGOAL * 100)));
-        fiberProgressBar.setProgress((fiber/universalGOAL));
+        goalFiberLabel.setText(goals.getFiber()+"");
+        fiberProgressLabel.setText(String.format("%.2f%%", (fiber / goals.getFiber() * 100)));
+        fiberProgressBar.setProgress((fiber/goals.getFiber()));
 
         //MicroNutrients
-        mnCholesterolProgressBar.setProgress((cholesterol/universalGOAL));
+        mnCholesterolProgressBar.setProgress((cholesterol/goals.getCholesterol()));
         mnCholesterolLabel.setText(cholesterol+"");
-        //mnCholesterolGoal.setText(); //TODO: setGoalText
+        mnCholesterolGoal.setText(goals.getCholesterol()+"");
 
-        mnSodiumProgressBar.setProgress((sodium/universalGOAL));
+        mnSodiumProgressBar.setProgress((sodium/goals.getSodium()));
         mnSodiumLabel.setText(sodium+"");
-        //mnSodiumGoal.setText(); //TODO: setGoalText
+        mnSodiumGoal.setText(goals.getSodium()+"");
 
-        mnSugarProgressBar.setProgress((sugar/universalGOAL));
+        mnSugarProgressBar.setProgress((sugar/goals.getSugar()));
         mnSugarLabel.setText(sugar+"");
-        //mnSugarGoal.setText(); //TODO: setGoalText
+        mnSugarGoal.setText(goals.getSugar()+"");
 
-        mnFiberProgressBar.setProgress((fiber/universalGOAL));
+        mnFiberProgressBar.setProgress((fiber/goals.getFiber()));
         mnFiberLabel.setText(fiber+"");
-        //mnFiberGoal.setText(); //TODO: setGoalText
+        mnFiberGoal.setText(goals.getFiber()+"");
 
     }
 
