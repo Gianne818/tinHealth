@@ -17,12 +17,10 @@ public class SettingsController implements Initializable {
     @FXML public ChoiceBox<Integer> exerciseIntensity;
     @FXML public Slider promptFrequency;
     @FXML public ChoiceBox<String> theme;
-    @FXML public ChoiceBox<String> language;
     @FXML public ToggleButton exerciseReminders;
     @FXML public ToggleButton mealReminders;
     @FXML public ToggleButton achievementNotifications;
-    @FXML public ChoiceBox<Integer> dailyCalorieGoal;
-    @FXML public ChoiceBox<Integer> weeklyActivityGoal;
+    @FXML public ChoiceBox<Integer> weeklyActivityGoalChoiceBox;
     @FXML public Button saveSettings;
 
     private SettingsRepository settingsRepository;
@@ -37,10 +35,7 @@ public class SettingsController implements Initializable {
     private void initializeControls() {
         exerciseIntensity.getItems().addAll(IntStream.rangeClosed(1, 10).boxed().toList());
         theme.getItems().addAll("Light", "Dark");
-        language.getItems().addAll("English", "Spanish", "French");
-        dailyCalorieGoal.getItems().addAll(IntStream.iterate(1500, n -> n <= 3500, n -> n + 100).boxed().toList());
-        weeklyActivityGoal.getItems().addAll(IntStream.rangeClosed(0, 7).boxed().toList());
-
+        weeklyActivityGoalChoiceBox.getItems().addAll(IntStream.rangeClosed(0, 7).boxed().toList());
         promptFrequency.setMin(1);
         promptFrequency.setMax(24);
         promptFrequency.setValue(4);
@@ -54,7 +49,7 @@ public class SettingsController implements Initializable {
             promptFrequency.setValue(preferences.getPromptFrequencyMins());
             theme.setValue(preferences.getTheme().substring(0, 1).toUpperCase() + preferences.getTheme().substring(1));
 //            dailyCalorieGoal.setValue((int) preferences.getDailyCalorieGoal());
-            weeklyActivityGoal.setValue(preferences.getWeeklyActivityReps());
+            weeklyActivityGoalChoiceBox.setValue(preferences.getWeeklyActivityReps());
         }
 
     }
@@ -67,7 +62,7 @@ public class SettingsController implements Initializable {
 //            int promptFrequencyValue = (int) promptFrequency.getValue();
 //            String themeValue = theme.getValue().toLowerCase();
 //            double dailyCalorieGoalValue = dailyCalorieGoal.getValue();
-//            int weeklyActivityRepsValue = weeklyActivityGoal.getValue();
+//            int weeklyActivityRepsValue = weeklyActivityGoalChoiceBox.getValue();
 //
 //            UserPreferences preferences = new UserPreferences(
 //                enablePrompts, exerciseIntensityValue, promptFrequencyValue, themeValue, dailyCalorieGoalValue, weeklyActivityRepsValue

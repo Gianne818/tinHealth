@@ -1,5 +1,7 @@
 package org.tin.oop2_capstone.model.entities;
 
+import java.util.List;
+
 public abstract class Consumable {
     /**
      * This is our composite pattern. Whether it be a Food or a FoodCombo, in our Meal, we just do getNutrition, or in SyncMonitor, just isPending.
@@ -14,6 +16,8 @@ public abstract class Consumable {
     public String getName() {
         return name;
     }
+
+    public abstract List<Food> getConsumables();
 
     public abstract NutritionDetails getNutrition();
     public abstract boolean isPending();
