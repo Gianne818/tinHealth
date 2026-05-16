@@ -289,7 +289,7 @@ public class RetrieveData {
             CASE 
                 WHEN c.type = 'food' THEN nd.calories * m.serving_size
                 WHEN c.type = 'foodcombo' THEN (
-                    SELECT COALESCE(SUM(nd2.calories * ci.quantity), 0)
+                    SELECT COALESCE(SUM(nd2.calories * 1), 0)
                     FROM ComboItems ci
                     JOIN Consumables c2 ON ci.consumable_id = c2.consumable_id
                     LEFT JOIN NutritionalDetails nd2 ON c2.nutri_id = nd2.nutri_id
