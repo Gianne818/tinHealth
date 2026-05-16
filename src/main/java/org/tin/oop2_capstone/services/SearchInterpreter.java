@@ -48,6 +48,10 @@ public class SearchInterpreter {
                 foods.addAll(Arrays.asList(splitted));
             }
         }
+
+        if(foods.isEmpty()){
+            foods.add(input);
+        }
         return foods;
     }
 }
