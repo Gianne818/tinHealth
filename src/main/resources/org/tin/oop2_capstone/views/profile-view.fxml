@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Point3D?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
 
-<ScrollPane fx:id="profileScrollPane" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="profileScrollPane" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.ProfileController">
+<ScrollPane fx:id="profileScrollPane" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="profileScrollPane" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.ProfileController">
    <padding>
       <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
    </padding>
@@ -23,7 +34,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <Label styleClass="tabTitle" text="Profile" />
-         <Label text="Manage your personal information" GridPane.rowIndex="1" />
+         <Label styleClass="lightText" text="Manage your personal information" GridPane.rowIndex="1" />
       </GridPane>
 
       <GridPane hgap="20.0">
@@ -51,15 +62,15 @@
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
-               <Label styleClass="profileDefaultProfileText" text="AJ" />
+               <Label styleClass="cardTitle" text="AJ" />
             </StackPane>
             <Label fx:id="fullnameLabel" styleClass="tabTitle" text="Alex Johnson" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <Label fx:id ="emailLabel" layoutX="97.0" layoutY="96.0" text="alex.johnson@email.com" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Label fx:id="emailLabel" layoutX="97.0" layoutY="96.0" styleClass="lightText" text="alex.johnson@email.com" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
             <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
-            <Label layoutX="66.0" layoutY="142.0" text="Age" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
-            <Label layoutX="35.0" layoutY="234.0" text="35 years" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-            <Label layoutX="131.0" layoutY="234.0" text="BMI" GridPane.halignment="LEFT" GridPane.rowIndex="5" />
-            <Label layoutX="35.0" layoutY="50.0" text="24.2" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+            <Label layoutX="66.0" layoutY="142.0" styleClass="lightText" text="Age" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
+            <Label layoutX="35.0" layoutY="234.0" styleClass="boldText" text="35 years" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+            <Label layoutX="131.0" layoutY="234.0" styleClass="lightText" text="BMI" GridPane.halignment="LEFT" GridPane.rowIndex="5" />
+            <Label layoutX="35.0" layoutY="50.0" styleClass="boldText" text="24.2" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
             <padding>
                <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
             </padding>
@@ -89,8 +100,8 @@
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   </rowConstraints>
-                  <Label styleClass="profileText1" text="Full Name" />
-                  <TextField fx:id="fullnameTextField"  maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+                  <Label styleClass="fieldLabel" text="Full Name" />
+                  <TextField fx:id="fullnameTextField" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
                </GridPane>
                <GridPane hgap="10.0">
                   <columnConstraints>
@@ -111,7 +122,7 @@
                            <Point3D />
                         </rotationAxis></SVGPath>
                   </StackPane>
-                  <Label styleClass="cardTitle1" text="Personal Information" GridPane.columnIndex="1" />
+                  <Label styleClass="cardTitle" text="Personal Information" GridPane.columnIndex="1" />
                </GridPane>
                <GridPane hgap="20.0" vgap="20.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
                   <columnConstraints>
@@ -122,8 +133,8 @@
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   </rowConstraints>
-                  <Label styleClass="profileText1" text="Email" GridPane.halignment="LEFT" />
-                  <Label layoutX="10.0" layoutY="9.0" styleClass="profileText1" text="Date of Birth" GridPane.columnIndex="1" />
+                  <Label styleClass="fieldLabel" text="Email" GridPane.halignment="LEFT" />
+                  <Label layoutX="10.0" layoutY="9.0" styleClass="fieldLabel" text="Date of Birth" GridPane.columnIndex="1" />
                   <TextField fx:id="emailTextField" GridPane.rowIndex="1" />
                   <TextField fx:id="birthdateTextField" layoutX="10.0" layoutY="20.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </GridPane>
@@ -136,7 +147,7 @@
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   </rowConstraints>
-                  <Label styleClass="profileText1" text="Gender" />
+                  <Label styleClass="fieldLabel" text="Gender" />
                   <ChoiceBox fx:id="genderChoiceBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
                </GridPane>
             </GridPane>
@@ -165,19 +176,13 @@
                      <RowConstraints />
                      <RowConstraints />
                   </rowConstraints>
-                  <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="45.0" minWidth="45.0"
-                             prefHeight="45.0" prefWidth="45.0"
-                             style="-fx-background-color: #63738a; -fx-background-radius: 500;"
-                             GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+                  <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="45.0" minWidth="45.0" prefHeight="45.0" prefWidth="45.0" style="-fx-background-color: #63738a; -fx-background-radius: 500;" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                      <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
-                     <SVGPath
-                             content="M17.4999 9.16671H15.4333C15.0691 9.16593 14.7146 9.28446 14.4242 9.50418C14.1337 9.7239 13.9232 10.0327 13.8249 10.3834L11.8666 17.35C11.854 17.3933 11.8276 17.4313 11.7916 17.4584C11.7555 17.4854 11.7117 17.5 11.6666 17.5C11.6215 17.5 11.5776 17.4854 11.5416 17.4584C11.5055 17.4313 11.4792 17.3933 11.4666 17.35L6.86658 0.983374C6.85396 0.9401 6.82765 0.902087 6.79158 0.875041C6.75552 0.847994 6.71166 0.833374 6.66659 0.833374C6.62151 0.833374 6.57765 0.847994 6.54159 0.875041C6.50552 0.902087 6.47921 0.9401 6.46659 0.983374L4.50825 7.95004C4.41031 8.29934 4.20107 8.60714 3.91231 8.82672C3.62354 9.0463 3.27102 9.16567 2.90825 9.16671H0.833252"
-                             fill="TRANSPARENT" scaleX="1.2" scaleY="1.2" stroke="WHITE" strokeLineCap="ROUND"
-                             strokeLineJoin="ROUND" strokeWidth="1.66667"/>
+                     <SVGPath content="M17.4999 9.16671H15.4333C15.0691 9.16593 14.7146 9.28446 14.4242 9.50418C14.1337 9.7239 13.9232 10.0327 13.8249 10.3834L11.8666 17.35C11.854 17.3933 11.8276 17.4313 11.7916 17.4584C11.7555 17.4854 11.7117 17.5 11.6666 17.5C11.6215 17.5 11.5776 17.4854 11.5416 17.4584C11.5055 17.4313 11.4792 17.3933 11.4666 17.35L6.86658 0.983374C6.85396 0.9401 6.82765 0.902087 6.79158 0.875041C6.75552 0.847994 6.71166 0.833374 6.66659 0.833374C6.62151 0.833374 6.57765 0.847994 6.54159 0.875041C6.50552 0.902087 6.47921 0.9401 6.46659 0.983374L4.50825 7.95004C4.41031 8.29934 4.20107 8.60714 3.91231 8.82672C3.62354 9.0463 3.27102 9.16567 2.90825 9.16671H0.833252" fill="TRANSPARENT" scaleX="1.2" scaleY="1.2" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="1.66667" />
                   </StackPane>
-                  <Label styleClass="cardTitle1" text="Physical Information" GridPane.columnIndex="1" />
+                  <Label styleClass="cardTitle" text="Physical Information" GridPane.columnIndex="1" />
                </GridPane>
                <GridPane hgap="20.0" vgap="20.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
                   <columnConstraints>
@@ -188,13 +193,13 @@
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   </rowConstraints>
-                  <Label styleClass="profileText1" text="Weight (kg)" GridPane.halignment="LEFT" />
-                  <Label layoutX="10.0" layoutY="9.0" styleClass="profileText1" text="Height (cm)" GridPane.columnIndex="1" />
+                  <Label styleClass="fieldLabel" text="Weight (kg)" GridPane.halignment="LEFT" />
+                  <Label layoutX="10.0" layoutY="9.0" styleClass="fieldLabel" text="Height (cm)" GridPane.columnIndex="1" />
                   <TextField fx:id="weightTextField" GridPane.rowIndex="1" />
                   <TextField fx:id="heightTextField" layoutX="10.0" layoutY="20.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </GridPane>
                <!--BMI Index Card-->
-               <GridPane hgap="20.0" layoutX="40.0" layoutY="110.0" styleClass="bmiCardContent" vgap="20.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
+               <GridPane layoutX="40.0" layoutY="110.0" styleClass="bmiCardContent" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
                   <columnConstraints>
                      <ColumnConstraints hgrow="SOMETIMES" percentWidth="50.0" />
                      <ColumnConstraints hgrow="SOMETIMES" percentWidth="50.0" />
@@ -209,9 +214,13 @@
                   <GridPane.margin>
                      <Insets />
                   </GridPane.margin>
-                  <Label styleClass="bmiCardText" text="Body Mass Index" GridPane.halignment="LEFT" />
-                  <Label layoutX="10.0" layoutY="9.0" styleClass="bmiCardText" text="24.2" GridPane.rowIndex="1" />
-                  <Label layoutX="10.0" layoutY="37.0" styleClass="bmiCardText" text="Normal Weight" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER" />
+                  <Label styleClass="cardTitle" text="Body Mass Index" GridPane.halignment="LEFT" />
+                  <Label layoutX="10.0" layoutY="9.0" styleClass="cardTitle" text="24.2" GridPane.rowIndex="1" />
+                  <Label layoutX="10.0" layoutY="37.0" text="Normal Weight" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2" GridPane.valignment="CENTER">
+                     <styleClass>
+                        <String fx:value="cardTitle" />
+                        <String fx:value="lightText" />
+                     </styleClass></Label>
                </GridPane>
                <GridPane vgap="15.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
                   <columnConstraints>
@@ -222,8 +231,8 @@
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   </rowConstraints>
-                  <Label styleClass="profileText1" text="Gender" />
-                  <ChoiceBox maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+                  <Label styleClass="fieldLabel" text="Exercise Level" />
+                  <ChoiceBox fx:id="activityLevelChoiceBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
                </GridPane>
             </GridPane>
 

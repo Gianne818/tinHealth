@@ -7,6 +7,10 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import org.tin.oop2_capstone.model.entities.User;
 import org.tin.oop2_capstone.services.SessionManager;
+import org.tin.oop2_capstone.utils.TimeFormatter;
+
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 
 public class ProfileController {
 
@@ -20,7 +24,7 @@ public class ProfileController {
             weightTextField,
             heightTextField;
     @FXML
-    private ChoiceBox<String> genderChoiceBox;
+    private ChoiceBox<String> genderChoiceBox, activityLevelChoiceBox;
     @FXML
     private Label fullnameLabel, emailLabel;
 
@@ -28,14 +32,26 @@ public class ProfileController {
         String gender = u.getIsMale() ? "Male" : "Female";
 //        System.out.println(u);
 
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT);
+        String formattedDOB = dateTimeFormatter.format(u.getDateOfBirth());
+
         emailTextField.setText(u.getEmail());
         fullnameTextField.setText(u.getFullname());
-        birthdateTextField.setText("");
+        birthdateTextField.setText(formattedDOB);
         weightTextField.setText(String.format("%.1f", u.getWeightKg()));
         genderChoiceBox.getItems().addAll("Male", "Female");
+        activityLevelChoiceBox.getItems().addAll(
+                "Sedentary - Little to no exercise",
+                "Lightly Active - Exercise 1-3 days/week",
+                "Moderately Active - Exercise 3-5 days/week",
+                "Very Active - Exercise 6-7 days/week",
+                "Extremely Active - Athlete/Physical Job"
+                );
+        activityLevelChoiceBox.setValue(u.getActivityLevel());
         genderChoiceBox.setValue(gender);
         fullnameLabel.setText(u.getUsername());
         heightTextField.setText(String.format("%.0f", u.getHeightCm()));
+        emailLabel.setText(u.getEmail());
     }
 
 
