@@ -32,18 +32,11 @@ public class SearchInterpreter {
         6. See attached Images for database example of handling FoodCombo
 
      */
-    private String input;
-    private boolean isFoodCombo;
     // isFood is redundant since we can just say it is Food when FoodCombo is false
 
-    public SearchInterpreter(){
-        input = "";
-        isFoodCombo = false;
-    }
 
-    public List<String> interpret(String input) {
-        this.input = input;
 
+    public static List<String> interpret(String input) {
         String[] tokens = {"with", "and", "&", ","};
         List<String> foods = new ArrayList<>();
         input = input.trim().toLowerCase();
@@ -55,15 +48,6 @@ public class SearchInterpreter {
                 foods.addAll(Arrays.asList(splitted));
             }
         }
-        this.isFoodCombo = foods.size() != 1;
         return foods;
-    }
-
-    public String getInput() {
-        return input;
-    }
-
-    public boolean isFoodCombo() {
-        return isFoodCombo;
     }
 }
