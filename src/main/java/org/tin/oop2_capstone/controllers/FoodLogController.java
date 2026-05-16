@@ -1,5 +1,6 @@
 package org.tin.oop2_capstone.controllers;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,15 +11,13 @@ import javafx.scene.layout.GridPane;
 import org.tin.oop2_capstone.api.FoodAPI;
 import org.tin.oop2_capstone.database.InsertData;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
-import org.tin.oop2_capstone.model.entities.Food;
-import org.tin.oop2_capstone.model.entities.Meal;
-import org.tin.oop2_capstone.model.entities.MealType;
+import org.tin.oop2_capstone.model.entities.*;
 import org.tin.oop2_capstone.model.state.IdleState;
 import org.tin.oop2_capstone.model.state.LoadingState;
 import org.tin.oop2_capstone.model.state.State;
+import org.tin.oop2_capstone.services.SearchInterpreter;
 import org.tin.oop2_capstone.utils.TimeFormatter;
 
-import org.tin.oop2_capstone.model.entities.NutritionDetails;
 import org.tin.oop2_capstone.services.FoodParser;
 import org.tin.oop2_capstone.utils.TimeFormatter;
 
@@ -26,6 +25,7 @@ import javax.swing.*;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FoodLogController {
@@ -50,7 +50,7 @@ public class FoodLogController {
     private MealRepository mealRepository = MealRepository.getInstance();
 
     private State currentState;
-    private Food fetchedFood;
+    private Consumable fetchedFood;
 
     public void initialize(){
         foodLogScrollPane.getStyleClass().add("light");
@@ -99,27 +99,41 @@ public class FoodLogController {
         // Run API call in background thread to avoid freezing UI
         new Thread(() -> {
             try {
-                String json = FoodAPI.getFoodData(foodName.replace(" ", "+"));
+                List<String> foodsList = SearchInterpreter.interpret(foodName);
+                List<String> jsons = new ArrayList<>();
+
+                for(String s : foodsList){
+                        jsons.add(FoodAPI.getFoodData(s.replace(" ", "+")));
+                }
 
                 // Add null check here
-                if (json == null) {
-                    javafx.application.Platform.runLater(() -> {
+                if (jsons.isEmpty()) {
+                    Platform.runLater(() -> {
                         caloriesTextField.setText("API Error");
                         caloriesTextField.setStyle("-fx-text-fill: red;");
                     });
                     return;
                 }
 
-                Food food = FoodParser.parseFood(json);
-
+                Consumable consumable;
+                if(jsons.size() == 1){
+                    consumable = FoodParser.parseFood(jsons.getFirst());
+                } else {
+                    List<Food> foodComboFoods = new ArrayList<>();
+                    for(String s : jsons){
+                        foodComboFoods.add(FoodParser.parseFood(s));
+                    }
+                    consumable = new FoodCombo(foodName,foodComboFoods);
+                }
+                System.out.println("Consumbaalke: " + consumable.getName());
                 // Update UI on JavaFX thread
-                javafx.application.Platform.runLater(() -> {
-                    if (food != null && food.getNutrition() != null) {
-                        fetchedFood = food;  // Store the full Food object
-                        fetchedCalories = food.getNutrition().getCalories();
+                Platform.runLater(() -> {
+                    if (consumable != null && consumable.getNutrition() != null) {
+                        fetchedFood = consumable;  // Store the full Food object
+                        fetchedCalories = consumable.getNutrition().getCalories();
                         caloriesTextField.setText(String.format("%.1f", fetchedCalories));
                         caloriesTextField.setStyle("-fx-text-fill: #11B981;");
-                        selectedFoodName = formatFoodName(food.getName());
+                        selectedFoodName = formatFoodName(consumable.getName());
 
                         // Auto-set time based on meal type
                         updateTimeBasedOnMeal();
@@ -129,7 +143,7 @@ public class FoodLogController {
                     }
                 });
             } catch (Exception e) {
-                javafx.application.Platform.runLater(() -> {
+                Platform.runLater(() -> {
                     caloriesTextField.setText("Error");
                     caloriesTextField.setStyle("-fx-text-fill: red;");
                 });
@@ -244,12 +258,12 @@ public class FoodLogController {
 
         // Create and save meal
         try {
-            Food food = fetchedFood;
+            Consumable consumable = fetchedFood;
 
             MealType mealType = MealType.valueOf(mealChoiceBox.getValue().toUpperCase());
             LocalDateTime logTime = parseTimeFromTextField();
 
-            Meal meal = new Meal(mealType, food, logTime, 1.0, "serving");
+            Meal meal = new Meal(mealType, consumable, logTime, 1.0, "serving");
 
             // Save to database (implement in MealRepository)
             int userId = 1; // TODO: Get actual logged-in user ID from your session/UserSession class

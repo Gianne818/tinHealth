@@ -32,7 +32,6 @@ public class NutritionDetails {
     public double getSugar() { return sugar; }
     public double getFiber() { return fiber; }
 
-
     public void setCalories(double calories) { this.calories = calories; }
     public void setProtein(double protein) { this.protein = protein; }
     public void setFat(double fat) { this.fat = fat; }
