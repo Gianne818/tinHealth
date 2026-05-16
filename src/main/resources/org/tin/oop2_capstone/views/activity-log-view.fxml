@@ -17,7 +17,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fx:id="activityLogScrollPane" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.ActivityLogController">
+<ScrollPane fx:id="activityLogScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="activityLogScrollPane" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.ActivityLogController">
     <padding>
         <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
     </padding>
@@ -55,28 +55,27 @@
             </padding>
             </GridPane>
 
-            <GridPane hgap="20.0" vgap="30.0">
+            <GridPane alignment="CENTER_LEFT" hgap="20.0" vgap="30.0" VBox.vgrow="NEVER">
                 <columnConstraints>
                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 </columnConstraints>
                 <rowConstraints>
-                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" vgrow="NEVER" />
                 </rowConstraints>
 
                 <padding>
                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                 </padding>
-                <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" styleClass="cardContent">
                     <GridPane.margin>
                         <Insets />
                     </GridPane.margin>
                     <padding>
-                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </padding>
-                    <GridPane prefHeight="58.0" prefWidth="271.0">
+                    <GridPane alignment="CENTER_LEFT" hgap="15.0" maxHeight="-Infinity" styleClass="cardContent">
                         <columnConstraints>
-                            <ColumnConstraints hgrow="ALWAYS" maxWidth="99.0" minWidth="0.0" prefWidth="87.0" />
+                            <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="NEVER" minWidth="0.0" />
                             <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="232.0" minWidth="10.0" prefWidth="188.0" />
                         </columnConstraints>
                         <rowConstraints>
@@ -84,7 +83,7 @@
                             <RowConstraints vgrow="NEVER" />
                         </rowConstraints>
                         <padding>
-                            <Insets bottom="15.0" top="15.0" />
+                            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                         </padding>
                         <Label styleClass="lightText" text="Calories Burned" GridPane.columnIndex="1" />
                         <Label layoutX="113.0" layoutY="17.0" text="465" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="CENTER">
@@ -96,24 +95,16 @@
                         <String fx:value="caloriesDashboard" />
                      </styleClass>
                         </Label>
-                        <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="70.0" minWidth="70.0" prefHeight="70.0" prefWidth="70.0" style="-fx-background-color: #DB2627; -fx-background-radius: 500;" GridPane.halignment="CENTER" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
+                        <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="70.0" minWidth="70.0" prefHeight="70.0" prefWidth="70.0" style="-fx-background-color: #DB2627; -fx-background-radius: 500;" GridPane.halignment="RIGHT" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
                             <padding>
                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                             </padding>
                             <SVGPath content="M17.4999 9.16671H15.4333C15.0691 9.16593 14.7146 9.28446 14.4242 9.50418C14.1337 9.7239 13.9232 10.0327 13.8249 10.3834L11.8666 17.35C11.854 17.3933 11.8276 17.4313 11.7916 17.4584C11.7555 17.4854 11.7117 17.5 11.6666 17.5C11.6215 17.5 11.5776 17.4854 11.5416 17.4584C11.5055 17.4313 11.4792 17.3933 11.4666 17.35L6.86658 0.983374C6.85396 0.9401 6.82765 0.902087 6.79158 0.875041C6.75552 0.847994 6.71166 0.833374 6.66659 0.833374C6.62151 0.833374 6.57765 0.847994 6.54159 0.875041C6.50552 0.902087 6.47921 0.9401 6.46659 0.983374L4.50825 7.95004C4.41031 8.29934 4.20107 8.60714 3.91231 8.82672C3.62354 9.0463 3.27102 9.16567 2.90825 9.16671H0.833252" fill="TRANSPARENT" scaleX="2.5" scaleY="2.5" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="1.66667" />
                         </StackPane>
                     </GridPane>
-                </VBox>
-                <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" styleClass="cardContent" GridPane.columnIndex="1">
-                    <GridPane.margin>
-                        <Insets />
-                    </GridPane.margin>
-                    <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                    </padding>
-                    <GridPane prefHeight="53.0" prefWidth="273.0">
+                    <GridPane alignment="CENTER_LEFT" hgap="15.0" maxHeight="-Infinity" styleClass="cardContent" GridPane.columnIndex="1">
                         <columnConstraints>
-                            <ColumnConstraints hgrow="ALWAYS" maxWidth="95.0" minWidth="0.0" prefWidth="87.0" />
+                            <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="NEVER" minWidth="0.0" />
                             <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="232.0" minWidth="10.0" prefWidth="188.0" />
                         </columnConstraints>
                         <rowConstraints>
@@ -122,9 +113,9 @@
                             <RowConstraints vgrow="NEVER" />
                         </rowConstraints>
                         <padding>
-                            <Insets bottom="15.0" top="15.0" />
+                            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                         </padding>
-                        <Label styleClass="lightText" text="Total Duration" GridPane.columnIndex="1" />
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="lightText" text="Total Duration" GridPane.columnIndex="1" />
                         <Label layoutX="113.0" layoutY="17.0" text="67" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                             <font>
                                 <Font size="25.0" />
@@ -135,14 +126,17 @@
                      </styleClass>
                         </Label>
                         <Label layoutX="10.0" layoutY="17.0" styleClass="lightText" text="minutes" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="70.0" minWidth="70.0" prefHeight="70.0" prefWidth="70.0" style="-fx-background-color: #F97315; -fx-background-radius: 500;" GridPane.halignment="CENTER" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
+                        <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="70.0" minWidth="70.0" prefHeight="70.0" prefWidth="70.0" style="-fx-background-color: #F97315; -fx-background-radius: 500;" GridPane.halignment="RIGHT" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
                             <padding>
                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                             </padding>
                             <SVGPath content="M17.4999 9.16671H15.4333C15.0691 9.16593 14.7146 9.28446 14.4242 9.50418C14.1337 9.7239 13.9232 10.0327 13.8249 10.3834L11.8666 17.35C11.854 17.3933 11.8276 17.4313 11.7916 17.4584C11.7555 17.4854 11.7117 17.5 11.6666 17.5C11.6215 17.5 11.5776 17.4854 11.5416 17.4584C11.5055 17.4313 11.4792 17.3933 11.4666 17.35L6.86658 0.983374C6.85396 0.9401 6.82765 0.902087 6.79158 0.875041C6.75552 0.847994 6.71166 0.833374 6.66659 0.833374C6.62151 0.833374 6.57765 0.847994 6.54159 0.875041C6.50552 0.902087 6.47921 0.9401 6.46659 0.983374L4.50825 7.95004C4.41031 8.29934 4.20107 8.60714 3.91231 8.82672C3.62354 9.0463 3.27102 9.16567 2.90825 9.16671H0.833252" fill="TRANSPARENT" scaleX="2.5" scaleY="2.5" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="1.66667" />
                         </StackPane>
                     </GridPane>
-                </VBox>
+
+                    <GridPane.margin>
+                        <Insets />
+                    </GridPane.margin>
             </GridPane>
             <GridPane fx:id="gridPaneAddEntry" hgap="10.0" managed="false" styleClass="cardContent" vgap="10.0" visible="false">
                 <columnConstraints>
@@ -182,8 +176,11 @@
                <Insets left="10.0" right="10.0" />
             </VBox.margin>
             </GridPane>
-         <Label styleClass="cardTitle" text="Your Activity Logs" />
-         <ListView fx:id="activityLogListView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS" />
+         <Label styleClass="cardTitle" text="Your Activity Logs">
+            <padding>
+               <Insets top="20.0" />
+            </padding></Label>
+         <ListView fx:id="activityLogListView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
 
         </VBox>
     </AnchorPane>

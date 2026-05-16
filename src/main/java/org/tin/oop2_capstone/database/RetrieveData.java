@@ -383,6 +383,7 @@ public class RetrieveData {
                 user.setMale("Male".equals(rs.getString("gender")));
                 user.setWeightKg(rs.getDouble("weight_kg"));
                 user.setHeightCm(rs.getDouble("height_cm"));
+                user.setDateOfBirth(rs.getDate("date_of_birth").toLocalDate());
                 user.setActivityLevel(rs.getString("activity_level"));
 
                 return user;

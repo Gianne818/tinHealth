@@ -13,7 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
-        <javafx.version>21.0.6</javafx.version>
+        <javafx.version>25</javafx.version>
         <junit.version>5.12.1</junit.version>
     </properties>
 
