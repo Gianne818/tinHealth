@@ -17,6 +17,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.PopupControl;
 import javafx.scene.layout.VBox;
+import org.tin.oop2_capstone.database.RetrieveData;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
 import org.tin.oop2_capstone.model.entities.Meal;
 import org.tin.oop2_capstone.model.entities.NutritionDetails;
@@ -109,7 +110,7 @@ public class HealthController {
         initCaloriesLineChart();
 
         //Same Logic in ToolTipController START
-        List<Meal> userMeals = MealRepository.getInstance().getUserMeals();
+        List<Meal> userMeals = RetrieveData.fetchUserMealsToday(SessionManager.getInstance().getCurrentUser().getUid());
         double calories = 0.0,  protein = 0.0, fat = 0.0, cholesterol = 0.0, carbs = 0.0, sodium = 0.0, sugar = 0.0, fiber = 0.0;
 
         for (Meal m : userMeals) {
@@ -144,8 +145,7 @@ public class HealthController {
         hcaloriesLabel.setText(calories+"");
         goalCalLabel.setText(goals.getCalories()+"");
         caloriesProgressLabel.setText(String.format("%.2f%%", (calories / goals.getCalories() * 100)));
-        caloriesProgressBar.setProgress(11);
-//        caloriesProgressBar.setProgress((calories/goals.getCalories()));
+        caloriesProgressBar.setProgress((calories/goals.getCalories()));
         if(caloriesProgressBar.getProgress() > 1) {
             caloriesProgressBar.getStyleClass().add("limitbroken");
         }
@@ -242,135 +242,91 @@ public class HealthController {
 
     //For the line chart of Weekly Nutrient Trends
     private void initCaloriesLineChart() {
-        xAxis.setCategories(FXCollections.observableArrayList(
-                "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"
-        ));
+        xAxis.setCategories(FXCollections.observableArrayList("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"));
         xAxis.setGapStartAndEnd(false);
         xAxis.setTickMarkVisible(false);
 
         LineChart<String, Number> chart = (LineChart<String, Number>) weeklyChart;
+        chart.getData().clear();
 
-        //TODO: Change hardcoded lines to actual data.
-        //Calorie Line
-//        XYChart.Series<String, Number> calIn = new XYChart.Series<>();
-//        calIn.getData().addAll(
-//                new XYChart.Data<>("Mon", 1850),
-//                new XYChart.Data<>("Tue", 2150),
-//                new XYChart.Data<>("Wed", 1950),
-//                new XYChart.Data<>("Thu", 2050),
-//                new XYChart.Data<>("Fri", 1900),
-//                new XYChart.Data<>("Sat", 2200),
-//                new XYChart.Data<>("Sun", 770)
-//        );
+        //Monday's index is 0
+        double[] dailyCals = new double[7];
+        double[] dailyProt = new double[7];
+        double[] dailyCarbs = new double[7];
+        double[] dailyFats = new double[7];
+        double[] dailyChol = new double[7];
+        double[] dailySod = new double[7];
+        double[] dailySug = new double[7];
+        double[] dailyFib = new double[7];
 
-        //Protein Line
-        //TODO: Change hardcoded lines to actual data.
+        int userId = SessionManager.getInstance().getCurrentUser().getUid();
+
+        List<Meal> weeklyMeals = RetrieveData.fetchWeeklyUserMeals(userId);
+
+        if (weeklyMeals != null) {
+            for (Meal m : weeklyMeals) {
+                // getDayOfWeek().getValue() returns 1 for monday so subtract by 1 to match indices with dailyVariables
+                int dayIndex = m.getLogDateTime().getDayOfWeek().getValue() - 1;
+
+                double qty = m.getQuantity();
+                NutritionDetails nd = m.getConsumable().getNutrition();
+
+                //Don't forget qty of said meal to the equation
+                dailyCals[dayIndex] += nd.getCalories() * qty;
+                dailyProt[dayIndex] += nd.getProtein() * qty;
+                dailyCarbs[dayIndex] += nd.getCarbs() * qty;
+                dailyFats[dayIndex] += nd.getFat() * qty;
+                dailyChol[dayIndex] += nd.getCholesterol() * qty;
+                dailySod[dayIndex] += nd.getSodium() * qty;
+                dailySug[dayIndex] += nd.getSugar() * qty;
+                dailyFib[dayIndex] += nd.getFiber() * qty;
+            }
+        }
+
+        //Nutrients initialization
+        XYChart.Series<String, Number> calIn = new XYChart.Series<>();
+        calIn.setName("Calories");
+
         XYChart.Series<String, Number> protIn = new XYChart.Series<>();
         protIn.setName("Protein");
-        protIn.getData().addAll(
-                new XYChart.Data<>("Mon", 120),
-                new XYChart.Data<>("Tue", 130),
-                new XYChart.Data<>("Wed", 115),
-                new XYChart.Data<>("Thu", 125),
-                new XYChart.Data<>("Fri", 110),
-                new XYChart.Data<>("Sat", 140),
-                new XYChart.Data<>("Sun", 45)
-        );
 
-        //Carbs Line
-        //TODO: Change hardcoded lines to actual data.
         XYChart.Series<String, Number> carbIn = new XYChart.Series<>();
         carbIn.setName("Carbs");
-        carbIn.getData().addAll(
-                new XYChart.Data<>("Mon", 220),
-                new XYChart.Data<>("Tue", 240),
-                new XYChart.Data<>("Wed", 210),
-                new XYChart.Data<>("Thu", 230),
-                new XYChart.Data<>("Fri", 200),
-                new XYChart.Data<>("Sat", 250),
-                new XYChart.Data<>("Sun", 95)
-        );
 
-        //Fats Line
-        //TODO: Change hardcoded lines to actual data.
         XYChart.Series<String, Number> fatIn = new XYChart.Series<>();
         fatIn.setName("Fats");
-        fatIn.getData().addAll(
-                new XYChart.Data<>("Mon", 60),
-                new XYChart.Data<>("Tue", 70),
-                new XYChart.Data<>("Wed", 65),
-                new XYChart.Data<>("Thu", 68),
-                new XYChart.Data<>("Fri", 62),
-                new XYChart.Data<>("Sat", 75),
-                new XYChart.Data<>("Sun", 28)
-        );
 
-        // Cholesterol
-        //TODO: Change hardcoded lines to actual data.
         XYChart.Series<String, Number> cholesterolIn = new XYChart.Series<>();
         cholesterolIn.setName("Cholesterol");
-        cholesterolIn.getData().addAll(
-                new XYChart.Data<>("Mon", 60),
-                new XYChart.Data<>("Tue", 70),
-                new XYChart.Data<>("Wed", 65),
-                new XYChart.Data<>("Thu", 68),
-                new XYChart.Data<>("Fri", 62),
-                new XYChart.Data<>("Sat", 75),
-                new XYChart.Data<>("Sun", 28)
-        );
-
-        // just to see how gubot it will all look
 
         XYChart.Series<String, Number> sodiumIn = new XYChart.Series<>();
         sodiumIn.setName("Sodium");
-        sodiumIn.getData().addAll(
-                new XYChart.Data<>("Mon", 87),
-                new XYChart.Data<>("Tue", 34),
-                new XYChart.Data<>("Wed", 51),
-                new XYChart.Data<>("Thu", 75),
-                new XYChart.Data<>("Fri", 97),
-                new XYChart.Data<>("Sat", 32),
-                new XYChart.Data<>("Sun", 88)
-        );
-
 
         XYChart.Series<String, Number> sugarIn = new XYChart.Series<>();
         sugarIn.setName("Sugar");
-        sugarIn.getData().addAll(
-                new XYChart.Data<>("Mon", 14),
-                new XYChart.Data<>("Tue", 85),
-                new XYChart.Data<>("Wed", 45),
-                new XYChart.Data<>("Thu", 28),
-                new XYChart.Data<>("Fri", 32),
-                new XYChart.Data<>("Sat", 90),
-                new XYChart.Data<>("Sun", 87)
-        );
-
 
         XYChart.Series<String, Number> fiberIn = new XYChart.Series<>();
         fiberIn.setName("Fiber");
-        fiberIn.getData().addAll(
-                new XYChart.Data<>("Mon", 76),
-                new XYChart.Data<>("Tue", 90),
-                new XYChart.Data<>("Wed", 38),
-                new XYChart.Data<>("Thu", 64),
-                new XYChart.Data<>("Fri", 82),
-                new XYChart.Data<>("Sat", 74),
-                new XYChart.Data<>("Sun", 38)
-        );
 
+        //Nutrient populate-r
+        String[] days = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+        for (int i = 0; i < 7; i++) {
+            calIn.getData().add(new XYChart.Data<>(days[i], dailyCals[i]));
+            protIn.getData().add(new XYChart.Data<>(days[i], dailyProt[i]));
+            carbIn.getData().add(new XYChart.Data<>(days[i], dailyCarbs[i]));
+            fatIn.getData().add(new XYChart.Data<>(days[i], dailyFats[i]));
+            cholesterolIn.getData().add(new XYChart.Data<>(days[i], dailyChol[i]));
+            sodiumIn.getData().add(new XYChart.Data<>(days[i], dailySod[i]));
+            sugarIn.getData().add(new XYChart.Data<>(days[i], dailySug[i]));
+            fiberIn.getData().add(new XYChart.Data<>(days[i], dailyFib[i]));
+        }
 
         NumberAxis yAxis = (NumberAxis) chart.getYAxis();
-        yAxis.setAutoRanging(false);
-        yAxis.setTickUnit(50);
-        yAxis.setLowerBound(0);
-        yAxis.setUpperBound(300);
-        yAxis.setMinorTickCount(10);
+        yAxis.setAutoRanging(true);
 
         chart.getData().addAll(protIn, carbIn, fatIn, cholesterolIn, sugarIn, sodiumIn, fiberIn);
-        //setupGlobalTooltip(chart, calIn, calOut); //TODO: Setup calIn and calOut
-        chart.setLegendVisible(true);
 
+        chart.setLegendVisible(true);
     }
 
     private void setupGlobalTooltip(LineChart<String, Number> chart, XYChart.Series<String, Number> in) { //TODO: Setup

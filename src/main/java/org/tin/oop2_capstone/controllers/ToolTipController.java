@@ -2,9 +2,12 @@ package org.tin.oop2_capstone.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import org.tin.oop2_capstone.database.RetrieveData;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
 import org.tin.oop2_capstone.model.entities.Meal;
 import org.tin.oop2_capstone.model.entities.NutritionDetails;
+import org.tin.oop2_capstone.services.SessionManager;
+
 import java.util.List;
 
 public class ToolTipController {
@@ -32,7 +35,7 @@ public class ToolTipController {
         calOutLabel.setText(out + " kcal");
 
         //Macros Display
-        List<Meal> userMeals = MealRepository.getInstance().getUserMeals();
+        List<Meal> userMeals = RetrieveData.fetchUserMealsToday(SessionManager.getInstance().getCurrentUser().getUid());
         double protein = 0.0, fat = 0.0, cholesterol = 0.0, sodium = 0.0, sugar = 0.0, fiber = 0.0;
 
         for (Meal m : userMeals) {

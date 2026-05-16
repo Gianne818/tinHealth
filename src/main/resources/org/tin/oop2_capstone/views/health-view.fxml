@@ -338,7 +338,7 @@
                      <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
-                     <Circle fill="#d85842" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                     <Circle fill="#ee6046" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" />
                      <Label text="Protein" GridPane.columnIndex="1" />
                      <Label fx:id="proteinLabelMacro" styleClass="boldText" text="proteinLabel" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
                   </GridPane>
@@ -352,7 +352,7 @@
                      <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
-                     <Circle fill="#11B981" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                     <Circle fill="#f2975b" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" />
                      <Label text="Carbs" GridPane.columnIndex="1" />
                      <Label fx:id="carbsLabelMacro" styleClass="boldText" text="carbsLabel" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
                   </GridPane>
@@ -410,41 +410,34 @@
                   </rowConstraints>
                   <Label styleClass="cardTitle2" text="Cholesterol" />
                   <HBox alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
-                     <Label fx:id="mnCholesterolLabel" alignment="TOP_RIGHT" contentDisplay="CENTER"
-                            graphicTextGap="0.0" text="??" textAlignment="RIGHT" textFill="#ec4899"/>
-                     <Label alignment="TOP_RIGHT" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="194.0"
-                            layoutY="10.0" text=" / " textAlignment="RIGHT" textFill="#ec4899"/>
-                     <Label fx:id="mnCholesterolGoal" alignment="TOP_RIGHT" contentDisplay="CENTER" graphicTextGap="0.0"
-                            layoutX="194.0" layoutY="10.0" text="??" textAlignment="RIGHT" textFill="#ec4899"/>
-                     <Label alignment="TOP_RIGHT" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="194.0"
-                            layoutY="10.0" text=" mg" textAlignment="RIGHT" textFill="#ec4899"/>
+                     <Label fx:id="mnCholesterolLabel" alignment="TOP_RIGHT" contentDisplay="CENTER" graphicTextGap="0.0" text="??" textAlignment="RIGHT" textFill="#ec4899" />
+                     <Label alignment="TOP_RIGHT" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="194.0" layoutY="10.0" text=" / " textAlignment="RIGHT" textFill="#ec4899" />
+                     <Label fx:id="mnCholesterolGoal" alignment="TOP_RIGHT" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="194.0" layoutY="10.0" text="??" textAlignment="RIGHT" textFill="#ec4899" />
+                     <Label alignment="TOP_RIGHT" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="194.0" layoutY="10.0" text=" mg" textAlignment="RIGHT" textFill="#ec4899" />
                   </HBox>
                   <ProgressBar fx:id="mnCholesterolProgressBar" maxWidth="1.7976931348623157E308" progress="0.67" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
                   <Label styleClass="cardTitle2" text="Sodium" GridPane.rowIndex="2" />
-                  <HBox alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.halignment="RIGHT"
-                        GridPane.rowIndex="2">
-                     <Label fx:id="mnSodiumLabel" text="??" textFill="#8b5cf6"/>
-                     <Label layoutX="181.0" layoutY="10.0" text=" / " textFill="#8b5cf6"/>
-                     <Label fx:id="mnSodiumGoal" layoutX="181.0" layoutY="10.0" text="??" textFill="#8b5cf6"/>
-                     <Label layoutX="103.0" layoutY="10.0" text=" mg" textFill="#8b5cf6"/>
+                  <HBox alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                     <Label fx:id="mnSodiumLabel" text="??" textFill="#8b5cf6" />
+                     <Label layoutX="181.0" layoutY="10.0" text=" / " textFill="#8b5cf6" />
+                     <Label fx:id="mnSodiumGoal" layoutX="181.0" layoutY="10.0" text="??" textFill="#8b5cf6" />
+                     <Label layoutX="103.0" layoutY="10.0" text=" mg" textFill="#8b5cf6" />
                   </HBox>
                   <ProgressBar fx:id="mnSodiumProgressBar" maxWidth="1.7976931348623157E308" progress="0.67" styleClass="bar-purple" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
                   <Label styleClass="cardTitle2" text="Sugar" GridPane.rowIndex="4" />
-                  <HBox alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.halignment="RIGHT"
-                        GridPane.rowIndex="4">
-                     <Label fx:id="mnSugarLabel" text="??" textFill="#ef4444"/>
-                     <Label layoutX="211.0" layoutY="10.0" text=" / " textFill="#ef4444"/>
-                     <Label fx:id="mnSugarGoal" layoutX="211.0" layoutY="10.0" text="??" textFill="#ef4444"/>
-                     <Label layoutX="211.0" layoutY="10.0" text=" g" textFill="#ef4444"/>
+                  <HBox alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+                     <Label fx:id="mnSugarLabel" text="??" textFill="#ef4444" />
+                     <Label layoutX="211.0" layoutY="10.0" text=" / " textFill="#ef4444" />
+                     <Label fx:id="mnSugarGoal" layoutX="211.0" layoutY="10.0" text="??" textFill="#ef4444" />
+                     <Label layoutX="211.0" layoutY="10.0" text=" g" textFill="#ef4444" />
                   </HBox>
                   <ProgressBar fx:id="mnSugarProgressBar" maxWidth="1.7976931348623157E308" prefWidth="200.0" progress="0.67" styleClass="bar-red" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" />
                   <Label styleClass="cardTitle2" text="Fiber" GridPane.rowIndex="6" />
-                  <HBox alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.halignment="RIGHT"
-                        GridPane.rowIndex="6">
-                     <Label fx:id="mnFiberLabel" text="??" textFill="#11b981"/>
-                     <Label layoutX="217.0" layoutY="10.0" text=" / " textFill="#11b981"/>
-                     <Label fx:id="mnFiberGoal" layoutX="217.0" layoutY="10.0" text="??" textFill="#11b981"/>
-                     <Label layoutX="217.0" layoutY="10.0" text=" g" textFill="#11b981"/>
+                  <HBox alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
+                     <Label fx:id="mnFiberLabel" text="??" textFill="#11b981" />
+                     <Label layoutX="217.0" layoutY="10.0" text=" / " textFill="#11b981" />
+                     <Label fx:id="mnFiberGoal" layoutX="217.0" layoutY="10.0" text="??" textFill="#11b981" />
+                     <Label layoutX="217.0" layoutY="10.0" text=" g" textFill="#11b981" />
                   </HBox>
                   <ProgressBar fx:id="mnFiberProgressBar" maxWidth="1.7976931348623157E308" prefWidth="200.0" progress="0.67" styleClass="bar-green" GridPane.columnSpan="2147483647" GridPane.rowIndex="7" />
                </GridPane>
