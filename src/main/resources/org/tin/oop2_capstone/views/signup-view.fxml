@@ -148,6 +148,8 @@
                         <TextField fx:id="currentHeightTextField" />
                         <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="fieldLabel" text="Current Weight (kg)" />
                         <TextField fx:id="currentWeightTextField" />
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="fieldLabel" text="Target Weight (kg)" />
+                        <TextField fx:id="targetWeightTextField" promptText="Leave blank if no target weight" />
                      </children>
                   </VBox>
                   <VBox fx:id="onBoardingVBox3" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0" visible="false">

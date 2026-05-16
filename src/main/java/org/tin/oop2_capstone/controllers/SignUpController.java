@@ -6,10 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -56,9 +53,45 @@ public class SignUpController {
     @FXML VBox continueVBox;
     @FXML Button continueButton;
 
-    private GridPane currSelectedActivity;
+    @FXML DatePicker bdayDatePicker;
+    @FXML ChoiceBox<String> genderChoiceBox;
+    @FXML TextField currentHeightTextField, currentWeightTextField, targetWeightTextField;
 
+    private GridPane currSelectedActivity;
     int curPanel = 0;
+
+
+    private void checkIfEnableNext(int curPanel){
+        switch (curPanel){
+            case 0:
+                if(bdayDatePicker.getValue() != null && genderChoiceBox.getValue() != null){
+                    nextButton.setDisable(false);
+                } else {
+                    nextButton.setDisable(true);
+                }
+                break;
+            case 1:
+                if(!currentHeightTextField.getText().isEmpty() &&
+                        !currentWeightTextField.getText().isEmpty() &&
+                        !targetWeightTextField.getText().isEmpty()){
+                    nextButton.setDisable(false);
+                } else {
+                    nextButton.setDisable(true);
+                }
+                break;
+            case 2:
+                for(GridPane g : activityLevels){
+                    if(g.getStyleClass().contains("activityLevelSelected")){
+                        nextButton.setDisable(false);
+                        return;
+                    }
+                }
+                nextButton.setDisable(true);
+                break;
+
+        }
+    }
+
 
     private void changeElementAccessibility(Node n, boolean visibility, boolean disability, boolean manageability){
         n.setVisible(visibility);
@@ -74,9 +107,28 @@ public class SignUpController {
         fields.addAll(fullNameTextField, emailTextField, userNameTextField, passwordTextField, confirmPasswordTextField);
         panels.addAll(onBoardingVBox1, onBoardingVBox2, onBoardingVBox3);
         activityLevels.addAll(sedentaryGridPane, lightlyActiveGridPane, moderatelyActiveGridPane, veryActiveGridPane, extremelyActiveGridPane);
+
+        genderChoiceBox.getItems().addAll("Male", "Female");
 ;
         changeElementAccessibility(backButton,  true, true, true);
+        changeElementAccessibility(nextButton,  true, true, true);
         onBoardingProgressBar.setProgress(0.05);
+
+        bdayDatePicker.valueProperty().addListener((obs, oldVal, newVal) -> {
+            checkIfEnableNext(curPanel);
+        });
+        genderChoiceBox.valueProperty().addListener((obs, oldVal, newVal) -> {
+            checkIfEnableNext(curPanel);
+        });
+        currentHeightTextField.textProperty().addListener((obs, oldVal, newVal) -> {
+            checkIfEnableNext(curPanel);
+        });
+        currentWeightTextField.textProperty().addListener((obs, oldVal, newVal) -> {
+            checkIfEnableNext(curPanel);
+        });
+        targetWeightTextField.textProperty().addListener((obs, oldVal, newVal) -> {
+            checkIfEnableNext(curPanel);
+        });
     }
 
     public void onBackButtonClick(ActionEvent event){
@@ -89,6 +141,7 @@ public class SignUpController {
 
         changeElementAccessibility(panels.get(curPanel), true, false, true);
         onBoardingProgressBar.setProgress(onBoardingProgressBar.getProgress()-0.33);
+         checkIfEnableNext(curPanel);
     }
 
     public void onNextButtonClick(ActionEvent event){
@@ -106,6 +159,7 @@ public class SignUpController {
 
         changeElementAccessibility(panels.get(curPanel), true, false, true);
         onBoardingProgressBar.setProgress(onBoardingProgressBar.getProgress()+0.33);
+        checkIfEnableNext(curPanel);
     }
 
     public void onSignUpButtonClick(ActionEvent event){
@@ -161,6 +215,7 @@ public class SignUpController {
             setSelectedActivityLevel(button);
             currSelectedActivity = button;
         }
+        checkIfEnableNext(curPanel);
         // todo: based on currSelectedActivity, we set goals automatically. User can change them in settings
     }
 
@@ -174,7 +229,10 @@ public class SignUpController {
         }
 
         n.getStyleClass().add("activityLevelSelected");
+
     }
+
+
 
 
 }
