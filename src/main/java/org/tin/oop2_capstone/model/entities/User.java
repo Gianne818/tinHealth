@@ -1,6 +1,8 @@
 package org.tin.oop2_capstone.model.entities;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Date;
 
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -14,10 +16,11 @@ public class User implements Serializable {
     private int age;
     private boolean isMale;
     private String activityLevel;
+    private LocalDate dateOfBirth;
 
     public User() {}
 
-    public User(int uid, String fullname, String email, String username, double weightKg, double heightCm, String password, int age, boolean isMale, String activityLevel) {
+    public User(int uid, String fullname, String email, String username, double weightKg, double heightCm, String password, int age, boolean isMale, String activityLevel, LocalDate dateOfBirth) {
         this.uid = uid;
         this.fullname = fullname;
         this.email = email;
@@ -28,6 +31,7 @@ public class User implements Serializable {
         this.age = age;
         this.isMale = isMale;
         this.activityLevel = activityLevel;
+        this.dateOfBirth = dateOfBirth;
     }
 
     public int getUid() {
@@ -49,6 +53,19 @@ public class User implements Serializable {
     public double getHeightCm()  { return heightCm; }
     public String getPassword() { return password; }
     public boolean getIsMale(){ return isMale; }
+
+    public String getActivityLevel() {
+        return activityLevel;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
     public void setEmail(String email)       { this.email = email; }
     public void setFullname(String fullname) { this.fullname = fullname;}
     public void setUsername(String username) { this.username = username; }
@@ -66,7 +83,7 @@ public class User implements Serializable {
     public void setPassword(String password) {
         // set appropriate hashing algo here
         // For now wala lang sa
-        // TODO:
+        // TODO: SET HASHING ALGO
         this.password = password;
     }
 
@@ -83,6 +100,7 @@ public class User implements Serializable {
                 ", age=" + age +
                 ", isMale=" + isMale +
                 ", activityLevel='" + activityLevel + '\'' +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
                 '}';
     }
 
