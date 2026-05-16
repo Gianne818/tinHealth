@@ -70,9 +70,21 @@ public class HealthController {
 
     //MICRONUTRIENTS START
     @FXML ProgressBar mnCholesterolProgressBar;
+    @FXML Label mnCholesterolLabel;
+    @FXML Label mnCholesterolGoal;
+
     @FXML ProgressBar mnSodiumProgressBar;
+    @FXML Label mnSodiumLabel;
+    @FXML Label mnSodiumGoal;
+
     @FXML ProgressBar mnSugarProgressBar;
+    @FXML Label mnSugarLabel;
+    @FXML Label mnSugarGoal;
+
     @FXML ProgressBar mnFiberProgressBar;
+    @FXML Label mnFiberLabel;
+    @FXML Label mnFiberGoal;
+
     //MICRONUTRIENTS END
 
     @FXML PieChart macroDistPieChart;
@@ -114,22 +126,19 @@ public class HealthController {
 
         //Load Values into ProgressBars
         setLabelsAndProgressBars(calories, cholesterol, protein, sodium, fat, sugar, carbs, fiber);
-
-        //Test values for visualization
-        drawRadarChart(0.85, 0.50, 0.75, 0.90, 0.40, 0.60); //Temp sample for visualization purposes
+        drawRadarChart(calories/1000, protein/1000, carbs/1000, fat/1000, fiber/1000, sodium/1000);//TODO Change the "1000" to their respective limits e.g. calories/calorielimit, protein/proteinlimit, ...
         macroDistData = FXCollections.observableArrayList();
-        updateMacroDist(35.0, 95.0, 28.0); //Temp sample for visualization purposes
+        updateMacroDist(protein/1000, carbs/1000, fat/1000); //TODO Change the "1000" to their respective limits e.g. calories/calorielimit, protein/proteinlimit, ...
 
-        //Actual Values to be shown
+        //Note: Actual Values to be shown
         //(Values should be between 0.0 and 1.0 representing 0% to 100% with "100%" being the goal. e.g. if protein_intake = 24g and goal_protein_intake = 67g then do protein_intake//goal_protein_intake; but add limiter to "'"1.00"'" value (100%))
-        //drawRadarChart(calories, protein, carbs, fat, fiber, sodium); //TODO: Calculate Goal and adjust values
-        //macroDistData = FXCollections.observableArrayList();
-        //updateMacroDist(protein, carbs, fat);//TODO: Calculate Goal and adjust values
+
         initMacroDist();
     }
 
     private void setLabelsAndProgressBars(Double calories, Double cholesterol, Double protein, Double sodium, Double fat, Double sugar, Double carbs, Double fiber) {
         Double universalGOAL = 1000.00; //TODO: Change the actual Goal to the REAL GOAL for each macros Through Calculations based on user GOAL e.g. Weight Loss, Weight Gain etc.
+
         caloriesLabel.setText(calories+"");
         goalCalLabel.setText(universalGOAL+"");
         caloriesProgressLabel.setText(String.format("%.2f%%", (calories / universalGOAL * 100)));
@@ -172,9 +181,20 @@ public class HealthController {
 
         //MicroNutrients
         mnCholesterolProgressBar.setProgress((cholesterol/universalGOAL));
+        mnCholesterolLabel.setText(cholesterol+"");
+        //mnCholesterolGoal.setText(); //TODO: setGoalText
+
         mnSodiumProgressBar.setProgress((sodium/universalGOAL));
+        mnSodiumLabel.setText(sodium+"");
+        //mnSodiumGoal.setText(); //TODO: setGoalText
+
         mnSugarProgressBar.setProgress((sugar/universalGOAL));
+        mnSugarLabel.setText(sugar+"");
+        //mnSugarGoal.setText(); //TODO: setGoalText
+
         mnFiberProgressBar.setProgress((fiber/universalGOAL));
+        mnFiberLabel.setText(fiber+"");
+        //mnFiberGoal.setText(); //TODO: setGoalText
 
     }
 
@@ -202,6 +222,7 @@ public class HealthController {
 //        );
 
         //Protein Line
+        //TODO: Change hardcoded lines to actual data.
         XYChart.Series<String, Number> protIn = new XYChart.Series<>();
         protIn.setName("Protein");
         protIn.getData().addAll(
@@ -215,6 +236,7 @@ public class HealthController {
         );
 
         //Carbs Line
+        //TODO: Change hardcoded lines to actual data.
         XYChart.Series<String, Number> carbIn = new XYChart.Series<>();
         carbIn.setName("Carbs");
         carbIn.getData().addAll(
@@ -228,6 +250,7 @@ public class HealthController {
         );
 
         //Fats Line
+        //TODO: Change hardcoded lines to actual data.
         XYChart.Series<String, Number> fatIn = new XYChart.Series<>();
         fatIn.setName("Fats");
         fatIn.getData().addAll(
@@ -241,6 +264,7 @@ public class HealthController {
         );
 
         // Cholesterol
+        //TODO: Change hardcoded lines to actual data.
         XYChart.Series<String, Number> cholesterolIn = new XYChart.Series<>();
         cholesterolIn.setName("Cholesterol");
         cholesterolIn.getData().addAll(
@@ -307,7 +331,7 @@ public class HealthController {
 
     }
 
-    private void setupGlobalTooltip(LineChart<String, Number> chart, XYChart.Series<String, Number> in) {
+    private void setupGlobalTooltip(LineChart<String, Number> chart, XYChart.Series<String, Number> in) { //TODO: Setup
         PopupControl popup = new PopupControl();
         ToolTipController toolTipController;
 
