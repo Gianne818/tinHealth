@@ -182,6 +182,6 @@ public class UserPreferences implements Serializable {
         double sodiumMg = 2300;
         double cholesterolMg = 300;
 
-        return new NutritionDetails(calories, carbG, cholesterolMg, fatG, fiberG, proteinG, sodiumMg, sugarG);
+        return new NutritionDetails(calories, proteinG, fatG, carbG, cholesterolMg, sodiumMg, sugarG, fiberG);
     }
 }
