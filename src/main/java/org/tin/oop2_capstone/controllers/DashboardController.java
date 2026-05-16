@@ -101,7 +101,6 @@ public class DashboardController {
                 logCardController.setData(a.getConsumable().getName(), TimeFormatter.formatTo12Hour(a.getLogDateTime().toLocalTime()), a.getQuantity(), a.getUnit(), a.getNutritionDetails().getCalories(), true, false);
                 root.setPadding(new Insets(0, 0, 0, 0));
                 mealGridPanes.add(root);
-                System.out.println("ADDING: " + mealGridPanes);
             } catch (IOException e){
                 System.out.println("OH NNOI");
                 e.printStackTrace();

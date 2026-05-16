@@ -1,5 +1,8 @@
 package org.tin.oop2_capstone.model.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Food extends Consumable{
     private NutritionDetails nutrition;
     private boolean isPending;
@@ -23,6 +26,13 @@ public class Food extends Consumable{
     @Override
     public NutritionDetails getNutrition() {
         return nutrition; }
+
+    @Override
+    public List<Food> getConsumables() {
+        List<Food> foods = new ArrayList<>();
+        foods.add(this);
+        return foods;
+    }
 
     @Override
     public boolean isPending() {
