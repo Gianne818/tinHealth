@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import org.tin.oop2_capstone.database.repositories.ActivityRepository;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
+import org.tin.oop2_capstone.database.repositories.UserPrefRepository;
 import org.tin.oop2_capstone.database.repositories.UserRepository;
 import org.tin.oop2_capstone.model.entities.User;
 import org.tin.oop2_capstone.utils.SceneSwitcher;
@@ -31,7 +32,8 @@ public class LoginController {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-        User user = UserRepository.getUser(username, password);
+        UserRepository.getInstance().login(username, password);
+        User user = UserRepository.getInstance().getUser();
         if(user == null) {
             //todo show error message
             invalidCredentialsLabel.setManaged(true);

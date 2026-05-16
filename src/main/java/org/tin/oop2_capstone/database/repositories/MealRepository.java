@@ -2,6 +2,8 @@ package org.tin.oop2_capstone.database.repositories;
 
 import org.tin.oop2_capstone.database.RetrieveData;
 import org.tin.oop2_capstone.model.entities.Meal;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class MealRepository {
@@ -39,5 +41,14 @@ public class MealRepository {
 
     public static double getTodayCaloriesIn(int userId) {
         return RetrieveData.fetchUserTodayCaloriesIn(userId);
+    }
+
+    public void addMeal(Meal meal) {
+        if (userMeals != null) {
+            userMeals.add(0, meal); // Add to beginning of list
+        } else {
+            userMeals = new ArrayList<>();
+            userMeals.add(meal);
+        }
     }
 }

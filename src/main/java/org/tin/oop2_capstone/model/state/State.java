@@ -1,5 +1,7 @@
 package org.tin.oop2_capstone.model.state;
 
+import org.tin.oop2_capstone.controllers.FoodLogController;
+
 public interface State {
     /**
      * This is useful for the API stuff on the food log.
@@ -8,4 +10,5 @@ public interface State {
      * have a method like maybe handle(FoodLogController)
      * to be implemented by other states
      */
+    void handle(FoodLogController context);
 }

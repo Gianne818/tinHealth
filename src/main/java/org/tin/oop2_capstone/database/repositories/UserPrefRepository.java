@@ -2,12 +2,15 @@ package org.tin.oop2_capstone.database.repositories;
 
 import org.tin.oop2_capstone.database.DatabaseConnection;
 import org.tin.oop2_capstone.database.RetrieveData;
+import org.tin.oop2_capstone.model.entities.UserPreferences;
 
 import java.sql.*;
 
 public class UserPrefRepository {
 
     public static volatile UserPrefRepository instance;
+
+    public UserPreferences userPref;
 
     private UserPrefRepository() {
         System.out.println("UserPrefRepository is initialized for the first time.");
@@ -23,8 +26,20 @@ public class UserPrefRepository {
         }
         return instance;
     }
-
+//
     public static int getDailyCalorieInGoal(int userId) {
        return RetrieveData.fetchUserDailyCalorieInGoal(userId);
+    }
+
+    public UserPreferences getUserPref(){
+        return userPref;
+    }
+
+    public void setUserPref(int uid){
+        //something something
+    }
+
+    public int getPromptFrequency(int userId){
+        return RetrieveData.fetchUserPromptFrequency(userId);
     }
 }
