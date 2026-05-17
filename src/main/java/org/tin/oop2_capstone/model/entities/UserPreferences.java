@@ -7,6 +7,7 @@ import java.util.List;
 
 public class UserPreferences implements Serializable {
     /** implements serializable to be added for future .ser files **/
+    private static final long serialVersionUID = 1L;
 
     private String goalType;
     private double targetWeightKG;

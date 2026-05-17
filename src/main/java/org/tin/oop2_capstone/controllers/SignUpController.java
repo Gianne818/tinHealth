@@ -16,8 +16,11 @@ import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import org.tin.oop2_capstone.database.InsertData;
 import org.tin.oop2_capstone.database.RetrieveData;
+import org.tin.oop2_capstone.database.repositories.ActivityRepository;
+import org.tin.oop2_capstone.database.repositories.MealRepository;
 import org.tin.oop2_capstone.model.entities.User;
 import org.tin.oop2_capstone.model.entities.UserPreferences;
+import org.tin.oop2_capstone.services.SessionManager;
 import org.tin.oop2_capstone.utils.SceneSwitcher;
 
 import java.io.IOException;
@@ -279,11 +282,34 @@ public class SignUpController {
         int user_id = InsertData.insertUser(user);
 
         if (user_id != -1) {
+            //For defaulting missed values
+            if (userPref.getGoalType() == null || userPref.getGoalType().isBlank()) {
+                userPref.setGoalType("Maintain");
+            }
+            if (userPref.getDailyCalorieIn() == 0) {
+                userPref.setDailyCalorieIn(2000);
+            }
+            if (userPref.getDailyCalorieOut() == 0) {
+                userPref.setDailyCalorieOut(500);
+            }
+            if (userPref.getTheme() == null) {
+                userPref.setTheme("default");
+            }
+            userPref.setPromptFrequencyMins(60);
+
             InsertData.insertUserPref(userPref, user_id);
+
+            SessionManager.getInstance().setCurrentUser(user);
+            SessionManager.getInstance().setCurrentUserPrefs(userPref);
+
+            ActivityRepository.getInstance().fetchInitialActivityData(user_id);
+            MealRepository.getInstance().fetchInitialMealData(user_id);
+
+            user.setUid(user_id);
         } else {
             System.out.println("User insert failed, skipping userprefs.");
+            return;
         }
-
         SceneSwitcher.use(backButton, "main-view").setCss("application").setMinDimensions(900, 850).setMaximized(true).setResizeable(true).setTitle("+inHealth").switchScene();
 
     }
