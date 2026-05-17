@@ -15,6 +15,7 @@ import org.tin.oop2_capstone.database.repositories.ActivityRepository;
 import org.tin.oop2_capstone.model.entities.Activity;
 import org.tin.oop2_capstone.model.entities.ActivityLog;
 import org.tin.oop2_capstone.model.entities.ActivityType;
+import org.tin.oop2_capstone.services.SessionManager;
 import org.tin.oop2_capstone.utils.InputManager;
 import org.tin.oop2_capstone.utils.TimeFormatter;
 
@@ -24,6 +25,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.function.Predicate;
+
+import static org.tin.oop2_capstone.database.DeleteData.deleteActivity;
 
 public class ActivityLogController {
     @FXML private Button buttonAddEntry;
@@ -58,15 +61,21 @@ public class ActivityLogController {
         filteredList = new FilteredList<>(activityTypeNames);
         activityTypeComboBox.setItems(filteredList);
 
+        setupDynamicCalorieCalculation();
         InputManager.acceptOnlyDouble(textfieldDuration);
         InputManager.acceptOnlyDouble(textfieldCaloriesBurned);
     }
 
     private void initActivityTypeComboBox(){
         activityTypeComboBox.getEditor().textProperty().addListener((obs, oldVal, newVal) -> {
+            // Ignore programmatic changes (like when we call .clear() on button click)
+            if (!activityTypeComboBox.getEditor().isFocused()) {
+                return;
+            }
+
            String selected = activityTypeComboBox.getSelectionModel().getSelectedItem();
 
-            /* EXCERPT FROM FilteredList.java
+            /* EXCEPT FROM FilteredList.java
               The predicate that will match the elements that will be in this FilteredList.
               Elements not matching the predicate will be filtered-out.
               Null predicate means "always true" predicate, all elements will be matched.
@@ -105,33 +114,52 @@ public class ActivityLogController {
         });
     }
 
-
-
     private  void setActivityTypes(){
        activityTypeList.clear();
        activityTypeNames.clear();
-        activityTypeList = activityRepository.getActivityTypes();
-        for(ActivityType a : activityTypeList){
-            activityTypeNames.add(a.getName());
-        }
-//        activityTypeComboBox.setItems(activityTypeNames);
+       activityTypeList = activityRepository.getActivityTypes();
+       for(ActivityType a : activityTypeList){
+           activityTypeNames.add(a.getName());
+       }
     }
 
-    private void setActivityLog(){
-        // sample values;
-        activities = activityRepository.getUserActivities();
+    private void setActivityLog() {
+        // Good practice: Clear it here automatically
+        activityGridPanes.clear();
+        int currentUserId = SessionManager.getInstance().getCurrentUser().getUid();
+        activities = RetrieveData.fetchUserActivities(currentUserId);
 
-        for(Activity a : activities){
-            try{
+        for (Activity a : activities) {
+            try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/log-card.fxml"));
                 GridPane root = fxmlLoader.load();
                 root.getStylesheets().add(getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm());
                 root.getStyleClass().addAll("light", "activityLogScrollPane");
 
                 LogCardController logCardController = fxmlLoader.getController();
-                logCardController.setData(a.getActivityType().getName(), TimeFormatter.formatTo12Hour(a.getLogDateTime().toLocalTime()), a.getQuantity(), a.getUnit(), a.getCalories(), false, true);
+
+                // Create a final reference for the lambda context
+                final Activity currentActivity = a;
+
+                logCardController.setData(
+                        currentActivity.getActivityType().getName(),
+                        TimeFormatter.formatTo12Hour(currentActivity.getLogDateTime().toLocalTime()),
+                        currentActivity.getQuantity(),
+                        currentActivity.getUnit(),
+                        currentActivity.getCalories(),
+                        false,
+                        true,
+                        () -> {
+//                            System.out.println("ID to delete: " + currentActivity.getActivityId());
+                            boolean deleted = deleteActivity(currentActivity.getActivityId());
+                            if (deleted) {
+                                activityGridPanes.clear();
+                                setActivityLog();
+                            }
+                        }
+                );
                 activityGridPanes.add(root);
-            } catch (IOException e){
+            } catch (IOException e) {
                 System.out.println("OH NNOI");
                 e.printStackTrace();
             }
@@ -147,16 +175,106 @@ public class ActivityLogController {
         addEntryisVisible = !addEntryisVisible;
     }
 
+    // TODO: Convert the textfield inputs into strings and add them into the database(?)
+    // TODO: refresh the listview if it queries from the database to load new added activity(?)
     public void onButtonAddEntryClicked(ActionEvent actionEvent) {
-        //TODO: Convert the textfield inputs into strings and add them into the database(?)
+        try {
+            String activityName = activityTypeComboBox.getEditor().getText();
 
-        //TODO: refresh the listview if it queries from the database to load new added activity(?)
+            if (activityName == null || activityName.isEmpty()) return;
+
+            // 1. Find the ActivityType directly inside the Controller's local list
+            ActivityType selectedType = activityTypeList.stream()
+                    .filter(a -> a.getName().equalsIgnoreCase(activityName))
+                    .findFirst()
+                    .orElse(null);
+
+            if (selectedType == null) {
+                System.out.println("Activity type not found.");
+                return;
+            }
+
+            double duration = Double.parseDouble(textfieldDuration.getText());
+            double calories = Double.parseDouble(textfieldCaloriesBurned.getText());
+            int currentUserId = SessionManager.getInstance().getCurrentUser().getUid();
+
+            // 2. Build the Activity object right here
+            Activity newActivity = new Activity();
+            newActivity.setActivityType(selectedType);
+            newActivity.setQuantity(duration);
+            newActivity.setCalories(calories);
+            newActivity.setLogDateTime(LocalDateTime.now());
+
+            // 3. Pass the userId and the created activity object to the repository
+            boolean isAdded = activityRepository.addActivityRecord(currentUserId, newActivity);
+
+            if (isAdded) {
+                textfieldDuration.clear();
+                textfieldCaloriesBurned.clear();
+                activityTypeComboBox.getSelectionModel().clearSelection();
+                activityTypeComboBox.getEditor().clear();
+
+                activityGridPanes.clear();
+                setActivityLog();
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid numeric input.");
+        }
     }
 
     public void onButtonCancelClicked(ActionEvent actionEvent) {
         gridPaneAddEntry.setVisible(!addEntryisVisible);
         gridPaneAddEntry.setManaged(!addEntryisVisible);
         addEntryisVisible = !addEntryisVisible;
+
+        // Clear the input values
+        textfieldDuration.clear();
+        textfieldCaloriesBurned.clear();
+        activityTypeComboBox.getSelectionModel().clearSelection();
+        activityTypeComboBox.getEditor().clear();
     }
+
+    public double calculateCalories(double met, double weightKg, int durationMinutes) {
+        return (met * 3.5 * (weightKg / 200.0)) * durationMinutes;
+    }
+
+    private void setupDynamicCalorieCalculation() {
+        textfieldDuration.focusedProperty().addListener((obs, oldVal, isFocused) -> {
+            if (!isFocused) updateCalculatedCalories();
+        });
+
+        activityTypeComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            updateCalculatedCalories();
+        });
+    }
+
+    private void updateCalculatedCalories() {
+        String selectedName = activityTypeComboBox.getSelectionModel().getSelectedItem();
+        String durationText = textfieldDuration.getText();
+
+        if (selectedName != null && !durationText.isEmpty()) {
+            try {
+                ActivityType type = activityTypeList.stream()
+                        .filter(a -> a.getName().equals(selectedName))
+                        .findFirst()
+                        .orElse(null);
+
+                if (type != null) {
+                    int duration = Integer.parseInt(durationText);
+                    int currentUserId = SessionManager.getInstance().getCurrentUser().getUid();
+
+                    double weightKg = activityRepository.getUserCurrentWeight(currentUserId);
+                    double calories = calculateCalories(type.getMetValue(), weightKg, duration);
+
+                    textfieldCaloriesBurned.setText(String.format("%.2f", calories));
+                    textfieldCaloriesBurned.setStyle("-fx-text-fill: green;");
+                }
+            } catch (NumberFormatException e) {
+                textfieldCaloriesBurned.setText("Invalid");
+                textfieldCaloriesBurned.setStyle("-fx-text-fill: red;");
+            }
+        }
+    }
+
 
 }

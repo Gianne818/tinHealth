@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
  */
 
 public class Meal {
+    private int mealId;
     private MealType mealType;
     private Consumable consumable;
     private LocalDateTime logDateTime;
@@ -49,5 +50,11 @@ public class Meal {
 
     public NutritionDetails getNutritionDetails() {
         return nutritionDetails;
+    }
+
+    public int getMealId() { return mealId; }
+
+    public void setMealId(int mealId){
+        this.mealId = mealId;
     }
 }

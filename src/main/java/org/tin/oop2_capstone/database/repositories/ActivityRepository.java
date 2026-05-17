@@ -5,8 +5,8 @@ import org.tin.oop2_capstone.database.RetrieveData;
 import org.tin.oop2_capstone.model.entities.Activity;
 import org.tin.oop2_capstone.model.entities.ActivityType;
 import org.tin.oop2_capstone.model.entities.NutritionDetails;
+import static org.tin.oop2_capstone.database.InsertData.insertActivity;
 import java.util.*;
-
 
 public class ActivityRepository {
     /**
@@ -127,4 +127,26 @@ public class ActivityRepository {
 //        }
 //        return logs;
 //    }
+
+    public boolean addActivityRecord(int userId, Activity activity) {
+        if (activity == null || activity.getActivityType() == null) return false;
+
+        // Directly extract the pre-resolved data from the Activity object
+        boolean success = insertActivity(
+                userId,
+                activity.getActivityType().getActivityTypeId(),
+                activity.getQuantity(),
+                activity.getCalories()
+        );
+
+        if (success) {
+            // Refresh local list to include new entry
+            this.userActivities = RetrieveData.fetchUserActivities(userId);
+        }
+        return success;
+    }
+
+    public double getUserCurrentWeight(int userId) {
+        return RetrieveData.fetchUserLatestWeight(userId);
+    }
 }

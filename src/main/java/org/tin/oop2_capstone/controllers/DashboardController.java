@@ -28,6 +28,9 @@ import org.tin.oop2_capstone.model.entities.*;
 import org.tin.oop2_capstone.services.SessionManager;
 import org.tin.oop2_capstone.utils.TimeFormatter;
 
+import static org.tin.oop2_capstone.database.RetrieveData.fetchUserActivities;
+import static org.tin.oop2_capstone.database.RetrieveData.fetchUserMeals;
+
 public class DashboardController {
     @FXML
     private ScrollPane dashboardScrollPane;
@@ -107,10 +110,14 @@ public class DashboardController {
         initCaloriesLineChart();
     }
 
-    private void initRecentMealsList() {
-        mealsList = mealRepository.getUserMeals();
-        for (Meal a : mealsList) {
-            try {
+    private void initRecentMealsList(){
+        // Clear the old layout panes before fetching updated data
+        mealGridPanes.clear();
+        // Bypass the repository's stale cache by pulling live data straight from the database
+        mealsList = fetchUserMeals(userId);
+
+        for(Meal a : mealsList){
+            try{
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/log-card.fxml"));
                 GridPane root = fxmlLoader.load();
                 root.getStylesheets().add(getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm());
@@ -118,7 +125,7 @@ public class DashboardController {
                 root.getStyleClass().remove("cardContent");
 
                 LogCardController logCardController = fxmlLoader.getController();
-                logCardController.setData(a.getConsumable().getName(), TimeFormatter.formatTo12Hour(a.getLogDateTime().toLocalTime()), a.getQuantity(), a.getUnit(), a.getNutritionDetails().getCalories(), true, false);
+                logCardController.setData(a.getConsumable().getName(), TimeFormatter.formatTo12Hour(a.getLogDateTime().toLocalTime()), a.getQuantity(), a.getUnit(), a.getNutritionDetails().getCalories(), true, false, null);
                 root.setPadding(new Insets(0, 0, 0, 0));
                 mealGridPanes.add(root);
             } catch (IOException e) {
@@ -130,10 +137,12 @@ public class DashboardController {
         recentFoodsListView.setItems(mealGridPanes);
     }
 
-    private void initRecentActivitiesList() {
-        activityList = activityRepository.getUserActivities();
-        for (Activity a : activityList) {
-            try {
+    private void initRecentActivitiesList(){
+        // Clear the old layout panes before fetching updated data
+        activityGridPanes.clear();
+        activityList = fetchUserActivities(userId);
+        for(Activity a : activityList){
+            try{
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/log-card.fxml"));
                 GridPane root = fxmlLoader.load();
                 root.getStylesheets().add(getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm());
@@ -141,8 +150,7 @@ public class DashboardController {
                 root.getStyleClass().remove("cardContent");
 
                 LogCardController logCardController = fxmlLoader.getController();
-                logCardController.setData(a.getActivityType().getName(), TimeFormatter.formatTo12Hour(a.getLogDateTime().toLocalTime()), a.getQuantity(), a.getUnit(), a.getCalories(), true, false);
-                root.setPadding(new Insets(0, 0, 0, 0));
+                logCardController.setData(a.getActivityType().getName(), TimeFormatter.formatTo12Hour(a.getLogDateTime().toLocalTime()), a.getQuantity(), a.getUnit(), a.getCalories(), true, false, null);                root.setPadding(new Insets(0, 0, 0, 0));
                 activityGridPanes.add(root);
             } catch (IOException e) {
                 System.out.println("OH NNOI");

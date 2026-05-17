@@ -162,6 +162,23 @@ public class InsertData {
         return insertConsumable(consumable);
     }
 
+    public static boolean insertActivity(int userId, int activityTypeId, double quantity, double calories) {
+        String insertActivitySQL = "INSERT INTO Activities (user_id, activity_type_id, quantity, calories) VALUES (?, ?, ?, ?)";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(insertActivitySQL)) {
+
+            pstmt.setInt(1, userId);
+            pstmt.setInt(2, activityTypeId);
+            pstmt.setDouble(3, quantity);
+            pstmt.setDouble(4, calories);
+
+            return pstmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     /*
     try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
