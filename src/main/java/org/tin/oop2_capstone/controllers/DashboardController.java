@@ -29,34 +29,54 @@ import org.tin.oop2_capstone.services.SessionManager;
 import org.tin.oop2_capstone.utils.TimeFormatter;
 
 public class DashboardController {
-    @FXML private ScrollPane dashboardScrollPane;
-    @FXML private LineChart<?, ?> weeklyChart;
-    @FXML private CategoryAxis xAxis;
-    @FXML private NumberAxis yAxis;
+    @FXML
+    private ScrollPane dashboardScrollPane;
+    @FXML
+    private LineChart<?, ?> weeklyChart;
+    @FXML
+    private CategoryAxis xAxis;
+    @FXML
+    private NumberAxis yAxis;
 
-    @FXML private PieChart macroDistPieChart;
-    @FXML private Circle macroDistInnerHoleCircle;
+    @FXML
+    private PieChart macroDistPieChart;
+    @FXML
+    private Circle macroDistInnerHoleCircle;
 
     private ObservableList<PieChart.Data> macroDistData;
 
-    @FXML private Label proteinLabelMacro;
-    @FXML private Label carbsLabelMacro;
-    @FXML private Label fatsLabelMacro;
+    @FXML
+    private Label proteinLabelMacro;
+    @FXML
+    private Label carbsLabelMacro;
+    @FXML
+    private Label fatsLabelMacro;
 
-    @FXML private  Label caloriesInLabel;
-    @FXML private  Label caloriesOutLabel;
-    @FXML private  Label netCaloriesLabel;
-    @FXML private  Label activityStreakLabel;
+    @FXML
+    private Label caloriesInLabel;
+    @FXML
+    private Label caloriesOutLabel;
+    @FXML
+    private Label netCaloriesLabel;
+    @FXML
+    private Label activityStreakLabel;
 
-    @FXML private VBox recentFoodLogsContainer;
-    @FXML private VBox recentActivityLogsContainer;
+    @FXML
+    private VBox recentFoodLogsContainer;
+    @FXML
+    private VBox recentActivityLogsContainer;
 
-    @FXML private Label goalCaloriesLabelCaloriesIn;
-    @FXML private Label numActLabelCaloriesBurned;
-    @FXML private Label daysInARowHeader;
+    @FXML
+    private Label goalCaloriesLabelCaloriesIn;
+    @FXML
+    private Label numActLabelCaloriesBurned;
+    @FXML
+    private Label daysInARowHeader;
 
-    @FXML private ListView<GridPane> recentFoodsListView;
-    @FXML private ListView<GridPane> recentActivityListView;
+    @FXML
+    private ListView<GridPane> recentFoodsListView;
+    @FXML
+    private ListView<GridPane> recentActivityListView;
 
     private List<Meal> mealsList;
     private List<Activity> activityList;
@@ -87,10 +107,10 @@ public class DashboardController {
         initCaloriesLineChart();
     }
 
-    private void initRecentMealsList(){
+    private void initRecentMealsList() {
         mealsList = mealRepository.getUserMeals();
-        for(Meal a : mealsList){
-            try{
+        for (Meal a : mealsList) {
+            try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/log-card.fxml"));
                 GridPane root = fxmlLoader.load();
                 root.getStylesheets().add(getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm());
@@ -101,7 +121,7 @@ public class DashboardController {
                 logCardController.setData(a.getConsumable().getName(), TimeFormatter.formatTo12Hour(a.getLogDateTime().toLocalTime()), a.getQuantity(), a.getUnit(), a.getNutritionDetails().getCalories(), true, false);
                 root.setPadding(new Insets(0, 0, 0, 0));
                 mealGridPanes.add(root);
-            } catch (IOException e){
+            } catch (IOException e) {
                 System.out.println("OH NNOI");
                 e.printStackTrace();
             }
@@ -110,10 +130,10 @@ public class DashboardController {
         recentFoodsListView.setItems(mealGridPanes);
     }
 
-    private void initRecentActivitiesList(){
+    private void initRecentActivitiesList() {
         activityList = activityRepository.getUserActivities();
-        for(Activity a : activityList){
-            try{
+        for (Activity a : activityList) {
+            try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/log-card.fxml"));
                 GridPane root = fxmlLoader.load();
                 root.getStylesheets().add(getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm());
@@ -124,7 +144,7 @@ public class DashboardController {
                 logCardController.setData(a.getActivityType().getName(), TimeFormatter.formatTo12Hour(a.getLogDateTime().toLocalTime()), a.getQuantity(), a.getUnit(), a.getCalories(), true, false);
                 root.setPadding(new Insets(0, 0, 0, 0));
                 activityGridPanes.add(root);
-            } catch (IOException e){
+            } catch (IOException e) {
                 System.out.println("OH NNOI");
                 e.printStackTrace();
             }
@@ -137,14 +157,14 @@ public class DashboardController {
         PopupControl popup = new PopupControl();
         ToolTipController toolTipController;
 
-        try{
+        try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/tool-tip-view.fxml"));
             VBox root = fxmlLoader.load();
             popup.getScene().getStylesheets().add(getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm());
             root.getStyleClass().add("light");
             popup.getScene().setRoot(root);
             toolTipController = fxmlLoader.getController();
-        } catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             return;
         }
@@ -198,9 +218,9 @@ public class DashboardController {
         });
     }
 
-    private XYChart.Data<String, Number> findData(Series<String, Number> series, String category){
-        for(XYChart.Data<String, Number> d : series.getData()){
-            if(d.getXValue().equals(category)){
+    private XYChart.Data<String, Number> findData(Series<String, Number> series, String category) {
+        for (XYChart.Data<String, Number> d : series.getData()) {
+            if (d.getXValue().equals(category)) {
                 return d;
             }
         }
@@ -226,7 +246,7 @@ public class DashboardController {
         updateMacroDist(protein, carbs, fats);
     }
 
-    private void initCaloriesLineChart(){
+    private void initCaloriesLineChart() {
         xAxis.setCategories(FXCollections.observableArrayList(
                 "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"
         ));
@@ -277,7 +297,7 @@ public class DashboardController {
         setupGlobalTooltip(chart, calIn, calOut);
     }
 
-    private void initDashboardHeader(){
+    private void initDashboardHeader() {
         int userId = SessionManager.getInstance().getCurrentUser().getUid();
         double caloriesIn = MealRepository.getTodayCaloriesIn(userId);
         caloriesInLabel.setText(String.valueOf((int) caloriesIn));
@@ -296,7 +316,7 @@ public class DashboardController {
         int todayActivitiesCount = activityRepository.getTodayActivitiesCount();
         numActLabelCaloriesBurned.setText(todayActivitiesCount + (todayActivitiesCount <= 1 ? " Activity" : " Activities"));
 
-        String daysStringDisplay = (streak <= 1 ? "day" : "days in a row" );
+        String daysStringDisplay = (streak <= 1 ? "day" : "days in a row");
         daysInARowHeader.setText(daysStringDisplay);
     }
 

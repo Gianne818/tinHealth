@@ -311,23 +311,14 @@ public class HealthController {
         //Nutrient populate-r
         String[] days = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
         for (int i = 0; i < 7; i++) {
-            Number cals = i <= todayIndex ? dailyCals[i]  : null;
-            Number prot = i <= todayIndex ? dailyProt[i]  : null;
-            Number carb = i <= todayIndex ? dailyCarbs[i] : null;
-            Number fat  = i <= todayIndex ? dailyFats[i]  : null;
-            Number chol = i <= todayIndex ? dailyChol[i]  : null;
-            Number sod  = i <= todayIndex ? dailySod[i]   : null;
-            Number sug  = i <= todayIndex ? dailySug[i]   : null;
-            Number fib  = i <= todayIndex ? dailyFib[i]   : null;
-
-            calIn.getData().add(new XYChart.Data<>(days[i], cals));
-            protIn.getData().add(new XYChart.Data<>(days[i], prot));
-            carbIn.getData().add(new XYChart.Data<>(days[i], carb));
-            fatIn.getData().add(new XYChart.Data<>(days[i], fat));
-            cholesterolIn.getData().add(new XYChart.Data<>(days[i], chol));
-            sodiumIn.getData().add(new XYChart.Data<>(days[i], sod));
-            sugarIn.getData().add(new XYChart.Data<>(days[i], sug));
-            fiberIn.getData().add(new XYChart.Data<>(days[i], fib));
+            calIn.getData().add(new XYChart.Data<>(days[i], dailyCals[i]));
+            protIn.getData().add(new XYChart.Data<>(days[i], dailyProt[i]));
+            carbIn.getData().add(new XYChart.Data<>(days[i], dailyCarbs[i]));
+            fatIn.getData().add(new XYChart.Data<>(days[i], dailyFats[i]));
+            cholesterolIn.getData().add(new XYChart.Data<>(days[i], dailyChol[i]));
+            sodiumIn.getData().add(new XYChart.Data<>(days[i], dailySod[i]));
+            sugarIn.getData().add(new XYChart.Data<>(days[i], dailySug[i]));
+            fiberIn.getData().add(new XYChart.Data<>(days[i], dailyFib[i]));
         }
 
         NumberAxis yAxis = (NumberAxis) chart.getYAxis();

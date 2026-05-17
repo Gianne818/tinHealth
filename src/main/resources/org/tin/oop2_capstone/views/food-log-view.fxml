@@ -95,10 +95,10 @@
                      </children>
                   </GridPane>
 
-                   <GridPane fx:id="gridPaneAddEntry" hgap="10.0" managed="true" styleClass="cardContent" vgap="10.0" visible="true">
+                   <GridPane fx:id="gridPaneAddEntry" hgap="10.0" managed="false" styleClass="cardContent" vgap="10.0" visible="false">
                        <columnConstraints>
                            <ColumnConstraints hgrow="NEVER" maxWidth="179.0" minWidth="10.0" />
-                           <ColumnConstraints hgrow="NEVER" minWidth="200.0" />
+                           <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" prefWidth="600.0" />
                            <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" />
                        </columnConstraints>
                        <rowConstraints>
@@ -141,7 +141,7 @@
                         <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="1">
                            <children>
                               <Label styleClass="fieldLabel" text="Food Name" />
-                              <ProgressIndicator fx:id="apiWaitingProgressIndicator" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="17.0" managed="false" visible="false">
+                              <ProgressIndicator fx:id="apiWaitingProgressIndicator" managed="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="17.0" visible="false">
                                  <padding>
                                     <Insets bottom="2.0" />
                                  </padding>
