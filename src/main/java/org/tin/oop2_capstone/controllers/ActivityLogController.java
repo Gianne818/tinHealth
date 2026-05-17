@@ -25,15 +25,15 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class ActivityLogController {
-    @FXML Button buttonAddEntry;
-    @FXML Button buttonCancel;
-    @FXML ComboBox<String> activityTypeComboBox;
-    @FXML TextField textfieldDuration;
-    @FXML TextField textfieldCaloriesBurned;
-    @FXML GridPane gridPaneAddEntry;
-    @FXML Button buttonAddActivity;
-    @FXML ScrollPane activityLogScrollPane;
-    @FXML ListView <GridPane> activityLogListView;
+    @FXML private Button buttonAddEntry;
+    @FXML private Button buttonCancel;
+    @FXML private ComboBox<String> activityTypeComboBox;
+    @FXML private TextField textfieldDuration;
+    @FXML private TextField textfieldCaloriesBurned;
+    @FXML private GridPane gridPaneAddEntry;
+    @FXML private Button buttonAddActivity;
+    @FXML private ScrollPane activityLogScrollPane;
+    @FXML private ListView <GridPane> activityLogListView;
 
     // todo: get actual activityLog via logRepository
     private ObservableList<ActivityType> activityTypeList;

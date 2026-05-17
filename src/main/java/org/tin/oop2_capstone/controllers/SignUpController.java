@@ -69,7 +69,6 @@ public class SignUpController {
     private User user;
     private UserPreferences userPref;
 
-
     private void checkIfEnableNext(int curPanel){
         // todo check if fields are valid for each panel then setVisible if okay na
         // todo (future: handle diff input cases)
