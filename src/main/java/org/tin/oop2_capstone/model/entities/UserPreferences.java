@@ -8,9 +8,11 @@ import java.util.List;
 public class UserPreferences implements Serializable {
     /** implements serializable to be added for future .ser files **/
 
+    private int userPrefID;
     private String goalType;
     private double targetWeightKG;
     private boolean enableExercisePrompts;
+    private int exerciseIntensity;
     private boolean exerciseReminders;
     private boolean mealReminders;
     private boolean achievementNotifications;
@@ -18,24 +20,16 @@ public class UserPreferences implements Serializable {
     private String theme;
     private double dailyCalorieIn;
     private double dailyCalorieOut;
+    private int weeklyActivityReps;
 
-    public UserPreferences() {
-        this.goalType = "Lose";
-        this.targetWeightKG = 0;
-        this.dailyCalorieIn = 0;
-        this.dailyCalorieOut = 0;
-        this.enableExercisePrompts = true;
-        this.exerciseReminders = true;
-        this.mealReminders = true;
-        this.achievementNotifications = true;
-        this.promptFrequencyMins = 30;
-        this.theme = "Light";
-    }
+    public UserPreferences() {}
 
-    public UserPreferences(String goalType, double targetWeightKG, boolean enableExercisePrompts, boolean exerciseReminders, boolean mealReminders, boolean achievementNotifications, int promptFrequencyMins, String theme, double dailyCalorieIn, double dailyCalorieOut) {
+    public UserPreferences(int userPrefID, String goalType, double targetWeightKG, boolean enableExercisePrompts, int exerciseIntensity, boolean exerciseReminders, boolean mealReminders, boolean achievementNotifications, int promptFrequencyMins, String theme, double dailyCalorieIn, double dailyCalorieOut) {
+        this.userPrefID = userPrefID;
         this.goalType = goalType;
         this.targetWeightKG = targetWeightKG;
         this.enableExercisePrompts = enableExercisePrompts;
+        this.exerciseIntensity = exerciseIntensity;
         this.exerciseReminders = exerciseReminders;
         this.mealReminders = mealReminders;
         this.achievementNotifications = achievementNotifications;
@@ -45,7 +39,13 @@ public class UserPreferences implements Serializable {
         this.dailyCalorieOut = dailyCalorieOut;
     }
 
+    public int getUserPrefID() {
+        return userPrefID;
+    }
 
+    public void setUserPrefID(int userPrefID) {
+        this.userPrefID = userPrefID;
+    }
 
     public String getGoalType() {
         return goalType;
@@ -71,7 +71,13 @@ public class UserPreferences implements Serializable {
         this.enableExercisePrompts = enableExercisePrompts;
     }
 
+    public int getExerciseIntensity() {
+        return exerciseIntensity;
+    }
 
+    public void setExerciseIntensity(int exerciseIntensity) {
+        this.exerciseIntensity = exerciseIntensity;
+    }
 
     public boolean isExerciseReminders() {
         return exerciseReminders;
@@ -129,6 +135,13 @@ public class UserPreferences implements Serializable {
         this.dailyCalorieOut = dailyCalorieOut;
     }
 
+    public int getWeeklyActivityReps() {
+        return weeklyActivityReps;
+    }
+
+    public void setWeeklyActivityReps(int weeklyActivityReps) {
+        this.weeklyActivityReps = weeklyActivityReps;
+    }
 
     public NutritionDetails getTargetMacros(User user) {
         double calories = dailyCalorieIn;
@@ -184,4 +197,24 @@ public class UserPreferences implements Serializable {
 
         return new NutritionDetails(calories, proteinG, fatG, carbG, cholesterolMg, sodiumMg, sugarG, fiberG);
     }
+
+//    debugging shtuff
+//    public String toString() {
+//        return "UserPreferences{" +
+//                "userPrefID=" + userPrefID +
+//                ", goalType='" + goalType + '\'' +
+//                ", targetWeightKG=" + targetWeightKG +
+//                ", enableExercisePrompts=" + enableExercisePrompts +
+//                ", exerciseIntensity=" + exerciseIntensity +
+//                ", exerciseReminders=" + exerciseReminders +
+//                ", mealReminders=" + mealReminders +
+//                ", achievementNotifications=" + achievementNotifications +
+//                ", promptFrequencyMins=" + promptFrequencyMins +
+//                ", theme='" + theme + '\'' +
+//                ", dailyCalorieIn=" + dailyCalorieIn +
+//                ", dailyCalorieOut=" + dailyCalorieOut +
+//                ", weeklyActivityReps=" + weeklyActivityReps +
+//                '}';
+//    }
+
 }

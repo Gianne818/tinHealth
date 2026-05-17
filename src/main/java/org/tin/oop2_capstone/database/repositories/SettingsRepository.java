@@ -1,5 +1,6 @@
 package org.tin.oop2_capstone.database.repositories;
 
+import org.tin.oop2_capstone.database.RetrieveData;
 import org.tin.oop2_capstone.model.entities.UserPreferences;
 import org.tin.oop2_capstone.services.SessionManager;
 
@@ -90,6 +91,23 @@ public class SettingsRepository {
         storeUserPreferences(preferences);
         return true;
     }
+
+    //Overload save for SettingsController compatibility
+    public boolean save(UserPreferences preferences, int userId) {
+        if (!areUserPreferencesValid(preferences)) {
+            return false;
+        }
+
+        boolean dbSuccess = RetrieveData.updateUserPreferences(userId, preferences);
+        if (!dbSuccess) {
+            return false;
+        }
+
+        // Sync session so every other controller sees the new values immediately
+        SessionManager.getInstance().setCurrentUserPrefs(preferences);
+        return true;
+    }
+
     public UserPreferences load() {
         return SessionManager.getInstance().getCurrentUserPrefs();
     }
