@@ -29,24 +29,24 @@ import org.tin.oop2_capstone.services.SessionManager;
 import org.tin.oop2_capstone.utils.TimeFormatter;
 
 public class DashboardController {
-    @FXML ScrollPane dashboardScrollPane;
+    @FXML private ScrollPane dashboardScrollPane;
     @FXML private LineChart<?, ?> weeklyChart;
     @FXML private CategoryAxis xAxis;
     @FXML private NumberAxis yAxis;
 
-    @FXML PieChart macroDistPieChart;
-    @FXML Circle macroDistInnerHoleCircle;
+    @FXML private PieChart macroDistPieChart;
+    @FXML private Circle macroDistInnerHoleCircle;
 
-    ObservableList<PieChart.Data> macroDistData;
+    private ObservableList<PieChart.Data> macroDistData;
 
     @FXML private Label proteinLabelMacro;
     @FXML private Label carbsLabelMacro;
     @FXML private Label fatsLabelMacro;
 
-    @FXML public Label caloriesInLabel;
-    @FXML public Label caloriesOutLabel;
-    @FXML public Label netCaloriesLabel;
-    @FXML public Label activityStreakLabel;
+    @FXML private  Label caloriesInLabel;
+    @FXML private  Label caloriesOutLabel;
+    @FXML private  Label netCaloriesLabel;
+    @FXML private  Label activityStreakLabel;
 
     @FXML private VBox recentFoodLogsContainer;
     @FXML private VBox recentActivityLogsContainer;
@@ -55,8 +55,8 @@ public class DashboardController {
     @FXML private Label numActLabelCaloriesBurned;
     @FXML private Label daysInARowHeader;
 
-    @FXML ListView<GridPane> recentFoodsListView;
-    @FXML ListView<GridPane> recentActivityListView;
+    @FXML private ListView<GridPane> recentFoodsListView;
+    @FXML private ListView<GridPane> recentActivityListView;
 
     private List<Meal> mealsList;
     private List<Activity> activityList;

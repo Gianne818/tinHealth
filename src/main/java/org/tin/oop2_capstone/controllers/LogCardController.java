@@ -7,12 +7,12 @@ import javafx.scene.shape.SVGPath;
 
 
 public class LogCardController {
-    @FXML Label logNameLabel;
-    @FXML Label timeLabel;
-    @FXML Label numberLabel;
-    @FXML Label unitLabel;
-    @FXML Label kcalLabel;
-    @FXML SVGPath deleteSVG;
+    @FXML private Label logNameLabel;
+    @FXML private Label timeLabel;
+    @FXML private Label numberLabel;
+    @FXML private Label unitLabel;
+    @FXML private Label kcalLabel;
+    @FXML private SVGPath deleteSVG;
 
     @FXML Separator bottomSeparator;
 

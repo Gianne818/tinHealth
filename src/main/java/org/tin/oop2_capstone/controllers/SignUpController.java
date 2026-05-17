@@ -21,45 +21,44 @@ import java.util.ArrayList;
 
 public class SignUpController {
 
-    @FXML Label loginLabel;
-    @FXML VBox createAccountVBox;
-    @FXML Button signUpButton;
-    @FXML Label passwordErrorLabel;
-    @FXML Label genericErrorLabel;
+    @FXML private Label loginLabel;
+    @FXML private VBox createAccountVBox;
+    @FXML private Button signUpButton;
+    @FXML private Label passwordErrorLabel;
+    @FXML private Label genericErrorLabel;
 
-    @FXML TextField fullNameTextField;
-    @FXML TextField userNameTextField;
-    @FXML TextField emailTextField;
-    @FXML TextField passwordTextField;
-    @FXML TextField confirmPasswordTextField;
-    ObservableList<TextField> fields;
+    @FXML private TextField fullNameTextField;
+    @FXML private TextField userNameTextField;
+    @FXML private TextField emailTextField;
+    @FXML private TextField passwordTextField;
+    @FXML private TextField confirmPasswordTextField;
+    private ObservableList<TextField> fields;
 
-    @FXML BorderPane onBoardingBorderPane;
-    @FXML ProgressBar onBoardingProgressBar;
-    @FXML VBox onBoardingVBox1;
-    @FXML VBox onBoardingVBox2;
-    @FXML VBox onBoardingVBox3;
-    ObservableList<VBox> panels;
-    @FXML Button nextButton;
-    @FXML Button backButton;
+    @FXML private BorderPane onBoardingBorderPane;
+    @FXML private ProgressBar onBoardingProgressBar;
+    @FXML private VBox onBoardingVBox1;
+    @FXML private VBox onBoardingVBox2;
+    @FXML private VBox onBoardingVBox3;
+    private ObservableList<VBox> panels;
+    @FXML private Button nextButton;
+    @FXML private Button backButton;
 
-    @FXML GridPane sedentaryGridPane;
-    @FXML GridPane lightlyActiveGridPane;
-    @FXML GridPane moderatelyActiveGridPane;
-    @FXML GridPane veryActiveGridPane;
-    @FXML GridPane extremelyActiveGridPane;
-    ObservableList<GridPane> activityLevels;
+    @FXML private GridPane sedentaryGridPane;
+    @FXML private GridPane lightlyActiveGridPane;
+    @FXML private GridPane moderatelyActiveGridPane;
+    @FXML private GridPane veryActiveGridPane;
+    @FXML private GridPane extremelyActiveGridPane;
+    private ObservableList<GridPane> activityLevels;
 
-    @FXML VBox continueVBox;
-    @FXML Button continueButton;
+    @FXML private VBox continueVBox;
+    @FXML private Button continueButton;
 
-    @FXML DatePicker bdayDatePicker;
-    @FXML ChoiceBox<String> genderChoiceBox;
-    @FXML TextField currentHeightTextField, currentWeightTextField, targetWeightTextField;
+    @FXML private DatePicker bdayDatePicker;
+    @FXML private ChoiceBox<String> genderChoiceBox;
+    @FXML private TextField currentHeightTextField, currentWeightTextField, targetWeightTextField;
 
     private GridPane currSelectedActivity;
     int curPanel = 0;
-
 
     private void checkIfEnableNext(int curPanel){
         switch (curPanel){
