@@ -465,7 +465,7 @@ public class RetrieveData {
                 user.setFullname(rs.getString("fullname"));
                 user.setUsername(rs.getString("username"));
                 user.setEmail(rs.getString("email"));
-                user.setPassword(rs.getString("password_hash"));
+                user.setPasswordNonHashed(rs.getString("password_hash"));
                 user.setAge(rs.getInt("age"));
                 user.setMale("Male".equals(rs.getString("gender")));
                 user.setWeightKg(rs.getDouble("weight_kg"));

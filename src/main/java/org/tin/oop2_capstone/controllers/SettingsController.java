@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import org.tin.oop2_capstone.database.repositories.SettingsRepository;
 import org.tin.oop2_capstone.model.entities.UserPreferences;
 import org.tin.oop2_capstone.services.SessionManager;
+import org.tin.oop2_capstone.utils.InputManager;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -64,6 +65,8 @@ public class SettingsController implements Initializable {
         promptFrequency.setSnapToTicks(true);
         promptFrequency.setShowTickLabels(true);
         promptFrequency.setShowTickMarks(true);
+
+        InputManager.acceptOnlyDouble(targetWeightTextField);
     }
 
     private void loadUserPreferences() {

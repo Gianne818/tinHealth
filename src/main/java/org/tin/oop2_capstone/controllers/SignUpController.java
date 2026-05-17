@@ -21,6 +21,7 @@ import org.tin.oop2_capstone.database.repositories.MealRepository;
 import org.tin.oop2_capstone.model.entities.User;
 import org.tin.oop2_capstone.model.entities.UserPreferences;
 import org.tin.oop2_capstone.services.SessionManager;
+import org.tin.oop2_capstone.utils.InputManager;
 import org.tin.oop2_capstone.utils.SceneSwitcher;
 
 import java.io.IOException;
@@ -142,6 +143,11 @@ public class SignUpController {
         /* Initialize nako daan ang user and userpref so that i can just use setters for each fields */
         user = new User();
         userPref = new UserPreferences();
+
+        /* optimize textfields to restrict numeric values only (integer || decimal) */
+        InputManager.acceptOnlyDouble(currentHeightTextField);
+        InputManager.acceptOnlyDouble(currentWeightTextField);
+        InputManager.acceptOnlyDouble(targetWeightTextField);
     }
 
     public void onBackButtonClick(ActionEvent event){
@@ -251,7 +257,7 @@ public class SignUpController {
             user.setFullname(fullName);
             user.setEmail(email);
             user.setUsername(userName);
-            user.setPassword(pass);
+            user.setPasswordHashed(pass);
 
             changeElementAccessibility(createAccountVBox, false, true, true);
             changeElementAccessibility(onBoardingBorderPane, true, false, true);

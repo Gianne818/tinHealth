@@ -13,7 +13,7 @@ public class User implements Serializable {
     private String username;
     private double weightKg;
     private double heightCm;
-    private String password;
+    private String passwordHashed;
     private int age;
     private boolean isMale;
     private String activityLevel;
@@ -28,7 +28,7 @@ public class User implements Serializable {
         this.username = username;
         this.weightKg = weightKg;
         this.heightCm = heightCm;
-        this.password = password;
+        this.passwordHashed = String.valueOf(password.hashCode()); // simple built-in hashing
         this.age = Period.between(dateOfBirth, LocalDate.now()).getYears();
         this.isMale = isMale;
         this.activityLevel = activityLevel;
@@ -52,7 +52,7 @@ public class User implements Serializable {
     public String getUsername() { return username; }
     public double getWeightKg() { return weightKg; }
     public double getHeightCm()  { return heightCm; }
-    public String getPassword() { return password; }
+    public String getPasswordHashed() { return passwordHashed; }
     public boolean getIsMale(){ return isMale; }
 
     public String getActivityLevel() {
@@ -87,12 +87,14 @@ public class User implements Serializable {
         isMale = male;
     }
 
-    public void setPassword(String password) {
-        // set appropriate hashing algo here
-        // For now wala lang sa
-        // TODO: SET HASHING ALGO
-        this.password = password;
+    public void setPasswordHashed(String password) {
+        this.passwordHashed = String.valueOf(password.hashCode()); // simple built-in hashing
     }
+
+    public void setPasswordNonHashed(String passwordHashed){
+        this.passwordHashed = passwordHashed; // this is for retrieving from database since it is already hashed there
+    }
+
 
     @Override
     public String toString() {
@@ -103,7 +105,7 @@ public class User implements Serializable {
                 ", username='" + username + '\'' +
                 ", weightKg=" + weightKg +
                 ", heightCm=" + heightCm +
-                ", password='" + password + '\'' +
+                ", password='" + passwordHashed + '\'' +
                 ", age=" + age +
                 ", isMale=" + isMale +
                 ", activityLevel='" + activityLevel + '\'' +

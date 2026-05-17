@@ -15,6 +15,7 @@ import org.tin.oop2_capstone.database.repositories.ActivityRepository;
 import org.tin.oop2_capstone.model.entities.Activity;
 import org.tin.oop2_capstone.model.entities.ActivityLog;
 import org.tin.oop2_capstone.model.entities.ActivityType;
+import org.tin.oop2_capstone.utils.InputManager;
 import org.tin.oop2_capstone.utils.TimeFormatter;
 
 import java.io.IOException;
@@ -57,6 +58,9 @@ public class ActivityLogController {
 
         filteredList = new FilteredList<>(activityTypeNames);
         activityTypeComboBox.setItems(filteredList);
+
+        InputManager.acceptOnlyDouble(textfieldDuration);
+        InputManager.acceptOnlyDouble(textfieldCaloriesBurned);
     }
 
     private void initActivityTypeComboBox(){

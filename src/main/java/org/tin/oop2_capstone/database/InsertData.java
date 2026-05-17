@@ -191,7 +191,7 @@ public class InsertData {
             pstmt.setString(1, user.getFullname());
             pstmt.setString(2, user.getUsername());
             pstmt.setString(3, user.getEmail());
-            pstmt.setString(4, user.getPassword());
+            pstmt.setString(4, user.getPasswordHashed());
             pstmt.setInt(5, user.getAge());
             pstmt.setObject(6, user.getDateOfBirth());
             pstmt.setString(7, user.getIsMale() ? "Male" : "Female");
