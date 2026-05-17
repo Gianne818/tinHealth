@@ -11,7 +11,6 @@ public class IdleState implements State {
         // Hide loading spinner
         // Hide error text
         // Enable adding food log functionality
-        context.enableFoodLogInput();
         context.hideLoadingIndicator();
         context.hideErrorMessage();
     }

@@ -12,7 +12,6 @@ public class LoadingState implements State {
         // Show loading spinner
         // Disable user actions while waiting for API
         context.showLoadingIndicator();
-        context.disableFoodLogInput();
         context.hideErrorMessage();
     }
 }

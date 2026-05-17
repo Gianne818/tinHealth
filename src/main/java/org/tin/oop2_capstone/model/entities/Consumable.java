@@ -17,6 +17,10 @@ public abstract class Consumable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public abstract List<Food> getConsumables();
 
     public abstract NutritionDetails getNutrition();

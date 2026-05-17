@@ -11,9 +11,8 @@ public class FoodAPI {
     public static String getFoodData(String query) {
         try {
             String urlString = "https://api.nal.usda.gov/fdc/v1/foods/search?query=" + query
-                    + "&dataType=Foundation,SR%20Legacy&pageSize=5&api_key=" + FOOD_API_KEY;
-
-            System.out.println("REached here");
+                    + "&dataType=Foundation,SR%20Legacy,Branded&pageSize=15&api_key=" + FOOD_API_KEY;
+            System.out.println("QUERY: " + query);
             return fetch(urlString);
         } catch (Exception e) {
             e.printStackTrace();
