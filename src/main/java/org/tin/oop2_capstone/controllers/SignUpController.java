@@ -296,6 +296,8 @@ public class SignUpController {
                 userPref.setTheme("default");
             }
             userPref.setPromptFrequencyMins(60);
+            userPref.setWeeklyActivityReps(3);   // matches DB default
+            userPref.setExerciseIntensity(5);    // matches DB default
 
             user.setUid(user_id);
 

@@ -1,6 +1,7 @@
 package org.tin.oop2_capstone.database.repositories;
 
 import org.tin.oop2_capstone.database.RetrieveData;
+import org.tin.oop2_capstone.database.UpdateData;
 import org.tin.oop2_capstone.model.entities.UserPreferences;
 import org.tin.oop2_capstone.services.SessionManager;
 
@@ -98,7 +99,7 @@ public class SettingsRepository {
             return false;
         }
 
-        boolean dbSuccess = RetrieveData.updateUserPreferences(userId, preferences);
+        boolean dbSuccess = UpdateData.updateUserPreferences(userId, preferences);
         if (!dbSuccess) {
             return false;
         }
