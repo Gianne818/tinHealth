@@ -148,30 +148,45 @@ public class ActivityLogController {
         addEntryisVisible = !addEntryisVisible;
     }
 
+    // TODO: Convert the textfield inputs into strings and add them into the database(?)
+    // TODO: refresh the listview if it queries from the database to load new added activity(?)
     public void onButtonAddEntryClicked(ActionEvent actionEvent) {
-        //TODO: Convert the textfield inputs into strings and add them into the database(?)
-        //TODO: refresh the listview if it queries from the database to load new added activity(?)
         try {
             String activityName = activityTypeComboBox.getEditor().getText();
 
             if (activityName == null || activityName.isEmpty()) return;
 
+            // 1. Find the ActivityType directly inside the Controller's local list
+            ActivityType selectedType = activityTypeList.stream()
+                    .filter(a -> a.getName().equalsIgnoreCase(activityName))
+                    .findFirst()
+                    .orElse(null);
+
+            if (selectedType == null) {
+                System.out.println("Activity type not found.");
+                return;
+            }
+
             double duration = Double.parseDouble(textfieldDuration.getText());
             double calories = Double.parseDouble(textfieldCaloriesBurned.getText());
-            int currentUserId = 1; // Replace with actual Session/Login ID
+            int currentUserId = 1;
 
-            boolean isAdded = activityRepository.addActivityRecord(currentUserId, activityName, duration, calories);
+            // 2. Build the Activity object right here
+            Activity newActivity = new Activity();
+            newActivity.setActivityType(selectedType);
+            newActivity.setQuantity(duration);
+            newActivity.setCalories(calories);
+            newActivity.setLogDateTime(LocalDateTime.now());
+
+            // 3. Pass the userId and the created activity object to the repository
+            boolean isAdded = activityRepository.addActivityRecord(currentUserId, newActivity);
 
             if (isAdded) {
-                // Clear UI for the next entry
                 textfieldDuration.clear();
                 textfieldCaloriesBurned.clear();
                 activityTypeComboBox.getSelectionModel().clearSelection();
                 activityTypeComboBox.getEditor().clear();
 
-                // Removed the lines that closed gridPaneAddEntry so it stays open...
-
-                // Refresh UI List
                 activityGridPanes.clear();
                 setActivityLog();
             }
