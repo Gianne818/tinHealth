@@ -15,16 +15,13 @@ public class RetrieveData {
 
     // ----------- Activity Retrieve Operations -----------
 
-    public static List<Activity> fetchUserActivities(int userId){
+    public static List<Activity> fetchUserActivities(int userId) {
         List<Activity> activities = new ArrayList<>();
-        // ORDER BY a.log_timestamp DESC
-        String query = """
-            SELECT at.activity_type_id, at.met_value, at.name, a.quantity, a.calories, a.log_timestamp
-            FROM Activities a
-            JOIN ActivityTypes at ON a.activity_type_id = at.activity_type_id
-            WHERE a.user_id = ?
-            ORDER BY a.log_timestamp DESC 
-        """;
+        // Ensure your SQL query selects the 'act_id' column
+        String query = "SELECT a.act_id, a.activity_type_id, a.quantity, a.calories, a.log_timestamp, t.name, t.met_value " +
+                "FROM Activities a " +
+                "JOIN ActivityTypes t ON a.activity_type_id = t.activity_type_id " +
+                "WHERE a.user_id = ? ORDER BY a.log_timestamp DESC";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -33,12 +30,18 @@ public class RetrieveData {
             ResultSet rs = stmt.executeQuery();
 
             while(rs.next()) {
-                activities.add(new Activity(new ActivityType(rs.getInt("activity_type_id"), rs.getString("name"), rs.getDouble("met_value")),
+                Activity activity = new Activity(
+                        new ActivityType(rs.getInt("activity_type_id"), rs.getString("name"), rs.getDouble("met_value")),
                         rs.getTimestamp("log_timestamp").toLocalDateTime(),
                         "minutes",
                         rs.getDouble("quantity"),
                         rs.getDouble("calories")
-                ));
+                );
+
+                // FIX: Map the database ID to the object so delete functions work
+                activity.setActivityId(rs.getInt("act_id"));
+
+                activities.add(activity);
             }
             return activities;
         } catch (SQLException e) {
@@ -321,7 +324,7 @@ public class RetrieveData {
     public static List<Meal> fetchUserMeals(int userId) {
         List<Meal> meals = new ArrayList<>();
         String query = """
-            SELECT m.meal_type, c.name, m.serving_size, m.serving_units, m.log_timestamp,
+            SELECT m.meal_id, m.meal_type, c.name, m.serving_size, m.serving_units, m.log_timestamp,
                    nd.calories, nd.protein, nd.fats, nd.carbs, nd.cholesterol, nd.sodium, nd.sugar, nd.fiber
             FROM Meals m
             JOIN Consumables c ON m.consumable_id = c.consumable_id
@@ -347,10 +350,15 @@ public class RetrieveData {
 
                 MealType type = MealType.valueOf(rs.getString("meal_type").toUpperCase());
 
-                meals.add(new Meal(
+                Meal meal = new Meal(
                         type, food, rs.getTimestamp("log_timestamp").toLocalDateTime(),
                         rs.getDouble("serving_size"), rs.getString("serving_units")
-                ));
+                );
+
+                // Map the database ID to the object so delete works
+                meal.setMealId(rs.getInt("meal_id"));
+
+                meals.add(meal);
             }
         } catch (SQLException e) {
             e.printStackTrace();

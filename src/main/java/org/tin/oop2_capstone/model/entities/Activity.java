@@ -8,6 +8,7 @@ public class Activity {
     private String unit;
     private double quantity;
     private double calories;
+    private int activityId;
 
     // todo: remove calorie from parameter and calculate based on intensity and user info
     // todo: remove String name parameter on constructor and field and replace with activityType.
@@ -29,6 +30,10 @@ public class Activity {
     }
 
     // Setters
+    public void setActivityId(int activityId) {
+        this.activityId = activityId;
+    }
+
     public void setActivityType(ActivityType activityType) {
         this.activityType = activityType;
     }
@@ -54,6 +59,10 @@ public class Activity {
     }
 
     // Getters
+    public int getActivityId() {
+        return activityId;
+    }
+
     public ActivityType getActivityType() {
         return activityType;
     }

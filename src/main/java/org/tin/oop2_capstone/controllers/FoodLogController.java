@@ -193,11 +193,12 @@ public class FoodLogController {
     }
 
     private void setFoodLog() {
-        // 1. Get the data from the repository
-        meals = mealRepository.getUserMeals();
+        // FIX: Bypass repository cache by pulling live rows using the session User ID
+        int currentUserId = UserRepository.getInstance().getUser().getUid();
+        meals = org.tin.oop2_capstone.database.RetrieveData.fetchUserMeals(currentUserId);
 
         if (meals != null) {
-            for(Meal m : meals) {
+            for (Meal m : meals) {
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/log-card.fxml"));
                     GridPane root = fxmlLoader.load();
@@ -206,7 +207,7 @@ public class FoodLogController {
 
                     LogCardController logCardController = fxmlLoader.getController();
 
-                    //gathering data
+                    // gathering data
                     String foodName = m.getConsumable().getName();
                     String mealType = m.getMealType().name().charAt(0) + m.getMealType().name().substring(1).toLowerCase();
                     String logTime = mealType + " • " + TimeFormatter.formatTo12Hour(m.getLogDateTime().toLocalTime());
@@ -214,8 +215,26 @@ public class FoodLogController {
                     String unit = m.getUnit();
                     double totalCalories = m.getNutritionDetails().getCalories() * quantity;
 
-                    //load data into
-                    logCardController.setData(foodName, logTime, quantity, unit, totalCalories, false, true);
+                    final Meal currentMeal = m;
+
+                    logCardController.setData(
+                            foodName,
+                            logTime,
+                            quantity,
+                            unit,
+                            totalCalories,
+                            false,
+                            true,
+                            () -> {
+                                System.out.println("ID to delete: " + currentMeal.getMealId());
+                                boolean deleted = org.tin.oop2_capstone.database.DeleteData.deleteMeal(currentMeal.getMealId());
+                                if (deleted) {
+                                    // Clear and refresh UI list cleanly
+                                    foodGridPanes.clear();
+                                    setFoodLog();
+                                }
+                            }
+                    );
 
                     foodGridPanes.add(root);
                 } catch (IOException e) {

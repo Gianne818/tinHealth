@@ -98,8 +98,7 @@ public class DashboardController {
                 root.getStyleClass().remove("cardContent");
 
                 LogCardController logCardController = fxmlLoader.getController();
-                logCardController.setData(a.getConsumable().getName(), TimeFormatter.formatTo12Hour(a.getLogDateTime().toLocalTime()), a.getQuantity(), a.getUnit(), a.getNutritionDetails().getCalories(), true, false);
-                root.setPadding(new Insets(0, 0, 0, 0));
+                logCardController.setData(a.getConsumable().getName(), TimeFormatter.formatTo12Hour(a.getLogDateTime().toLocalTime()), a.getQuantity(), a.getUnit(), a.getNutritionDetails().getCalories(), true, false, null);                root.setPadding(new Insets(0, 0, 0, 0));
                 mealGridPanes.add(root);
             } catch (IOException e){
                 System.out.println("OH NNOI");
@@ -121,8 +120,7 @@ public class DashboardController {
                 root.getStyleClass().remove("cardContent");
 
                 LogCardController logCardController = fxmlLoader.getController();
-                logCardController.setData(a.getActivityType().getName(), TimeFormatter.formatTo12Hour(a.getLogDateTime().toLocalTime()), a.getQuantity(), a.getUnit(), a.getCalories(), true, false);
-                root.setPadding(new Insets(0, 0, 0, 0));
+                logCardController.setData(a.getActivityType().getName(), TimeFormatter.formatTo12Hour(a.getLogDateTime().toLocalTime()), a.getQuantity(), a.getUnit(), a.getCalories(), true, false, null);                root.setPadding(new Insets(0, 0, 0, 0));
                 activityGridPanes.add(root);
             } catch (IOException e){
                 System.out.println("OH NNOI");

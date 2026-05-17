@@ -118,21 +118,44 @@ public class ActivityLogController {
        }
     }
 
-    private void setActivityLog(){
-        // sample values;
+    private void setActivityLog() {
         activities = activityRepository.getUserActivities();
 
-        for(Activity a : activities){
-            try{
+        for (Activity a : activities) {
+            try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/log-card.fxml"));
                 GridPane root = fxmlLoader.load();
                 root.getStylesheets().add(getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm());
                 root.getStyleClass().addAll("light", "activityLogScrollPane");
 
                 LogCardController logCardController = fxmlLoader.getController();
-                logCardController.setData(a.getActivityType().getName(), TimeFormatter.formatTo12Hour(a.getLogDateTime().toLocalTime()), a.getQuantity(), a.getUnit(), a.getCalories(), false, true);
+
+                // Create a final reference for the lambda context
+                final Activity currentActivity = a;
+
+                logCardController.setData(
+                        currentActivity.getActivityType().getName(),
+                        TimeFormatter.formatTo12Hour(currentActivity.getLogDateTime().toLocalTime()),
+                        currentActivity.getQuantity(),
+                        currentActivity.getUnit(),
+                        currentActivity.getCalories(),
+                        false,
+                        true,
+                        () -> {
+                            System.out.println("ID to delete: " + currentActivity.getActivityId());
+                            boolean deleted = org.tin.oop2_capstone.database.DeleteData.deleteActivity(currentActivity.getActivityId());
+                            if (deleted) {
+                                // Force repository cache to pull the updated data from DB
+                                activityRepository.fetchInitialActivityData(1); // Use your current session userId instead of 1 if dynamic
+
+                                // Clear and refresh UI list
+                                activityGridPanes.clear();
+                                setActivityLog();
+                            }
+                        }
+                );
                 activityGridPanes.add(root);
-            } catch (IOException e){
+            } catch (IOException e) {
                 System.out.println("OH NNOI");
                 e.printStackTrace();
             }
@@ -249,5 +272,12 @@ public class ActivityLogController {
         }
     }
 
+    /* TODO: make a deleteSVG onclicklistener, when clicked, it will delete the item like FROM `Activities`:
+    "DELETE FROM Activities WHERE `Activities`.`act_id` = 11"?
+    btw the deleteSVG fx id is at: log-card.fxml: org/tin/oop2_capstone/views/log-card.fxml
+
+     put it in: DeleteData.java file:
+
+     */
 
 }
