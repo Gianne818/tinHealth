@@ -72,8 +72,7 @@ public class SignUpController {
                 break;
             case 1:
                 if(!currentHeightTextField.getText().isEmpty() &&
-                        !currentWeightTextField.getText().isEmpty() &&
-                        !targetWeightTextField.getText().isEmpty()){
+                        !currentWeightTextField.getText().isEmpty()){
                     nextButton.setDisable(false);
                 } else {
                     nextButton.setDisable(true);
@@ -126,9 +125,7 @@ public class SignUpController {
         currentWeightTextField.textProperty().addListener((obs, oldVal, newVal) -> {
             checkIfEnableNext(curPanel);
         });
-        targetWeightTextField.textProperty().addListener((obs, oldVal, newVal) -> {
-            checkIfEnableNext(curPanel);
-        });
+
     }
 
     public void onBackButtonClick(ActionEvent event){
