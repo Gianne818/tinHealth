@@ -4,16 +4,14 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
+//CHECK
 public class FoodAPI {
-    private static final String FOOD_API_KEY = System.getenv("var1");
+    private static final String FOOD_API_KEY = "IyFOfsOqFASMkLhvVoLpIntMChfeFviV04ucj5A6";
 
     public static String getFoodData(String query) {
         try {
             String urlString = "https://api.nal.usda.gov/fdc/v1/foods/search?query=" + query
-                    + "&dataType=Foundation,SR%20Legacy&pageSize=5&api_key=" + FOOD_API_KEY;
-
-            System.out.println("REached here");
+                    + "&dataType=Foundation,SR%20Legacy,Branded&pageSize=15&api_key=" + FOOD_API_KEY;
             return fetch(urlString);
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,7 +64,8 @@ public class FoodAPI {
                 conn.disconnect();
                 System.out.println("API Error: " + responseCode + ", retries: " + i);
                 System.out.println("Retrying");
-                Thread.sleep(300);
+                if(responseCode == 404) return null;
+                Thread.sleep(100);
 
             }
         }

@@ -553,6 +553,23 @@
     -fx-border-width: 2;
 }
 
+.hboxContainer{
+    -fx-background-color: transparent;
+    -fx-background-radius: 20;
+    -fx-border-color: -bg-default-border;
+    -fx-border-width: 1;
+    -fx-border-radius: 20;
+}
+
+#selectedFoodHBox{
+    -fx-border-color: -light-accent-color;
+}
+
+.progress-indicator:indeterminate .segment {
+    -fx-background-color: -accent-color;
+}
+
+
  /*PLEASE USE COLORS FROM PALETTES.CSS, OR ADD COLORS THERE */
 
 /*!**/
