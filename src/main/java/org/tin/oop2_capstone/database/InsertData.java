@@ -1,9 +1,6 @@
 package org.tin.oop2_capstone.database;
 
-import org.tin.oop2_capstone.model.entities.Consumable;
-import org.tin.oop2_capstone.model.entities.Food;
-import org.tin.oop2_capstone.model.entities.Meal;
-import org.tin.oop2_capstone.model.entities.NutritionDetails;
+import org.tin.oop2_capstone.model.entities.*;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -165,5 +162,91 @@ public class InsertData {
         return insertConsumable(consumable);
     }
 
+    /*
+    try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
+            pstmt.setString(1, "Alice");
+            pstmt.setInt(2, 30);
+            pstmt.setString(3, "Engineering");
+
+            int rowsAffected = pstmt.executeUpdate();
+            System.out.println(rowsAffected + " row(s) inserted.");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+     */
+
+    public static int insertUser(User user) throws SQLException {
+        if(user == null){
+            return -1;
+        }
+        String sql = "INSERT INTO users (fullname, username, email, password_hash, age, date_of_birth, gender, weight_kg, height_cm, activity_level) VALUES " +
+                            "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try(Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+            pstmt.setString(1, user.getFullname());
+            pstmt.setString(2, user.getUsername());
+            pstmt.setString(3, user.getEmail());
+            pstmt.setString(4, user.getPassword());
+            pstmt.setInt(5, user.getAge());
+            pstmt.setObject(6, user.getDateOfBirth());
+            pstmt.setString(7, user.getIsMale() ? "Male" : "Female");
+            pstmt.setDouble(8, user.getWeightKg());
+            pstmt.setDouble(9, user.getHeightCm());
+            pstmt.setString(10, user.getActivityLevel());
+
+            int insertedRows = pstmt.executeUpdate();
+            System.out.println(insertedRows + " row/s inserted in users table");
+            if(insertedRows > 0){
+                try(ResultSet rs = pstmt.getGeneratedKeys()){
+                    if(rs.next()){
+                        return rs.getInt("user_id");
+                    }
+                }
+            }
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public static int insertUserPref(UserPreferences userPref, int user_id){
+        if(userPref == null){
+            return -1;
+        }
+
+        String sql = "INSERT INTO userprefs (user_id, goal, target_weight_kd, enable_exercise_prompts, prompt_freq, theme, exercise_reminders, meal_reminders, achievement_notifications, daily_calorie_in, daily_calorie_out) VALUES " +
+                "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try(Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+            pstmt.setInt(1, user_id);
+            pstmt.setString(2, userPref.getGoalType());
+            pstmt.setDouble(3, userPref.getTargetWeightKG());
+            pstmt.setBoolean(4, userPref.isEnableExercisePrompts());
+            pstmt.setInt(5, userPref.getPromptFrequencyMins());
+            pstmt.setString(6, userPref.getTheme());
+            pstmt.setBoolean(7, userPref.isExerciseReminders());
+            pstmt.setBoolean(8, userPref.isMealReminders());
+            pstmt.setBoolean(9, userPref.isAchievementNotifications());
+            pstmt.setDouble(10, userPref.getDailyCalorieIn());
+            pstmt.setDouble(11, userPref.getDailyCalorieOut());
+
+            int insertedRows = pstmt.executeUpdate();
+            System.out.println(insertedRows + " row/s inserted in userprefs table");
+            if(insertedRows > 0){
+                try(ResultSet rs = pstmt.getGeneratedKeys()){
+                    if(rs.next()){
+                        return rs.getInt("userpref_id");
+                    }
+                }
+            }
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return -1;
+    }
 }

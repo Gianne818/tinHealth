@@ -3,21 +3,20 @@ package org.tin.oop2_capstone.controllers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import javafx.event.ActionEvent;
+import org.tin.oop2_capstone.database.RetrieveData;
+import org.tin.oop2_capstone.model.entities.User;
+import org.tin.oop2_capstone.model.entities.UserPreferences;
 import org.tin.oop2_capstone.utils.SceneSwitcher;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class SignUpController {
 
@@ -26,6 +25,8 @@ public class SignUpController {
     @FXML Button signUpButton;
     @FXML Label passwordErrorLabel;
     @FXML Label genericErrorLabel;
+    @FXML Label usernameErrorLabel;
+    @FXML Label emailErrorLabel;
 
     @FXML TextField fullNameTextField;
     @FXML TextField userNameTextField;
@@ -59,12 +60,19 @@ public class SignUpController {
 
     private GridPane currSelectedActivity;
     int curPanel = 0;
+    private User user;
+    private UserPreferences userPref;
 
 
     private void checkIfEnableNext(int curPanel){
+        // todo check if fields are valid for each panel then setVisible if okay na
         switch (curPanel){
             case 0:
                 if(bdayDatePicker.getValue() != null && genderChoiceBox.getValue() != null){
+                    /* set user attributes for second sign-up page */
+                    user.setDateOfBirth(bdayDatePicker.getValue());
+                    user.setMale(genderChoiceBox.getValue().equals("Male"));
+
                     nextButton.setDisable(false);
                 } else {
                     nextButton.setDisable(true);
@@ -74,6 +82,10 @@ public class SignUpController {
                 if(!currentHeightTextField.getText().isEmpty() &&
                         !currentWeightTextField.getText().isEmpty() &&
                         !targetWeightTextField.getText().isEmpty()){
+                    /* set User attributes for third sign-up page */
+                    user.setHeightCm(Double.parseDouble(currentHeightTextField.getText()));
+                    user.setWeightKg(Double.parseDouble(currentHeightTextField.getText()));
+
                     nextButton.setDisable(false);
                 } else {
                     nextButton.setDisable(true);
@@ -129,6 +141,9 @@ public class SignUpController {
         targetWeightTextField.textProperty().addListener((obs, oldVal, newVal) -> {
             checkIfEnableNext(curPanel);
         });
+
+        /* Initialize nako daan ang user so that i can just use setters for each fields */
+        user = new User();
     }
 
     public void onBackButtonClick(ActionEvent event){
@@ -145,6 +160,9 @@ public class SignUpController {
     }
 
     public void onNextButtonClick(ActionEvent event){
+        // todo: if fields are invalid or empty, stay and show error. Otherwise save the values andproceed to the next page.
+        //      -> create helper isValid methods for each pane
+
         changeElementAccessibility(panels.get(curPanel), false, true, true);
         curPanel++;
 
@@ -163,7 +181,7 @@ public class SignUpController {
     }
 
     public void onSignUpButtonClick(ActionEvent event){
-        // todo: create user and add to db
+        // todo: store values starting with user
 
         String fullName = fullNameTextField.getText();
         String email = emailTextField.getText();
@@ -171,12 +189,13 @@ public class SignUpController {
         String confirmPass = confirmPasswordTextField.getText();
         String pass = passwordTextField.getText();
 
-
         boolean allFilled = false;
         boolean passwordsMatch = false;
+        boolean uniqueUsername = false;
+        boolean uniqueEmail = false;
 
-        for(TextField t : fields){
-            if(t.getText().isEmpty()){
+        for(TextField txtfield : fields){
+            if(txtfield.getText().isEmpty()){
                 changeElementAccessibility(genericErrorLabel, true, false, true);
                 allFilled = false;
                 break;
@@ -188,13 +207,33 @@ public class SignUpController {
 
         if(!confirmPass.equals(pass)){
             changeElementAccessibility(passwordErrorLabel,true, false, true);
-            passwordsMatch = false;
         } else {
             changeElementAccessibility(passwordErrorLabel, false, true, false);
             passwordsMatch = true;
         }
 
-        if(allFilled && passwordsMatch) {
+        // todo check existing username and email
+        if(RetrieveData.checkUsername(userName)){
+            changeElementAccessibility(usernameErrorLabel, true, false, true);
+        } else {
+            changeElementAccessibility(usernameErrorLabel, false, true, false);
+            uniqueUsername = true;
+        }
+
+        if(RetrieveData.checkEmail(email)){
+            changeElementAccessibility(emailErrorLabel, true, false, true);
+        } else {
+            changeElementAccessibility(emailErrorLabel, false, true, false);
+            uniqueEmail = true;
+        }
+
+        if(allFilled && passwordsMatch && uniqueUsername && uniqueEmail) {
+            /* set user attributes found in the first sign-up panel */
+            user.setFullname(fullName);
+            user.setEmail(email);
+            user.setUsername(userName);
+            user.setPassword(pass);
+
             changeElementAccessibility(createAccountVBox, false, true, true);
             changeElementAccessibility(onBoardingBorderPane, true, false, true);
         }
@@ -217,9 +256,11 @@ public class SignUpController {
         }
         checkIfEnableNext(curPanel);
         // todo: based on currSelectedActivity, we set goals automatically. User can change them in settings
+        //    -> we set the userpref here essentially for the settings
     }
 
-    public  void onContinueButtonClick(ActionEvent event){
+    public void onContinueButtonClick(ActionEvent event){
+        // todo: do the storing of ALL user data in here to the database (this is to avoid null values when creating a user)
         SceneSwitcher.use(backButton, "main-view").setCss("application").setMinDimensions(900, 850).setMaximized(true).setResizeable(true).setTitle("+inHealth").switchScene();
     }
 

@@ -452,5 +452,44 @@ public class RetrieveData {
         return pending;
     }
 
+    public static boolean checkUsername(String username){
+        String query = "SELECT user_id FROM users WHERE username = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, username);
+
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()){
+                return true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean checkEmail(String email){
+        String query = "SELECT user_id FROM users WHERE email = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, email);
+
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()){
+                return true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 }
+
+

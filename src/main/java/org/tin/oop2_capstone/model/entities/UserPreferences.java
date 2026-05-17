@@ -135,4 +135,5 @@ public class UserPreferences implements Serializable {
     public int getWeeklyActivityReps() {
         return weeklyActivityReps;
     }
+
 }

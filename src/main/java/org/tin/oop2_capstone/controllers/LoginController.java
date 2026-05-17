@@ -36,6 +36,7 @@ public class LoginController {
         User user = UserRepository.getInstance().getUser();
         if(user == null) {
             //todo show error message
+
             invalidCredentialsLabel.setManaged(true);
             return;
         }

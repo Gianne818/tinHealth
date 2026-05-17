@@ -2,6 +2,7 @@ package org.tin.oop2_capstone.model.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.Date;
 
 public class User implements Serializable {
@@ -20,7 +21,7 @@ public class User implements Serializable {
 
     public User() {}
 
-    public User(int uid, String fullname, String email, String username, double weightKg, double heightCm, String password, int age, boolean isMale, String activityLevel, LocalDate dateOfBirth) {
+    public User(int uid, String fullname, String email, String username, double weightKg, double heightCm, String password, boolean isMale, String activityLevel, LocalDate dateOfBirth) {
         this.uid = uid;
         this.fullname = fullname;
         this.email = email;
@@ -28,7 +29,7 @@ public class User implements Serializable {
         this.weightKg = weightKg;
         this.heightCm = heightCm;
         this.password = password;
-        this.age = age;
+        this.age = Period.between(dateOfBirth, LocalDate.now()).getYears();
         this.isMale = isMale;
         this.activityLevel = activityLevel;
         this.dateOfBirth = dateOfBirth;
@@ -64,6 +65,12 @@ public class User implements Serializable {
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+        /* calculate age diri*/
+        this.age = Period.between(dateOfBirth, LocalDate.now()).getYears();
+    }
+
+    public void setAge(int age){
+        this.age = age;
     }
 
     public void setEmail(String email)       { this.email = email; }
@@ -104,7 +111,4 @@ public class User implements Serializable {
                 '}';
     }
 
-    public void setAge(int age) {
-        this.age = age;
-    }
 }
