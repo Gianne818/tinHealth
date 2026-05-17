@@ -297,6 +297,8 @@ public class SignUpController {
             }
             userPref.setPromptFrequencyMins(60);
 
+            user.setUid(user_id);
+
             InsertData.insertUserPref(userPref, user_id);
 
             SessionManager.getInstance().setCurrentUser(user);
@@ -304,8 +306,6 @@ public class SignUpController {
 
             ActivityRepository.getInstance().fetchInitialActivityData(user_id);
             MealRepository.getInstance().fetchInitialMealData(user_id);
-
-            user.setUid(user_id);
         } else {
             System.out.println("User insert failed, skipping userprefs.");
             return;
