@@ -591,7 +591,8 @@ public class RetrieveData {
                 prefs.setGoalType(rs.getString("goal"));
                 prefs.setTargetWeightKG(rs.getDouble("target_weight_kg"));
                 prefs.setEnableExercisePrompts(rs.getBoolean("enable_exercise_prompts"));
-                //prefs.setExerciseIntensity(rs.getInt("exercise_intensity")); Column Does not Exist in DB TODO: either remove from the UserPreferences Class or Add Column to DB
+                prefs.setExerciseIntensity(rs.getInt("exercise_intensity"));
+                prefs.setWeeklyActivityReps(rs.getInt("weekly_activity_goal"));
                 prefs.setExerciseReminders(rs.getBoolean("exercise_reminders"));
                 prefs.setMealReminders(rs.getBoolean("meal_reminders"));
                 prefs.setAchievementNotifications(rs.getBoolean("achievement_notifications"));

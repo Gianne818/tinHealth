@@ -64,7 +64,9 @@ public class SessionManager implements Serializable {
             currentUser = (User) ois.readObject();
             currentUserPrefs = (UserPreferences) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            //deal with .ser
+            System.out.println("Session file is incompatible, clearing it: " + e.getMessage());
+            file.delete();
         }
     }
 

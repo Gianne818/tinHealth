@@ -222,8 +222,7 @@ public class InsertData {
         }
         int insertedRows = 0;
 
-        String sql = "INSERT INTO userprefs (user_id, goal, target_weight_kg, enable_exercise_prompts, prompt_freq, theme, exercise_reminders, meal_reminders, achievement_notifications, daily_calorie_in, daily_calorie_out) VALUES " +
-                "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO userprefs (user_id, goal, target_weight_kg, enable_exercise_prompts, prompt_freq, theme, exercise_reminders, meal_reminders, achievement_notifications, daily_calorie_in, daily_calorie_out, weekly_activity_goal, exercise_intensity) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try(Connection conn = DatabaseConnection.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
 
@@ -238,6 +237,8 @@ public class InsertData {
             pstmt.setBoolean(9, userPref.isAchievementNotifications());
             pstmt.setDouble(10, userPref.getDailyCalorieIn());
             pstmt.setDouble(11, userPref.getDailyCalorieOut());
+            pstmt.setInt(12, userPref.getWeeklyActivityReps()); // weekly_activity_goal
+            pstmt.setInt(13, userPref.getExerciseIntensity());  // exercise_intensity
 
             insertedRows = pstmt.executeUpdate();
             System.out.println(insertedRows + " row/s inserted in users table");
