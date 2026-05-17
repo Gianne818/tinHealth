@@ -5,8 +5,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-import java.awt.event.ActionEvent;
-
 
 public class ConfirmPopupController {
 
@@ -14,14 +12,27 @@ public class ConfirmPopupController {
     @FXML private Button confirmActionButton;
     @FXML private Button cancelActionButton;
 
+    private Runnable onConfirmAction;
+
     @FXML
     private void onCancelButtonClick(){
-        Stage stage = (Stage) cancelActionButton.getScene().getWindow();
-        stage.close();
+        closeWindow();
     }
 
     @FXML
     private void onConfirmButtonClick(){
+        if(onConfirmAction!=null){
+            onConfirmAction.run();
+        }
+        closeWindow();
+    }
 
+    public void setOnConfirmAction(Runnable action){
+        this.onConfirmAction = action;
+    }
+
+    private void closeWindow(){
+        Stage stage = (Stage) cancelActionButton.getScene().getWindow();
+        stage.close();
     }
 }
