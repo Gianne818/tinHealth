@@ -66,6 +66,7 @@ public class FoodAPI {
                 conn.disconnect();
                 System.out.println("API Error: " + responseCode + ", retries: " + i);
                 System.out.println("Retrying");
+                if(responseCode == 404) return null;
                 Thread.sleep(100);
 
             }

@@ -9,6 +9,10 @@ import org.tin.oop2_capstone.model.entities.NutritionDetails;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 public class FoodParser {
 
@@ -98,10 +102,23 @@ public class FoodParser {
         }
 
         int limit = Math.min(maxResults, deduped.size());
+        ExecutorService exec = Executors.newFixedThreadPool(limit);
+        List<Future<Food>> futures = new ArrayList<>();
+
         for (int i = 0; i < limit; i++) {
-            Food food = buildFood(deduped.get(i).json);
-            if (food != null) parsedFoods.add(food);
+            JsonObject json = deduped.get(i).json;
+            futures.add(exec.submit(() -> buildFood(json)));
         }
+
+        for (Future<Food> f : futures) {
+            try {
+                Food food = f.get(10, TimeUnit.SECONDS);
+                if (food != null) parsedFoods.add(food);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        exec.shutdown();
 
         return parsedFoods;
     }

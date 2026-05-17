@@ -110,37 +110,19 @@ public class FoodLogController {
     // we use this var to see if user stopped typing. If so, wakeup thread to query api
     int currentKeyStroke = 0;
     String userTypedName;
-    private void initfoodNameComboBox(){
-
-        foodNameComboBox.getEditor().textProperty().addListener((obs, oldVal, newVal) -> {
-            if(newVal == null || newVal.trim().isEmpty()){
-                foodNameComboBox.getItems().clear();
-                return;
-            }
-
-            if(foodNameComboBox.getItems().contains(newVal)) return;
-
-            currentKeyStroke++;
-            int nextKeyStroke = currentKeyStroke;
-            userTypedName = foodNameComboBox.getEditor().getText().trim();
-            new Thread(() -> {
-                try {
-                    Thread.sleep(500);
-
-                    if(nextKeyStroke == currentKeyStroke){
-
-                        fetchFoodFromApi(newVal);
-                    }
-
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
+    private void initfoodNameComboBox() {
+        foodNameComboBox.getEditor().setOnKeyReleased(event -> {
+            if (event.getCode() == javafx.scene.input.KeyCode.ENTER) {
+                String text = foodNameComboBox.getEditor().getText().trim();
+                if (!text.isEmpty()) {
+                    userTypedName = text;
+                    fetchFoodFromApi(text);
                 }
-            }).start();
-
+            }
         });
 
         foodNameComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
-            if(newVal != null && searchRes.containsKey(newVal)){
+            if (newVal != null && searchRes.containsKey(newVal)) {
                 Food consumable = searchRes.get(newVal);
                 addSelectedFood(consumable);
                 selectedFoods.add(consumable);
@@ -149,6 +131,7 @@ public class FoodLogController {
             }
         });
     }
+
 
     private void fetchFoodFromApi(String food){
         if(food.length() <= 1) return;
