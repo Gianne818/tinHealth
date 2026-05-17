@@ -608,6 +608,44 @@ public class RetrieveData {
         return null;
     }
 
+    public static boolean updateUserPreferences(int userId, UserPreferences prefs) {
+        String query = """
+            UPDATE UserPrefs SET
+                enable_exercise_prompts = ?,
+                prompt_freq = ?,
+                theme = ?,
+                exercise_reminders = ?,
+                meal_reminders = ?,
+                achievement_notifications = ?,
+                target_weight_kg = ?,
+                daily_calorie_in = ?,
+                daily_calorie_out = ?
+            WHERE user_id = ?
+            """;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setBoolean(1, prefs.isEnableExercisePrompts());
+            stmt.setInt(2, prefs.getPromptFrequencyMins());
+            stmt.setString(3, prefs.getTheme());
+            stmt.setBoolean(4, prefs.isExerciseReminders());
+            stmt.setBoolean(5, prefs.isMealReminders());
+            stmt.setBoolean(6, prefs.isAchievementNotifications());
+            stmt.setDouble(7, prefs.getTargetWeightKG());
+            stmt.setDouble(8, prefs.getDailyCalorieIn());
+            stmt.setDouble(9, prefs.getDailyCalorieOut());
+            stmt.setInt(10, userId);
+
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected == 1;
+
+        } catch (SQLException e) {
+            System.out.println("Error updating user preferences: " + e.getMessage());
+            return false;
+        }
+    }
+
 
 }
 
