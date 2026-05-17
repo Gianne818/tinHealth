@@ -187,7 +187,7 @@
     -fx-background-insets: 0, 2 2 2 22;
 }
 
-.choice-box, .combo-box-base:editable, .text-field{
+.choice-box, .combo-box-base:editable, .combo-box-base, .text-field{
     -fx-background-color: -bg-default2;
     -fx-border-width: 1;
     -fx-border-radius: 20;
@@ -196,12 +196,12 @@
     -fx-font-size: 14;
 }
 
-.combo-box:editable .text-field{
+.combo-box:editable .text-field, .combo-box-base .text-field{
     -fx-background-color: transparent;
     -fx-border-color: transparent;
 }
 
-.combo-box-base > .arrow-button{
+.combo-box-base > .arrow-button, .combo-box-base > .arrow-button{
     -fx-background-color: transparent;
 }
 
@@ -1123,56 +1123,56 @@
 
 /*Settings-specific comboboxes*/
 
-#caloriesGoalInComboBox,
-#caloriesGoalBurnedComboBox,
-#weeklyActivityGoalComboBox {
-    -fx-background-color: -bg-default2;
-    -fx-border-width: 1;
-    -fx-border-radius: 20;
-    -fx-background-radius: 20;
-    -fx-border-color: -bg-default-border;
-    -fx-font-size: 14;
-    -fx-cursor: hand;
-}
+/*#caloriesGoalInComboBox,*/
+/*#caloriesGoalBurnedComboBox,*/
+/*#weeklyActivityGoalComboBox {*/
+/*    -fx-background-color: -bg-default2;*/
+/*    -fx-border-width: 1;*/
+/*    -fx-border-radius: 20;*/
+/*    -fx-background-radius: 20;*/
+/*    -fx-border-color: -bg-default-border;*/
+/*    -fx-font-size: 14;*/
+/*    -fx-cursor: hand;*/
+/*}*/
 
-#caloriesGoalInComboBox:hover,
-#caloriesGoalBurnedComboBox:hover,
-#weeklyActivityGoalComboBox:hover {
-    -fx-border-color: -orange-to-red-orange;
-}
+/*#caloriesGoalInComboBox:hover,*/
+/*#caloriesGoalBurnedComboBox:hover,*/
+/*#weeklyActivityGoalComboBox:hover {*/
+/*    -fx-border-color: -orange-to-red-orange;*/
+/*}*/
 
-#caloriesGoalInComboBox > .combo-box-popup > .list-view,
-#caloriesGoalBurnedComboBox > .combo-box-popup > .list-view,
-#weeklyActivityGoalComboBox > .combo-box-popup > .list-view {
-    -fx-max-height: 200;
-    -fx-background-radius: 12;
-    -fx-background-color: -bg-default;
-    -fx-effect: dropshadow(three-pass-box, -shadow-plain, 10, 0, 0, 4);
-}
+/*#caloriesGoalInComboBox > .combo-box-popup > .list-view,*/
+/*#caloriesGoalBurnedComboBox > .combo-box-popup > .list-view,*/
+/*#weeklyActivityGoalComboBox > .combo-box-popup > .list-view {*/
+/*    -fx-max-height: 200;*/
+/*    -fx-background-radius: 12;*/
+/*    -fx-background-color: -bg-default;*/
+/*    -fx-effect: dropshadow(three-pass-box, -shadow-plain, 10, 0, 0, 4);*/
+/*}*/
 
-#caloriesGoalInComboBox > .combo-box-popup > .list-view .scroll-bar:vertical,
-#caloriesGoalBurnedComboBox > .combo-box-popup > .list-view .scroll-bar:vertical,
-#weeklyActivityGoalComboBox > .combo-box-popup > .list-view .scroll-bar:vertical {
-    -fx-background-color: transparent;
-    -fx-pref-width: 8;
-}
+/*#caloriesGoalInComboBox > .combo-box-popup > .list-view .scroll-bar:vertical,*/
+/*#caloriesGoalBurnedComboBox > .combo-box-popup > .list-view .scroll-bar:vertical,*/
+/*#weeklyActivityGoalComboBox > .combo-box-popup > .list-view .scroll-bar:vertical {*/
+/*    -fx-background-color: transparent;*/
+/*    -fx-pref-width: 8;*/
+/*}*/
 
-#caloriesGoalInComboBox > .combo-box-popup > .list-view .scroll-bar:vertical .thumb,
-#caloriesGoalBurnedComboBox > .combo-box-popup > .list-view .scroll-bar:vertical .thumb,
-#weeklyActivityGoalComboBox > .combo-box-popup > .list-view .scroll-bar:vertical .thumb {
-    -fx-background-color: -accent-color;
-    -fx-background-radius: 10;
-}
+/*#caloriesGoalInComboBox > .combo-box-popup > .list-view .scroll-bar:vertical .thumb,*/
+/*#caloriesGoalBurnedComboBox > .combo-box-popup > .list-view .scroll-bar:vertical .thumb,*/
+/*#weeklyActivityGoalComboBox > .combo-box-popup > .list-view .scroll-bar:vertical .thumb {*/
+/*    -fx-background-color: -accent-color;*/
+/*    -fx-background-radius: 10;*/
+/*}*/
 
-#caloriesGoalInComboBox > .combo-box-popup > .list-view .scroll-bar:vertical .track,
-#caloriesGoalBurnedComboBox > .combo-box-popup > .list-view .scroll-bar:vertical .track,
-#weeklyActivityGoalComboBox > .combo-box-popup > .list-view .scroll-bar:vertical .track,
-#caloriesGoalInComboBox > .combo-box-popup > .list-view .scroll-bar:vertical .increment-button,
-#caloriesGoalBurnedComboBox > .combo-box-popup > .list-view .scroll-bar:vertical .increment-button,
-#weeklyActivityGoalComboBox > .combo-box-popup > .list-view .scroll-bar:vertical .increment-button,
-#caloriesGoalInComboBox > .combo-box-popup > .list-view .scroll-bar:vertical .decrement-button,
-#caloriesGoalBurnedComboBox > .combo-box-popup > .list-view .scroll-bar:vertical .decrement-button,
-#weeklyActivityGoalComboBox > .combo-box-popup > .list-view .scroll-bar:vertical .decrement-button {
-    -fx-background-color: transparent;
-    -fx-pref-height: 0;
-}
+/*#caloriesGoalInComboBox > .combo-box-popup > .list-view .scroll-bar:vertical .track,*/
+/*#caloriesGoalBurnedComboBox > .combo-box-popup > .list-view .scroll-bar:vertical .track,*/
+/*#weeklyActivityGoalComboBox > .combo-box-popup > .list-view .scroll-bar:vertical .track,*/
+/*#caloriesGoalInComboBox > .combo-box-popup > .list-view .scroll-bar:vertical .increment-button,*/
+/*#caloriesGoalBurnedComboBox > .combo-box-popup > .list-view .scroll-bar:vertical .increment-button,*/
+/*#weeklyActivityGoalComboBox > .combo-box-popup > .list-view .scroll-bar:vertical .increment-button,*/
+/*#caloriesGoalInComboBox > .combo-box-popup > .list-view .scroll-bar:vertical .decrement-button,*/
+/*#caloriesGoalBurnedComboBox > .combo-box-popup > .list-view .scroll-bar:vertical .decrement-button,*/
+/*#weeklyActivityGoalComboBox > .combo-box-popup > .list-view .scroll-bar:vertical .decrement-button {*/
+/*    -fx-background-color: transparent;*/
+/*    -fx-pref-height: 0;*/
+/*}*/
