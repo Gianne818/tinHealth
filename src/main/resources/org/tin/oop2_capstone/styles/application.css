@@ -565,6 +565,10 @@
     -fx-border-color: -light-accent-color;
 }
 
+.progress-indicator:indeterminate .segment {
+    -fx-background-color: -accent-color;
+}
+
 
  /*PLEASE USE COLORS FROM PALETTES.CSS, OR ADD COLORS THERE */
 

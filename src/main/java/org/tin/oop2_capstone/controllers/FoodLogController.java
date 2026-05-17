@@ -15,9 +15,7 @@ import org.tin.oop2_capstone.database.InsertData;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
 import org.tin.oop2_capstone.database.repositories.UserRepository;
 import org.tin.oop2_capstone.model.entities.*;
-import org.tin.oop2_capstone.model.state.IdleState;
-import org.tin.oop2_capstone.model.state.LoadingState;
-import org.tin.oop2_capstone.model.state.State;
+import org.tin.oop2_capstone.model.state.*;
 import org.tin.oop2_capstone.services.SearchInterpreter;
 import org.tin.oop2_capstone.utils.TimeFormatter;
 
@@ -51,6 +49,7 @@ public class FoodLogController {
     @FXML private TextField timeTextField;
     @FXML ChoiceBox<String> mealChoiceBox;
     @FXML private HBox foodNameEntryHBox;
+    @FXML private ProgressIndicator apiWaitingProgressIndicator;
 
     private FilteredList<String> filteredList;
     private Map<String, Food> searchRes;
@@ -65,6 +64,7 @@ public class FoodLogController {
 
     private State currentState;
     private Consumable fetchedFood;
+
 
     public void initialize(){
         foodLogScrollPane.getStyleClass().add("light");
@@ -114,9 +114,12 @@ public class FoodLogController {
         foodNameComboBox.getEditor().setOnKeyReleased(event -> {
             if (event.getCode() == javafx.scene.input.KeyCode.ENTER) {
                 String text = foodNameComboBox.getEditor().getText().trim();
-                if (!text.isEmpty()) {
+                if (!text.isEmpty() && !(currentState instanceof LoadingState)) {
                     userTypedName = text;
+                    searchRes.clear();
+                    foodNameComboBox.getItems().clear();
                     fetchFoodFromApi(text);
+                    event.consume();
                 }
             }
         });
@@ -138,13 +141,16 @@ public class FoodLogController {
 
         new Thread(() -> {
             try{
-
+                currentState = new LoadingState();
+                currentState.handle(this);
                 String json = FoodAPI.getFoodData(food.trim().replace(" ", "+"));
                 if (json == null || json.isBlank()) {
                     Platform.runLater(() -> {
                         caloriesTextField.setText("Error: Food not found.");
                         caloriesTextField.getStyleClass().add("redLabel");
                     });
+                    currentState = new ErrorState();
+                    currentState.handle(this);
                     return;
                 }
 
@@ -167,6 +173,9 @@ public class FoodLogController {
                     });
                 }
 
+                currentState = new SuccessState();
+                currentState.handle(this);
+
             } catch (Exception e){
                 e.printStackTrace();
             }
@@ -180,6 +189,7 @@ public class FoodLogController {
         }
 
         caloriesTextField.setText(String.format("%.2f", curCal));
+        caloriesTextField.getStyleClass().remove("redLabel");
         caloriesTextField.getStyleClass().add("greenLabel");
     }
 
@@ -357,12 +367,13 @@ public class FoodLogController {
     }
 
     public void showLoadingIndicator() {
-        // TODO: Implement loading indicator visibility
-        // e.g., show a progress indicator or spinner
+        apiWaitingProgressIndicator.setManaged(true);
+        apiWaitingProgressIndicator.setVisible(true);
     }
 
     public void hideLoadingIndicator() {
-        // TODO: Implement loading indicator hiding
+        apiWaitingProgressIndicator.setVisible(false);
+        apiWaitingProgressIndicator.setManaged(false);
     }
 
     public void showErrorMessage() {

@@ -12,8 +12,6 @@ public class FoodAPI {
         try {
             String urlString = "https://api.nal.usda.gov/fdc/v1/foods/search?query=" + query
                     + "&dataType=Foundation,SR%20Legacy,Branded&pageSize=15&api_key=" + FOOD_API_KEY;
-
-            System.out.println("REached here");
             return fetch(urlString);
         } catch (Exception e) {
             e.printStackTrace();

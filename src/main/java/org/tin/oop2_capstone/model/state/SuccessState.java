@@ -13,6 +13,5 @@ public class SuccessState implements State {
         // Enable food log input
         context.populateFoodList();
         context.hideLoadingIndicator();
-        context.enableFoodLogInput();
     }
 }
