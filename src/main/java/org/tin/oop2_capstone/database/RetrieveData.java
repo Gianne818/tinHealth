@@ -321,6 +321,7 @@ public class RetrieveData {
         return 0;
     }
 
+    //test retrieve
     public static List<Meal> fetchUserMeals(int userId) {
         List<Meal> meals = new ArrayList<>();
         String query = """
@@ -473,7 +474,7 @@ public class RetrieveData {
                 user.setFullname(rs.getString("fullname"));
                 user.setUsername(rs.getString("username"));
                 user.setEmail(rs.getString("email"));
-                user.setPassword(rs.getString("password_hash"));
+                user.setPasswordNonHashed(rs.getString("password_hash"));
                 user.setAge(rs.getInt("age"));
                 user.setMale("Male".equals(rs.getString("gender")));
                 user.setWeightKg(rs.getDouble("weight_kg"));
@@ -547,6 +548,44 @@ public class RetrieveData {
         return pending;
     }
 
+    public static boolean checkUsername(String username){
+        String query = "SELECT user_id FROM users WHERE username = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, username);
+
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()){
+                return true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean checkEmail(String email){
+        String query = "SELECT user_id FROM users WHERE email = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, email);
+
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()){
+                return true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public static UserPreferences fetchUserPreferences(int userId) {
         String query = "SELECT * FROM UserPrefs WHERE user_id = ?";
 
@@ -558,11 +597,11 @@ public class RetrieveData {
 
             if (rs.next()) {
                 UserPreferences prefs = new UserPreferences();
-                prefs.setUserPrefID(rs.getInt("userpref_id"));
                 prefs.setGoalType(rs.getString("goal"));
                 prefs.setTargetWeightKG(rs.getDouble("target_weight_kg"));
                 prefs.setEnableExercisePrompts(rs.getBoolean("enable_exercise_prompts"));
-                //prefs.setExerciseIntensity(rs.getInt("exercise_intensity")); Column Does not Exist in DB TODO: either remove from the UserPreferences Class or Add Column to DB
+                prefs.setExerciseIntensity(rs.getInt("exercise_intensity"));
+                prefs.setWeeklyActivityReps(rs.getInt("weekly_activity_goal"));
                 prefs.setExerciseReminders(rs.getBoolean("exercise_reminders"));
                 prefs.setMealReminders(rs.getBoolean("meal_reminders"));
                 prefs.setAchievementNotifications(rs.getBoolean("achievement_notifications"));
@@ -597,3 +636,5 @@ public class RetrieveData {
         return 55.0; // Fallback weight if history is empty
     }
 }
+
+

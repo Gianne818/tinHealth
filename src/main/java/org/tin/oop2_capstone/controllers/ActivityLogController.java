@@ -16,6 +16,7 @@ import org.tin.oop2_capstone.model.entities.Activity;
 import org.tin.oop2_capstone.model.entities.ActivityLog;
 import org.tin.oop2_capstone.model.entities.ActivityType;
 import org.tin.oop2_capstone.services.SessionManager;
+import org.tin.oop2_capstone.utils.InputManager;
 import org.tin.oop2_capstone.utils.TimeFormatter;
 
 import java.io.IOException;
@@ -28,17 +29,16 @@ import java.util.function.Predicate;
 import static org.tin.oop2_capstone.database.DeleteData.deleteActivity;
 
 public class ActivityLogController {
-    @FXML Button buttonAddEntry;
-    @FXML Button buttonCancel;
-    @FXML ComboBox<String> activityTypeComboBox;
-    @FXML TextField textfieldDuration;
-    @FXML TextField textfieldCaloriesBurned;
-    @FXML GridPane gridPaneAddEntry;
-    @FXML Button buttonAddActivity;
-    @FXML ScrollPane activityLogScrollPane;
-    @FXML ListView <GridPane> activityLogListView;
+    @FXML private Button buttonAddEntry;
+    @FXML private Button buttonCancel;
+    @FXML private ComboBox<String> activityTypeComboBox;
+    @FXML private TextField textfieldDuration;
+    @FXML private TextField textfieldCaloriesBurned;
+    @FXML private GridPane gridPaneAddEntry;
+    @FXML private Button buttonAddActivity;
+    @FXML private ScrollPane activityLogScrollPane;
+    @FXML private ListView <GridPane> activityLogListView;
 
-    // todo: get actual activityLog via logRepository
     private ObservableList<ActivityType> activityTypeList;
     private ObservableList<String> activityTypeNames;
     private ActivityLog activityLog;
@@ -62,6 +62,8 @@ public class ActivityLogController {
         activityTypeComboBox.setItems(filteredList);
 
         setupDynamicCalorieCalculation();
+        InputManager.acceptOnlyDouble(textfieldDuration);
+        InputManager.acceptOnlyDouble(textfieldCaloriesBurned);
     }
 
     private void initActivityTypeComboBox(){

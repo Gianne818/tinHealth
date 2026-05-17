@@ -14,9 +14,18 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import javafx.event.ActionEvent;
+import org.tin.oop2_capstone.database.InsertData;
+import org.tin.oop2_capstone.database.RetrieveData;
+import org.tin.oop2_capstone.database.repositories.ActivityRepository;
+import org.tin.oop2_capstone.database.repositories.MealRepository;
+import org.tin.oop2_capstone.model.entities.User;
+import org.tin.oop2_capstone.model.entities.UserPreferences;
+import org.tin.oop2_capstone.services.SessionManager;
+import org.tin.oop2_capstone.utils.InputManager;
 import org.tin.oop2_capstone.utils.SceneSwitcher;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class SignUpController {
@@ -26,6 +35,8 @@ public class SignUpController {
     @FXML Button signUpButton;
     @FXML Label passwordErrorLabel;
     @FXML Label genericErrorLabel;
+    @FXML Label usernameErrorLabel;
+    @FXML Label emailErrorLabel;
 
     @FXML TextField fullNameTextField;
     @FXML TextField userNameTextField;
@@ -59,9 +70,12 @@ public class SignUpController {
 
     private GridPane currSelectedActivity;
     int curPanel = 0;
-
+    private User user;
+    private UserPreferences userPref;
 
     private void checkIfEnableNext(int curPanel){
+        // todo check if fields are valid for each panel then setVisible if okay na
+        // todo (future: handle diff input cases)
         switch (curPanel){
             case 0:
                 if(bdayDatePicker.getValue() != null && genderChoiceBox.getValue() != null){
@@ -72,8 +86,7 @@ public class SignUpController {
                 break;
             case 1:
                 if(!currentHeightTextField.getText().isEmpty() &&
-                        !currentWeightTextField.getText().isEmpty() &&
-                        !targetWeightTextField.getText().isEmpty()){
+                        !currentWeightTextField.getText().isEmpty()){
                     nextButton.setDisable(false);
                 } else {
                     nextButton.setDisable(true);
@@ -126,9 +139,15 @@ public class SignUpController {
         currentWeightTextField.textProperty().addListener((obs, oldVal, newVal) -> {
             checkIfEnableNext(curPanel);
         });
-        targetWeightTextField.textProperty().addListener((obs, oldVal, newVal) -> {
-            checkIfEnableNext(curPanel);
-        });
+
+        /* Initialize nako daan ang user and userpref so that i can just use setters for each fields */
+        user = new User();
+        userPref = new UserPreferences();
+
+        /* optimize textfields to restrict numeric values only (integer || decimal) */
+        InputManager.acceptOnlyDouble(currentHeightTextField);
+        InputManager.acceptOnlyDouble(currentWeightTextField);
+        InputManager.acceptOnlyDouble(targetWeightTextField);
     }
 
     public void onBackButtonClick(ActionEvent event){
@@ -145,6 +164,29 @@ public class SignUpController {
     }
 
     public void onNextButtonClick(ActionEvent event){
+        /* set attributes for user for different panel */
+        switch (curPanel) {
+            case 0:
+                /* set user attributes for second sign-up page */
+                user.setDateOfBirth(bdayDatePicker.getValue());
+                user.setMale(genderChoiceBox.getValue().equals("Male"));
+                break;
+            case 1:
+                /* set User attributes for third sign-up page */
+                user.setHeightCm(Double.parseDouble(currentHeightTextField.getText()));
+                user.setWeightKg(Double.parseDouble(currentWeightTextField.getText()));
+                userPref.setTargetWeightKG(targetWeightTextField.getText().isBlank() ? 0 : Double.parseDouble(targetWeightTextField.getText()));
+                break;
+            case 2:
+                /* set user attributes for activity level pge */
+                user.setActivityLevel(currSelectedActivity.equals(sedentaryGridPane) ? "Sedentary" :
+                        currSelectedActivity.equals(lightlyActiveGridPane) ? "Lightly" :
+                        currSelectedActivity.equals(moderatelyActiveGridPane) ? "Moderately" :
+                        currSelectedActivity.equals(veryActiveGridPane) ? "Very Active" :
+                        "Extremely Active");
+                break;
+        }
+
         changeElementAccessibility(panels.get(curPanel), false, true, true);
         curPanel++;
 
@@ -163,7 +205,7 @@ public class SignUpController {
     }
 
     public void onSignUpButtonClick(ActionEvent event){
-        // todo: create user and add to db
+        // todo: store values starting with user
 
         String fullName = fullNameTextField.getText();
         String email = emailTextField.getText();
@@ -174,9 +216,11 @@ public class SignUpController {
 
         boolean allFilled = false;
         boolean passwordsMatch = false;
+        boolean uniqueUsername = false;
+        boolean uniqueEmail = false;
 
-        for(TextField t : fields){
-            if(t.getText().isEmpty()){
+        for(TextField txtfield : fields){
+            if(txtfield.getText().isEmpty()){
                 changeElementAccessibility(genericErrorLabel, true, false, true);
                 allFilled = false;
                 break;
@@ -188,13 +232,33 @@ public class SignUpController {
 
         if(!confirmPass.equals(pass)){
             changeElementAccessibility(passwordErrorLabel,true, false, true);
-            passwordsMatch = false;
         } else {
             changeElementAccessibility(passwordErrorLabel, false, true, false);
             passwordsMatch = true;
         }
 
-        if(allFilled && passwordsMatch) {
+        // todo check existing username and email
+        if(RetrieveData.checkUsername(userName)){
+            changeElementAccessibility(usernameErrorLabel, true, false, true);
+        } else {
+            changeElementAccessibility(usernameErrorLabel, false, true, false);
+            uniqueUsername = true;
+        }
+
+        if(RetrieveData.checkEmail(email)){
+            changeElementAccessibility(emailErrorLabel, true, false, true);
+        } else {
+            changeElementAccessibility(emailErrorLabel, false, true, false);
+            uniqueEmail = true;
+        }
+
+        if(allFilled && passwordsMatch && uniqueUsername && uniqueEmail) {
+            /* set user attributes found in the first sign-up panel */
+            user.setFullname(fullName);
+            user.setEmail(email);
+            user.setUsername(userName);
+            user.setPasswordHashed(pass);
+
             changeElementAccessibility(createAccountVBox, false, true, true);
             changeElementAccessibility(onBoardingBorderPane, true, false, true);
         }
@@ -216,11 +280,46 @@ public class SignUpController {
             currSelectedActivity = button;
         }
         checkIfEnableNext(curPanel);
-        // todo: based on currSelectedActivity, we set goals automatically. User can change them in settings
+
     }
 
-    public  void onContinueButtonClick(ActionEvent event){
+    public void onContinueButtonClick(ActionEvent event) throws SQLException {
+        // todo: do the storing of ALL user data in here to the database (this is to avoid null values when creating a user)
+        int user_id = InsertData.insertUser(user);
+
+        if (user_id != -1) {
+            //For defaulting missed values
+            if (userPref.getGoalType() == null || userPref.getGoalType().isBlank()) {
+                userPref.setGoalType("Maintain");
+            }
+            if (userPref.getDailyCalorieIn() == 0) {
+                userPref.setDailyCalorieIn(2000);
+            }
+            if (userPref.getDailyCalorieOut() == 0) {
+                userPref.setDailyCalorieOut(500);
+            }
+            if (userPref.getTheme() == null) {
+                userPref.setTheme("default");
+            }
+            userPref.setPromptFrequencyMins(60);
+            userPref.setWeeklyActivityReps(3);   // matches DB default
+            userPref.setExerciseIntensity(5);    // matches DB default
+
+            user.setUid(user_id);
+
+            InsertData.insertUserPref(userPref, user_id);
+
+            SessionManager.getInstance().setCurrentUser(user);
+            SessionManager.getInstance().setCurrentUserPrefs(userPref);
+
+            ActivityRepository.getInstance().fetchInitialActivityData(user_id);
+            MealRepository.getInstance().fetchInitialMealData(user_id);
+        } else {
+            System.out.println("User insert failed, skipping userprefs.");
+            return;
+        }
         SceneSwitcher.use(backButton, "main-view").setCss("application").setMinDimensions(900, 850).setMaximized(true).setResizeable(true).setTitle("+inHealth").switchScene();
+
     }
 
     private void setSelectedActivityLevel(Node n){

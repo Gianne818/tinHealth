@@ -7,6 +7,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import org.tin.oop2_capstone.model.entities.User;
 import org.tin.oop2_capstone.services.SessionManager;
+import org.tin.oop2_capstone.utils.InputManager;
 import org.tin.oop2_capstone.utils.TimeFormatter;
 
 import java.time.format.DateTimeFormatter;
@@ -52,6 +53,9 @@ public class ProfileController {
         fullnameLabel.setText(u.getUsername());
         heightTextField.setText(String.format("%.0f", u.getHeightCm()));
         emailLabel.setText(u.getEmail());
+
+        InputManager.acceptOnlyDouble(weightTextField);
+        InputManager.acceptOnlyDouble(heightTextField);
     }
 
 

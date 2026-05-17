@@ -31,32 +31,32 @@ import org.tin.oop2_capstone.services.ExerciseMonitor;
 import org.tin.oop2_capstone.services.SessionManager;
 
 public class MainController {
-    @FXML public SplitPane splitPaneMain;
-    @FXML public AnchorPane rootAnchorPane;
-    @FXML public AnchorPane anchorPaneSideBar;
-    @FXML public AnchorPane anchorPaneContent;
-    @FXML public ImageView imgViewCollapse;
-    @FXML public Label userFullNameLabel;
+    @FXML private  SplitPane splitPaneMain;
+    @FXML private  AnchorPane rootAnchorPane;
+    @FXML private  AnchorPane anchorPaneSideBar;
+    @FXML private  AnchorPane anchorPaneContent;
+    @FXML private  ImageView imgViewCollapse;
+    @FXML private  Label userFullNameLabel;
 
-    @FXML public HBox dashboardNav;
-    @FXML public HBox foodLogNav;
-    @FXML public HBox activityLogNav;
-    @FXML public HBox settingsNav;
-    @FXML public GridPane profileNav;
-    @FXML public HBox notificationsNav;
-    @FXML public HBox healthNav;
+    @FXML private  HBox dashboardNav;
+    @FXML private  HBox foodLogNav;
+    @FXML private  HBox activityLogNav;
+    @FXML private  HBox settingsNav;
+    @FXML private  GridPane profileNav;
+    @FXML private  HBox notificationsNav;
+    @FXML private  HBox healthNav;
 
-    @FXML public Label curr_streak_1;
-    @FXML public Label curr_streak_2;
-    @FXML public Label calories_today;
-    @FXML public Label this_week_workout_count;
-    @FXML public Label total_activities_count;
+    @FXML private  Label curr_streak_1;
+    @FXML private  Label curr_streak_2;
+    @FXML private  Label calories_today;
+    @FXML private  Label this_week_workout_count;
+    @FXML private  Label total_activities_count;
 
     ObservableList<Pane> navs;
 
     private boolean isSideBarCollapsed = false;
 
-    @FXML public Button quickWorkoutButton;
+    @FXML private  Button quickWorkoutButton;
 
     private static MainController instance;
 
