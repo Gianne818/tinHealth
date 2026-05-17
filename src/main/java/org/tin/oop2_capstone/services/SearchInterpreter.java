@@ -36,18 +36,40 @@ public class SearchInterpreter {
 
 
 
-    public static List<String> interpret(String input) {
-        String[] tokens = {"with", "and", "&", ","};
-        List<String> foods = new ArrayList<>();
-        input = input.trim().toLowerCase();
 
-        for(String token : tokens){
-            if(input.contains(token)){
-                String[] splitted = input.split(token);
-                // i swear si intellij ni nag suggest nga ing.anion, not vibe-coded
-                foods.addAll(Arrays.asList(splitted));
+        public static List<String> interpret(String input) {
+
+            String[] tokens = {" with ", " and ", "&", ",", ", "};
+
+            input = input.toLowerCase().trim();
+            input = input.toLowerCase().trim();
+
+            List<String> result = new ArrayList<>();
+
+            // default: single food
+            result.add(input);
+
+            for (String token : tokens) {
+
+                if (input.contains(token)) {
+
+                    result.clear();
+
+                    String[] split = input.split(java.util.regex.Pattern.quote(token));
+
+                    for (String s : split) {
+
+                        String cleaned = s.trim();
+
+                        if (!cleaned.isEmpty()) {
+                            result.add(cleaned);
+                        }
+                    }
+
+                    break; // IMPORTANT: stop after first match
+                }
             }
+
+            return result;
         }
-        return foods;
     }
-}
