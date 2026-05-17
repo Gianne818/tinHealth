@@ -145,7 +145,7 @@ public class FoodLogController {
                 });
             } catch (Exception e) {
                 Platform.runLater(() -> {
-                    caloriesTextField.setText("Error");
+                    caloriesTextField.setText("Error 3");
                     caloriesTextField.setStyle("-fx-text-fill: red;");
                 });
                 e.printStackTrace();
