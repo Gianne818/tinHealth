@@ -17,6 +17,7 @@ import org.tin.oop2_capstone.model.state.IdleState;
 import org.tin.oop2_capstone.model.state.LoadingState;
 import org.tin.oop2_capstone.model.state.State;
 import org.tin.oop2_capstone.services.SearchInterpreter;
+import org.tin.oop2_capstone.services.SessionManager;
 import org.tin.oop2_capstone.utils.TimeFormatter;
 
 import org.tin.oop2_capstone.services.FoodParser;
@@ -28,6 +29,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.tin.oop2_capstone.database.RetrieveData.fetchUserMeals;
 
 public class FoodLogController {
     @FXML ListView <GridPane> foodLogListView;
@@ -193,9 +196,9 @@ public class FoodLogController {
     }
 
     private void setFoodLog() {
-        // FIX: Bypass repository cache by pulling live rows using the session User ID
-        int currentUserId = UserRepository.getInstance().getUser().getUid();
-        meals = org.tin.oop2_capstone.database.RetrieveData.fetchUserMeals(currentUserId);
+        // Bypass repository cache by pulling live rows using the session User ID
+        int currentUserId = SessionManager.getInstance().getCurrentUser().getUid();
+        meals = fetchUserMeals(currentUserId);
 
         if (meals != null) {
             for (Meal m : meals) {
@@ -226,7 +229,7 @@ public class FoodLogController {
                             false,
                             true,
                             () -> {
-                                System.out.println("ID to delete: " + currentMeal.getMealId());
+//                                System.out.println("ID to delete: " + currentMeal.getMealId());
                                 boolean deleted = org.tin.oop2_capstone.database.DeleteData.deleteMeal(currentMeal.getMealId());
                                 if (deleted) {
                                     // Clear and refresh UI list cleanly

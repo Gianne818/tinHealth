@@ -126,14 +126,15 @@ public class HealthController {
         for (Meal m : userMeals) {
             NutritionDetails nd = m.getNutritionDetails();
             if (nd != null) {
-                calories += nd.getCalories();
-                protein += nd.getProtein();
-                fat += nd.getFat();
-                cholesterol += nd.getCholesterol();
-                sodium += nd.getSodium();
-                sugar += nd.getSugar();
-                fiber += nd.getFiber();
-                carbs += nd.getCarbs();
+                double qty = m.getQuantity(); // Get the quantity logged
+                calories += nd.getCalories() * qty;
+                protein += nd.getProtein() * qty;
+                fat += nd.getFat() * qty;
+                cholesterol += nd.getCholesterol() * qty;
+                sodium += nd.getSodium() * qty;
+                sugar += nd.getSugar() * qty;
+                fiber += nd.getFiber() * qty;
+                carbs += nd.getCarbs() * qty;
             }
         }
         //Same Logic in ToolTipController END
@@ -258,6 +259,16 @@ public class HealthController {
 
         LineChart<String, Number> chart = (LineChart<String, Number>) weeklyChart;
         chart.getData().clear();
+
+        // Clear arrays completely before re-populating from DB
+        dailyCals = new double[7];
+        dailyProt = new double[7];
+        dailyCarbs = new double[7];
+        dailyFats = new double[7];
+        dailyChol = new double[7];
+        dailySod = new double[7];
+        dailySug = new double[7];
+        dailyFib = new double[7];
 
         int userId = SessionManager.getInstance().getCurrentUser().getUid();
 
@@ -422,6 +433,9 @@ public class HealthController {
 
     //Draws the Radar Chart for Nutrient Balance Overview
     private void drawRadarChart(double calories, double protein, double carbs, double fat, double fiber, double sodium) {
+        // Clear out the old radar web and polygons before drawing the fresh ones
+        radarChartPane.getChildren().clear();
+
         double[] dataValues = {calories, protein, carbs, fat, fiber, sodium};
         //Avoid OverDrawing
         for(int i=0; i<dataValues.length; i++){

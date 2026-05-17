@@ -52,9 +52,7 @@ public class Meal {
         return nutritionDetails;
     }
 
-    public int getMealId() {
-        return mealId;
-    }
+    public int getMealId() { return mealId; }
 
     public void setMealId(int mealId){
         this.mealId = mealId;

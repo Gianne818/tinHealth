@@ -28,6 +28,9 @@ import org.tin.oop2_capstone.model.entities.*;
 import org.tin.oop2_capstone.services.SessionManager;
 import org.tin.oop2_capstone.utils.TimeFormatter;
 
+import static org.tin.oop2_capstone.database.RetrieveData.fetchUserActivities;
+import static org.tin.oop2_capstone.database.RetrieveData.fetchUserMeals;
+
 public class DashboardController {
     @FXML ScrollPane dashboardScrollPane;
     @FXML private LineChart<?, ?> weeklyChart;
@@ -88,7 +91,11 @@ public class DashboardController {
     }
 
     private void initRecentMealsList(){
-        mealsList = mealRepository.getUserMeals();
+        // Clear the old layout panes before fetching updated data
+        mealGridPanes.clear();
+        // Bypass the repository's stale cache by pulling live data straight from the database
+        mealsList = fetchUserMeals(userId);
+
         for(Meal a : mealsList){
             try{
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/log-card.fxml"));
@@ -98,7 +105,8 @@ public class DashboardController {
                 root.getStyleClass().remove("cardContent");
 
                 LogCardController logCardController = fxmlLoader.getController();
-                logCardController.setData(a.getConsumable().getName(), TimeFormatter.formatTo12Hour(a.getLogDateTime().toLocalTime()), a.getQuantity(), a.getUnit(), a.getNutritionDetails().getCalories(), true, false, null);                root.setPadding(new Insets(0, 0, 0, 0));
+                logCardController.setData(a.getConsumable().getName(), TimeFormatter.formatTo12Hour(a.getLogDateTime().toLocalTime()), a.getQuantity(), a.getUnit(), a.getNutritionDetails().getCalories(), true, false, null);
+                root.setPadding(new Insets(0, 0, 0, 0));
                 mealGridPanes.add(root);
             } catch (IOException e){
                 System.out.println("OH NNOI");
@@ -110,7 +118,9 @@ public class DashboardController {
     }
 
     private void initRecentActivitiesList(){
-        activityList = activityRepository.getUserActivities();
+        // Clear the old layout panes before fetching updated data
+        activityGridPanes.clear();
+        activityList = fetchUserActivities(userId);
         for(Activity a : activityList){
             try{
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/log-card.fxml"));

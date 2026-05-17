@@ -15,6 +15,7 @@ import org.tin.oop2_capstone.database.repositories.ActivityRepository;
 import org.tin.oop2_capstone.model.entities.Activity;
 import org.tin.oop2_capstone.model.entities.ActivityLog;
 import org.tin.oop2_capstone.model.entities.ActivityType;
+import org.tin.oop2_capstone.services.SessionManager;
 import org.tin.oop2_capstone.utils.TimeFormatter;
 
 import java.io.IOException;
@@ -23,6 +24,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.function.Predicate;
+
+import static org.tin.oop2_capstone.database.DeleteData.deleteActivity;
 
 public class ActivityLogController {
     @FXML Button buttonAddEntry;
@@ -119,7 +122,10 @@ public class ActivityLogController {
     }
 
     private void setActivityLog() {
-        activities = activityRepository.getUserActivities();
+        // Good practice: Clear it here automatically
+        activityGridPanes.clear();
+        int currentUserId = SessionManager.getInstance().getCurrentUser().getUid();
+        activities = RetrieveData.fetchUserActivities(currentUserId);
 
         for (Activity a : activities) {
             try {
@@ -142,13 +148,9 @@ public class ActivityLogController {
                         false,
                         true,
                         () -> {
-                            System.out.println("ID to delete: " + currentActivity.getActivityId());
-                            boolean deleted = org.tin.oop2_capstone.database.DeleteData.deleteActivity(currentActivity.getActivityId());
+//                            System.out.println("ID to delete: " + currentActivity.getActivityId());
+                            boolean deleted = deleteActivity(currentActivity.getActivityId());
                             if (deleted) {
-                                // Force repository cache to pull the updated data from DB
-                                activityRepository.fetchInitialActivityData(1); // Use your current session userId instead of 1 if dynamic
-
-                                // Clear and refresh UI list
                                 activityGridPanes.clear();
                                 setActivityLog();
                             }
@@ -192,7 +194,7 @@ public class ActivityLogController {
 
             double duration = Double.parseDouble(textfieldDuration.getText());
             double calories = Double.parseDouble(textfieldCaloriesBurned.getText());
-            int currentUserId = 1;
+            int currentUserId = SessionManager.getInstance().getCurrentUser().getUid();
 
             // 2. Build the Activity object right here
             Activity newActivity = new Activity();
@@ -257,7 +259,7 @@ public class ActivityLogController {
 
                 if (type != null) {
                     int duration = Integer.parseInt(durationText);
-                    int currentUserId = 1; // Replace with actual Session/Login ID
+                    int currentUserId = SessionManager.getInstance().getCurrentUser().getUid();
 
                     double weightKg = activityRepository.getUserCurrentWeight(currentUserId);
                     double calories = calculateCalories(type.getMetValue(), weightKg, duration);
@@ -272,12 +274,5 @@ public class ActivityLogController {
         }
     }
 
-    /* TODO: make a deleteSVG onclicklistener, when clicked, it will delete the item like FROM `Activities`:
-    "DELETE FROM Activities WHERE `Activities`.`act_id` = 11"?
-    btw the deleteSVG fx id is at: log-card.fxml: org/tin/oop2_capstone/views/log-card.fxml
-
-     put it in: DeleteData.java file:
-
-     */
 
 }

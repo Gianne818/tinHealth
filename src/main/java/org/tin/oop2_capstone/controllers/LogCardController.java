@@ -25,7 +25,7 @@ public class LogCardController {
         deleteSVG.setManaged(showTrash);
 
         deleteSVG.setOnMouseClicked(event -> {
-            System.out.println("HALA NA CLICKED ANG TRASH ICON !");
+//            System.out.println("HALA NA CLICKED ANG TRASH ICON !");
             if (onDeleteAction != null) {
                 onDeleteAction.run();
             }
