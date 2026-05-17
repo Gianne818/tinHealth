@@ -15,56 +15,36 @@ public class FoodParser {
     private static class FoodCandidate {
         JsonObject json;
         int score;
-
         FoodCandidate(JsonObject json, int score) {
             this.json = json;
             this.score = score;
         }
     }
 
-    // ─────────────────────────────────────────────────────────────
-    // ORIGINAL METHOD: Retained for backward compatibility
-    // Returns ONLY the single highest-scoring Food
-    // ─────────────────────────────────────────────────────────────
     public static Food parseFood(String searchJson) {
-        List<Food> results = processFoodSearch(searchJson, 1);
-        if (results != null && !results.isEmpty()) {
-            return results.get(0);
-        }
-        return null;
+        return parseFood(searchJson, "");
     }
 
-    // ─────────────────────────────────────────────────────────────
-    // NEW METHOD: Used for the ComboBox Dropdown
-    // Returns the Top 5 highest-scoring Foods
-    // ─────────────────────────────────────────────────────────────
+    public static Food parseFood(String searchJson, String originalQuery) {
+        List<Food> foods = processFoodSearch(searchJson, originalQuery, 1);
+        return foods.isEmpty() ? null : foods.get(0);
+    }
+
     public static List<Food> parseFoods(String searchJson) {
-        return processFoodSearch(searchJson, 5);
+        return parseFoods(searchJson, "");
     }
 
-    // ─────────────────────────────────────────────────────────────
-    // INTERNAL LOGIC: Handles the sorting and limits API calls
-    // ─────────────────────────────────────────────────────────────
-    private static List<Food> processFoodSearch(String searchJson, int maxResults) {
-        List<Food> parsedFoods = new ArrayList<>();
+    public static List<Food> parseFoods(String searchJson, String originalQuery) {
+        return processFoodSearch(searchJson, originalQuery, 5);
+    }
 
-        if (searchJson == null || searchJson.isEmpty()) {
-            return parsedFoods;
-        }
+    private static List<Food> processFoodSearch(String searchJson, String originalQuery, int maxResults) {
+        List<Food> parsedFoods = new ArrayList<>();
+        if (searchJson == null || searchJson.isEmpty()) return parsedFoods;
 
         JsonObject obj = JsonParser.parseString(searchJson).getAsJsonObject();
         JsonArray foods = obj.getAsJsonArray("foods");
-
-        if (foods == null || foods.isEmpty()) {
-            return parsedFoods;
-        }
-
-        String[] junkKeywords = {
-                "powder", "dehydrated", "dried", "canned", "pickled",
-                "preserved", "concentrate", "frozen", "imitation", "rose-apple",
-                "juice", "sauce", "pastry", "strudel", "dessert",
-                "cured", "corned", "sweet", "candied", "syrup"
-        };
+        if (foods == null || foods.isEmpty()) return parsedFoods;
 
         List<FoodCandidate> candidates = new ArrayList<>();
 
@@ -72,64 +52,68 @@ public class FoodParser {
             JsonObject candidate = foods.get(i).getAsJsonObject();
             if (!candidate.has("description")) continue;
 
-            String candidateName = candidate.get("description").getAsString().toLowerCase();
+            String name = candidate.get("description").getAsString();
 
-            boolean isJunk = false;
-            for (String keyword : junkKeywords) {
-                if (candidateName.contains(keyword)) {
-                    isJunk = true;
-                    break;
-                }
-            }
-            if (isJunk) continue;
+            if (FoodSelector.isJunk(name) && !name.toLowerCase().contains(originalQuery.toLowerCase())) continue;
 
-            int score = 0;
-            if (candidateName.contains("raw")) score += 10;
-            if (candidateName.contains("cooked")) score -= 3;
-            if (candidateName.split(" ").length <= 4) score += 5;
-            if (candidateName.contains(",")) score -= 2;
+            int score = FoodSelector.cookingScore(name, originalQuery);
 
             if (candidate.has("dataType")) {
-                String dataType = candidate.get("dataType").getAsString();
-                if (dataType.equalsIgnoreCase("Foundation")) score += 15;
-                if (dataType.equalsIgnoreCase("SR Legacy")) score += 10;
+                String type = candidate.get("dataType").getAsString();
+                if (type.equalsIgnoreCase("Foundation")) score += 15;
+                if (type.equalsIgnoreCase("SR Legacy"))  score += 10;
+                if (type.equalsIgnoreCase("Branded"))    score += 3;
+
+                // Penalize branded unless query words strongly match the food name
+                if (type.equalsIgnoreCase("Branded")) {
+                    String nameLower = name.toLowerCase();
+                    String queryLower = originalQuery.toLowerCase();
+                    String[] words = queryLower.split("\\s+");
+                    long matchCount = 0, meaningfulCount = 0;
+                    for (String word : words) {
+                        if (word.length() > 2) {
+                            meaningfulCount++;
+                            if (nameLower.contains(word)) matchCount++;
+                        }
+                    }
+                    boolean hasMatch = meaningfulCount > 0 && matchCount == meaningfulCount;
+                    if (!hasMatch) score -= 20;
+                }
             }
 
             candidates.add(new FoodCandidate(candidate, score));
         }
 
-        // Sort candidates by score descending
-        candidates.sort((c1, c2) -> Integer.compare(c2.score, c1.score));
-
         if (candidates.isEmpty() && foods.size() > 0) {
             candidates.add(new FoodCandidate(foods.get(0).getAsJsonObject(), 0));
         }
 
-        // Only process up to 'maxResults' to save API detail calls
-        int limit = Math.min(candidates.size(), maxResults);
+        candidates.sort((a, b) -> Integer.compare(b.score, a.score));
+
+        List<FoodCandidate> deduped = new ArrayList<>();
+        java.util.Set<String> seenNames = new java.util.HashSet<>();
+        for (FoodCandidate c : candidates) {
+            String n = c.json.get("description").getAsString().toLowerCase();
+            if (seenNames.add(n)) deduped.add(c);
+        }
+
+        int limit = Math.min(maxResults, deduped.size());
         for (int i = 0; i < limit; i++) {
-            JsonObject bestFood = candidates.get(i).json;
-            Food newFood = buildFoodFromCandidate(bestFood);
-            if (newFood != null) {
-                parsedFoods.add(newFood);
-            }
+            Food food = buildFood(deduped.get(i).json);
+            if (food != null) parsedFoods.add(food);
         }
 
         return parsedFoods;
     }
 
-    // ─────────────────────────────────────────────────────────────
-    // DETAIL PARSER: Extracts nutrients from a single JSON object
-    // ─────────────────────────────────────────────────────────────
-    private static Food buildFoodFromCandidate(JsonObject bestFood) {
+    private static Food buildFood(JsonObject bestFood) {
         String name = bestFood.get("description").getAsString();
         JsonObject detail = null;
 
         if (bestFood.has("fdcId")) {
             int fdcId = bestFood.get("fdcId").getAsInt();
             String detailJson = FoodAPI.getFoodDetail(fdcId);
-
-            if (detailJson != null) {
+            if (detailJson != null && !detailJson.isEmpty()) {
                 detail = JsonParser.parseString(detailJson).getAsJsonObject();
             }
         }
@@ -151,86 +135,74 @@ public class FoodParser {
                 double value = 0;
 
                 if (nutrient.has("nutrientName")) {
-                    nutrientName = nutrient.get("nutrientName").getAsString().toLowerCase();
-                    if (nutrient.has("value")) value = nutrient.get("value").getAsDouble();
-                    if (nutrient.has("nutrientNumber")) nutrientNumber = nutrient.get("nutrientNumber").getAsString();
-                    if (nutrient.has("unitName")) unitName = nutrient.get("unitName").getAsString();
+                    nutrientName   = nutrient.get("nutrientName").getAsString().toLowerCase();
+                    value          = nutrient.has("value") ? nutrient.get("value").getAsDouble() : 0;
+                    nutrientNumber = nutrient.has("nutrientNumber") ? nutrient.get("nutrientNumber").getAsString() : "";
+                    unitName       = nutrient.has("unitName") ? nutrient.get("unitName").getAsString() : "";
                 } else if (nutrient.has("nutrient")) {
-                    JsonObject nutrientObj = nutrient.getAsJsonObject("nutrient");
-                    if (nutrientObj.has("name")) nutrientName = nutrientObj.get("name").getAsString().toLowerCase();
-                    if (nutrientObj.has("number")) nutrientNumber = nutrientObj.get("number").getAsString();
-                    if (nutrientObj.has("unitName")) unitName = nutrientObj.get("unitName").getAsString();
-
-                    if (nutrient.has("amount")) value = nutrient.get("amount").getAsDouble();
-                    else if (nutrient.has("value")) value = nutrient.get("value").getAsDouble();
+                    JsonObject n   = nutrient.getAsJsonObject("nutrient");
+                    nutrientName   = n.has("name") ? n.get("name").getAsString().toLowerCase() : "";
+                    nutrientNumber = n.has("number") ? n.get("number").getAsString() : "";
+                    unitName       = n.has("unitName") ? n.get("unitName").getAsString() : "";
+                    value          = nutrient.has("amount") ? nutrient.get("amount").getAsDouble()
+                            : nutrient.has("value")  ? nutrient.get("value").getAsDouble() : 0;
                 }
 
                 if (nutrientName.isEmpty()) continue;
 
                 if (nutrientNumber.equals("208") || nutrientName.contains("energy")) {
-                    if (unitName.equalsIgnoreCase("KCAL") || unitName.isEmpty()) {
-                        calories = value;
-                    }
+                    if (unitName.equalsIgnoreCase("KCAL") || unitName.isEmpty()) calories = value;
                 }
 
                 switch (nutrientName) {
-                    case "protein": protein = value; break;
-                    case "total lipid (fat)":
-                    case "fat": fat = value; break;
+                    case "protein":                              protein     = value; break;
+                    case "total lipid (fat)": case "fat":        fat         = value; break;
                     case "carbohydrate, by difference":
-                    case "carbohydrate": carbs = value; break;
-                    case "cholesterol": cholesterol = value; break;
-                    case "sodium, na": sodium = value; break;
+                    case "carbohydrate":                         carbs       = value; break;
+                    case "cholesterol":                          cholesterol = value; break;
+                    case "sodium, na":                           sodium      = value; break;
                     case "total sugars":
-                    case "sugars, total including nlea": sugar = value; break;
-                    case "fiber, total dietary": fiber = value; break;
+                    case "sugars, total including nlea":         sugar       = value; break;
+                    case "fiber, total dietary":                 fiber       = value; break;
                 }
             }
         }
 
         double targetGramWeight = 100.0;
+        JsonObject targetContainer = detail != null ? detail : bestFood;
 
-        if (detail != null) {
-            if (detail.has("foodPortions")) {
-                JsonArray portions = detail.getAsJsonArray("foodPortions");
-                JsonObject preferredPortion = null;
-                int bestSeq = Integer.MAX_VALUE;
+        if (targetContainer.has("foodPortions") && !targetContainer.getAsJsonArray("foodPortions").isEmpty()) {
+            JsonArray portions = targetContainer.getAsJsonArray("foodPortions");
+            JsonObject preferred = null;
+            int bestSeq = Integer.MAX_VALUE;
 
-                for (int i = 0; i < portions.size(); i++) {
-                    JsonObject p = portions.get(i).getAsJsonObject();
-                    String modifier = p.has("modifier") ? p.get("modifier").getAsString().toLowerCase() : "";
-                    int seq = p.has("sequenceNumber") ? p.get("sequenceNumber").getAsInt() : 999;
+            for (int i = 0; i < portions.size(); i++) {
+                JsonObject p = portions.get(i).getAsJsonObject();
+                String modifier = p.has("modifier") ? p.get("modifier").getAsString().toLowerCase() : "";
+                int seq = p.has("sequenceNumber") ? p.get("sequenceNumber").getAsInt() : 999;
 
-                    if (preferredPortion == null && modifier.contains("medium")) preferredPortion = p;
-                    if (preferredPortion == null && seq < bestSeq) {
-                        bestSeq = seq;
-                        preferredPortion = p;
-                    }
-                }
-
-                if (preferredPortion != null && preferredPortion.has("gramWeight")) {
-                    targetGramWeight = preferredPortion.get("gramWeight").getAsDouble();
-                }
+                if (preferred == null && modifier.contains("medium")) preferred = p;
+                if (preferred == null && seq < bestSeq) { bestSeq = seq; preferred = p; }
             }
 
-            if (targetGramWeight == 100.0 && detail.has("servingSize")) {
-                targetGramWeight = detail.get("servingSize").getAsDouble();
+            if (preferred != null && preferred.has("gramWeight")) {
+                targetGramWeight = preferred.get("gramWeight").getAsDouble();
             }
         }
 
-        double scale = targetGramWeight / 100.0;
-        calories *= scale;
-        protein *= scale;
-        fat *= scale;
-        carbs *= scale;
-        cholesterol *= scale;
-        sodium *= scale;
-        sugar *= scale;
-        fiber *= scale;
+        if (targetGramWeight == 100.0 && targetContainer.has("servingSize")) {
+            targetGramWeight = targetContainer.get("servingSize").getAsDouble();
+        }
 
+        double scale = targetGramWeight / 100.0;
         return new Food(name, new NutritionDetails(
-                calories, protein, fat, carbs,
-                cholesterol, sodium, sugar, fiber
+                round(calories * scale), round(protein * scale), round(fat * scale),
+                round(carbs * scale), round(cholesterol * scale), round(sodium * scale),
+                round(sugar * scale), round(fiber * scale)
         ), false);
+    }
+
+    private static double round(double value) {
+        return Math.round(value * 100.0) / 100.0;
     }
 }

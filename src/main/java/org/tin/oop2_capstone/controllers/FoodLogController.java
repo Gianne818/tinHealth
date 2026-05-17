@@ -34,7 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
-
+//CHECK
 public class FoodLogController {
     @FXML ListView <GridPane> foodLogListView;
     @FXML Button buttonAddFood;
@@ -169,6 +169,7 @@ public class FoodLogController {
                 if(fetchedFoods != null && !fetchedFoods.isEmpty()){
 
                     Platform.runLater(() -> {
+                        searchRes.clear();
                         ObservableList<String>  dropDown = FXCollections.observableArrayList();
                         for(Food f : fetchedFoods) {
                             searchRes.put(f.getName(), f);
