@@ -13,6 +13,7 @@ public class FoodAPI {
             String urlString = "https://api.nal.usda.gov/fdc/v1/foods/search?query=" + query
                     + "&dataType=Foundation,SR%20Legacy&pageSize=5&api_key=" + FOOD_API_KEY;
 
+            System.out.println("REached here");
             return fetch(urlString);
         } catch (Exception e) {
             e.printStackTrace();
@@ -34,20 +35,41 @@ public class FoodAPI {
         }
     }
 
-    private static String fetch(String urlString) throws Exception {
-        URL url = new URL(urlString);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
+    private static String fetch(String urlString) throws Exception{
+        int maxRetries = 5;
+        for(int i = 1; i<=maxRetries; i++){
+            URL url = new URL(urlString);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
 
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader(conn.getInputStream())
-        );
-        StringBuilder response = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            response.append(line);
+            // so we dont wait to long to establish connection and wait long for the api to send results
+            conn.setConnectTimeout(5000);
+            conn.setReadTimeout(5000);
+
+            int responseCode = conn.getResponseCode();
+
+            // 200 is successfull
+            if(responseCode == 200){
+                BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(conn.getInputStream())
+                );
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                reader.close();
+                conn.disconnect();
+                return response.toString();
+            }
+            else {
+                conn.disconnect();
+                System.out.println("API Error: " + responseCode + ", retries: " + i);
+                System.out.println("Retrying");
+                Thread.sleep(300);
+
+            }
         }
-        reader.close();
-        return response.toString();
+        return null;
     }
 }

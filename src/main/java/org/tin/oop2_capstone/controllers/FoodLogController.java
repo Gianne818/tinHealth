@@ -104,13 +104,13 @@ public class FoodLogController {
                 List<String> jsons = new ArrayList<>();
 
                 for(String s : foodsList){
-                        jsons.add(FoodAPI.getFoodData(s.replace(" ", "+")));
+                    jsons.add(FoodAPI.getFoodData(s.trim().replace(" ", "+")));
                 }
 
                 // Add null check here
-                if (jsons.isEmpty()) {
+                if (jsons.isEmpty() || jsons.getFirst() == null) {
                     Platform.runLater(() -> {
-                        caloriesTextField.setText("API Error");
+                        caloriesTextField.setText("Error: Food not found.");
                         caloriesTextField.setStyle("-fx-text-fill: red;");
                     });
                     return;
@@ -126,7 +126,7 @@ public class FoodLogController {
                     }
                     consumable = new FoodCombo(foodName, foodComboFoods);
                 }
-                System.out.println("Consumbaalke: " + consumable.getName());
+                System.out.println("Consumable: " + consumable.getName());
                 // Update UI on JavaFX thread
                 Platform.runLater(() -> {
                     if (consumable != null && consumable.getNutrition() != null) {
@@ -159,6 +159,10 @@ public class FoodLogController {
 
         String[] words = rawName.trim().toLowerCase().split("\\s+");
         StringBuilder formatted = new StringBuilder();
+
+        for(char c : rawName.toCharArray()){
+
+        }
 
         for (String word : words) {
             if (word.length() > 0) {
@@ -215,7 +219,6 @@ public class FoodLogController {
 
                     foodGridPanes.add(root);
                 } catch (IOException e) {
-                    System.out.println("Error loading food log card.");
                     e.printStackTrace();
                 }
             }
@@ -240,7 +243,7 @@ public class FoodLogController {
         // After API call completes, transition to appropriate state:
         // - SuccessState if API returns data
         // - PendingState if API fails but we can create pending entry
-        // - ErrorState if there's an error
+        // - ErrorState if there's an due to internet connection error
 
         // For now, simulate success after a delay (replace with actual API call)
         // setState(new SuccessState());
