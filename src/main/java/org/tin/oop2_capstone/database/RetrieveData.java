@@ -17,11 +17,13 @@ public class RetrieveData {
 
     public static List<Activity> fetchUserActivities(int userId){
         List<Activity> activities = new ArrayList<>();
+        // ADDED: ORDER BY a.log_timestamp DESC
         String query = """
-            SELECT at.met_value, at.name, a.quantity, a.calories, a.log_timestamp
+            SELECT at.activity_type_id, at.met_value, at.name, a.quantity, a.calories, a.log_timestamp
             FROM Activities a
             JOIN ActivityTypes at ON a.activity_type_id = at.activity_type_id
             WHERE a.user_id = ?
+            ORDER BY a.log_timestamp DESC 
         """;
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -31,16 +33,14 @@ public class RetrieveData {
             ResultSet rs = stmt.executeQuery();
 
             while(rs.next()) {
-                activities.add(new Activity(new ActivityType(rs.getString("name"), rs.getDouble("met_value")),
+                activities.add(new Activity(new ActivityType(rs.getInt("activity_type_id"), rs.getString("name"), rs.getDouble("met_value")),
                         rs.getTimestamp("log_timestamp").toLocalDateTime(),
                         "minutes",
                         rs.getDouble("quantity"),
                         rs.getDouble("calories")
                 ));
             }
-
             return activities;
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -238,7 +238,9 @@ public class RetrieveData {
             ResultSet rs = stmt.executeQuery();
 
             while(rs.next()){
-                activityTypes.add(new ActivityType(rs.getString("name"),
+                activityTypes.add(new ActivityType(
+                        rs.getInt("activity_type_id"),
+                        rs.getString("name"),
                         rs.getDouble("met_value")
                 ));
             }
@@ -253,7 +255,7 @@ public class RetrieveData {
     public static List<Activity> fetchUserTodayActivities(int userId){
         List<Activity> activities = new ArrayList<>();
         String query = """
-        SELECT at.met_value, at.name, a.quantity, a.calories, a.log_timestamp
+        SELECT at.activity_type_id, at.met_value, at.name, a.quantity, a.calories, a.log_timestamp
         FROM Activities a
         JOIN ActivityTypes at ON a.activity_type_id = at.activity_type_id
         WHERE a.user_id = ? AND DATE(a.log_timestamp) = CURDATE()
@@ -266,12 +268,11 @@ public class RetrieveData {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                activities.add(new Activity(new ActivityType(rs.getString("name"), rs.getDouble("met_value")),
+                activities.add(new Activity(new ActivityType(rs.getInt("activity_type_id"), rs.getString("name"), rs.getDouble("met_value")),
                         rs.getTimestamp("log_timestamp").toLocalDateTime(),
                         "minutes",
                         rs.getDouble("quantity"),
                         rs.getDouble("calories")
-
                 ));
             }
         } catch (SQLException e) {
@@ -570,5 +571,21 @@ public class RetrieveData {
         return null;
     }
 
+    public static double fetchUserLatestWeight(int userId) {
+        String query = "SELECT weight_kg FROM WeightHistories WHERE user_id = ? ORDER BY log_date DESC LIMIT 1";
 
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setInt(1, userId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getDouble("weight_kg");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 55.0; // Fallback weight if history is empty
+    }
 }

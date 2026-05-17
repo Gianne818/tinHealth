@@ -57,10 +57,17 @@ public class ActivityLogController {
 
         filteredList = new FilteredList<>(activityTypeNames);
         activityTypeComboBox.setItems(filteredList);
+
+        setupDynamicCalorieCalculation();
     }
 
     private void initActivityTypeComboBox(){
         activityTypeComboBox.getEditor().textProperty().addListener((obs, oldVal, newVal) -> {
+            // Ignore programmatic changes (like when we call .clear() on button click)
+            if (!activityTypeComboBox.getEditor().isFocused()) {
+                return;
+            }
+
            String selected = activityTypeComboBox.getSelectionModel().getSelectedItem();
 
             /* EXCERPT FROM FilteredList.java
@@ -101,8 +108,6 @@ public class ActivityLogController {
 
         });
     }
-
-
 
     private  void setActivityTypes(){
        activityTypeList.clear();
@@ -146,14 +151,92 @@ public class ActivityLogController {
 
     public void onButtonAddEntryClicked(ActionEvent actionEvent) {
         //TODO: Convert the textfield inputs into strings and add them into the database(?)
-
         //TODO: refresh the listview if it queries from the database to load new added activity(?)
+        try {
+            String activityName = activityTypeComboBox.getEditor().getText();
+
+            if (activityName == null || activityName.isEmpty()) return;
+
+            double duration = Double.parseDouble(textfieldDuration.getText());
+            double calories = Double.parseDouble(textfieldCaloriesBurned.getText());
+            int currentUserId = 1; // Replace with actual Session/Login ID
+
+            boolean isAdded = activityRepository.addActivityRecord(currentUserId, activityName, duration, calories);
+
+            if (isAdded) {
+                // Clear UI for the next entry
+                textfieldDuration.clear();
+                textfieldCaloriesBurned.clear();
+                activityTypeComboBox.getSelectionModel().clearSelection();
+                activityTypeComboBox.getEditor().clear();
+
+                // Removed the lines that closed gridPaneAddEntry so it stays open...
+
+                // Refresh UI List
+                activityGridPanes.clear();
+                setActivityLog();
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid numeric input.");
+        }
     }
 
     public void onButtonCancelClicked(ActionEvent actionEvent) {
         gridPaneAddEntry.setVisible(!addEntryisVisible);
         gridPaneAddEntry.setManaged(!addEntryisVisible);
         addEntryisVisible = !addEntryisVisible;
+
+        // Clear the input values
+        textfieldDuration.clear();
+        textfieldCaloriesBurned.clear();
+        activityTypeComboBox.getSelectionModel().clearSelection();
+        activityTypeComboBox.getEditor().clear();
     }
+
+    public double calculateCalories(double met, double weightKg, int durationMinutes) {
+        return (met * 3.5 * (weightKg / 200.0)) * durationMinutes;
+    }
+
+    // Add this call inside your initialize() method:
+    // setupDynamicCalorieCalculation();
+
+    private void setupDynamicCalorieCalculation() {
+        textfieldDuration.focusedProperty().addListener((obs, oldVal, isFocused) -> {
+            if (!isFocused) updateCalculatedCalories();
+        });
+
+        activityTypeComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            updateCalculatedCalories();
+        });
+    }
+
+    private void updateCalculatedCalories() {
+        String selectedName = activityTypeComboBox.getSelectionModel().getSelectedItem();
+        String durationText = textfieldDuration.getText();
+
+        if (selectedName != null && !durationText.isEmpty()) {
+            try {
+                ActivityType type = activityTypeList.stream()
+                        .filter(a -> a.getName().equals(selectedName))
+                        .findFirst()
+                        .orElse(null);
+
+                if (type != null) {
+                    int duration = Integer.parseInt(durationText);
+                    int currentUserId = 1; // Replace with actual Session/Login ID
+
+                    double weightKg = activityRepository.getUserCurrentWeight(currentUserId);
+                    double calories = calculateCalories(type.getMetValue(), weightKg, duration);
+
+                    textfieldCaloriesBurned.setText(String.format("%.2f", calories));
+                    textfieldCaloriesBurned.setStyle("-fx-text-fill: green;");
+                }
+            } catch (NumberFormatException e) {
+                textfieldCaloriesBurned.setText("Invalid");
+                textfieldCaloriesBurned.setStyle("-fx-text-fill: red;");
+            }
+        }
+    }
+
 
 }

@@ -127,4 +127,26 @@ public class ActivityRepository {
 //        }
 //        return logs;
 //    }
+
+    public boolean addActivityRecord(int userId, String activityTypeName, double quantity, double calories) {
+        ActivityType selectedType = activityTypes.stream()
+                .filter(a -> a.getName().equalsIgnoreCase(activityTypeName))
+                .findFirst()
+                .orElse(null);
+
+        if (selectedType == null) return false;
+
+        boolean success = org.tin.oop2_capstone.database.InsertData.insertActivity(
+                userId, selectedType.getActivityTypeId(), quantity, calories);
+
+        if (success) {
+            // Refresh local list to include new entry
+            this.userActivities = RetrieveData.fetchUserActivities(userId);
+        }
+        return success;
+    }
+
+    public double getUserCurrentWeight(int userId) {
+        return RetrieveData.fetchUserLatestWeight(userId);
+    }
 }

@@ -2,10 +2,12 @@ package org.tin.oop2_capstone.model.entities;
 
 public class ActivityType {
     private String name;
-    private final String defaultUnit = "minutess";
+    private final String defaultUnit = "minutes";
     private double metValue;
+    private int activityTypeId;
 
-    public ActivityType(String name, double metValue) {
+    public ActivityType(int activityTypeId, String name, double metValue) {
+        this.activityTypeId = activityTypeId;
         this.name = name;
         this.metValue = metValue;
     }
@@ -16,6 +18,15 @@ public class ActivityType {
 
     public ActivityType setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public int getActivityTypeId() {
+        return activityTypeId;
+    }
+
+    public ActivityType setActivityTypeId(int activityTypeId) {
+        this.activityTypeId = activityTypeId;
         return this;
     }
 
