@@ -35,7 +35,6 @@ public class ActivityLogController {
     @FXML ScrollPane activityLogScrollPane;
     @FXML ListView <GridPane> activityLogListView;
 
-    // todo: get actual activityLog via logRepository
     private ObservableList<ActivityType> activityTypeList;
     private ObservableList<String> activityTypeNames;
     private ActivityLog activityLog;

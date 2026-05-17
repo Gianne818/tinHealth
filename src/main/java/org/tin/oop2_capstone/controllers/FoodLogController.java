@@ -3,11 +3,13 @@ package org.tin.oop2_capstone.controllers;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import org.tin.oop2_capstone.api.FoodAPI;
 import org.tin.oop2_capstone.database.InsertData;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
@@ -24,10 +26,14 @@ import org.tin.oop2_capstone.utils.TimeFormatter;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Predicate;
 
 public class FoodLogController {
     @FXML ListView <GridPane> foodLogListView;
@@ -41,12 +47,20 @@ public class FoodLogController {
     private ObservableList<GridPane> foodGridPanes;
 
     @FXML private TextField foodNameTextField;
+    @FXML private ComboBox<String> foodNameComboBox;
     @FXML private TextField caloriesTextField;
     @FXML private TextField timeTextField;
     @FXML ChoiceBox<String> mealChoiceBox;
+    @FXML private HBox foodNameEntryHBox;
+
+    private FilteredList<String> filteredList;
+    private Map<String, Food> searchRes;
 
     private String selectedFoodName;
     private double fetchedCalories;
+
+    private List<Food> selectedFoods;
+
 
     private MealRepository mealRepository = MealRepository.getInstance();
 
@@ -59,6 +73,9 @@ public class FoodLogController {
         foodGridPanes = FXCollections.observableArrayList();
         setFoodLog();
 
+        searchRes = new HashMap<>();
+        selectedFoods = new ArrayList<>();
+
         mealChoiceBox.getItems().addAll(MealType.BREAKFAST.toString(), MealType.LUNCH.toString(), MealType.DINNER.toString(), MealType.SNACK.toString());
 
         currentState = new IdleState();
@@ -69,10 +86,129 @@ public class FoodLogController {
         });
 
         mealChoiceBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
-            if (newVal != null && selectedFoodName != null && !selectedFoodName.isEmpty()) {
+            if (newVal != null) {
                 updateTimeBasedOnMeal();
             }
         });
+        initfoodNameComboBox();
+    }
+
+    private void addSelectedFood(String foodName){
+        try{
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/selected-food-view.fxml"));
+            HBox selectedFood = fxmlLoader.load();
+            SelectedFoodController selectedFoodController = fxmlLoader.getController();
+            selectedFoodController.setFoodNameLabel(foodName);
+            foodNameEntryHBox.getChildren().add(selectedFood);
+
+            selectedFoodController.setOnDeleteAction(() -> {
+                foodNameEntryHBox.getChildren().remove(selectedFood);
+            });
+            foodNameComboBox.getItems().clear();
+            foodNameComboBox.getEditor().clear();
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    // we use this var to see if user stopped typing. If so, wakeup thread to query api
+    int currentKeyStroke = 0;
+    private void initfoodNameComboBox(){
+        foodNameComboBox.getEditor().textProperty().addListener((obs, oldVal, newVal) -> {
+            if(newVal == null || newVal.trim().isEmpty()){
+                foodNameComboBox.getItems().clear();
+                return;
+            }
+
+            if(foodNameComboBox.getItems().contains(newVal)) return;
+
+            currentKeyStroke++;
+            int nextKeyStroke = currentKeyStroke;
+            new Thread(() -> {
+                try {
+                    Thread.sleep(500);
+
+                    if(nextKeyStroke == currentKeyStroke){
+                        fetchFoodFromApi(newVal);
+                    }
+
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }).start();
+
+        });
+
+        foodNameComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if(newVal != null && searchRes.containsKey(newVal)){
+                Food consumable = searchRes.get(newVal);
+                addSelectedFood(consumable.getName());
+                selectedFoods.add(consumable);
+                consumable.setName(formatFoodName(oldVal));
+                calculateCalories();
+            }
+        });
+    }
+
+    private void fetchFoodFromApi(String food){
+        if(food.length() <= 1) return;
+
+        new Thread(() -> {
+            try{
+
+                String json = FoodAPI.getFoodData(food.trim().replace(" ", "+"));
+                if (json == null || json.isBlank()) {
+                    Platform.runLater(() -> {
+                        caloriesTextField.setText("Error: Food not found.");
+                        caloriesTextField.getStyleClass().add("redLabel");
+                    });
+                    return;
+                }
+
+                List<Food> fetchedFoods = FoodParser.parseFoods(json);
+                if(fetchedFoods != null && !fetchedFoods.isEmpty()){
+
+                    Platform.runLater(() -> {
+                        ObservableList<String>  dropDown = FXCollections.observableArrayList();
+                        for(Food f : fetchedFoods) {
+                            String formattedName = formatFoodName(food);
+                            searchRes.put(f.getName(), f);
+                            dropDown.add(f.getName());
+                        }
+
+                        foodNameComboBox.setItems(dropDown);
+
+                        if(!foodNameComboBox.isShowing()){
+                            foodNameComboBox.show();
+                        }
+                    });
+                }
+
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    private void calculateCalories(){
+        double curCal = 0;
+        for(Food f : selectedFoods){
+            curCal+=f.getNutrition().getCalories();
+        }
+
+        caloriesTextField.setText(String.format("%.2f", curCal));
+        caloriesTextField.getStyleClass().add("greenLabel");
+    }
+
+    private boolean isDouble(String text){
+        if(text == null || text.isEmpty()) return false;
+        try{
+             Double.parseDouble(text);
+             return true;
+        } catch (NumberFormatException e){
+            return false;
+        }
     }
 
     private void validateAndFetchFood() {
@@ -130,14 +266,13 @@ public class FoodLogController {
                 // Update UI on JavaFX thread
                 Platform.runLater(() -> {
                     if (consumable != null && consumable.getNutrition() != null) {
-                        fetchedFood = consumable;  // Store the full Food object
+                        fetchedFood = consumable;
                         fetchedCalories = consumable.getNutrition().getCalories();
                         caloriesTextField.setText(String.format("%.1f", fetchedCalories));
-                        caloriesTextField.setStyle("-fx-text-fill: #11B981;");
+                        caloriesTextField.getStyleClass().add("greenLabel");
                         selectedFoodName = formatFoodName(consumable.getName());
 
                         // Auto-set time based on meal type
-                        updateTimeBasedOnMeal();
                     } else {
                         caloriesTextField.setText("Not found");
                         caloriesTextField.setStyle("-fx-text-fill: red;");
@@ -193,7 +328,6 @@ public class FoodLogController {
     }
 
     private void setFoodLog() {
-        // 1. Get the data from the repository
         meals = mealRepository.getUserMeals();
 
         if (meals != null) {
@@ -236,67 +370,44 @@ public class FoodLogController {
     }
 
     public void onButtonAddEntryClicked(ActionEvent actionEvent) {
-        // Transition to loading state when starting API call
-        setState(new LoadingState());
 
-        // TODO: Implement API call logic here
-        // After API call completes, transition to appropriate state:
-        // - SuccessState if API returns data
-        // - PendingState if API fails but we can create pending entry
-        // - ErrorState if there's an due to internet connection error
-
-        // For now, simulate success after a delay (replace with actual API call)
-        // setState(new SuccessState());
         // Validate all fields
-        if (foodNameTextField.getText().trim().isEmpty() ||
-                foodNameTextField.getText().trim().length() <= 1) {
-            return;
-        }
-
-        if (caloriesTextField.getText().equals("- -") ||
-                caloriesTextField.getText().equals("Not found")) {
+        if(!isDouble(caloriesTextField.getText()) || timeTextField.getText().isEmpty()){
             return;
         }
 
         // Create and save meal
         try {
-            Consumable consumable = fetchedFood;
+            Consumable consumable;
+            if(selectedFoods.size() > 1){
+                String foodComboName = "";
+                for(int i = 0; i<selectedFoods.size(); i++){
+                    if(i!=selectedFoods.size()-1) foodComboName += selectedFoods.get(i).getName() + ", ";
+                    else foodComboName += selectedFoods.get(i).getName();
+                }
+                consumable = new FoodCombo(foodComboName, selectedFoods);
+            } else {
+                consumable = new Food(selectedFoods.getFirst().getName(), selectedFoods.getFirst().getNutrition(), false);
+            }
+
 
             MealType mealType = MealType.valueOf(mealChoiceBox.getValue().toUpperCase());
-            LocalDateTime logTime = parseTimeFromTextField();
+            LocalDateTime logTime = LocalDateTime.now();
 
             Meal meal = new Meal(mealType, consumable, logTime, 1.0, "serving");
-
-            // Save to database (implement in MealRepository)
             int userId = UserRepository.getInstance().getUser().getUid();
 
-            //TODO: Run through interpreter before insertion, and behave accordingly. And also, DO NOT CALL ANY CRUD FROM NON REPOSITORY CLASSES.
+            if(mealRepository.addMeal(meal, userId)) refreshFoodLog();
+            else showError("Failed to save into database");
 
-                // Also add to repository's local list for UI updates
-                if(mealRepository.addMeal(meal, userId)){
-                refreshFoodLog();
-            } else {
-                showError("Failed to save into database");
-            }
-            // Clear form
+
             clearAddEntryForm();
-
-            // Refresh UI
-            refreshFoodLog();
-
-            // Clear form
             clearAddEntryForm();
 
         } catch (Exception e) {
             showError("Error saving food entry");
             e.printStackTrace();
         }
-    }
-
-    private LocalDateTime parseTimeFromTextField() {
-        String timeStr = timeTextField.getText();
-        // Implement time parsing logic
-        return LocalDateTime.now();
     }
 
     private void refreshFoodLog() {
