@@ -179,21 +179,7 @@ public class InsertData {
             e.printStackTrace();
             return false;
         }
-    /*
-    try (Connection conn = DriverManager.getConnection(url, user, password);
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, "Alice");
-            pstmt.setInt(2, 30);
-            pstmt.setString(3, "Engineering");
-
-            int rowsAffected = pstmt.executeUpdate();
-            System.out.println(rowsAffected + " row(s) inserted.");
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-     */
+    }
 
     public static int insertUser(User user){
         if(user == null){
