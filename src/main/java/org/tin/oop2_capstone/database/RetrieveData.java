@@ -17,7 +17,7 @@ public class RetrieveData {
 
     public static List<Activity> fetchUserActivities(int userId){
         List<Activity> activities = new ArrayList<>();
-        // ADDED: ORDER BY a.log_timestamp DESC
+        // ORDER BY a.log_timestamp DESC
         String query = """
             SELECT at.activity_type_id, at.met_value, at.name, a.quantity, a.calories, a.log_timestamp
             FROM Activities a

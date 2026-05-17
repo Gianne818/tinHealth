@@ -70,7 +70,7 @@ public class ActivityLogController {
 
            String selected = activityTypeComboBox.getSelectionModel().getSelectedItem();
 
-            /* EXCERPT FROM FilteredList.java
+            /* EXCEPT FROM FilteredList.java
               The predicate that will match the elements that will be in this FilteredList.
               Elements not matching the predicate will be filtered-out.
               Null predicate means "always true" predicate, all elements will be matched.
@@ -112,11 +112,10 @@ public class ActivityLogController {
     private  void setActivityTypes(){
        activityTypeList.clear();
        activityTypeNames.clear();
-        activityTypeList = activityRepository.getActivityTypes();
-        for(ActivityType a : activityTypeList){
-            activityTypeNames.add(a.getName());
-        }
-//        activityTypeComboBox.setItems(activityTypeNames);
+       activityTypeList = activityRepository.getActivityTypes();
+       for(ActivityType a : activityTypeList){
+           activityTypeNames.add(a.getName());
+       }
     }
 
     private void setActivityLog(){
@@ -196,9 +195,6 @@ public class ActivityLogController {
     public double calculateCalories(double met, double weightKg, int durationMinutes) {
         return (met * 3.5 * (weightKg / 200.0)) * durationMinutes;
     }
-
-    // Add this call inside your initialize() method:
-    // setupDynamicCalorieCalculation();
 
     private void setupDynamicCalorieCalculation() {
         textfieldDuration.focusedProperty().addListener((obs, oldVal, isFocused) -> {
