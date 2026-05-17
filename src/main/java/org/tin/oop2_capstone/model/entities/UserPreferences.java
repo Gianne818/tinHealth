@@ -1,6 +1,9 @@
 package org.tin.oop2_capstone.model.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class UserPreferences implements Serializable {
     /** implements serializable to be added for future .ser files **/
@@ -136,4 +139,58 @@ public class UserPreferences implements Serializable {
         return weeklyActivityReps;
     }
 
+    public NutritionDetails getTargetMacros(User user) {
+        double calories = dailyCalorieIn;
+        String goal = goalType.toLowerCase();
+        double proteinRatio, carbRatio, fatRatio, sugarPct;
+
+        switch (goal) {
+            case "lose weight":
+                proteinRatio = 0.35; carbRatio = 0.35; fatRatio = 0.30;
+                sugarPct = 0.05;
+                break;
+            case "gain muscle":
+                proteinRatio = 0.40; carbRatio = 0.40; fatRatio = 0.20;
+                sugarPct = 0.10;
+                break;
+            case "gain weight":
+                proteinRatio = 0.25; carbRatio = 0.50; fatRatio = 0.25;
+                sugarPct = 0.10;
+                break;
+            default: //maintain
+                proteinRatio = 0.30; carbRatio = 0.40; fatRatio = 0.30;
+                sugarPct = 0.10;
+        }
+
+        double proteinFloorPerKg;
+        switch (goal) {
+            case "gain muscle":
+                proteinFloorPerKg = 1.8;
+                break;
+            case "gain weight":
+                proteinFloorPerKg = 1.4;
+                break;
+            default: //maintain or lose weight
+                proteinFloorPerKg = 1.2;
+        }
+
+        double proteinG = Math.max( (dailyCalorieIn * proteinRatio) / 4.0, user.getWeightKg() * proteinFloorPerKg);
+        double carbG = (dailyCalorieIn * carbRatio) / 4.0;
+        double fatG  = (dailyCalorieIn * fatRatio)  / 9.0;
+        double sugarG = (dailyCalorieIn * sugarPct) / 4.0;
+        double fiberG = (dailyCalorieIn / 1000.0) * 14.0;
+        double sodiumMg = 2300;
+        double cholesterolMg = 300;
+
+        //round 2 decimal places
+        calories = Math.round(calories * 100.0) / 100.0;
+        proteinG = Math.round(proteinG * 100.0) / 100.0;
+        carbG = Math.round(carbG * 100.0) / 100.0;
+        fatG = Math.round(fatG * 100.0) / 100.0;
+        sugarG = Math.round(sugarG * 100.0) / 100.0;
+        fiberG = Math.round(fiberG * 100.0) / 100.0;
+
+
+        return new NutritionDetails(calories, proteinG, fatG, carbG, cholesterolMg, sodiumMg, sugarG, fiberG);
+    }
 }

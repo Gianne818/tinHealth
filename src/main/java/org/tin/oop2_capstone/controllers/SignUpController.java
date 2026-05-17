@@ -3,12 +3,15 @@ package org.tin.oop2_capstone.controllers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import javafx.event.ActionEvent;
 import org.tin.oop2_capstone.database.RetrieveData;
@@ -17,6 +20,7 @@ import org.tin.oop2_capstone.model.entities.UserPreferences;
 import org.tin.oop2_capstone.utils.SceneSwitcher;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class SignUpController {
 
@@ -80,8 +84,7 @@ public class SignUpController {
                 break;
             case 1:
                 if(!currentHeightTextField.getText().isEmpty() &&
-                        !currentWeightTextField.getText().isEmpty() &&
-                        !targetWeightTextField.getText().isEmpty()){
+                        !currentWeightTextField.getText().isEmpty()){
                     /* set User attributes for third sign-up page */
                     user.setHeightCm(Double.parseDouble(currentHeightTextField.getText()));
                     user.setWeightKg(Double.parseDouble(currentHeightTextField.getText()));
@@ -138,9 +141,6 @@ public class SignUpController {
         currentWeightTextField.textProperty().addListener((obs, oldVal, newVal) -> {
             checkIfEnableNext(curPanel);
         });
-        targetWeightTextField.textProperty().addListener((obs, oldVal, newVal) -> {
-            checkIfEnableNext(curPanel);
-        });
 
         /* Initialize nako daan ang user so that i can just use setters for each fields */
         user = new User();
@@ -188,6 +188,7 @@ public class SignUpController {
         String userName = userNameTextField.getText();
         String confirmPass = confirmPasswordTextField.getText();
         String pass = passwordTextField.getText();
+
 
         boolean allFilled = false;
         boolean passwordsMatch = false;
