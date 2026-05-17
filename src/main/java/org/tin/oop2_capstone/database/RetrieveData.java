@@ -588,7 +588,6 @@ public class RetrieveData {
 
             if (rs.next()) {
                 UserPreferences prefs = new UserPreferences();
-                prefs.setUserPrefID(rs.getInt("userpref_id"));
                 prefs.setGoalType(rs.getString("goal"));
                 prefs.setTargetWeightKG(rs.getDouble("target_weight_kg"));
                 prefs.setEnableExercisePrompts(rs.getBoolean("enable_exercise_prompts"));

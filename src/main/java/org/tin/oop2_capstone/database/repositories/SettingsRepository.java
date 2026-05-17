@@ -71,14 +71,12 @@ public class SettingsRepository {
             return false;
         }
 
-        boolean isExerciseIntensityValid = isExerciseIntensityValid(preferences.getExerciseIntensity());
         boolean isPromptFrequencyValid = isPromptFrequencyHoursValid(preferences.getPromptFrequencyMins());
         boolean isThemeValid = isThemeValid(preferences.getTheme());
         boolean isDailyCalorieGoalInValid = isDailyCalorieGoalValid(preferences.getDailyCalorieOut());
         boolean isDailyCalorieGoalOutValid = isDailyCalorieGoalValid(preferences.getDailyCalorieOut());
 
-        return isExerciseIntensityValid
-                && isPromptFrequencyValid
+        return isPromptFrequencyValid
                 && isThemeValid
                 && isDailyCalorieGoalInValid
                 && isDailyCalorieGoalOutValid;

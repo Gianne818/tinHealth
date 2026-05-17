@@ -45,11 +45,9 @@ public class SettingsController implements Initializable {
         UserPreferences preferences = settingsRepository.load();
         if (preferences != null) {
             exercisePrompts.setSelected(preferences.isEnableExercisePrompts());
-            exerciseIntensity.setValue(preferences.getExerciseIntensity());
             promptFrequency.setValue(preferences.getPromptFrequencyMins());
             theme.setValue(preferences.getTheme().substring(0, 1).toUpperCase() + preferences.getTheme().substring(1));
 //            dailyCalorieGoal.setValue((int) preferences.getDailyCalorieGoal());
-            weeklyActivityGoalChoiceBox.setValue(preferences.getWeeklyActivityReps());
         }
 
     }

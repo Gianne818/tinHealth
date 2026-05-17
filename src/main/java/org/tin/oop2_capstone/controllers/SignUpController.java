@@ -14,12 +14,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import javafx.event.ActionEvent;
+import org.tin.oop2_capstone.database.InsertData;
 import org.tin.oop2_capstone.database.RetrieveData;
 import org.tin.oop2_capstone.model.entities.User;
 import org.tin.oop2_capstone.model.entities.UserPreferences;
 import org.tin.oop2_capstone.utils.SceneSwitcher;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class SignUpController {
@@ -70,13 +72,10 @@ public class SignUpController {
 
     private void checkIfEnableNext(int curPanel){
         // todo check if fields are valid for each panel then setVisible if okay na
+        // todo (future: handle diff input cases)
         switch (curPanel){
             case 0:
                 if(bdayDatePicker.getValue() != null && genderChoiceBox.getValue() != null){
-                    /* set user attributes for second sign-up page */
-                    user.setDateOfBirth(bdayDatePicker.getValue());
-                    user.setMale(genderChoiceBox.getValue().equals("Male"));
-
                     nextButton.setDisable(false);
                 } else {
                     nextButton.setDisable(true);
@@ -85,10 +84,6 @@ public class SignUpController {
             case 1:
                 if(!currentHeightTextField.getText().isEmpty() &&
                         !currentWeightTextField.getText().isEmpty()){
-                    /* set User attributes for third sign-up page */
-                    user.setHeightCm(Double.parseDouble(currentHeightTextField.getText()));
-                    user.setWeightKg(Double.parseDouble(currentHeightTextField.getText()));
-
                     nextButton.setDisable(false);
                 } else {
                     nextButton.setDisable(true);
@@ -142,8 +137,9 @@ public class SignUpController {
             checkIfEnableNext(curPanel);
         });
 
-        /* Initialize nako daan ang user so that i can just use setters for each fields */
+        /* Initialize nako daan ang user and userpref so that i can just use setters for each fields */
         user = new User();
+        userPref = new UserPreferences();
     }
 
     public void onBackButtonClick(ActionEvent event){
@@ -160,8 +156,28 @@ public class SignUpController {
     }
 
     public void onNextButtonClick(ActionEvent event){
-        // todo: if fields are invalid or empty, stay and show error. Otherwise save the values andproceed to the next page.
-        //      -> create helper isValid methods for each pane
+        /* set attributes for user for different panel */
+        switch (curPanel) {
+            case 0:
+                /* set user attributes for second sign-up page */
+                user.setDateOfBirth(bdayDatePicker.getValue());
+                user.setMale(genderChoiceBox.getValue().equals("Male"));
+                break;
+            case 1:
+                /* set User attributes for third sign-up page */
+                user.setHeightCm(Double.parseDouble(currentHeightTextField.getText()));
+                user.setWeightKg(Double.parseDouble(currentWeightTextField.getText()));
+                userPref.setTargetWeightKG(targetWeightTextField.getText().isBlank() ? 0 : Double.parseDouble(targetWeightTextField.getText()));
+                break;
+            case 2:
+                /* set user attributes for activity level pge */
+                user.setActivityLevel(currSelectedActivity.equals(sedentaryGridPane) ? "Sedentary" :
+                        currSelectedActivity.equals(lightlyActiveGridPane) ? "Lightly" :
+                        currSelectedActivity.equals(moderatelyActiveGridPane) ? "Moderately" :
+                        currSelectedActivity.equals(veryActiveGridPane) ? "Very Active" :
+                        "Extremely Active");
+                break;
+        }
 
         changeElementAccessibility(panels.get(curPanel), false, true, true);
         curPanel++;
@@ -256,13 +272,21 @@ public class SignUpController {
             currSelectedActivity = button;
         }
         checkIfEnableNext(curPanel);
-        // todo: based on currSelectedActivity, we set goals automatically. User can change them in settings
-        //    -> we set the userpref here essentially for the settings
+
     }
 
-    public void onContinueButtonClick(ActionEvent event){
+    public void onContinueButtonClick(ActionEvent event) throws SQLException {
         // todo: do the storing of ALL user data in here to the database (this is to avoid null values when creating a user)
+        int user_id = InsertData.insertUser(user);
+
+        if (user_id != -1) {
+            InsertData.insertUserPref(userPref, user_id);
+        } else {
+            System.out.println("User insert failed, skipping userprefs.");
+        }
+
         SceneSwitcher.use(backButton, "main-view").setCss("application").setMinDimensions(900, 850).setMaximized(true).setResizeable(true).setTitle("+inHealth").switchScene();
+
     }
 
     private void setSelectedActivityLevel(Node n){

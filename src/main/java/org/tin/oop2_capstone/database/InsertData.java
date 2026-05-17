@@ -178,14 +178,15 @@ public class InsertData {
         }
      */
 
-    public static int insertUser(User user) throws SQLException {
+    public static int insertUser(User user){
         if(user == null){
             return -1;
         }
         String sql = "INSERT INTO users (fullname, username, email, password_hash, age, date_of_birth, gender, weight_kg, height_cm, activity_level) VALUES " +
                             "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        int insertedRows = 0;
         try(Connection conn = DatabaseConnection.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(sql)){
+            PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
 
             pstmt.setString(1, user.getFullname());
             pstmt.setString(2, user.getUsername());
@@ -198,17 +199,19 @@ public class InsertData {
             pstmt.setDouble(9, user.getHeightCm());
             pstmt.setString(10, user.getActivityLevel());
 
-            int insertedRows = pstmt.executeUpdate();
+            insertedRows = pstmt.executeUpdate();
             System.out.println(insertedRows + " row/s inserted in users table");
             if(insertedRows > 0){
                 try(ResultSet rs = pstmt.getGeneratedKeys()){
                     if(rs.next()){
-                        return rs.getInt("user_id");
+                        return rs.getInt(1); // Use column index for portability
                     }
                 }
             }
         } catch(SQLException e){
             e.printStackTrace();
+        } finally {
+            System.out.println(insertedRows + " row/s inserted in users table");
         }
         return -1;
     }
@@ -217,11 +220,12 @@ public class InsertData {
         if(userPref == null){
             return -1;
         }
+        int insertedRows = 0;
 
-        String sql = "INSERT INTO userprefs (user_id, goal, target_weight_kd, enable_exercise_prompts, prompt_freq, theme, exercise_reminders, meal_reminders, achievement_notifications, daily_calorie_in, daily_calorie_out) VALUES " +
+        String sql = "INSERT INTO userprefs (user_id, goal, target_weight_kg, enable_exercise_prompts, prompt_freq, theme, exercise_reminders, meal_reminders, achievement_notifications, daily_calorie_in, daily_calorie_out) VALUES " +
                 "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try(Connection conn = DatabaseConnection.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(sql)){
+            PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
 
             pstmt.setInt(1, user_id);
             pstmt.setString(2, userPref.getGoalType());
@@ -235,17 +239,19 @@ public class InsertData {
             pstmt.setDouble(10, userPref.getDailyCalorieIn());
             pstmt.setDouble(11, userPref.getDailyCalorieOut());
 
-            int insertedRows = pstmt.executeUpdate();
-            System.out.println(insertedRows + " row/s inserted in userprefs table");
+            insertedRows = pstmt.executeUpdate();
+            System.out.println(insertedRows + " row/s inserted in users table");
             if(insertedRows > 0){
                 try(ResultSet rs = pstmt.getGeneratedKeys()){
                     if(rs.next()){
-                        return rs.getInt("userpref_id");
+                        return rs.getInt(1); // Use column index for portability
                     }
                 }
             }
         } catch(SQLException e){
             e.printStackTrace();
+        } finally {
+            System.out.println(insertedRows + " row/s inserted in userprefs table");
         }
         return -1;
     }
