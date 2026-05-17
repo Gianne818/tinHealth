@@ -46,7 +46,6 @@ public class FoodLogController {
     private List<Meal> meals;
     private ObservableList<GridPane> foodGridPanes;
 
-    @FXML private TextField foodNameTextField;
     @FXML private ComboBox<String> foodNameComboBox;
     @FXML private TextField caloriesTextField;
     @FXML private TextField timeTextField;
@@ -79,12 +78,6 @@ public class FoodLogController {
         mealChoiceBox.getItems().addAll(MealType.BREAKFAST.toString(), MealType.LUNCH.toString(), MealType.DINNER.toString(), MealType.SNACK.toString());
 
         currentState = new IdleState();
-        foodNameTextField.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            if (!newVal) { // onLostFocus
-                validateAndFetchFood();
-            }
-        });
-
         mealChoiceBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
                 updateTimeBasedOnMeal();
@@ -93,16 +86,18 @@ public class FoodLogController {
         initfoodNameComboBox();
     }
 
-    private void addSelectedFood(String foodName){
+    private void addSelectedFood(Food food){
         try{
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/selected-food-view.fxml"));
             HBox selectedFood = fxmlLoader.load();
             SelectedFoodController selectedFoodController = fxmlLoader.getController();
-            selectedFoodController.setFoodNameLabel(foodName);
+            selectedFoodController.setFoodNameLabel(food.getName());
             foodNameEntryHBox.getChildren().add(selectedFood);
 
             selectedFoodController.setOnDeleteAction(() -> {
                 foodNameEntryHBox.getChildren().remove(selectedFood);
+                selectedFoods.remove(food);
+                calculateCalories();
             });
             foodNameComboBox.getItems().clear();
             foodNameComboBox.getEditor().clear();
@@ -114,7 +109,9 @@ public class FoodLogController {
 
     // we use this var to see if user stopped typing. If so, wakeup thread to query api
     int currentKeyStroke = 0;
+    String userTypedName;
     private void initfoodNameComboBox(){
+
         foodNameComboBox.getEditor().textProperty().addListener((obs, oldVal, newVal) -> {
             if(newVal == null || newVal.trim().isEmpty()){
                 foodNameComboBox.getItems().clear();
@@ -125,11 +122,13 @@ public class FoodLogController {
 
             currentKeyStroke++;
             int nextKeyStroke = currentKeyStroke;
+            userTypedName = foodNameComboBox.getEditor().getText().trim();
             new Thread(() -> {
                 try {
                     Thread.sleep(500);
 
                     if(nextKeyStroke == currentKeyStroke){
+
                         fetchFoodFromApi(newVal);
                     }
 
@@ -143,9 +142,9 @@ public class FoodLogController {
         foodNameComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if(newVal != null && searchRes.containsKey(newVal)){
                 Food consumable = searchRes.get(newVal);
-                addSelectedFood(consumable.getName());
+                addSelectedFood(consumable);
                 selectedFoods.add(consumable);
-                consumable.setName(formatFoodName(oldVal));
+                consumable.setName(formatFoodName(userTypedName));
                 calculateCalories();
             }
         });
@@ -172,7 +171,6 @@ public class FoodLogController {
                     Platform.runLater(() -> {
                         ObservableList<String>  dropDown = FXCollections.observableArrayList();
                         for(Food f : fetchedFoods) {
-                            String formattedName = formatFoodName(food);
                             searchRes.put(f.getName(), f);
                             dropDown.add(f.getName());
                         }
@@ -209,83 +207,6 @@ public class FoodLogController {
         } catch (NumberFormatException e){
             return false;
         }
-    }
-
-    private void validateAndFetchFood() {
-        // TODO: Implement relevant changes to take States into account.
-        String rawFoodName = foodNameTextField.getText().trim();
-        // Format the name first
-        String foodName = formatFoodName(rawFoodName);
-        // Update the text field with formatted name (must be on UI thread)
-        if (!rawFoodName.equals(foodName)) {
-            foodNameTextField.setText(foodName);  // This is already on UI thread since focus lost event runs on UI thread
-        }
-
-        // Validate: not empty and length > 1 character
-        if (foodName.isEmpty() || foodName.length() <= 1) {
-            caloriesTextField.setText("- -");
-            caloriesTextField.setStyle(""); // Clears any previously set inline red styling
-
-            // Add the CSS class safely without duplicating it
-            if (!caloriesTextField.getStyleClass().contains("lightText")) {
-                caloriesTextField.getStyleClass().add("lightText");
-            }
-            return;
-        }
-
-        // Run API call in background thread to avoid freezing UI
-        new Thread(() -> {
-            try {
-                List<String> foodsList = SearchInterpreter.interpret(foodName);
-                List<String> jsons = new ArrayList<>();
-
-                for(String s : foodsList){
-                    jsons.add(FoodAPI.getFoodData(s.trim().replace(" ", "+")));
-                }
-
-                // Add null check here
-                if (jsons.isEmpty() || jsons.getFirst() == null) {
-                    Platform.runLater(() -> {
-                        caloriesTextField.setText("Error: Food not found.");
-                        caloriesTextField.setStyle("-fx-text-fill: red;");
-                    });
-                    return;
-                }
-
-                Consumable consumable;
-                if(jsons.size() == 1){
-                    consumable = FoodParser.parseFood(jsons.getFirst());
-                } else {
-                    List<Food> foodComboFoods = new ArrayList<>();
-                    for(String s : jsons){
-                        foodComboFoods.add(FoodParser.parseFood(s));
-                    }
-                    consumable = new FoodCombo(foodName, foodComboFoods);
-                }
-                System.out.println("Consumable: " + consumable.getName());
-                // Update UI on JavaFX thread
-                Platform.runLater(() -> {
-                    if (consumable != null && consumable.getNutrition() != null) {
-                        fetchedFood = consumable;
-                        fetchedCalories = consumable.getNutrition().getCalories();
-                        caloriesTextField.setText(String.format("%.1f", fetchedCalories));
-                        caloriesTextField.getStyleClass().add("greenLabel");
-                        selectedFoodName = formatFoodName(consumable.getName());
-
-                        // Auto-set time based on meal type
-                    } else {
-                        caloriesTextField.setText("Not found");
-                        caloriesTextField.setStyle("-fx-text-fill: red;");
-                    }
-                });
-            } catch (Exception e) {
-                Platform.runLater(() -> {
-                    caloriesTextField.setText("Error 3");
-                    caloriesTextField.setStyle("-fx-text-fill: red;");
-                });
-                e.printStackTrace();
-            }
-        }).start();
     }
 
     private String formatFoodName(String rawName) {
@@ -372,7 +293,7 @@ public class FoodLogController {
     public void onButtonAddEntryClicked(ActionEvent actionEvent) {
 
         // Validate all fields
-        if(!isDouble(caloriesTextField.getText()) || timeTextField.getText().isEmpty()){
+        if(!isDouble(caloriesTextField.getText()) || timeTextField.getText().isEmpty() || selectedFoods.isEmpty()){
             return;
         }
 
@@ -402,7 +323,6 @@ public class FoodLogController {
 
 
             clearAddEntryForm();
-            clearAddEntryForm();
 
         } catch (Exception e) {
             showError("Error saving food entry");
@@ -416,7 +336,6 @@ public class FoodLogController {
     }
 
     private void clearAddEntryForm() {
-        foodNameTextField.clear();
         caloriesTextField.setText("- -");
         mealChoiceBox.setValue(null);
         timeTextField.clear();
@@ -426,6 +345,7 @@ public class FoodLogController {
         gridPaneAddEntry.setVisible(false);
         gridPaneAddEntry.setManaged(false);
         addEntryisVisible = false;
+        selectedFoods.clear();
     }
 
     private void showError(String message) {

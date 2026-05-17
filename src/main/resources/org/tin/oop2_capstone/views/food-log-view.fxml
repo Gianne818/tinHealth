@@ -96,9 +96,9 @@
 
                    <GridPane fx:id="gridPaneAddEntry" hgap="10.0" managed="true" styleClass="cardContent" vgap="10.0" visible="true">
                        <columnConstraints>
-                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="179.0" minWidth="10.0" prefWidth="52.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           <ColumnConstraints hgrow="NEVER" maxWidth="179.0" minWidth="10.0" />
+                           <ColumnConstraints hgrow="NEVER" minWidth="200.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" />
                        </columnConstraints>
                        <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -127,10 +127,9 @@
                         <ChoiceBox fx:id="mealChoiceBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                         <Label layoutX="202.0" layoutY="153.0" styleClass="fieldLabel" text="Time" GridPane.columnIndex="2" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" />
                         <TextField fx:id="caloriesTextField" editable="false" focusTraversable="false" mouseTransparent="true" promptText="- -" GridPane.rowIndex="4" />
-                        <HBox fx:id="foodNameEntryHBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="10.0" styleClass="hboxContainer" GridPane.columnSpan="3" GridPane.rowIndex="2">
+                        <HBox fx:id="foodNameEntryHBox" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="10.0" styleClass="hboxContainer" GridPane.columnSpan="3" GridPane.rowIndex="2">
                            <children>
-                              <ComboBox fx:id="foodNameComboBox" editable="true" maxWidth="1.7976931348623157E308" />
-                              <TextField fx:id="foodNameTextField" promptText="e.g. Jaboli Spicy Chicken" />
+                              <ComboBox fx:id="foodNameComboBox" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
                            </children>
                            <GridPane.margin>
                               <Insets />

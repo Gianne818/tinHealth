@@ -1,6 +1,7 @@
 package org.tin.oop2_capstone.controllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -13,16 +14,20 @@ public class SelectedFoodController {
     @FXML private HBox selectedFoodHBox;
 
     private Runnable onDeleteAction;
+    private double origMinWidth;
 
     public void setFoodNameLabel(String text){
         foodNameLabel.setText(text);
 
         selectedFoodHBox.setOnMouseEntered(e -> {
+            origMinWidth = selectedFoodHBox.getMinWidth();
+            selectedFoodHBox.setMinWidth(Control.USE_PREF_SIZE);
             deleteButtonSVGPath.setVisible(true);
             deleteButtonSVGPath.setManaged(true);
         });
 
         selectedFoodHBox.setOnMouseExited(e -> {
+            selectedFoodHBox.setMinWidth(origMinWidth);
             deleteButtonSVGPath.setVisible(false);
             deleteButtonSVGPath.setManaged(false);
         });
