@@ -1,9 +1,6 @@
 package org.tin.oop2_capstone.model.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class UserPreferences implements Serializable {
     /** implements serializable to be added for future .ser files **/

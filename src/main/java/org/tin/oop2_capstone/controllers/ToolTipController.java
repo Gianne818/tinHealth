@@ -2,13 +2,6 @@ package org.tin.oop2_capstone.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import org.tin.oop2_capstone.database.RetrieveData;
-import org.tin.oop2_capstone.database.repositories.MealRepository;
-import org.tin.oop2_capstone.model.entities.Meal;
-import org.tin.oop2_capstone.model.entities.NutritionDetails;
-import org.tin.oop2_capstone.services.SessionManager;
-
-import java.util.List;
 
 public class ToolTipController {
     @FXML Label dayLabel;
