@@ -133,32 +133,6 @@ public class SettingsController implements Initializable {
             WarningPopupController.showPopup("Missing Fields", "Please enter a target weight.");
             return;
         }
-        try {
-            targetWeight = Double.parseDouble(weightText);
-
-            double heightCm = SessionManager.getInstance().getCurrentUser().getHeightCm();
-            double heightMeters = heightCm / 100.0;
-
-            //weight(kg)*height(meters)*height(meters) = bmi. calculate safeweight based on height that results in 18.5 safe bmi
-            double minSafeWeight = 18.5 * (heightMeters * heightMeters);
-
-            //ensure calculated bmi is above 18.5
-            if (targetWeight < minSafeWeight) {
-                String formattedMinWeight = String.format("%.1f", minSafeWeight);
-                WarningPopupController.showPopup("Unsafe Target!", "Based on your height, your minimum safe weight is " + formattedMinWeight + " kg.");
-                return;
-            }
-
-            //check if goal is lose weight then dont target higher weight
-            double currentWeight = SessionManager.getInstance().getCurrentUser().getWeightKg();
-            if (targetWeight > currentWeight && SessionManager.getInstance().getCurrentUserPrefs().getGoalType().equals("Lose")) {
-                WarningPopupController.showPopup("Goal Mismatch","Your target weight cannot be higher than your current weight if your goal is to lose weight!");
-                return;
-            }
-        } catch (NumberFormatException e) {
-            WarningPopupController.showPopup("Invalid Input", "Target weight must be a valid number.");
-            return;
-        }
         if (exerciseIntensity.getValue() == null) {
             WarningPopupController.showPopup("Missing Fields", "Please select an exercise intensity.");
             return;
@@ -180,14 +154,79 @@ public class SettingsController implements Initializable {
             return;
         }
 
+        //Goal Mismatches
+        try {
+            targetWeight = Double.parseDouble(weightText);
+
+            double heightCm = SessionManager.getInstance().getCurrentUser().getHeightCm();
+            double heightMeters = heightCm / 100.0;
+            double minSafeWeight = 18.5 * (heightMeters * heightMeters);
+
+            if (targetWeight < minSafeWeight) {
+                String formattedMinWeight = String.format("%.1f", minSafeWeight);
+                WarningPopupController.showPopup("Unsafe Target!", "Based on your height, your minimum safe weight is " + formattedMinWeight + " kg.");
+                return;
+            }
+
+            double currentWeight = SessionManager.getInstance().getCurrentUser().getWeightKg();
+            String currentGoal = SessionManager.getInstance().getCurrentUserPrefs().getGoalType();
+            final double validatedWeight = targetWeight;
+
+            //if goal is Lose but target weight is HIGHER than current. My solution is to treat it as a typo by the user since the user explicitly selected lose weight in registration.
+            //BUT long time user wanting to switch goals might need to be evalutade so ill mark this TODO:
+            if (targetWeight > currentWeight && currentGoal.equals("Lose")) {
+                WarningPopupController.showPopup("Goal Mismatch", "Your target weight cannot be higher than your current weight if your goal is to lose weight!");
+                return;
+            }
+
+            //if goal is gain/build muscle but target weight is LOWER than current → suggest switching to Lose
+            if (targetWeight < currentWeight && (currentGoal.equals("Gain") || currentGoal.equals("Build Muscle"))) {
+                ConfirmPopupController.showPopup("Goal Mismatch — Switch to Lose?", "Your target weight is lower than your current weight, but your goal is set to '" + currentGoal + "'. Switch goal to 'Lose'?", () -> {
+                            //if confirm
+                            SessionManager.getInstance().getCurrentUserPrefs().setGoalType("Lose");
+                            savePreferences(validatedWeight);
+                        }
+                );
+                return;
+            }
+
+            //if goal is maintain but target differs significantly from current then suggest switching goals
+            if (currentGoal.equals("Maintain")) {
+                if (targetWeight < currentWeight - 2) {
+                    ConfirmPopupController.showPopup(
+                            "Switch goal to Lose?",
+                            "Your target is below your current weight. Switch goal to 'Lose'?",
+                            () -> {
+                                SessionManager.getInstance().getCurrentUserPrefs().setGoalType("Lose");
+                                savePreferences(validatedWeight);
+                            }
+                    );
+                    return;
+                } else if (targetWeight > currentWeight + 2) {
+                    ConfirmPopupController.showPopup(
+                            "Switch goal to Gain?",
+                            "Your target is above your current weight. Switch goal to 'Gain'?",
+                            () -> {
+                                SessionManager.getInstance().getCurrentUserPrefs().setGoalType("Gain");
+                                savePreferences(validatedWeight);
+                            }
+                    );
+                    return;
+                }
+            }
+        } catch (NumberFormatException e) {
+            WarningPopupController.showPopup("Invalid Input", "Target weight must be a valid number.");
+            return;
+        }
+
         //prompt for confirmation
-        final double validatedWeight = targetWeight;
-        confirmPrompt(() -> savePreferences(validatedWeight));
+        final double finalWeight  = targetWeight;
+        confirmPrompt(() -> savePreferences(finalWeight));
     }
 
-    // Accepts a Runnable containing the saving actions
+    //bridge to wait for confirm
     private void confirmPrompt(Runnable onConfirmAction) {
-        ConfirmPopupController.showPopup("Confirm changes?", () -> {
+        ConfirmPopupController.showPopup("Confirm","Save changes?", () -> {
             //when confirmed, runs savePreferences()
             onConfirmAction.run();
         });
