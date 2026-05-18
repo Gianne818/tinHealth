@@ -2,13 +2,16 @@ package org.tin.oop2_capstone.controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.GaussianBlur;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 
 import java.io.IOException;
 
@@ -45,13 +48,33 @@ public class ConfirmPopupController {
             controller.setOnConfirmAction(onConfirmAction);
             controller.setConfirmPopupTitle(title);
 
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(ConfirmPopupController.class.getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm());
+
             //Create and show
             Stage popupStage = new Stage();
             popupStage.initStyle(StageStyle.UNDECORATED);
             popupStage.initModality(Modality.NONE);
-            popupStage.setTitle("Confirm Action");
-            popupStage.setScene(new Scene(root));
+            popupStage.setTitle(title);
+            popupStage.setScene(scene);
+
+            //add blur
+            Node mainAppRoot = null;
+            for (Window window : Window.getWindows()) {
+                if (window.isShowing() && window.getScene() != null) {
+                    mainAppRoot = window.getScene().getRoot();
+                    mainAppRoot.setEffect(new GaussianBlur(15));
+                    break;
+                }
+            }
+
             popupStage.showAndWait();
+
+            //remove blur after show is exited
+            if (mainAppRoot != null) {
+                mainAppRoot.setEffect(null);
+            }
+
 
         } catch (IOException e) {
             e.printStackTrace();

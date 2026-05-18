@@ -28,12 +28,15 @@ public class WarningPopupController {
             controller.setWarningMessage(message);
             controller.setWarningPopupTitle(title);
 
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(ConfirmPopupController.class.getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm());
+
             //Create and show
             Stage popupStage = new Stage();
             popupStage.initStyle(StageStyle.UNDECORATED);
             popupStage.initModality(Modality.NONE);
-            popupStage.setTitle("Warning")
-            ;popupStage.setScene(new Scene(root));
+            popupStage.setTitle(title);
+            popupStage.setScene(scene);
 
             //Outside area closer
             popupStage.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {

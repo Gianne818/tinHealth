@@ -1,22 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="200.0" minWidth="350.0" styleClass="cardContent" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.WarningPopupController">
-    <top>
-        <Label fx:id="warningPopupTitle" styleClass="cardTitle" text="Confirm Action" BorderPane.alignment="CENTER" />
-    </top>
-    <center>
-        <Label fx:id="warningMessageLabel" text="confirmMessageLabel" BorderPane.alignment="CENTER">
-            <font>
-                <Font size="24.0" />
-            </font>
-        </Label>
-    </center>
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      prefWidth="350.0" spacing="10.0" styleClass="popup-container" xmlns="http://javafx.com/javafx/17.0.12"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.WarningPopupController">
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+        <Insets bottom="30.0" left="25.0" right="25.0" top="30.0"/>
     </padding>
-</BorderPane>
+    <SVGPath
+            content="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+            fill="#DB2627" scaleX="2.5" scaleY="2.5">
+        <VBox.margin>
+            <Insets bottom="10.0" top="10.0"/>
+        </VBox.margin>
+    </SVGPath>
+
+    <Label fx:id="warningPopupTitle" styleClass="popup-title-warning" text="Warning!"/>
+
+    <Label fx:id="warningMessageLabel" styleClass="popup-message" text="Please check your inputs and try again."
+           textAlignment="CENTER" wrapText="true">
+        <font>
+            <Font size="14.0"/>
+        </font>
+    </Label>
+</VBox>
