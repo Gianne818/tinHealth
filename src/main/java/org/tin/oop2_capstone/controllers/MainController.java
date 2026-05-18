@@ -78,7 +78,7 @@ public class MainController {
     @FXML private Label quickStatsLabel;
     @FXML private GridPane quickStatsGridPane;
     @FXML private Label promptLabel1;
-
+    @FXML private FlowPane upperNavFlowPane;
     private ActivityRepository activityRepository = ActivityRepository.getInstance();
 
     private ExerciseMonitor exerciseMonitor = ExerciseMonitor.getInstance();
@@ -134,6 +134,7 @@ public class MainController {
             remainingTimeUnitLabelk.setVisible(true);
             remainingTimeNumberLabel.setVisible(true);
             quickWorkoutButton.setText("Quick Exercise");
+            upperNavFlowPane.setHgap(210);
             profileNav.setPadding(new Insets(0, 0, 0, 0));
         }
         else {
@@ -154,6 +155,7 @@ public class MainController {
             toggleElement(promptLabel1, false);
             remainingTimeUnitLabelk.setVisible(false);
             remainingTimeNumberLabel.setVisible(false);
+            upperNavFlowPane.setHgap(220);
             quickWorkoutButton.setText("\u29BF");
             profileNav.setPadding(new Insets(0, 0, 0, 7));
         }
