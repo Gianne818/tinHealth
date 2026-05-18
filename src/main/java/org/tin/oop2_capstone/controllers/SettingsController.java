@@ -62,10 +62,10 @@ public class SettingsController implements Initializable {
         weeklyActivityGoalComboBox.setVisibleRowCount(6);
 
         promptFrequency.setMin(1);
-        promptFrequency.setMax(24);
+        promptFrequency.setMax(8);
         promptFrequency.setValue(4);
-        promptFrequency.setMajorTickUnit(6);
-        promptFrequency.setMinorTickCount(5);
+        promptFrequency.setMajorTickUnit(1);
+        promptFrequency.setMinorTickCount(0);
         promptFrequency.setSnapToTicks(true);
         promptFrequency.setShowTickLabels(true);
         promptFrequency.setShowTickMarks(true);
