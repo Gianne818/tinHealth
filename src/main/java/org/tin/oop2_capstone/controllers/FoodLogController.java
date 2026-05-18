@@ -575,9 +575,10 @@ public class FoodLogController {
         fetchedFood = null;
         gridPaneAddEntry.setVisible(false);
         gridPaneAddEntry.setManaged(false);
+
         addEntryisVisible = false;
         selectedFoods.clear();
-        foodNameEntryHBox.getChildren().clear();
+        foodNameEntryHBox.getChildren().removeIf(node -> node != foodNameComboBox);
     }
 
     private void showError(String message) {
@@ -615,13 +616,13 @@ public class FoodLogController {
     /** Mga State Functions */
 
     public void enableFoodLogInput() {
-        buttonAddFood.setDisable(false);
-        addEntryButton.setDisable(false);
+//        buttonAddFood.setDisable(false);
+//        addEntryButton.setDisable(false);
     }
 
     public void disableFoodLogInput() {
-        buttonAddFood.setDisable(true);
-        addEntryButton.setDisable(true);
+//        buttonAddFood.setDisable(true);
+//        addEntryButton.setDisable(true);
     }
 
     public void showLoadingIndicator() {
