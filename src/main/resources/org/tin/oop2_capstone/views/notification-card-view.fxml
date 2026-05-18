@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.SVGPath?>
+
+<GridPane fx:id="notifParentGridPane" hgap="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="600.0" vgap="5.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+  <columnConstraints>
+    <ColumnConstraints hgrow="NEVER" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    <ColumnConstraints hgrow="NEVER" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <StackPane fx:id="imageStackPane" GridPane.halignment="CENTER" GridPane.rowSpan="3" GridPane.valignment="CENTER">
+         <children>
+            <ImageView fx:id="iconImageView" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_LEFT" />
+         </children>
+      </StackPane>
+      <Label fx:id="notifDescriptionLabel" text="notifDescriptionLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <Label fx:id="timeAgoLabel" styleClass="lightText" text="timeAgoLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Label text="ago" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets left="90.0" />
+         </GridPane.margin>
+      </Label>
+      <StackPane fx:id="dismissNotifStackPane" managed="true" onMouseClicked="#deleteCurrent" visible="true" GridPane.columnIndex="2">
+         <children>
+            <SVGPath content="M18 6L6 18M6 6l12 12" fill="#7c3aec" scaleX="0.7" scaleY="0.7" stroke="#7c3aec" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="1.67" />
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </StackPane>
+      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1">
+         <children>
+            <Label fx:id="notifTitleLabel" styleClass="cardTitle" text="notifTitleLabel" />
+            <SVGPath fx:id="newNotifIndicatorSVGPath" content="M12 10a2 2 0 1 1 0 4 2 2 0 1 1 0-4z" fill="#7c3aec" stroke="#7c3aec" strokeWidth="1.67" />
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
+   </padding>
+</GridPane>
