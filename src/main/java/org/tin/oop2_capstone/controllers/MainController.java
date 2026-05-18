@@ -98,6 +98,7 @@ public class MainController {
         startExercisePromptTimer();
     }
 
+
     public void toggleSideBar(){
         double defaultPosition = 0.3;
         if(isSideBarCollapsed){
@@ -153,6 +154,15 @@ public class MainController {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/" + filename + ".fxml"));
             view = fxmlLoader.load();
+
+            if (filename.equals("notifications-view")) {
+                NotificationTabController notifCtrl = fxmlLoader.getController();
+                User user = SessionManager.getInstance().getCurrentUser();
+                UserPreferences prefs = SessionManager.getInstance().getCurrentUserPrefs();
+                if (user != null && prefs != null) {
+                    notifCtrl.loadNotifications(user, prefs);
+                }
+            }
 
             AnchorPane.setBottomAnchor(view, 0.0);
             AnchorPane.setTopAnchor(view, 0.0);
