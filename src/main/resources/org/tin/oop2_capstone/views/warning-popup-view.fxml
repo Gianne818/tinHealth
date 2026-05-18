@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane minHeight="200.0" minWidth="350.0" styleClass="cardContent" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.WarningPopupController">
+    <top>
+        <Label fx:id="warningPopupTitle" styleClass="cardTitle" text="Confirm Action" BorderPane.alignment="CENTER" />
+    </top>
+    <center>
+        <Label fx:id="warningMessageLabel" text="confirmMessageLabel" BorderPane.alignment="CENTER">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+    </center>
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+</BorderPane>

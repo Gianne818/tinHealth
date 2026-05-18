@@ -2,13 +2,17 @@ package org.tin.oop2_capstone.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import org.tin.oop2_capstone.database.repositories.SettingsRepository;
+import org.tin.oop2_capstone.model.entities.User;
 import org.tin.oop2_capstone.model.entities.UserPreferences;
 import org.tin.oop2_capstone.services.SessionManager;
 import org.tin.oop2_capstone.utils.InputManager;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.stream.IntStream;
@@ -41,7 +45,7 @@ public class SettingsController implements Initializable {
     private void initializeControls() {
         exerciseIntensity.getItems().addAll(IntStream.rangeClosed(1, 10).boxed().toList());
         theme.getItems().addAll("Light", "Dark");
-        weeklyActivityGoalComboBox.getItems().addAll(IntStream.rangeClosed(0, 7).boxed().toList());
+        weeklyActivityGoalComboBox.getItems().addAll(IntStream.rangeClosed(1, 7).boxed().toList());
         System.out.println("TEST");
 
         //populate options for calorieG cbox
@@ -55,7 +59,7 @@ public class SettingsController implements Initializable {
         }
         caloriesGoalInComboBox.setVisibleRowCount(6);
         caloriesGoalBurnedComboBox.setVisibleRowCount(6);
-//        weeklyActivityGoalChoiceBox.setVisibleRowCount(7); //TODO:
+        weeklyActivityGoalComboBox.setVisibleRowCount(6);
 
         promptFrequency.setMin(1);
         promptFrequency.setMax(24);
@@ -107,7 +111,7 @@ public class SettingsController implements Initializable {
             caloriesGoalBurnedComboBox.setValue(calOut);
 
             weeklyActivityGoalComboBox.setValue(
-                    preferences.getWeeklyActivityReps() >= 0 && preferences.getWeeklyActivityReps() <= 7
+                    preferences.getWeeklyActivityReps() >= 1 && preferences.getWeeklyActivityReps() <= 7
                             ? preferences.getWeeklyActivityReps()
                             : 3
             );
@@ -118,45 +122,79 @@ public class SettingsController implements Initializable {
     @FXML
     public void onSaveButtonClicked(ActionEvent event) {
         double targetWeight = 0;
+        if (targetWeightTextField.getText() == null) {
+            WarningPopupController.showPopup("Missing Fields", "Please enter a target weight.");
+            return;
+        }
         String weightText = targetWeightTextField.getText().trim();
-        if (!weightText.isEmpty()) {
-            try {
-                targetWeight = Double.parseDouble(weightText);
-                if (targetWeight <= 0 || targetWeight > 500) {
-                    showAlert(Alert.AlertType.WARNING, "Invalid Input",
-                            "Target weight must be between 0 and 500 kg.");
-                    return;
-                }
-            } catch (NumberFormatException e) {
-                showAlert(Alert.AlertType.WARNING, "Invalid Input",
-                        "Target weight must be a valid number.");
+
+        //Validate
+        if (targetWeightTextField.getText().isEmpty()) {
+            WarningPopupController.showPopup("Missing Fields", "Please enter a target weight.");
+            return;
+        }
+        try {
+            targetWeight = Double.parseDouble(weightText);
+
+            double heightCm = SessionManager.getInstance().getCurrentUser().getHeightCm();
+            double heightMeters = heightCm / 100.0;
+
+            //weight(kg)*height(meters)*height(meters) = bmi. calculate safeweight based on height that results in 18.5 safe bmi
+            double minSafeWeight = 18.5 * (heightMeters * heightMeters);
+
+            //ensure calculated bmi is above 18.5
+            if (targetWeight < minSafeWeight) {
+                String formattedMinWeight = String.format("%.1f", minSafeWeight);
+                WarningPopupController.showPopup("Unsafe Target!", "Based on your height, your minimum safe weight is " + formattedMinWeight + " kg.");
                 return;
             }
-        }
 
-        // ── Validate required dropdowns ─────────────────────────────────────
+            //check if goal is lose weight then dont target higher weight
+            double currentWeight = SessionManager.getInstance().getCurrentUser().getWeightKg();
+            if (targetWeight > currentWeight && SessionManager.getInstance().getCurrentUserPrefs().getGoalType().equals("Lose")) {
+                WarningPopupController.showPopup("Goal Mismatch","Your target weight cannot be higher than your current weight if your goal is to lose weight!");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            WarningPopupController.showPopup("Invalid Input", "Target weight must be a valid number.");
+            return;
+        }
         if (exerciseIntensity.getValue() == null) {
-            showAlert(Alert.AlertType.WARNING, "Missing Field", "Please select an exercise intensity.");
+            WarningPopupController.showPopup("Missing Fields", "Please select an exercise intensity.");
             return;
         }
         if (theme.getValue() == null) {
-            showAlert(Alert.AlertType.WARNING, "Missing Field", "Please select a theme.");
+            WarningPopupController.showPopup("Missing Fields", "Please select a theme.");
             return;
         }
         if (caloriesGoalInComboBox.getValue() == null) {
-            showAlert(Alert.AlertType.WARNING, "Missing Field", "Please select a daily calories in goal.");
+            WarningPopupController.showPopup("Missing Fields", "Please select a daily calories in goal.");
             return;
         }
         if (caloriesGoalBurnedComboBox.getValue() == null) {
-            showAlert(Alert.AlertType.WARNING, "Missing Field", "Please select a daily calories burned goal.");
+            WarningPopupController.showPopup("Missing Fields", "Please select a daily calories burned goal.");
             return;
         }
         if (weeklyActivityGoalComboBox.getValue() == null) {
-            showAlert(Alert.AlertType.WARNING, "Missing Field", "Please select a weekly activity goal.");
+            WarningPopupController.showPopup("Missing Fields", "Please select a weekly activity goal.");
             return;
         }
 
-        //Update local UserPreferences
+        //prompt for confirmation
+        final double validatedWeight = targetWeight;
+        confirmPrompt(() -> savePreferences(validatedWeight));
+    }
+
+    // Accepts a Runnable containing the saving actions
+    private void confirmPrompt(Runnable onConfirmAction) {
+        ConfirmPopupController.showPopup("Confirm changes?", () -> {
+            //when confirmed, runs savePreferences()
+            onConfirmAction.run();
+        });
+    }
+
+    // Extracted method to perform the actual database/repository operations
+    private void savePreferences(double targetWeight) {
         UserPreferences current = SessionManager.getInstance().getCurrentUserPrefs();
         UserPreferences updated = new UserPreferences();
 
@@ -165,7 +203,7 @@ public class SettingsController implements Initializable {
 
         updated.setEnableExercisePrompts(exercisePrompts.isSelected());
         updated.setExerciseIntensity(exerciseIntensity.getValue());
-        updated.setPromptFrequencyMins((int) promptFrequency.getValue() * 60); //Slider convert from hours to minutes for storage
+        updated.setPromptFrequencyMins((int) promptFrequency.getValue() * 60);
         updated.setTheme(theme.getValue());
         updated.setExerciseReminders(exerciseReminders.isSelected());
         updated.setMealReminders(mealReminders.isSelected());
@@ -175,22 +213,13 @@ public class SettingsController implements Initializable {
         updated.setDailyCalorieOut(caloriesGoalBurnedComboBox.getValue());
         updated.setWeeklyActivityReps(weeklyActivityGoalComboBox.getValue());
 
-        // ── Persist via SettingsRepository (validates + saves to DB + SessionManager) ──
         int userId = SessionManager.getInstance().getCurrentUser().getUid();
-        if (settingsRepository.save(updated, userId)) {
-            showAlert(Alert.AlertType.INFORMATION, "Saved", "Settings saved successfully.");
-        } else {
-            showAlert(Alert.AlertType.ERROR, "Save Failed",
-                    "Could not save settings. Please check your inputs.");
-        }
-    }
 
-    private void showAlert(Alert.AlertType type, String title, String message) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+        if (settingsRepository.save(updated, userId)) {
+            WarningPopupController.showPopup("Success", "Settings saved successfully.");
+        } else {
+            WarningPopupController.showPopup("Error", "Something went wrong. Try again.");
+        }
     }
 
 }
