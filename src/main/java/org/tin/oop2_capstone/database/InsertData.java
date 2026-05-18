@@ -13,7 +13,7 @@ public class InsertData {
 
 
     public static boolean insertMeal(int userId, Meal meal) {
-        String insertMealSQL = "INSERT INTO Meals (user_id, consumable_id, meal_type, serving_size, serving_units, log_timestamp) VALUES (?, ?, ?, ?, ?, ?)";
+        String insertMealSQL = "INSERT INTO Meals (user_id, consumable_id, meal_type, log_date, time) VALUES (?, ?, ?, ?, ?)";
 
         int consumableId = insertOrGetConsumable(meal.getConsumable());
         try (Connection conn = DatabaseConnection.getConnection();
@@ -22,13 +22,10 @@ public class InsertData {
             pstmt.setInt(1, userId);
             pstmt.setInt(2, consumableId);
             pstmt.setString(3, meal.getMealType().toString());
-            pstmt.setDouble(4, meal.getQuantity());
-            pstmt.setString(5, meal.getUnit());
-            pstmt.setTimestamp(6, Timestamp.valueOf(meal.getLogDateTime()));
+            pstmt.setDate(4, java.sql.Date.valueOf(meal.getLogDate())); // Today's date
+            pstmt.setString(5, meal.getTime()); // The raw text "12:00 - 14:00"
 
-            int affectedRows = pstmt.executeUpdate();
-
-           return affectedRows > 0;
+            return pstmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
             e.printStackTrace();

@@ -126,15 +126,14 @@ public class HealthController {
         for (Meal m : userMeals) {
             NutritionDetails nd = m.getNutritionDetails();
             if (nd != null) {
-                double qty = m.getQuantity(); // Get the quantity logged
-                calories += nd.getCalories() * qty;
-                protein += nd.getProtein() * qty;
-                fat += nd.getFat() * qty;
-                cholesterol += nd.getCholesterol() * qty;
-                sodium += nd.getSodium() * qty;
-                sugar += nd.getSugar() * qty;
-                fiber += nd.getFiber() * qty;
-                carbs += nd.getCarbs() * qty;
+                calories += nd.getCalories();
+                protein += nd.getProtein();
+                fat += nd.getFat();
+                cholesterol += nd.getCholesterol();
+                sodium += nd.getSodium();
+                sugar += nd.getSugar();
+                fiber += nd.getFiber();
+                carbs += nd.getCarbs();
             }
         }
         //Same Logic in ToolTipController END
@@ -276,19 +275,17 @@ public class HealthController {
 
         if (weeklyMeals != null) {
             for (Meal m : weeklyMeals) {
-                int dayIndex = m.getLogDateTime().getDayOfWeek().getValue() - 1;
-
-                double qty = m.getQuantity();
+                int dayIndex = m.getLogDate().getDayOfWeek().getValue() - 1;
                 NutritionDetails nd = m.getConsumable().getNutrition();
 
-                dailyCals[dayIndex]  += nd.getCalories()     * qty;
-                dailyProt[dayIndex]  += nd.getProtein()      * qty;
-                dailyCarbs[dayIndex] += nd.getCarbs()        * qty;
-                dailyFats[dayIndex]  += nd.getFat()          * qty;
-                dailyChol[dayIndex]  += nd.getCholesterol()  * qty;
-                dailySod[dayIndex]   += nd.getSodium()       * qty;
-                dailySug[dayIndex]   += nd.getSugar()        * qty;
-                dailyFib[dayIndex]   += nd.getFiber()        * qty;
+                dailyCals[dayIndex]  += nd.getCalories()    ;
+                dailyProt[dayIndex]  += nd.getProtein()     ;
+                dailyCarbs[dayIndex] += nd.getCarbs()       ;
+                dailyFats[dayIndex]  += nd.getFat()         ;
+                dailyChol[dayIndex]  += nd.getCholesterol() ;
+                dailySod[dayIndex]   += nd.getSodium()      ;
+                dailySug[dayIndex]   += nd.getSugar()       ;
+                dailyFib[dayIndex]   += nd.getFiber()       ;
             }
         }
 

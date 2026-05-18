@@ -125,7 +125,7 @@ public class DashboardController {
                 root.getStyleClass().remove("cardContent");
 
                 LogCardController logCardController = fxmlLoader.getController();
-                logCardController.setData(a.getConsumable().getName(), TimeFormatter.formatTo12Hour(a.getLogDateTime().toLocalTime()), a.getQuantity(), a.getUnit(), a.getNutritionDetails().getCalories(), true, false, null);
+                logCardController.setData(a.getConsumable().getName(), a.getTime(), 0.0, "", a.getNutritionDetails().getCalories(), true, false, null);
                 root.setPadding(new Insets(0, 0, 0, 0));
                 mealGridPanes.add(root);
             } catch (IOException e) {
@@ -239,6 +239,12 @@ public class DashboardController {
         macroDistPieChart.setData(macroDistData);
         macroDistPieChart.setLegendVisible(false);
         macroDistInnerHoleCircle.radiusProperty().bind(macroDistPieChart.widthProperty().divide(3.5));
+
+        // Prevent crash if user has no meals logged yet
+        if (nutritionDetails == null) {
+            updateMacroDist(0, 0, 0);
+            return;
+        }
 
         double protein = nutritionDetails.getProtein();
         double carbs = nutritionDetails.getCarbs();

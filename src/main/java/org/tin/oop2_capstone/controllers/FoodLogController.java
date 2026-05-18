@@ -261,29 +261,28 @@ public class FoodLogController {
                     // gathering data
                     String foodName = m.getConsumable().getName();
                     String mealType = m.getMealType().name().charAt(0) + m.getMealType().name().substring(1).toLowerCase();
-                    String logTime = mealType + " • " + TimeFormatter.formatTo12Hour(m.getLogDateTime().toLocalTime());
-                    double quantity = m.getQuantity();
-                    String unit = m.getUnit();
-                    double totalCalories = m.getNutritionDetails().getCalories() * quantity;
+//                    String logTime = mealType + " • " + TimeFormatter.formatTo12Hour(m.getLogDateTime().toLocalTime());
+                    String logTime = mealType + " • " + m.getTime();
+                    double totalCalories = m.getNutritionDetails().getCalories(); // Nuked the * quantity
 
                     final Meal currentMeal = m;
 
                     logCardController.setData(
                             foodName,
                             logTime,
-                            quantity,
-                            unit,
+                            0.0,
+                            "",
                             totalCalories,
                             false,
                             true,
                             () -> {
-//                                System.out.println("ID to delete: " + currentMeal.getMealId());
-                                boolean deleted = org.tin.oop2_capstone.database.DeleteData.deleteMeal(currentMeal.getMealId());
-                                if (deleted) {
-                                    // Clear and refresh UI list cleanly
-                                    foodGridPanes.clear();
-                                    setFoodLog();
-                                }
+                                showDeletePopup(foodName, () -> {
+                                    boolean deleted = org.tin.oop2_capstone.database.DeleteData.deleteMeal(currentMeal.getMealId());
+                                    if (deleted) {
+                                        foodGridPanes.clear();
+                                        setFoodLog();
+                                    }
+                                });
                             }
                     );
 
@@ -565,6 +564,25 @@ public class FoodLogController {
         gridPaneAddEntry.setManaged(!addEntryisVisible);
         addEntryisVisible = !addEntryisVisible;
         clearAddEntryForm();
+    }
+
+    private void showDeletePopup(String itemName, Runnable onConfirm) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/confirm-popup-view.fxml"));
+            javafx.scene.layout.StackPane popup = loader.load(); // FIX: Changed to StackPane
+            ConfirmPopupController controller = loader.getController();
+
+            javafx.scene.layout.AnchorPane root = (javafx.scene.layout.AnchorPane) foodLogScrollPane.getScene().getRoot();
+            javafx.scene.Node mainContent = root.getChildren().get(0);
+
+            javafx.scene.layout.AnchorPane.setTopAnchor(popup, 0.0);
+            javafx.scene.layout.AnchorPane.setBottomAnchor(popup, 0.0);
+            javafx.scene.layout.AnchorPane.setLeftAnchor(popup, 0.0);
+            javafx.scene.layout.AnchorPane.setRightAnchor(popup, 0.0);
+
+            controller.setupDeleteMode(itemName, onConfirm, mainContent);
+            root.getChildren().add(popup);
+        } catch (IOException e) { e.printStackTrace(); }
     }
 
     /** Mga State Functions */
