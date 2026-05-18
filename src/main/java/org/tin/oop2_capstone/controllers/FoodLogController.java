@@ -375,21 +375,19 @@ public class FoodLogController {
 
     private void showDeletePopup(String itemName, Runnable onConfirm) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/confirm-delete-view.fxml"));
-            javafx.scene.layout.StackPane popup = loader.load();
-            DeleteConfirmationController controller = loader.getController();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/confirm-popup-view.fxml"));
+            javafx.scene.layout.StackPane popup = loader.load(); // FIX: Changed to StackPane
+            ConfirmPopupController controller = loader.getController();
 
-            // Cast to AnchorPane instead of StackPane
             javafx.scene.layout.AnchorPane root = (javafx.scene.layout.AnchorPane) foodLogScrollPane.getScene().getRoot();
             javafx.scene.Node mainContent = root.getChildren().get(0);
 
-            // Force the popup overlay to stretch across the entire window
             javafx.scene.layout.AnchorPane.setTopAnchor(popup, 0.0);
             javafx.scene.layout.AnchorPane.setBottomAnchor(popup, 0.0);
             javafx.scene.layout.AnchorPane.setLeftAnchor(popup, 0.0);
             javafx.scene.layout.AnchorPane.setRightAnchor(popup, 0.0);
 
-            controller.setData(itemName, onConfirm, mainContent);
+            controller.setupDeleteMode(itemName, onConfirm, mainContent);
             root.getChildren().add(popup);
         } catch (IOException e) { e.printStackTrace(); }
     }

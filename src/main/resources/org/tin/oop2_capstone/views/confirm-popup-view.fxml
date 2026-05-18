@@ -5,28 +5,35 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="550.0" styleClass="cardContent" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.ConfirmPopupController">
-   <top>
-      <Label styleClass="cardTitle" text="Confirm Action" BorderPane.alignment="CENTER" />
-   </top>
-   <center>
-      <Label fx:id="confirmMessageLabel" text="confirmMessageLabel" BorderPane.alignment="CENTER">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
-   </center>
-   <bottom>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button fx:id="cancelActionButton" mnemonicParsing="false" onAction="#onCancelButtonClick" styleClass="cancelButton" text="Cancel" />
-            <Button fx:id="confirmActionButton" mnemonicParsing="false" onAction="#onConfirmButtonClick" styleClass="ctaButton" text="Confirm" />
-         </children>
-      </HBox>
-   </bottom>
-   <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-   </padding>
-</BorderPane>
+<StackPane fx:id="popupRoot" style="-fx-background-color: rgba(0,0,0,0.4);" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.ConfirmPopupController">
+    <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="420.0" style="-fx-background-color: white; -fx-background-radius: 12;" styleClass="cardContent">
+        <top>
+            <Label styleClass="cardTitle" text="Confirm Action" BorderPane.alignment="CENTER">
+                <font>
+                    <Font name="System Bold" size="18.0" />
+                </font>
+            </Label>
+        </top>
+        <center>
+            <Label fx:id="confirmMessageLabel" text="confirmMessageLabel" textAlignment="CENTER" wrapText="true" BorderPane.alignment="CENTER">
+                <font>
+                    <Font size="15.0" />
+                </font>
+            </Label>
+        </center>
+        <bottom>
+            <HBox alignment="CENTER" prefHeight="60.0" spacing="50.0" BorderPane.alignment="CENTER">
+                <children>
+                    <Button fx:id="cancelActionButton" mnemonicParsing="false" onAction="#onCancelButtonClick" styleClass="cancelButton" text="Cancel" />
+                    <Button fx:id="confirmActionButton" mnemonicParsing="false" onAction="#onConfirmButtonClick" styleClass="ctaButton" text="Confirm" />
+                </children>
+            </HBox>
+        </bottom>
+        <padding>
+            <Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
+        </padding>
+    </BorderPane>
+</StackPane>
