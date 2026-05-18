@@ -24,7 +24,10 @@ public class MainApplication extends Application {
         stage.setWidth(650);
 
         String style = getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm();
+        String lightMode = getClass().getResource("/org/tin/oop2_capstone/styles/lightmode.css").toExternalForm();
         scene.getStylesheets().add(style);
+        scene.getStylesheets().add(lightMode);
+        scene.getRoot().getStyleClass().add("light");
         stage.setResizable(false);
 
         stage.setTitle("Health Tracker");

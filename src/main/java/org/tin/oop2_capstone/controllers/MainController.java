@@ -113,6 +113,8 @@ public class MainController {
         hamburgerButton.setOnMouseClicked( e ->{
             toggleSideBar();
         });
+
+        Platform.runLater(this::applyThemeStylesheet);
     }
 
     private void toggleSideBar(){
@@ -368,6 +370,25 @@ public class MainController {
             return "dark";
         }
         return "light";
+    }
+
+    public void applyThemeStylesheet() {
+        String themeFile = "dark".equals(getThemeClass()) ? "darkmode.css" : "lightmode.css";
+        String themeUrl = getClass().getResource("/org/tin/oop2_capstone/styles/" + themeFile).toExternalForm();
+
+        Scene scene = rootAnchorPane.getScene();
+        scene.getStylesheets().removeIf(s -> s.contains("darkmode") || s.contains("lightmode"));
+        scene.getStylesheets().add(themeUrl);
+    }
+
+    public void applyThemeClasses() {
+        String theme = getThemeClass();
+        rootAnchorPane.getStyleClass().removeIf(s -> s.equals("light") || s.equals("dark"));
+        rootAnchorPane.getStyleClass().add(theme);
+        anchorPaneSideBar.getStyleClass().removeIf(s -> s.equals("light") || s.equals("dark"));
+        anchorPaneSideBar.getStyleClass().add(theme);
+        anchorPaneContent.getStyleClass().removeIf(s -> s.equals("light") || s.equals("dark"));
+        anchorPaneContent.getStyleClass().add(theme);
     }
 
 }
