@@ -3,41 +3,37 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-      prefWidth="400.0" spacing="15.0" styleClass="popup-container" xmlns="http://javafx.com/javafx/25"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.ConfirmPopupController">
-   <padding>
-      <Insets bottom="30.0" left="30.0" right="30.0" top="30.0"/>
-   </padding>
-   <SVGPath
-           content="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"
-           fill="#3B82F6" scaleX="2.5" scaleY="2.5">
-      <VBox.margin>
-         <Insets bottom="10.0" top="10.0"/>
-      </VBox.margin>
-   </SVGPath>
-
-   <Label fx:id="confirmPopupTitle" styleClass="popup-title" text="Confirm Action"/>
-
-   <Label fx:id="confirmMessageLabel" styleClass="popup-message"
-          text="Are you sure you want to proceed with this action?" textAlignment="CENTER" wrapText="true">
-      <font>
-         <Font size="14.0"/>
-      </font>
-   </Label>
-
-   <HBox alignment="CENTER" spacing="15.0">
-      <VBox.margin>
-         <Insets top="15.0"/>
-      </VBox.margin>
-      <Button fx:id="cancelActionButton" mnemonicParsing="false" onAction="#onCancelButtonClick" prefHeight="40.0"
-              prefWidth="120.0" styleClass="popup-btn-cancel" text="Cancel"/>
-      <Button fx:id="confirmActionButton" mnemonicParsing="false" onAction="#onConfirmButtonClick" prefHeight="40.0"
-              prefWidth="120.0" styleClass="popup-btn-confirm" text="Confirm"/>
-   </HBox>
-</VBox>
+<StackPane fx:id="popupRoot" style="-fx-background-color: rgba(0,0,0,0.4);" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.ConfirmPopupController">
+    <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="420.0" style="-fx-background-color: white; -fx-background-radius: 12;" styleClass="cardContent">
+        <top>
+            <Label styleClass="cardTitle" text="Confirm Action" BorderPane.alignment="CENTER">
+                <font>
+                    <Font name="System Bold" size="18.0" />
+                </font>
+            </Label>
+        </top>
+        <center>
+            <Label fx:id="confirmMessageLabel" text="confirmMessageLabel" textAlignment="CENTER" wrapText="true" BorderPane.alignment="CENTER">
+                <font>
+                    <Font size="15.0" />
+                </font>
+            </Label>
+        </center>
+        <bottom>
+            <HBox alignment="CENTER" prefHeight="60.0" spacing="50.0" BorderPane.alignment="CENTER">
+                <children>
+                    <Button fx:id="cancelActionButton" mnemonicParsing="false" onAction="#onCancelButtonClick" styleClass="cancelButton" text="Cancel" />
+                    <Button fx:id="confirmActionButton" mnemonicParsing="false" onAction="#onConfirmButtonClick" styleClass="ctaButton" text="Confirm" />
+                </children>
+            </HBox>
+        </bottom>
+        <padding>
+            <Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
+        </padding>
+    </BorderPane>
+</StackPane>
