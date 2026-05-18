@@ -591,6 +591,12 @@
     -fx-text-fill: -vibrant-red;
 }
 
+.popup-title-success {
+    -fx-font-family: "Inter 18pt SemiBold";
+    -fx-font-size: 20;
+    -fx-text-fill: #22C55E;
+}
+
 .popup-message {
     -fx-font-family: "Inter 18pt";
     -fx-font-size: 14;

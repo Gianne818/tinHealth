@@ -90,9 +90,10 @@ public class MainController {
         System.out.println(activityRepository==null);
         instance = this;
         userId = SessionManager.getInstance().getCurrentUser().getUid();
-        rootAnchorPane.getStyleClass().add("light");
-        anchorPaneSideBar.getStyleClass().add("light");
-        anchorPaneContent.getStyleClass().add("light");
+        String theme = getThemeClass();
+        rootAnchorPane.getStyleClass().add(theme);
+        anchorPaneSideBar.getStyleClass().add(theme);
+        anchorPaneContent.getStyleClass().add(theme);
         exerciseMonitor.start();
 
 
@@ -220,13 +221,14 @@ public class MainController {
                 scene.setUserData(this);
             }
 
-            // todo getUserAppearancePref() to determine if lightmode or darkmode styles, but lightmode for now
+            // resolved getUserAppearancePref() to determine if lightmode or darkmode styles, but lightmode for no
+            String theme = getThemeClass();
 
             anchorPaneContent.getStyleClass().clear();
-            anchorPaneContent.getStyleClass().addAll("light", styleClass);
+            anchorPaneContent.getStyleClass().addAll(theme, styleClass);
 
             anchorPaneSideBar.getStyleClass().clear();
-            anchorPaneSideBar.getStyleClass().addAll("light", styleClass);
+            anchorPaneSideBar.getStyleClass().addAll(theme, styleClass);
 
 
            for(Node p : navs){
@@ -247,7 +249,7 @@ public class MainController {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/exercise-prompt-view.fxml"));
             StackPane overlay = fxmlLoader.load();
 
-            overlay.getStyleClass().add("light");
+            overlay.getStyleClass().add(getThemeClass());
 
             AnchorPane.setTopAnchor(overlay, 0.0);
             AnchorPane.setBottomAnchor(overlay, 0.0);
@@ -339,7 +341,7 @@ public class MainController {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/exercise-prompt-view.fxml"));
                 StackPane overlay = loader.load();
-                overlay.getStyleClass().add("light");
+                overlay.getStyleClass().add(getThemeClass());
 
                 AnchorPane.setTopAnchor(overlay, 0.0);
                 AnchorPane.setBottomAnchor(overlay, 0.0);
@@ -359,4 +361,13 @@ public class MainController {
             }
         });
     }
+
+    private String getThemeClass() {
+        UserPreferences prefs = SessionManager.getInstance().getCurrentUserPrefs();
+        if (prefs != null && "Dark".equalsIgnoreCase(prefs.getTheme())) {
+            return "dark";
+        }
+        return "light";
+    }
+
 }

@@ -14,22 +14,22 @@ import javafx.util.Duration;
 import java.io.IOException;
 
 
-public class WarningPopupController {
+public class SuccessPopupController {
 
-    @FXML private Label warningPopupTitle;
-    @FXML private Label warningMessageLabel;
+    @FXML private Label successfulPopupTitle;
+    @FXML private Label successfulMessageLabel;
 
     public static void showPopup(String title, String message) {
         try {
-            FXMLLoader loader = new FXMLLoader(WarningPopupController.class.getResource("/org/tin/oop2_capstone/views/warning-popup-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(SuccessPopupController.class.getResource("/org/tin/oop2_capstone/views/success-popup-view.fxml"));
             Parent root = loader.load();
 
-            WarningPopupController controller = loader.getController();
-            controller.setWarningMessage(message);
-            controller.setWarningPopupTitle(title);
+            SuccessPopupController controller = loader.getController();
+            controller.setSuccessfulMessage(message);
+            controller.successfulPopupTitle(title);
 
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(WarningPopupController.class.getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm());
+            scene.getStylesheets().add(SuccessPopupController.class.getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm());
 
             //Create and show
             Stage popupStage = new Stage();
@@ -57,15 +57,15 @@ public class WarningPopupController {
         }
     }
 
-    public void setWarningMessage(String message) {
-        if(warningMessageLabel != null) {
-            this.warningMessageLabel.setText(message);
+    public void setSuccessfulMessage(String message) {
+        if(successfulMessageLabel != null) {
+            this.successfulMessageLabel.setText(message);
         }
     }
 
-    public void setWarningPopupTitle(String title) {
-        if(warningPopupTitle != null) {
-            this.warningPopupTitle.setText(title);
+    public void successfulPopupTitle(String title) {
+        if(successfulPopupTitle != null) {
+            this.successfulPopupTitle.setText(title);
         }
     }
 

@@ -255,7 +255,7 @@ public class SettingsController implements Initializable {
         int userId = SessionManager.getInstance().getCurrentUser().getUid();
 
         if (settingsRepository.save(updated, userId)) {
-            WarningPopupController.showPopup("Success", "Settings saved successfully.");
+            SuccessPopupController.showPopup("Success", "Settings saved successfully.");
         } else {
             WarningPopupController.showPopup("Error", "Something went wrong. Try again.");
         }
