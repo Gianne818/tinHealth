@@ -62,6 +62,7 @@ public class LoginController {
     public void onSignupClicked(MouseEvent event) throws IOException {
         SceneSwitcher.use(signUpLabel, "signup-view")
                 .setCss("application")
+                .setStyleClasses(new String[]{"light"})
                 .setPrefDimensions(550, 700)
                 .setResizeable(false)
                 .setCentered(true)

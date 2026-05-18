@@ -1,4 +1,5 @@
 @import "lightmode.css";
+@import "darkmode.css";
 @import "palettes.css";
 @import "fonts.css";
 
@@ -569,6 +570,75 @@
     -fx-background-color: -accent-color;
 }
 
+/*Popup*/
+.popup-container {
+    -fx-background-color: -bg-default;
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+    -fx-border-color: -light-grey;
+    -fx-border-width: 1.5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.15), 30, 0, 0, 10);
+}
+
+.popup-title {
+    -fx-font-family: "Inter 18pt SemiBold";
+    -fx-font-size: 20;
+    -fx-text-fill: -brand-black;
+}
+
+.popup-title-warning {
+    -fx-font-family: "Inter 18pt SemiBold";
+    -fx-font-size: 20;
+    -fx-text-fill: -vibrant-red;
+}
+
+.popup-title-success {
+    -fx-font-family: "Inter 18pt SemiBold";
+    -fx-font-size: 20;
+    -fx-text-fill: #22C55E;
+}
+
+.popup-message {
+    -fx-font-family: "Inter 18pt";
+    -fx-font-size: 14;
+    -fx-text-fill: -grey;
+    -fx-line-spacing: 4px;
+}
+
+.popup-btn-confirm {
+    -fx-background-color: -orange-to-red-orange;
+    -fx-text-fill: white;
+    -fx-background-radius: 50;
+    -fx-font-family: "Inter 18pt SemiBold";
+    -fx-font-size: 14;
+    -fx-cursor: hand;
+    -fx-padding: 8 20;
+}
+
+.popup-btn-confirm:hover {
+    -fx-effect: dropshadow(three-pass-box, -shadow-hover, 12, 0, 0, 4);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.popup-btn-cancel {
+    -fx-background-color: transparent;
+    -fx-border-color: -light-grey;
+    -fx-text-fill: -dark-grey;
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+    -fx-border-width: 1.5;
+    -fx-font-family: "Inter 18pt SemiBold";
+    -fx-font-size: 14;
+    -fx-cursor: hand;
+    -fx-padding: 8 20;
+}
+
+.popup-btn-cancel:hover {
+    -fx-background-color: -even-lighter-grey;
+    -fx-text-fill: -brand-black;
+    -fx-border-color: -even-lighter-grey;
+}
 
  /*PLEASE USE COLORS FROM PALETTES.CSS, OR ADD COLORS THERE */
 
