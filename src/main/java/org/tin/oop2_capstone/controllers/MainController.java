@@ -131,10 +131,10 @@ public class MainController {
             toggleElement(quickStatsLabel, true);
             toggleElement(quickStatsGridPane, true);
             toggleElement(promptLabel1, true);
-            remainingTimeUnitLabelk.setVisible(true);
-            remainingTimeNumberLabel.setVisible(true);
+//            remainingTimeUnitLabelk.setVisible(true);
+//            remainingTimeNumberLabel.setVisible(true);
             quickWorkoutButton.setText("Quick Exercise");
-            upperNavFlowPane.setHgap(210);
+            upperNavFlowPane.setHgap(170);
             profileNav.setPadding(new Insets(0, 0, 0, 0));
         }
         else {
@@ -153,9 +153,9 @@ public class MainController {
             toggleElement(quickStatsLabel, false);
             toggleElement(quickStatsGridPane, false);
             toggleElement(promptLabel1, false);
-            remainingTimeUnitLabelk.setVisible(false);
-            remainingTimeNumberLabel.setVisible(false);
-            upperNavFlowPane.setHgap(220);
+//            remainingTimeUnitLabelk.setVisible(false);
+//            remainingTimeNumberLabel.setVisible(false);
+            upperNavFlowPane.setHgap(160);
             quickWorkoutButton.setText("\u29BF");
             profileNav.setPadding(new Insets(0, 0, 0, 7));
         }
