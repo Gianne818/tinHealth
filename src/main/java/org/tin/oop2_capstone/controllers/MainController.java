@@ -6,12 +6,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.SplitPane;
+import javafx.scene.control.*;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -51,7 +49,9 @@ public class MainController {
     @FXML private  Label calories_today;
     @FXML private  Label this_week_workout_count;
     @FXML private  Label total_activities_count;
-
+    @FXML private StackPane hamburgerButton;
+    @FXML private Label viewProfileLabel;
+    @FXML private StackPane imageStackPane;
     ObservableList<Pane> navs;
 
     private boolean isSideBarCollapsed = false;
@@ -65,6 +65,19 @@ public class MainController {
 
     @FXML private Label remainingTimeNumberLabel;
     @FXML private Label remainingTimeUnitLabelk;
+    @FXML private Label sidebarNavLabel1;
+    @FXML private Label sidebarNavLabel2;
+    @FXML private Label sidebarNavLabel3;
+    @FXML private Label sidebarNavLabel4;
+    @FXML private Label sidebarNavLabel5;
+    @FXML private VBox sideBarVbox1;
+    @FXML private VBox sideBarVbox2;
+    @FXML private GridPane streakGridPane;
+    @FXML private Separator separator1;
+    @FXML private Separator separator2;
+    @FXML private Label quickStatsLabel;
+    @FXML private GridPane quickStatsGridPane;
+    @FXML private Label promptLabel1;
 
     private ActivityRepository activityRepository = ActivityRepository.getInstance();
 
@@ -96,19 +109,60 @@ public class MainController {
         navigateToView("dashboard-view", "dashboardScrollPane", dashboardNav);
         loadSideBoardStats();
         startExercisePromptTimer();
+        hamburgerButton.setOnMouseClicked( e ->{
+            toggleSideBar();
+        });
     }
 
-    public void toggleSideBar(){
+    private void toggleSideBar(){
         double defaultPosition = 0.3;
         if(isSideBarCollapsed){
-            splitPaneMain.setDividerPosition(0, defaultPosition);
+            splitPaneMain.setDividerPosition(75, defaultPosition);
             anchorPaneSideBar.setMinWidth(300);
-        } else {
-            anchorPaneSideBar.setMinWidth(0);
-            anchorPaneSideBar.setMaxWidth(0);
+            toggleElement(sidebarNavLabel1, true);
+            toggleElement(sidebarNavLabel2, true);
+            toggleElement(sidebarNavLabel3, true);
+            toggleElement(sidebarNavLabel4, true);
+            toggleElement(sidebarNavLabel5, true);
+            toggleElement(userFullNameLabel, true);
+            toggleElement(viewProfileLabel, true);
+            toggleElement(streakGridPane, true);
+            toggleElement(separator1, true);
+            toggleElement(quickStatsLabel, true);
+            toggleElement(quickStatsGridPane, true);
+            toggleElement(promptLabel1, true);
+            remainingTimeUnitLabelk.setVisible(true);
+            remainingTimeNumberLabel.setVisible(true);
+            quickWorkoutButton.setText("Quick Exercise");
+            profileNav.setPadding(new Insets(0, 0, 0, 0));
+        }
+        else {
+            anchorPaneSideBar.setMinWidth(105);
+            anchorPaneSideBar.setMaxWidth(105);
             splitPaneMain.setDividerPosition(0, 0);
+            toggleElement(sidebarNavLabel1, false);
+            toggleElement(sidebarNavLabel2, false);
+            toggleElement(sidebarNavLabel3, false);
+            toggleElement(sidebarNavLabel4, false);
+            toggleElement(sidebarNavLabel5, false);
+            toggleElement(userFullNameLabel, false);
+            toggleElement(viewProfileLabel, false);
+            toggleElement(streakGridPane, false);
+            toggleElement(separator1, false);
+            toggleElement(quickStatsLabel, false);
+            toggleElement(quickStatsGridPane, false);
+            toggleElement(promptLabel1, false);
+            remainingTimeUnitLabelk.setVisible(false);
+            remainingTimeNumberLabel.setVisible(false);
+            quickWorkoutButton.setText("\u29BF");
+            profileNav.setPadding(new Insets(0, 0, 0, 7));
         }
         isSideBarCollapsed = !isSideBarCollapsed;
+    }
+
+    private void toggleElement(Node e, boolean show){
+        e.setManaged(show);
+        e.setVisible(show);
     }
 
     @FXML public void onNavElementClicked(MouseEvent event){

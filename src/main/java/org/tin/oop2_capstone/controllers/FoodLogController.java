@@ -69,6 +69,8 @@ public class FoodLogController {
     private State currentState;
     private Consumable fetchedFood;
 
+    private SelectedFoodController selectedFoodController = SelectedFoodController.getInstance();
+
 
     public void initialize(){
         foodLogScrollPane.getStyleClass().add("light");
@@ -208,16 +210,10 @@ public class FoodLogController {
     }
 
     private String formatFoodName(String rawName) {
-        // TODO: Only capitalize the first letter of each word. For example: Fried Chicken
         if (rawName == null || rawName.isEmpty()) return rawName;
 
         String[] words = rawName.trim().toLowerCase().split("\\s+");
         StringBuilder formatted = new StringBuilder();
-
-        for(char c : rawName.toCharArray()){
-
-        }
-
         for (String word : words) {
             if (word.length() > 0) {
                 formatted.append(Character.toUpperCase(word.charAt(0)))
@@ -305,6 +301,7 @@ public class FoodLogController {
         gridPaneAddEntry.setVisible(!addEntryisVisible);
         gridPaneAddEntry.setManaged(!addEntryisVisible);
         addEntryisVisible = !addEntryisVisible;
+//        clearAddEntryForm();
         //
     }
 
@@ -346,6 +343,7 @@ public class FoodLogController {
             showError("Error saving food entry");
             e.printStackTrace();
         }
+        clearAddEntryForm();
     }
 
     private void refreshFoodLog() {
@@ -364,6 +362,7 @@ public class FoodLogController {
         gridPaneAddEntry.setManaged(false);
         addEntryisVisible = false;
         selectedFoods.clear();
+        foodNameEntryHBox.getChildren().clear();
     }
 
     private void showError(String message) {
@@ -376,6 +375,7 @@ public class FoodLogController {
         gridPaneAddEntry.setVisible(!addEntryisVisible);
         gridPaneAddEntry.setManaged(!addEntryisVisible);
         addEntryisVisible = !addEntryisVisible;
+        clearAddEntryForm();
     }
 
     /** Mga State Functions */
