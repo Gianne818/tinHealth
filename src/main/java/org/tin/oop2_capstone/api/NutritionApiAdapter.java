@@ -11,10 +11,10 @@ public class NutritionApiAdapter {
         if (query == null || query.isBlank()){
             return null;
         }
-        String json = FoodAPI.getFoodData(query);
-        if (json == null){
+        APIResponse json = FoodAPI.getFoodData(query);
+        if (json.getJson() == null){
             return null;
         }
-        return FoodParser.parseFood(json);
+        return FoodParser.parseFood(json.getJson());
     }
 }
