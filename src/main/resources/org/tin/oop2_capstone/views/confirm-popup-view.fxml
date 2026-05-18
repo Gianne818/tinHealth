@@ -11,7 +11,7 @@
 <StackPane fx:id="popupRoot" style="-fx-background-color: rgba(0,0,0,0.4);" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.ConfirmPopupController">
     <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="420.0" style="-fx-background-color: white; -fx-background-radius: 12;" styleClass="cardContent">
         <top>
-            <Label styleClass="cardTitle" text="Confirm Action" BorderPane.alignment="CENTER">
+            <Label fx:id="confirmTitleLabel" styleClass="cardTitle" text="Confirm Action" BorderPane.alignment="CENTER">
                 <font>
                     <Font name="System Bold" size="18.0" />
                 </font>
