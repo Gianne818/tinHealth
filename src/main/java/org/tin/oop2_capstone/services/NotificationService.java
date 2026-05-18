@@ -1,4 +1,4 @@
-package org.tin.oop2_capstone.model;
+package org.tin.oop2_capstone.services;
 
 import org.tin.oop2_capstone.model.entities.NutritionDetails;
 import org.tin.oop2_capstone.model.entities.UserPreferences;

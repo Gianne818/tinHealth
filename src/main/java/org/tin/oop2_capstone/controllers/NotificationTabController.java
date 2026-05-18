@@ -6,8 +6,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
-import org.tin.oop2_capstone.model.NotificationService;
-import org.tin.oop2_capstone.model.NotificationService.Notification;
+import org.tin.oop2_capstone.services.NotificationService;
+import org.tin.oop2_capstone.services.NotificationService.Notification;
 import org.tin.oop2_capstone.model.entities.NutritionDetails;
 import org.tin.oop2_capstone.model.entities.User;
 import org.tin.oop2_capstone.model.entities.UserPreferences;
@@ -22,7 +22,6 @@ public class NotificationTabController {
     @FXML private VBox notificationsContainer;
     @FXML private Label subtitleLabel;
     @FXML private Button markAllReadButton;
-    @FXML SVGPath notificationsIcon;
 
     private record TrackedNotification(Notification notif, boolean read) {}
 
@@ -136,7 +135,7 @@ public class NotificationTabController {
                 cholesterol = 0, sodium = 0, sugar = 0, fiber = 0;
 
         for (var meal : meals) {
-            NutritionDetails nd = meal.getNutritionDetails(); // ✅ direct from Meal
+            NutritionDetails nd = meal.getNutritionDetails(); // direct from Meal
             if (nd == null) continue;
             double s = meal.getQuantity(); // serving size/quantity
             cal         += nd.getCalories()     * s;
