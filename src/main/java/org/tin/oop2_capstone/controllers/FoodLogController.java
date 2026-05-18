@@ -264,26 +264,23 @@ public class FoodLogController {
                     // gathering data
                     String foodName = m.getConsumable().getName();
                     String mealType = m.getMealType().name().charAt(0) + m.getMealType().name().substring(1).toLowerCase();
-                    String logTime = mealType + " • " + TimeFormatter.formatTo12Hour(m.getLogDateTime().toLocalTime());
-                    double quantity = m.getQuantity();
-                    String unit = m.getUnit();
-                    double totalCalories = m.getNutritionDetails().getCalories() * quantity;
+//                    String logTime = mealType + " • " + TimeFormatter.formatTo12Hour(m.getLogDateTime().toLocalTime());
+                    String logTime = mealType + " • " + m.getTime();
+                    double totalCalories = m.getNutritionDetails().getCalories(); // Nuked the * quantity
 
                     final Meal currentMeal = m;
 
                     logCardController.setData(
                             foodName,
                             logTime,
-                            quantity,
-                            unit,
+                            0.0,
+                            "",
                             totalCalories,
                             false,
                             true,
                             () -> {
-//                                System.out.println("ID to delete: " + currentMeal.getMealId());
                                 boolean deleted = org.tin.oop2_capstone.database.DeleteData.deleteMeal(currentMeal.getMealId());
                                 if (deleted) {
-                                    // Clear and refresh UI list cleanly
                                     foodGridPanes.clear();
                                     setFoodLog();
                                 }
@@ -309,13 +306,10 @@ public class FoodLogController {
     }
 
     public void onButtonAddEntryClicked(ActionEvent actionEvent) {
-
-        // Validate all fields
         if(!isDouble(caloriesTextField.getText()) || timeTextField.getText().isEmpty() || selectedFoods.isEmpty()){
             return;
         }
 
-        // Create and save meal
         try {
             Consumable consumable;
             if(selectedFoods.size() > 1){
@@ -329,16 +323,15 @@ public class FoodLogController {
                 consumable = new Food(selectedFoods.getFirst().getName(), selectedFoods.getFirst().getNutrition(), false);
             }
 
-
             MealType mealType = MealType.valueOf(mealChoiceBox.getValue().toUpperCase());
-            LocalDateTime logTime = LocalDateTime.now();
 
-            Meal meal = new Meal(mealType, consumable, logTime, 1.0, "serving");
+            // Just grab today's date and the raw string from the text field!
+            Meal meal = new Meal(mealType, consumable, LocalDate.now(), timeTextField.getText().trim());
+
             int userId = UserRepository.getInstance().getUser().getUid();
 
             if(mealRepository.addMeal(meal, userId)) refreshFoodLog();
             else showError("Failed to save into database");
-
 
             clearAddEntryForm();
 

@@ -18,8 +18,16 @@ public class LogCardController {
     public void setData(String logName, String time, double number, String unit, double kcal, boolean showSeparator, boolean showTrash, Runnable onDeleteAction) {
         logNameLabel.setText(logName);
         timeLabel.setText(time);
+        // Check if it's food (empty unit) to hide the number and unit displays
+        boolean isFood = unit == null || unit.trim().isEmpty();
         numberLabel.setText(String.valueOf(number));
+        numberLabel.setVisible(!isFood);
+        numberLabel.setManaged(!isFood);
+
         unitLabel.setText(unit);
+        unitLabel.setVisible(!isFood);
+        unitLabel.setManaged(!isFood);
+
         kcalLabel.setText(String.valueOf(kcal));
         bottomSeparator.setManaged(showSeparator);
         deleteSVG.setVisible(showTrash);
