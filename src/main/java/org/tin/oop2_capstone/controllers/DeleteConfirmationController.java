@@ -2,6 +2,7 @@ package org.tin.oop2_capstone.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.layout.StackPane;
@@ -9,11 +10,15 @@ import javafx.scene.layout.StackPane;
 public class DeleteConfirmationController {
     @FXML private StackPane popupRoot;
     @FXML private Label messageLabel;
+    @FXML private Button yesButton;
+    @FXML private Button noButton;
 
     private Runnable onConfirm;
     private Node mainContentToBlur;
 
     public void setData(String itemName, Runnable onConfirm, Node mainContent) {
+        yesButton.setText("Yes, Delete");
+        noButton.setText("No, Cancel");
         this.messageLabel.setText("Are you sure you want to delete \"" + itemName + "\"?");
         this.onConfirm = onConfirm;
         this.mainContentToBlur = mainContent;
