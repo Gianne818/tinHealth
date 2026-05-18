@@ -131,8 +131,6 @@ public class MainController {
             toggleElement(quickStatsLabel, true);
             toggleElement(quickStatsGridPane, true);
             toggleElement(promptLabel1, true);
-//            remainingTimeUnitLabelk.setVisible(true);
-//            remainingTimeNumberLabel.setVisible(true);
             quickWorkoutButton.setText("Quick Exercise");
             upperNavFlowPane.setHgap(170);
             profileNav.setPadding(new Insets(0, 0, 0, 0));

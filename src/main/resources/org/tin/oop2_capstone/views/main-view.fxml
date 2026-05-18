@@ -25,7 +25,7 @@
           <AnchorPane fx:id="anchorPaneSideBar" maxWidth="300.0" minWidth="300.0" prefWidth="300.0" SplitPane.resizableWithParent="false">
               <VBox fx:id="sideBarVBox1" prefHeight="591.0" prefWidth="422.0" spacing="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                   <children>
-                     <FlowPane fx:id="upperNavFlowPane" alignment="TOP_CENTER" columnHalignment="CENTER" hgap="170.0" vgap="20.0">
+                     <FlowPane fx:id="upperNavFlowPane" alignment="TOP_CENTER" columnHalignment="CENTER" hgap="170.0" vgap="10.0">
                         <children>
                             <StackPane fx:id="hamburgerButton" maxHeight="40" maxWidth="40" style="-fx-cursor: hand;">
                                 <ImageView fitHeight="30" fitWidth="30" preserveRatio="true">
