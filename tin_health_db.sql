@@ -3,7 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 18, 2026 at 3:58 PM - Macoy
+-- Generation Time: May 18, 2026 at 5:20 PM - Macoy
+-- Working Time range varchar sa Meal and nuked servings_quantity and size
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -46,8 +47,8 @@ INSERT INTO `Activities` (`act_id`, `user_id`, `activity_type_id`, `quantity`, `
 (2, 1, 5, 45.00, 200.00, '15:00', '2026-05-04'),
 (3, 2, 1, 60.00, 180.00, '15:00', '2026-05-04'),
 (4, 1, 3, 65.00, 234.00, '22:30', '2026-05-05'),
-(5, 1, 13, 65.00, 234.00, '12:34', '2026-05-16'),
-(6, 1, 46, 40.00, 100.00, '12:35', '2026-05-16'),
+(5, 1, 13, 65.00, 234.00, '12:34', '2026-05-18'),
+(6, 1, 46, 40.00, 100.00, '12:35', '2026-05-18'),
 (9, 1, 1, 30.00, 136.34, '17:55', '2026-05-17');
 
 -- --------------------------------------------------------
@@ -217,7 +218,8 @@ INSERT INTO `Consumables` (`consumable_id`, `name`, `type`, `is_pending`, `nutri
 (19, 'Bananas, overripe, raw', 'food', 0, 20),
 (20, 'Chicken, meatless, breaded, fried', 'food', 0, 21),
 (21, 'Restaurant, Chinese, fried rice, without meat', 'food', 0, 22),
-(31, 'Almond butter, creamy', 'food', 0, 32);
+(31, 'Almond butter, creamy', 'food', 0, 32),
+(33, 'Hotdog', 'food', 0, 34);
 
 -- --------------------------------------------------------
 
@@ -230,8 +232,6 @@ CREATE TABLE `Meals` (
   `user_id` int(11) NOT NULL,
   `consumable_id` int(11) NOT NULL,
   `meal_type` enum('Breakfast','Lunch','Dinner','Snack') NOT NULL,
-  `serving_size` decimal(8,2) NOT NULL,
-  `serving_units` varchar(20) NOT NULL,
   `time` varchar(20) NOT NULL DEFAULT '',
   `log_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -240,26 +240,27 @@ CREATE TABLE `Meals` (
 -- Dumping data for table `Meals`
 --
 
-INSERT INTO `Meals` (`meal_id`, `user_id`, `consumable_id`, `meal_type`, `serving_size`, `serving_units`, `time`, `log_date`) VALUES
-(1, 1, 2, 'Lunch', 1.00, 'piece', '15:00', '2026-05-04'),
-(2, 1, 1, 'Snack', 1.00, 'piece', '15:00', '2026-05-04'),
-(3, 2, 3, 'Dinner', 1.50, 'serving', '15:00', '2026-05-04'),
-(4, 2, 7, 'Snack', 1.00, 'bowl', '15:00', '2026-05-04'),
-(5, 1, 8, 'Dinner', 1.00, 'serving', '22:57', '2026-05-15'),
-(6, 1, 9, 'Breakfast', 1.00, 'serving', '11:41', '2026-05-16'),
-(7, 1, 10, 'Snack', 1.00, 'serving', '11:42', '2026-05-16'),
-(8, 1, 1, 'Breakfast', 1.00, 'serving', '13:45', '2026-05-16'),
-(9, 1, 1, 'Breakfast', 1.00, 'serving', '13:46', '2026-05-16'),
-(11, 1, 12, 'Lunch', 1.00, 'serving', '13:46', '2026-05-16'),
-(13, 1, 13, 'Lunch', 1.00, 'serving', '21:29', '2026-05-16'),
-(14, 1, 14, 'Lunch', 1.00, 'serving', '21:37', '2026-05-16'),
-(15, 1, 15, 'Dinner', 1.00, 'serving', '21:58', '2026-05-16'),
-(16, 1, 16, 'Lunch', 1.00, 'serving', '22:08', '2026-05-16'),
-(17, 1, 14, 'Lunch', 1.00, 'serving', '01:11', '2026-05-17'),
-(18, 1, 15, 'Dinner', 1.00, 'serving', '10:49', '2026-05-17'),
-(19, 1, 19, 'Dinner', 1.00, 'serving', '11:43', '2026-05-17'),
-(22, 1, 20, 'Lunch', 1.00, 'serving', '20:54', '2026-05-17'),
-(32, 1, 31, 'Snack', 1.00, 'serving', '23:57', '2026-05-17');
+INSERT INTO `Meals` (`meal_id`, `user_id`, `consumable_id`, `meal_type`, `time`, `log_date`) VALUES
+(1, 1, 2, 'Lunch', '15:00', '2026-05-04'),
+(2, 1, 1, 'Snack', '15:00', '2026-05-04'),
+(3, 2, 3, 'Dinner', '15:00', '2026-05-04'),
+(4, 2, 7, 'Snack', '15:00', '2026-05-04'),
+(5, 1, 8, 'Dinner', '22:57', '2026-05-15'),
+(6, 1, 9, 'Breakfast', '11:41', '2026-05-16'),
+(7, 1, 10, 'Snack', '11:42', '2026-05-16'),
+(8, 1, 1, 'Breakfast', '13:45', '2026-05-16'),
+(9, 1, 1, 'Breakfast', '13:46', '2026-05-16'),
+(11, 1, 12, 'Lunch', '13:46', '2026-05-16'),
+(13, 1, 13, 'Lunch', '21:29', '2026-05-16'),
+(14, 1, 14, 'Lunch', '21:37', '2026-05-16'),
+(15, 1, 15, 'Dinner', '21:58', '2026-05-16'),
+(16, 1, 16, 'Lunch', '22:08', '2026-05-16'),
+(17, 1, 14, 'Lunch', '01:11', '2026-05-18'),
+(18, 1, 15, 'Dinner', '10:49', '2026-05-18'),
+(19, 1, 19, 'Dinner', '11:43', '2026-05-17'),
+(22, 1, 20, 'Lunch', '20:54', '2026-05-18'),
+(32, 1, 31, 'Snack', '23:57', '2026-05-17'),
+(34, 1, 33, 'Breakfast', '06:00 - 09:00', '2026-05-18');
 
 -- --------------------------------------------------------
 
@@ -315,7 +316,9 @@ INSERT INTO `NutritionalDetails` (`nutri_id`, `sodium`, `carbs`, `sugar`, `fiber
 (29, 140.05, 14.21, 2.06, 0.51, 79.10, 0.00, 2.77, 1.11),
 (30, 1.00, 21.24, 0.00, 9.72, 602.51, 0.00, 20.79, 53.04),
 (31, 140.05, 14.21, 2.06, 0.51, 79.10, 0.00, 2.77, 1.11),
-(32, 1.00, 21.24, 0.00, 9.72, 602.51, 0.00, 20.79, 53.04);
+(32, 1.00, 21.24, 0.00, 9.72, 602.51, 0.00, 20.79, 53.04),
+(33, 530.10, 2.00, 1.00, 0.00, 109.80, 30.15, 4.00, 9.00),
+(34, 530.10, 2.00, 1.00, 0.00, 109.80, 30.15, 4.00, 9.00);
 
 -- --------------------------------------------------------
 
@@ -497,19 +500,19 @@ ALTER TABLE `ComboItems`
 -- AUTO_INCREMENT for table `Consumables`
 --
 ALTER TABLE `Consumables`
-  MODIFY `consumable_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `consumable_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `Meals`
 --
 ALTER TABLE `Meals`
-  MODIFY `meal_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `meal_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `NutritionalDetails`
 --
 ALTER TABLE `NutritionalDetails`
-  MODIFY `nutri_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `nutri_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `UserPrefs`
