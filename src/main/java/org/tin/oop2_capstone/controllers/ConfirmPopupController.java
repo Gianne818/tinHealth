@@ -52,50 +52,6 @@ public class ConfirmPopupController {
         confirmTitleLabel.setText(title);
     }
 
-
-    public static void showPopup(String title,String message, Runnable onConfirmAction) {
-        try {
-            FXMLLoader loader = new FXMLLoader(ConfirmPopupController.class.getResource("/org/tin/oop2_capstone/views/confirm-popup-view.fxml"));
-            Parent root = loader.load();
-
-            ConfirmPopupController controller = loader.getController();
-            controller.setConfirmMessage(message);
-            controller.setOnConfirmAction(onConfirmAction);
-            controller.setConfirmPopupTitle(title);
-
-            Scene scene = new Scene(root);
-            scene.getStylesheets().add(ConfirmPopupController.class.getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm());
-
-            //Create and show
-            Stage popupStage = new Stage();
-            popupStage.initStyle(StageStyle.UNDECORATED);
-            popupStage.initModality(Modality.NONE);
-            popupStage.setTitle(title);
-            popupStage.setScene(scene);
-
-            //add blur
-            Node mainAppRoot = null;
-            for (Window window : Window.getWindows()) {
-                if (window.isShowing() && window.getScene() != null) {
-                    mainAppRoot = window.getScene().getRoot();
-                    mainAppRoot.setEffect(new GaussianBlur(15));
-                    break;
-                }
-            }
-
-            popupStage.showAndWait();
-
-            //remove blur after show is exited
-            if (mainAppRoot != null) {
-                mainAppRoot.setEffect(null);
-            }
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void setConfirmMessage(String message) {
         if(this.confirmMessageLabel != null) {
             this.confirmMessageLabel.setText(message);
@@ -109,6 +65,16 @@ public class ConfirmPopupController {
         this.confirmMessageLabel.setText("Are you sure you want to delete \"" + itemName + "\"?");
         this.confirmActionButton.setText("Yes, Delete");
         this.cancelActionButton.setText("No, Cancel");
+
+        if (mainContentToBlur != null) {
+            mainContentToBlur.setEffect(new BoxBlur(6, 6, 3));
+        }
+    }
+
+    public void setupSaveMode(Runnable onConfirm, Node mainContentToBlur){
+        setOnConfirmAction(onConfirm);
+        this.mainContentToBlur = mainContentToBlur;
+        this.confirmMessageLabel.setText("Save changes?");
 
         if (mainContentToBlur != null) {
             mainContentToBlur.setEffect(new BoxBlur(6, 6, 3));

@@ -1,13 +1,17 @@
 package org.tin.oop2_capstone.controllers;
 
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
+import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.tin.oop2_capstone.database.repositories.SettingsRepository;
-import org.tin.oop2_capstone.model.entities.User;
 import org.tin.oop2_capstone.model.entities.UserPreferences;
 import org.tin.oop2_capstone.services.SessionManager;
 import org.tin.oop2_capstone.utils.InputManager;
@@ -73,6 +77,73 @@ public class SettingsController implements Initializable {
         InputManager.acceptOnlyDouble(targetWeightTextField);
     }
 
+    private void showConfirmPopup(Runnable onConfirm){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/confirm-popup-view.fxml"));
+            StackPane popup = loader.load();
+            ConfirmPopupController controller = loader.getController();
+
+            AnchorPane root = (javafx.scene.layout.AnchorPane) settingsScrollPane.getScene().getRoot();
+            Node mainContent = root.getChildren().getFirst();
+
+            AnchorPane.setTopAnchor(popup, 0.0);
+            AnchorPane.setBottomAnchor(popup, 0.0);
+            AnchorPane.setLeftAnchor(popup, 0.0);
+            AnchorPane.setRightAnchor(popup, 0.0);
+
+            controller.setupSaveMode(onConfirm, mainContent);
+            root.getChildren().add(popup);
+        } catch (IOException e) { e.printStackTrace(); }
+    }
+
+    private void showWarningPopup(String title, String message){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/notify-popup-view.fxml"));
+            StackPane popup = loader.load();
+            NotifyPopupController controller = loader.getController();
+            AnchorPane root = (javafx.scene.layout.AnchorPane) settingsScrollPane.getScene().getRoot();
+            Node mainContent = root.getChildren().getFirst();
+
+            AnchorPane.setTopAnchor(popup, 0.0);
+            AnchorPane.setBottomAnchor(popup, 0.0);
+            AnchorPane.setLeftAnchor(popup, 0.0);
+            AnchorPane.setRightAnchor(popup, 0.0);
+
+            controller.setupWarningPopup(title, message);
+            root.getChildren().add(popup);
+            PauseTransition delay = new PauseTransition(Duration.seconds(3));
+            delay.setOnFinished(event -> root.getChildren().remove(popup));
+            delay.play();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showSuccessPopup(String title, String message){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/notify-popup-view.fxml"));
+            StackPane popup = loader.load();
+            NotifyPopupController controller = loader.getController();
+            AnchorPane root = (javafx.scene.layout.AnchorPane) settingsScrollPane.getScene().getRoot();
+            Node mainContent = root.getChildren().getFirst();
+
+            AnchorPane.setTopAnchor(popup, 0.0);
+            AnchorPane.setBottomAnchor(popup, 0.0);
+            AnchorPane.setLeftAnchor(popup, 0.0);
+            AnchorPane.setRightAnchor(popup, 0.0);
+
+            controller.setupSuccessPopup(title, message);
+            root.getChildren().add(popup);
+            PauseTransition delay = new PauseTransition(Duration.seconds(2));
+            delay.setOnFinished(event -> root.getChildren().remove(popup));
+            delay.play();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void loadUserPreferences() {
         UserPreferences preferences = settingsRepository.load();
         if (preferences != null) {
@@ -122,35 +193,30 @@ public class SettingsController implements Initializable {
     @FXML
     public void onSaveButtonClicked(ActionEvent event) {
         double targetWeight = 0;
-        if (targetWeightTextField.getText() == null) {
-            WarningPopupController.showPopup("Missing Fields", "Please enter a target weight.");
+        if (targetWeightTextField.getText() == null || targetWeightTextField.getText().isEmpty()) {
+            showWarningPopup("Missing Fields", "Enter 0 for target weight to set weight target goal to \"Maintain\"");
             return;
         }
         String weightText = targetWeightTextField.getText().trim();
 
-        //Validate
-        if (targetWeightTextField.getText().isEmpty()) {
-            WarningPopupController.showPopup("Missing Fields", "Please enter a target weight.");
-            return;
-        }
         if (exerciseIntensity.getValue() == null) {
-            WarningPopupController.showPopup("Missing Fields", "Please select an exercise intensity.");
+            showWarningPopup("Missing Fields", "Please select an exercise intensity.");
             return;
         }
         if (theme.getValue() == null) {
-            WarningPopupController.showPopup("Missing Fields", "Please select a theme.");
+            showWarningPopup("Missing Fields", "Please select a theme.");
             return;
         }
         if (caloriesGoalInComboBox.getValue() == null) {
-            WarningPopupController.showPopup("Missing Fields", "Please select a daily calories in goal.");
+            showWarningPopup("Missing Fields", "Please select a daily calories in goal.");
             return;
         }
         if (caloriesGoalBurnedComboBox.getValue() == null) {
-            WarningPopupController.showPopup("Missing Fields", "Please select a daily calories burned goal.");
+            showWarningPopup("Missing Fields", "Please select a daily calories burned goal.");
             return;
         }
         if (weeklyActivityGoalComboBox.getValue() == null) {
-            WarningPopupController.showPopup("Missing Fields", "Please select a weekly activity goal.");
+           showWarningPopup("Missing Fields", "Please select a weekly activity goal.");
             return;
         }
 
@@ -162,60 +228,66 @@ public class SettingsController implements Initializable {
             double heightMeters = heightCm / 100.0;
             double minSafeWeight = 18.5 * (heightMeters * heightMeters);
 
+            final double validatedWeight = targetWeight;
+
+            if(targetWeight == 0){
+                showConfirmPopup(() -> {
+                    SessionManager.getInstance().getCurrentUserPrefs().setGoalType("Maintain");
+                    savePreferences(validatedWeight);
+                });
+                return;
+            }
+
             if (targetWeight < minSafeWeight) {
                 String formattedMinWeight = String.format("%.1f", minSafeWeight);
-                WarningPopupController.showPopup("Unsafe Target!", "Based on your height, your minimum safe weight is " + formattedMinWeight + " kg.");
+                showWarningPopup("Unsafe Target!", "Based on your height, your minimum safe weight is " + formattedMinWeight + " kg.");
                 return;
             }
 
             double currentWeight = SessionManager.getInstance().getCurrentUser().getWeightKg();
             String currentGoal = SessionManager.getInstance().getCurrentUserPrefs().getGoalType();
-            final double validatedWeight = targetWeight;
+
 
             //if goal is Lose but target weight is HIGHER than current. My solution is to treat it as a typo by the user since the user explicitly selected lose weight in registration.
             //BUT long time user wanting to switch goals might need to be evalutade so ill mark this TODO:
-            if (targetWeight > currentWeight && currentGoal.equals("Lose")) {
-                WarningPopupController.showPopup("Goal Mismatch", "Your target weight cannot be higher than your current weight if your goal is to lose weight!");
+            if (targetWeight > currentWeight) {
+                showConfirmPopup(() -> {
+                    SessionManager.getInstance().getCurrentUserPrefs().setGoalType("Gain");
+                    savePreferences(validatedWeight);
+                });
                 return;
             }
 
             //if goal is gain/build muscle but target weight is LOWER than current → suggest switching to Lose
-            if (targetWeight < currentWeight && (currentGoal.equals("Gain") || currentGoal.equals("Build Muscle"))) {
-                ConfirmPopupController.showPopup("Goal Mismatch — Switch to Lose?", "Your target weight is lower than your current weight, but your goal is set to '" + currentGoal + "'. Switch goal to 'Lose'?", () -> {
-                            //if confirm
-                            SessionManager.getInstance().getCurrentUserPrefs().setGoalType("Lose");
-                            savePreferences(validatedWeight);
-                        }
-                );
+            if (targetWeight < currentWeight) {
+                showConfirmPopup(() -> {
+                    SessionManager.getInstance().getCurrentUserPrefs().setGoalType("Lose");
+                    savePreferences(validatedWeight);
+                });
+//
                 return;
             }
 
             //if goal is maintain but target differs significantly from current then suggest switching goals
             if (currentGoal.equals("Maintain")) {
                 if (targetWeight < currentWeight - 2) {
-                    ConfirmPopupController.showPopup(
-                            "Switch goal to Lose?",
-                            "Your target is below your current weight. Switch goal to 'Lose'?",
-                            () -> {
-                                SessionManager.getInstance().getCurrentUserPrefs().setGoalType("Lose");
-                                savePreferences(validatedWeight);
-                            }
-                    );
+                    showConfirmPopup(() -> {
+                        SessionManager.getInstance().getCurrentUserPrefs().setGoalType("Lose");
+                        savePreferences(validatedWeight);
+                    });
+//
                     return;
                 } else if (targetWeight > currentWeight + 2) {
-                    ConfirmPopupController.showPopup(
-                            "Switch goal to Gain?",
-                            "Your target is above your current weight. Switch goal to 'Gain'?",
-                            () -> {
-                                SessionManager.getInstance().getCurrentUserPrefs().setGoalType("Gain");
-                                savePreferences(validatedWeight);
-                            }
-                    );
+                    showConfirmPopup(() -> {
+                        SessionManager.getInstance().getCurrentUserPrefs().setGoalType("Gain");
+                        savePreferences(validatedWeight);
+                    });
+//
                     return;
                 }
             }
         } catch (NumberFormatException e) {
-            WarningPopupController.showPopup("Invalid Input", "Target weight must be a valid number.");
+            showWarningPopup("Invalid Input", "Target weight must be a valid number.");
             return;
         }
 
@@ -226,10 +298,7 @@ public class SettingsController implements Initializable {
 
     //bridge to wait for confirm
     private void confirmPrompt(Runnable onConfirmAction) {
-        ConfirmPopupController.showPopup("Confirm","Save changes?", () -> {
-            //when confirmed, runs savePreferences()
-            onConfirmAction.run();
-        });
+        showConfirmPopup(onConfirmAction);
     }
 
     // Extracted method to perform the actual database/repository operations
@@ -260,9 +329,9 @@ public class SettingsController implements Initializable {
                 mc.applyThemeStylesheet();
                 mc.applyThemeClasses();
             }
-            SuccessPopupController.showPopup("Success", "Settings saved successfully.");
+            showSuccessPopup("Success", "Settings saved successfully.");
         } else {
-            WarningPopupController.showPopup("Error", "Something went wrong. Try again.");
+           showWarningPopup("Error", "Something went wrong. Try again.");
         }
     }
 
