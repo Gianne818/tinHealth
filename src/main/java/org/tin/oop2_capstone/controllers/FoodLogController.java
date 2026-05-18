@@ -339,7 +339,7 @@ public class FoodLogController {
                 MealType mealType = MealType.valueOf(mealChoiceBox.getValue().toUpperCase());
                 LocalDate logTime = LocalDate.now();
 
-                Meal meal = new Meal(mealType, consumable, logTime, "serving");
+                Meal meal = new Meal(mealType, consumable, logTime, timeTextField.getText());
                 int userId = UserRepository.getInstance().getUser().getUid();
 
                 // Check if food is pending (API call failed)
