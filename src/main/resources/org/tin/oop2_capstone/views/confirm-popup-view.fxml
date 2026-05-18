@@ -9,7 +9,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="550.0" styleClass="cardContent" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.ConfirmPopupController">
    <top>
-      <Label styleClass="cardTitle" text="Confirm Action" BorderPane.alignment="CENTER" />
+      <Label fx:id="confirmPopupTitle" styleClass="cardTitle" text="Confirm Action" BorderPane.alignment="CENTER" />
    </top>
    <center>
       <Label fx:id="confirmMessageLabel" text="confirmMessageLabel" BorderPane.alignment="CENTER">
