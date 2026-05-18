@@ -20,6 +20,7 @@ import org.tin.oop2_capstone.database.repositories.ActivityRepository;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
 import org.tin.oop2_capstone.model.entities.User;
 import org.tin.oop2_capstone.model.entities.UserPreferences;
+import org.tin.oop2_capstone.services.ExerciseDifficultyService;
 import org.tin.oop2_capstone.services.SessionManager;
 import org.tin.oop2_capstone.utils.InputManager;
 import org.tin.oop2_capstone.utils.SceneSwitcher;
@@ -292,18 +293,103 @@ public class SignUpController {
             if (userPref.getGoalType() == null || userPref.getGoalType().isBlank()) {
                 userPref.setGoalType("Maintain");
             }
-            if (userPref.getDailyCalorieIn() == 0) {
-                userPref.setDailyCalorieIn(2000);
-            }
-            if (userPref.getDailyCalorieOut() == 0) {
-                userPref.setDailyCalorieOut(500);
-            }
             if (userPref.getTheme() == null) {
-                userPref.setTheme("default");
+                userPref.setTheme("Light");
             }
-            userPref.setPromptFrequencyMins(60);
-            userPref.setWeeklyActivityReps(3);   // matches DB default
-            userPref.setExerciseIntensity(5);    // matches DB default
+            //calculate TDEE(Total Daily Energy Expenditure)-based calorie defaults using Mifflin-St Jeor BMR(Basal Metabolic Rate) formula(standard used by most fitness apps)
+            if (userPref.getDailyCalorieIn() == 0) {
+                double bmr;
+                if (user.getIsMale()) {
+                    bmr = 10 * user.getWeightKg() + 6.25 * user.getHeightCm() - 5 * user.getAge() + 5;
+                } else {
+                    bmr = 10 * user.getWeightKg() + 6.25 * user.getHeightCm() - 5 * user.getAge() - 161;
+                }
+
+                double activityMultiplier;
+                switch (user.getActivityLevel()) {
+                    case "Sedentary":
+                        activityMultiplier = 1.2;
+                        break;
+                    case "Lightly":
+                        activityMultiplier = 1.375;
+                        break;
+                    case "Very Active":
+                        activityMultiplier = 1.725;
+                        break;
+                    case "Extremely Active":
+                        activityMultiplier = 1.9;
+                        break;
+                    case "Moderately":
+                    default:
+                        activityMultiplier = 1.55;
+                }
+
+                double tdee = bmr * activityMultiplier;
+
+                switch (userPref.getGoalType()) {
+                    case "Lose":
+                        userPref.setDailyCalorieIn((int)(tdee - 500));
+                        break;
+                    case "Gain":
+                        userPref.setDailyCalorieIn((int)(tdee + 500));
+                        break;
+                    case "Build Muscle":
+                        userPref.setDailyCalorieIn((int)(tdee + 250));
+                        break;
+                    default:
+                        userPref.setDailyCalorieIn((int) tdee); //maintain
+                }
+            }
+
+            //calorie out based on pre-existing activitylevel
+            if (userPref.getDailyCalorieOut() == 0) {
+                switch (user.getActivityLevel()) {
+                    case "Sedentary":
+                        userPref.setDailyCalorieOut(200);
+                        break;
+                    case "Lightly":
+                        userPref.setDailyCalorieOut(350);
+                        break;
+                    case "Very Active":
+                        userPref.setDailyCalorieOut(700);
+                        break;
+                    case "Extremely Active":
+                        userPref.setDailyCalorieOut(900);
+                        break;
+                    case "Moderately":
+                    default:
+                        userPref.setDailyCalorieOut(500);
+                }
+            }
+
+            //Setting activity stuff
+            switch(user.getActivityLevel()){
+                case "Sedentary":
+                    userPref.setPromptFrequencyMins(480);
+                    userPref.setWeeklyActivityReps(1);
+                    userPref.setExerciseIntensity(2);
+                    break;
+                case "Lightly":
+                    userPref.setPromptFrequencyMins(360);
+                    userPref.setWeeklyActivityReps(2);
+                    userPref.setExerciseIntensity(4);
+                    break;
+                case "Very Active":
+                    userPref.setPromptFrequencyMins(180);
+                    userPref.setWeeklyActivityReps(6);
+                    userPref.setExerciseIntensity(8);
+                    break;
+                case "Extremely Active":
+                    userPref.setPromptFrequencyMins(120);
+                    userPref.setWeeklyActivityReps(7);
+                    userPref.setExerciseIntensity(10);
+                    break;
+                case "Moderately":
+                default:
+                    userPref.setPromptFrequencyMins(240);
+                    userPref.setWeeklyActivityReps(4);
+                    userPref.setExerciseIntensity(6);
+            }
 
             user.setUid(user_id);
 
