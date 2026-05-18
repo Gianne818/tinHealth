@@ -48,21 +48,16 @@ public class ConfirmPopupController {
         this.onConfirmAction = action;
     }
 
-    public void setConfirmPopupTitle(String title){
-        confirmTitleLabel.setText(title);
-    }
-
     public void setConfirmMessage(String message) {
         if(this.confirmMessageLabel != null) {
             this.confirmMessageLabel.setText(message);
         }
     }
 
-    // Handles inline overlay setup with customizable blur and button text
     public void setupDeleteMode(String itemName, Runnable onConfirm, Node mainContent) {
-        this.onConfirmAction = onConfirm;
+        setOnConfirmAction(onConfirm);
         this.mainContentToBlur = mainContent;
-        this.confirmMessageLabel.setText("Are you sure you want to delete \"" + itemName + "\"?");
+        setConfirmMessage("Are you sure you want to delete \"" + itemName + "\"?");
         this.confirmActionButton.setText("Yes, Delete");
         this.cancelActionButton.setText("No, Cancel");
 
@@ -74,7 +69,7 @@ public class ConfirmPopupController {
     public void setupSaveMode(Runnable onConfirm, Node mainContentToBlur){
         setOnConfirmAction(onConfirm);
         this.mainContentToBlur = mainContentToBlur;
-        this.confirmMessageLabel.setText("Save changes?");
+        setConfirmMessage("Save changes?");
 
         if (mainContentToBlur != null) {
             mainContentToBlur.setEffect(new BoxBlur(6, 6, 3));
