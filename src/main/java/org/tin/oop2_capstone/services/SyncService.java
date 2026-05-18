@@ -1,5 +1,6 @@
 package org.tin.oop2_capstone.services;
 
+import org.tin.oop2_capstone.api.APIResponse;
 import org.tin.oop2_capstone.model.entities.Food;
 import org.tin.oop2_capstone.api.FoodAPI;
 import org.tin.oop2_capstone.database.RetrieveData;
@@ -42,16 +43,22 @@ public class SyncService {
         System.out.println("Syncing " + pendingFoods.size() + " pending foods...");
         for (Food food : pendingFoods) {
             try {
-
-                String json = FoodAPI.getFoodData(food.getName());
-                if (json == null) continue;
-
-                Food updatedFood = FoodParser.parseFood(json);
-                if (updatedFood == null) continue;
-                //adds the pending to foodNutrition
-                UpdateData.updateFoodNutrition(food.getName(), updatedFood.getNutrition());
-                UpdateData.markAsSynced(food.getName());
-                System.out.println("Synced: " + food.getName());
+                APIResponse response = FoodAPI.getFoodData(food.getName());
+                if (response.getHttpCode() == 200 && response.getJson() != null) {
+                    Food updatedFood = FoodParser.parseFood(response.getJson());
+                    if (updatedFood != null) {
+                        UpdateData.updateFoodNutrition(food.getName(), updatedFood.getNutrition());
+                        UpdateData.markAsSynced(food.getName());
+                        System.out.println("Synced: " + food.getName());
+                    }
+                    /* this is just for printing */
+                } else if (response.getHttpCode() == 429 || response.getHttpCode() == 503 || response.getHttpCode() == 504) {
+                    // Retryable - stay pending
+                    System.out.println("Retryable error for " + food.getName() + ": " + response.getHttpCode());
+                } else {
+                    // Non-retryable error
+                    System.out.println("Failed to sync " + food.getName() + ": HTTP " + response.getHttpCode());
+                }
 
             } catch (Exception e) {
                 System.out.println("Failed to sync: " + food.getName());
