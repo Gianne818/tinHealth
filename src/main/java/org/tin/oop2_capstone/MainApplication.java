@@ -17,7 +17,8 @@ public class MainApplication extends Application {
     }
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/login-view.fxml"));
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
 
         stage.setHeight(400);
@@ -33,4 +34,5 @@ public class MainApplication extends Application {
         stage.show();
     }
 
+    // TODO #2: Change the exercise prompt rep to minutes. And scale the minutes based on the exercise intensity of the user.
 }

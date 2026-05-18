@@ -170,7 +170,7 @@
     -fx-font-family: "Inter 18pt";
 }
 
-#repCountLabel{
+#minCountLabel{
     -fx-text-fill: -accent-color;
 }
 
