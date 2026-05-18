@@ -150,8 +150,8 @@ public class FoodLogController {
             try{
                 currentState = new LoadingState();
                 currentState.handle(this);
-                String json = FoodAPI.getFoodData(food.trim().replace(" ", "+"));
-                if (json == null || json.isBlank()) {
+                APIResponse json = FoodAPI.getFoodData(food.trim().replace(" ", "+"));
+                if (json.getJson() == null || json.getJson().isBlank()) {
                     Platform.runLater(() -> {
                         caloriesTextField.setText("Error: Food not found.");
                         caloriesTextField.getStyleClass().add("redLabel");
@@ -161,7 +161,7 @@ public class FoodLogController {
                     return;
                 }
 
-                List<Food> fetchedFoods = FoodParser.parseFoods(json);
+                List<Food> fetchedFoods = FoodParser.parseFoods(json.getJson());
                 if(fetchedFoods != null && !fetchedFoods.isEmpty()){
 
                     Platform.runLater(() -> {
@@ -370,9 +370,9 @@ public class FoodLogController {
             try {
                 Consumable consumable = fetchedFood;
                 MealType mealType = MealType.valueOf(mealChoiceBox.getValue().toUpperCase());
-                LocalDateTime logTime = LocalDateTime.now();
+                LocalDate logTime = LocalDate.now();
 
-                Meal meal = new Meal(mealType, consumable, logTime, 1.0, "serving");
+                Meal meal = new Meal(mealType, consumable, logTime, "serving");
                 int userId = UserRepository.getInstance().getUser().getUid();
 
                 // Check if food is pending (API call failed)
