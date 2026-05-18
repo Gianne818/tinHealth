@@ -150,8 +150,14 @@ public class FoodLogController {
             try{
                 currentState = new LoadingState();
                 currentState.handle(this);
-                APIResponse json = FoodAPI.getFoodData(food.trim().replace(" ", "+"));
-                if (json.getJson() == null || json.getJson().isBlank()) {
+                APIResponse response = FoodAPI.getFoodData(food.trim().replace(" ", "+"));
+
+                if (response.getHttpCode() != 200) {
+                    handleAPIError(response.getHttpCode());
+                    return;
+                }
+
+                if (response.getJson() == null || response.getJson().isBlank()) {
                     Platform.runLater(() -> {
                         caloriesTextField.setText("Error: Food not found.");
                         caloriesTextField.getStyleClass().add("redLabel");
@@ -161,7 +167,8 @@ public class FoodLogController {
                     return;
                 }
 
-                List<Food> fetchedFoods = FoodParser.parseFoods(json.getJson());
+
+                List<Food> fetchedFoods = FoodParser.parseFoods(response.getJson());
                 if(fetchedFoods != null && !fetchedFoods.isEmpty()){
 
                     Platform.runLater(() -> {
@@ -180,228 +187,13 @@ public class FoodLogController {
                     });
                 }
 
-                currentState = new SuccessState();
-                currentState.handle(this);
+                Platform.runLater(() -> {
+                    currentState = new SuccessState();
+                    currentState.handle(this);
+                });
+
 
             } catch (Exception e){
-                e.printStackTrace();
-            }
-        }).start();
-    }
-
-    private void calculateCalories(){
-        double curCal = 0;
-        for(Food f : selectedFoods){
-            curCal+=f.getNutrition().getCalories();
-        }
-
-        caloriesTextField.setText(String.format("%.2f", curCal));
-        caloriesTextField.getStyleClass().remove("redLabel");
-        caloriesTextField.getStyleClass().add("greenLabel");
-    }
-
-    private boolean isDouble(String text){
-        if(text == null || text.isEmpty()) return false;
-        try{
-             Double.parseDouble(text);
-             return true;
-        } catch (NumberFormatException e){
-            return false;
-        }
-    }
-
-    private String formatFoodName(String rawName) {
-        if (rawName == null || rawName.isEmpty()) return rawName;
-
-        String[] words = rawName.trim().toLowerCase().split("\\s+");
-        StringBuilder formatted = new StringBuilder();
-        for (String word : words) {
-            if (word.length() > 0) {
-                formatted.append(Character.toUpperCase(word.charAt(0)))
-                        .append(word.substring(1))
-                        .append(" ");
-            }
-        }
-
-        return formatted.toString().trim();
-    }
-
-    private void updateTimeBasedOnMeal() {
-        String selectedMealStr = mealChoiceBox.getValue();
-        LocalTime currentTime = LocalTime.now();
-
-        if (selectedMealStr != null && !selectedMealStr.isEmpty()) {
-            MealType selectedMeal = MealType.valueOf(selectedMealStr.toUpperCase());
-
-            if (selectedMeal.isWithinRange(currentTime)) {
-                timeTextField.setText(TimeFormatter.formatTo12Hour(currentTime));
-            } else {
-                timeTextField.setText(selectedMeal.getDefaultTimeRange());
-            }
-        } else {
-            timeTextField.setText(TimeFormatter.formatTo12Hour(currentTime));
-        }
-    }
-
-    private void setFoodLog() {
-        // Bypass repository cache by pulling live rows using the session User ID
-        int currentUserId = SessionManager.getInstance().getCurrentUser().getUid();
-        meals = fetchUserMeals(currentUserId);
-
-        if (meals != null) {
-            for (Meal m : meals) {
-                try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/log-card.fxml"));
-                    GridPane root = fxmlLoader.load();
-                    root.getStylesheets().add(getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm());
-                    root.getStyleClass().addAll("light", "foodLogScrollPane");
-
-                    LogCardController logCardController = fxmlLoader.getController();
-
-                    // gathering data
-                    String foodName = m.getConsumable().getName();
-                    String mealType = m.getMealType().name().charAt(0) + m.getMealType().name().substring(1).toLowerCase();
-//                    String logTime = mealType + " • " + TimeFormatter.formatTo12Hour(m.getLogDateTime().toLocalTime());
-                    String logTime = mealType + " • " + m.getTime();
-                    double totalCalories = m.getNutritionDetails().getCalories(); // Nuked the * quantity
-
-                    final Meal currentMeal = m;
-
-                    logCardController.setData(
-                            foodName,
-                            logTime,
-                            0.0,
-                            "",
-                            totalCalories,
-                            false,
-                            true,
-                            () -> {
-                                showDeletePopup(foodName, () -> {
-                                    boolean deleted = org.tin.oop2_capstone.database.DeleteData.deleteMeal(currentMeal.getMealId());
-                                    if (deleted) {
-                                        foodGridPanes.clear();
-                                        setFoodLog();
-                                    }
-                                });
-                            }
-                    );
-
-                    foodGridPanes.add(root);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        foodLogListView.setItems(foodGridPanes);
-    }
-
-    private boolean addEntryisVisible = false;
-    public void onButtonAddFoodClicked(ActionEvent actionEvent) { // @FXML Button addEntryButton;
-        gridPaneAddEntry.setVisible(!addEntryisVisible);
-        gridPaneAddEntry.setManaged(!addEntryisVisible);
-        addEntryisVisible = !addEntryisVisible;
-//        clearAddEntryForm();
-        //
-    }
-
-    public void onButtonAddEntryClicked(ActionEvent actionEvent) {
-
-        // errorState handling for foodNameComboBox
-        if (foodNameComboBox.getValue().trim().isEmpty()) {
-            setState(new ErrorState());
-            return;
-        }
-        // Validate all fields
-        if(!isDouble(caloriesTextField.getText()) || timeTextField.getText().isEmpty() || selectedFoods.isEmpty()){
-            setState(new ErrorState());
-            return;
-        }
-
-
-        if (caloriesTextField.getText().equals("- -") || caloriesTextField.getText().equals("Not found")) {
-            setState(new ErrorState());
-            return;
-        }
-
-        /* starting of the loading state */
-         setState(new LoadingState());
-
-
-        // Create and save meal
-//        try {
-//            Consumable consumable;
-//            if(selectedFoods.size() > 1){
-//                String foodComboName = "";
-//                for(int i = 0; i<selectedFoods.size(); i++){
-//                    if(i!=selectedFoods.size()-1) foodComboName += selectedFoods.get(i).getName() + ", ";
-//                    else foodComboName += selectedFoods.get(i).getName();
-//                }
-//                consumable = new FoodCombo(foodComboName, selectedFoods);
-//            } else {
-//                consumable = new Food(selectedFoods.getFirst().getName(), selectedFoods.getFirst().getNutrition(), false);
-//            }
-//
-//
-//            MealType mealType = MealType.valueOf(mealChoiceBox.getValue().toUpperCase());
-//            LocalDateTime logTime = LocalDateTime.now();
-//
-//            Meal meal = new Meal(mealType, consumable, logTime, 1.0, "serving");
-//            int userId = UserRepository.getInstance().getUser().getUid();
-//
-//            if(mealRepository.addMeal(meal, userId)) refreshFoodLog();
-//            else showError("Failed to save into database");
-//
-//
-//            clearAddEntryForm();
-//
-//        } catch (Exception e) {
-//            showError("Error saving food entry");
-//            e.printStackTrace();
-//        }
-//        clearAddEntryForm();
-
-        /* Aaaah can't help it : james.executeVibe() */
-
-        /* this whole code start executeVibe() */
-
-        // Run API call in background thread
-        new Thread(() -> {
-            try {
-                Consumable consumable = fetchedFood;
-                MealType mealType = MealType.valueOf(mealChoiceBox.getValue().toUpperCase());
-                LocalDate logTime = LocalDate.now();
-
-                Meal meal = new Meal(mealType, consumable, logTime, "serving");
-                int userId = UserRepository.getInstance().getUser().getUid();
-
-                // Check if food is pending (API call failed)
-                if (consumable.isPending()) {
-                    // Food already pending, just save it
-                    if(mealRepository.addMeal(meal, userId)){
-                        Platform.runLater(() -> {
-                            setState(new PendingState());
-                            refreshFoodLog();
-                            clearAddEntryForm();
-                        });
-                    } else {
-                        Platform.runLater(() -> setState(new ErrorState()));
-                    }
-                } else {
-                    // Food has valid nutrition data, proceed normally
-                    if(mealRepository.addMeal(meal, userId)){
-                        Platform.runLater(() -> {
-                            setState(new SuccessState());
-                            refreshFoodLog();
-                            clearAddEntryForm();
-                        });
-                    } else {
-                        Platform.runLater(() -> setState(new ErrorState()));
-                    }
-                }
-
-            } catch (Exception e) {
-                Platform.runLater(() -> setState(new ErrorState()));
                 e.printStackTrace();
             }
         }).start();
@@ -501,6 +293,241 @@ public class FoodLogController {
         }).start();
     }
 
+    private void calculateCalories(){
+        double curCal = 0;
+        for(Food f : selectedFoods){
+            curCal+=f.getNutrition().getCalories();
+        }
+        final double cal = curCal;
+        Platform.runLater(() -> {
+            caloriesTextField.setText(String.format("%.2f", cal));
+            caloriesTextField.getStyleClass().removeAll("redLabel");
+            caloriesTextField.getStyleClass().add("greenLabel");
+        });
+
+    }
+
+    private boolean isDouble(String text){
+        if(text == null || text.isEmpty()) return false;
+        try{
+             Double.parseDouble(text);
+             return true;
+        } catch (NumberFormatException e){
+            return false;
+        }
+    }
+
+    private String formatFoodName(String rawName) {
+        if (rawName == null || rawName.isEmpty()) return rawName;
+
+        String[] words = rawName.trim().toLowerCase().split("\\s+");
+        StringBuilder formatted = new StringBuilder();
+        for (String word : words) {
+            if (word.length() > 0) {
+                formatted.append(Character.toUpperCase(word.charAt(0)))
+                        .append(word.substring(1))
+                        .append(" ");
+            }
+        }
+
+        return formatted.toString().trim();
+    }
+
+    private void updateTimeBasedOnMeal() {
+        String selectedMealStr = mealChoiceBox.getValue();
+        LocalTime currentTime = LocalTime.now();
+
+        if (selectedMealStr != null && !selectedMealStr.isEmpty()) {
+            MealType selectedMeal = MealType.valueOf(selectedMealStr.toUpperCase());
+
+            if (selectedMeal.isWithinRange(currentTime)) {
+                timeTextField.setText(TimeFormatter.formatTo12Hour(currentTime));
+            } else {
+                timeTextField.setText(selectedMeal.getDefaultTimeRange());
+            }
+        } else {
+            timeTextField.setText(TimeFormatter.formatTo12Hour(currentTime));
+        }
+    }
+
+    private void setFoodLog() {
+        // Bypass repository cache by pulling live rows using the session User ID
+        foodLogListView.setItems(null);
+        foodLogListView.getSelectionModel().clearSelection();
+        foodGridPanes.clear();
+
+        int currentUserId = SessionManager.getInstance().getCurrentUser().getUid();
+        meals = fetchUserMeals(currentUserId);
+
+        if (meals != null) {
+            for (Meal m : meals) {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/log-card.fxml"));
+                    GridPane root = fxmlLoader.load();
+                    root.getStylesheets().add(getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm());
+                    root.getStyleClass().addAll("light", "foodLogScrollPane");
+
+                    LogCardController logCardController = fxmlLoader.getController();
+
+                    // gathering data
+                    String foodName = m.getConsumable().getName();
+                    String mealType = m.getMealType().name().charAt(0) + m.getMealType().name().substring(1).toLowerCase();
+//                    String logTime = mealType + " • " + TimeFormatter.formatTo12Hour(m.getLogDateTime().toLocalTime());
+                    String logTime = mealType + " • " + m.getTime();
+                    double totalCalories = m.getNutritionDetails().getCalories(); // Nuked the * quantity
+
+                    final Meal currentMeal = m;
+
+                    logCardController.setData(
+                            foodName,
+                            logTime,
+                            0.0,
+                            "",
+                            totalCalories,
+                            false,
+                            true,
+                            () -> {
+                                showDeletePopup(foodName, () -> {
+                                    boolean deleted = org.tin.oop2_capstone.database.DeleteData.deleteMeal(currentMeal.getMealId());
+                                    if (deleted) {
+                                        foodGridPanes.clear();
+                                        setFoodLog();
+                                    }
+                                });
+                            }
+                    );
+
+                    foodGridPanes.add(root);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        foodLogListView.setItems(foodGridPanes);
+    }
+
+    private boolean addEntryisVisible = false;
+    public void onButtonAddFoodClicked(ActionEvent actionEvent) { // @FXML Button addEntryButton;
+        gridPaneAddEntry.setVisible(!addEntryisVisible);
+        gridPaneAddEntry.setManaged(!addEntryisVisible);
+        addEntryisVisible = !addEntryisVisible;
+//        clearAddEntryForm();
+        //
+    }
+
+    public void onButtonAddEntryClicked(ActionEvent actionEvent) {
+
+        // errorState handling for foodNameComboBox
+//        if (foodNameComboBox.getValue().isEmpty()) {
+//            setState(new ErrorState());
+//            return;
+//        }
+        // Validate all fields
+        if(!isDouble(caloriesTextField.getText()) || timeTextField.getText().isEmpty() || selectedFoods.isEmpty()){
+            setState(new ErrorState());
+            return;
+        }
+
+
+        if (caloriesTextField.getText().equals("- -") || caloriesTextField.getText().equals("Not found")) {
+            setState(new ErrorState());
+            return;
+        }
+
+        /* starting of the loading state */
+         setState(new LoadingState());
+
+
+        // Create and save meal
+//        try {
+//            Consumable consumable;
+//            if(selectedFoods.size() > 1){
+//                String foodComboName = "";
+//                for(int i = 0; i<selectedFoods.size(); i++){
+//                    if(i!=selectedFoods.size()-1) foodComboName += selectedFoods.get(i).getName() + ", ";
+//                    else foodComboName += selectedFoods.get(i).getName();
+//                }
+//                consumable = new FoodCombo(foodComboName, selectedFoods);
+//            } else {
+//                consumable = new Food(selectedFoods.getFirst().getName(), selectedFoods.getFirst().getNutrition(), false);
+//            }
+//
+//
+//            MealType mealType = MealType.valueOf(mealChoiceBox.getValue().toUpperCase());
+//            LocalDateTime logTime = LocalDateTime.now();
+//
+//            Meal meal = new Meal(mealType, consumable, logTime, 1.0, "serving");
+//            int userId = UserRepository.getInstance().getUser().getUid();
+//
+//            if(mealRepository.addMeal(meal, userId)) refreshFoodLog();
+//            else showError("Failed to save into database");
+//
+//
+//            clearAddEntryForm();
+//
+//        } catch (Exception e) {
+//            showError("Error saving food entry");
+//            e.printStackTrace();
+//        }
+//        clearAddEntryForm();
+
+        /* Aaaah can't help it : james.executeVibe() */
+
+        /* this whole code start executeVibe() */
+
+        // Run API call in background thread
+        new Thread(() -> {
+            try {
+                Consumable consumable;
+                if(selectedFoods.size() > 1){
+                    String foodComboName = "";
+                    for(int i = 0; i<selectedFoods.size(); i++){
+                        if(i!=selectedFoods.size()-1) foodComboName += selectedFoods.get(i).getName() + ", ";
+                        else foodComboName += selectedFoods.get(i).getName();
+                    }
+                    consumable = new FoodCombo(foodComboName, selectedFoods);
+                } else {
+                    consumable = new Food(selectedFoods.getFirst().getName(), selectedFoods.getFirst().getNutrition(), false);
+                }
+                MealType mealType = MealType.valueOf(mealChoiceBox.getValue().toUpperCase());
+                LocalDate logTime = LocalDate.now();
+
+                Meal meal = new Meal(mealType, consumable, logTime, "serving");
+                int userId = UserRepository.getInstance().getUser().getUid();
+
+                // Check if food is pending (API call failed)
+                if (consumable.isPending()) {
+                    // Food already pending, just save it
+                    if(mealRepository.addMeal(meal, userId)){
+                        Platform.runLater(() -> {
+                            setState(new PendingState());
+                            refreshFoodLog();
+                            clearAddEntryForm();
+                        });
+                    } else {
+                        Platform.runLater(() -> setState(new ErrorState()));
+                    }
+                } else {
+                    // Food has valid nutrition data, proceed normally
+                    if(mealRepository.addMeal(meal, userId)){
+                        Platform.runLater(() -> {
+                            setState(new SuccessState());
+                            refreshFoodLog();
+                            clearAddEntryForm();
+                        });
+                    } else {
+                        Platform.runLater(() -> setState(new ErrorState()));
+                    }
+                }
+
+            } catch (Exception e) {
+                Platform.runLater(() -> setState(new ErrorState()));
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
     private Consumable createPendingFood(String foodName) {
         // Create food with empty nutrition and isPending = true
         NutritionDetails emptyNutrition = new NutritionDetails(0, 0, 0, 0,0, 0, 0, 0);
@@ -526,12 +553,12 @@ public class FoodLogController {
             } else {
                 errorMsg = "API error: " + httpCode;
             }
+            currentState = new ErrorState();
+            currentState.handle(this);
             caloriesTextField.setText(errorMsg);
-            caloriesTextField.setStyle("-fx-text-fill: #F59E0B;"); // Orange for pending
+            caloriesTextField.getStyleClass().add("redLabel");
         });
     }
-
-    /* end of executeVibe() */
 
 
     private void refreshFoodLog() {
@@ -548,9 +575,10 @@ public class FoodLogController {
         fetchedFood = null;
         gridPaneAddEntry.setVisible(false);
         gridPaneAddEntry.setManaged(false);
+
         addEntryisVisible = false;
         selectedFoods.clear();
-        foodNameEntryHBox.getChildren().clear();
+        foodNameEntryHBox.getChildren().removeIf(node -> node != foodNameComboBox);
     }
 
     private void showError(String message) {
@@ -588,13 +616,13 @@ public class FoodLogController {
     /** Mga State Functions */
 
     public void enableFoodLogInput() {
-        buttonAddFood.setDisable(false);
-        addEntryButton.setDisable(false);
+//        buttonAddFood.setDisable(false);
+//        addEntryButton.setDisable(false);
     }
 
     public void disableFoodLogInput() {
-        buttonAddFood.setDisable(true);
-        addEntryButton.setDisable(true);
+//        buttonAddFood.setDisable(true);
+//        addEntryButton.setDisable(true);
     }
 
     public void showLoadingIndicator() {
