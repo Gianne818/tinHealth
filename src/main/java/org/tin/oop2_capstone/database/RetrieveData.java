@@ -17,57 +17,41 @@ public class RetrieveData {
 
     public static List<Activity> fetchUserActivities(int userId) {
         List<Activity> activities = new ArrayList<>();
-        // Ensure your SQL query selects the 'act_id' column
-        String query = "SELECT a.act_id, a.activity_type_id, a.quantity, a.calories, a.log_timestamp, t.name, t.met_value " +
+        String query = "SELECT a.act_id, a.activity_type_id, a.quantity, a.calories, a.log_date, a.time, t.name, t.met_value " +
                 "FROM Activities a " +
                 "JOIN ActivityTypes t ON a.activity_type_id = t.activity_type_id " +
-                "WHERE a.user_id = ? ORDER BY a.log_timestamp DESC";
+                "WHERE a.user_id = ? ORDER BY a.log_date DESC, a.time DESC";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, userId);
-
             ResultSet rs = stmt.executeQuery();
 
             while(rs.next()) {
+                String tStr = rs.getString("time");
+                java.time.LocalTime time = (tStr != null && !tStr.isEmpty()) ? java.time.LocalTime.parse(tStr) : java.time.LocalTime.MIDNIGHT;
+
                 Activity activity = new Activity(
                         new ActivityType(rs.getInt("activity_type_id"), rs.getString("name"), rs.getDouble("met_value")),
-                        rs.getTimestamp("log_timestamp").toLocalDateTime(),
+                        java.time.LocalDateTime.of(rs.getDate("log_date").toLocalDate(), time),
                         "minutes",
                         rs.getDouble("quantity"),
                         rs.getDouble("calories")
                 );
-
-                // FIX: Map the database ID to the object so delete functions work
                 activity.setActivityId(rs.getInt("act_id"));
-
                 activities.add(activity);
             }
-            return activities;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException e) { e.printStackTrace(); }
         return activities;
     }
 
     public static int fetchUserWeeklyWorkout(int userId){
-        String query = """
-            SELECT COUNT(*) AS workout_count
-            FROM Activities
-            WHERE user_id = ?
-            AND YEARWEEK(log_timestamp, 1) = YEARWEEK(CURDATE(), 1)
-        """;
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+        String query = "SELECT COUNT(*) AS workout_count FROM Activities WHERE user_id = ? AND YEARWEEK(log_date, 1) = YEARWEEK(CURDATE(), 1)";
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, userId);
             ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("workout_count");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            if (rs.next()) return rs.getInt("workout_count");
+        } catch (SQLException e) { e.printStackTrace(); }
         return 0;
     }
 
@@ -88,148 +72,80 @@ public class RetrieveData {
     }
 
     public static int fetchUserCurrentStreak(int userId){
-        String query = """
-            SELECT DISTINCT DATE(log_timestamp) AS activity_date
-            FROM Activities
-            WHERE user_id = ?
-            ORDER BY activity_date DESC
-        """;
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+        String query = "SELECT DISTINCT log_date AS activity_date FROM Activities WHERE user_id = ? ORDER BY activity_date DESC";
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, userId);
             ResultSet rs = stmt.executeQuery();
-
             Set<LocalDate> uniqueDates = new LinkedHashSet<>();
-            while (rs.next()) {
-                uniqueDates.add(rs.getDate("activity_date").toLocalDate());
-            }
+            while (rs.next()) uniqueDates.add(rs.getDate("activity_date").toLocalDate());
 
             int streak = 0;
             if (!uniqueDates.isEmpty()) {
-                LocalDate today = LocalDate.now();
-                LocalDate expected = today;
-
-                if (uniqueDates.contains(today)) {
+                LocalDate expected = LocalDate.now();
+                if (uniqueDates.contains(expected)) {
                     for (LocalDate date : uniqueDates) {
-                        if (date.equals(expected)) {
-                            streak++;
-                            expected = expected.minusDays(1);
-                        } else if (date.isBefore(expected)) {
-                            break;
-                        }
+                        if (date.equals(expected)) { streak++; expected = expected.minusDays(1); }
+                        else if (date.isBefore(expected)) break;
                     }
                 }
             }
             return streak;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException e) { e.printStackTrace(); }
         return 0;
     }
 
     public static int fetchUserTodayCaloriesOut(int userId){
-        String query = """
-        SELECT COALESCE(SUM(calories), 0) AS total_calories
-        FROM Activities
-        WHERE user_id = ?
-        AND DATE(log_timestamp) = CURDATE()
-        """;
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+        String query = "SELECT COALESCE(SUM(calories), 0) AS total_calories FROM Activities WHERE user_id = ? AND log_date = CURDATE()";
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, userId);
             ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return (int) rs.getDouble("total_calories");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            if (rs.next()) return (int) rs.getDouble("total_calories");
+        } catch (SQLException e) { e.printStackTrace(); }
         return 0;
     }
 
     public static NutritionDetails fetchUserWeeklyNutrients(int userId){
         String query = """
-        SELECT 
-            COALESCE(SUM(nd.calories * m.serving_size), 0) AS total_calories,
-            COALESCE(SUM(nd.protein * m.serving_size), 0) AS total_protein,
-            COALESCE(SUM(nd.fats * m.serving_size), 0) AS total_fat,
-            COALESCE(SUM(nd.carbs * m.serving_size), 0) AS total_carbs,
-            COALESCE(SUM(nd.cholesterol * m.serving_size), 0) AS total_cholesterol,
-            COALESCE(SUM(nd.sodium * m.serving_size), 0) AS total_sodium,
-            COALESCE(SUM(nd.sugar * m.serving_size), 0) AS total_sugar,
-            COALESCE(SUM(nd.fiber * m.serving_size), 0) AS total_fiber
-        FROM Meals m
-        JOIN Consumables c ON m.consumable_id = c.consumable_id
-        LEFT JOIN NutritionalDetails nd ON c.nutri_id = nd.nutri_id
-        WHERE m.user_id = ?
-        AND YEARWEEK(m.log_timestamp, 1) = YEARWEEK(CURDATE(), 1)
-        """;
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+    SELECT COALESCE(SUM(nd.calories), 0) AS total_calories,
+           COALESCE(SUM(nd.protein), 0) AS total_protein,
+           COALESCE(SUM(nd.fats), 0) AS total_fat,
+           COALESCE(SUM(nd.carbs), 0) AS total_carbs,
+           COALESCE(SUM(nd.cholesterol), 0) AS total_cholesterol,
+           COALESCE(SUM(nd.sodium), 0) AS total_sodium,
+           COALESCE(SUM(nd.sugar), 0) AS total_sugar,
+           COALESCE(SUM(nd.fiber), 0) AS total_fiber
+    FROM Meals m JOIN Consumables c ON m.consumable_id = c.consumable_id
+    LEFT JOIN NutritionalDetails nd ON c.nutri_id = nd.nutri_id
+    WHERE m.user_id = ? AND YEARWEEK(m.log_date, 1) = YEARWEEK(CURDATE(), 1)
+    """;
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, userId);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return new NutritionDetails(
-                        rs.getDouble("total_calories"),
-                        rs.getDouble("total_protein"),
-                        rs.getDouble("total_fat"),
-                        rs.getDouble("total_carbs"),
-                        rs.getDouble("total_cholesterol"),
-                        rs.getDouble("total_sodium"),
-                        rs.getDouble("total_sugar"),
-                        rs.getDouble("total_fiber")
-                );
+                return new NutritionDetails(rs.getDouble("total_calories"), rs.getDouble("total_protein"), rs.getDouble("total_fat"), rs.getDouble("total_carbs"), rs.getDouble("total_cholesterol"), rs.getDouble("total_sodium"), rs.getDouble("total_sugar"), rs.getDouble("total_fiber"));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException e) { e.printStackTrace(); }
         return null;
     }
 
     public static Map<String, Double[]> fetchUserWeeklyCalories(int userId){
         Map<String, Double[]> weeklyData = new HashMap<>();
         String[] days = {"", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-
         String query = """
-        SELECT 
-            DAYOFWEEK(m.log_timestamp) AS day,
-            COALESCE(SUM(nd.calories * m.serving_size), 0) AS calories_in,
-            COALESCE((SELECT SUM(calories) FROM Activities WHERE user_id = ? AND DAYOFWEEK(log_timestamp) = day), 0) AS calories_out
-        FROM Meals m
-        JOIN Consumables c ON m.consumable_id = c.consumable_id
-        LEFT JOIN NutritionalDetails nd ON c.nutri_id = nd.nutri_id
-        WHERE m.user_id = ? AND YEARWEEK(m.log_timestamp, 1) = YEARWEEK(CURDATE(), 1)
-        GROUP BY DAYOFWEEK(m.log_timestamp)
-        """;
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setInt(1, userId);
-            stmt.setInt(2, userId);
+    SELECT DAYOFWEEK(m.log_date) AS day,
+           COALESCE(SUM(nd.calories), 0) AS calories_in,
+           COALESCE((SELECT SUM(calories) FROM Activities WHERE user_id = ? AND DAYOFWEEK(log_date) = day AND YEARWEEK(log_date, 1) = YEARWEEK(CURDATE(), 1)), 0) AS calories_out
+    FROM Meals m JOIN Consumables c ON m.consumable_id = c.consumable_id
+    LEFT JOIN NutritionalDetails nd ON c.nutri_id = nd.nutri_id
+    WHERE m.user_id = ? AND YEARWEEK(m.log_date, 1) = YEARWEEK(CURDATE(), 1)
+    GROUP BY DAYOFWEEK(m.log_date)
+    """;
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, userId); stmt.setInt(2, userId);
             ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                int day = rs.getInt("day");
-                double caloriesIn = rs.getDouble("calories_in");
-                double caloriesOut = rs.getDouble("calories_out");
-
-
-                String dayName = days[day];
-                weeklyData.put(dayName, new Double[]{caloriesIn, caloriesOut});
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        // Fill missing days with zeros
-        for (String day : days) {
-            weeklyData.putIfAbsent(day, new Double[]{0.0, 0.0});
-        }
-
+            while (rs.next()) weeklyData.put(days[rs.getInt("day")], new Double[]{rs.getDouble("calories_in"), rs.getDouble("calories_out")});
+        } catch (SQLException e) { e.printStackTrace(); }
+        for (String day : days) if(!day.isEmpty()) weeklyData.putIfAbsent(day, new Double[]{0.0, 0.0});
         return weeklyData;
     }
 
@@ -257,30 +173,18 @@ public class RetrieveData {
 
     public static List<Activity> fetchUserTodayActivities(int userId){
         List<Activity> activities = new ArrayList<>();
-        String query = """
-        SELECT at.activity_type_id, at.met_value, at.name, a.quantity, a.calories, a.log_timestamp
-        FROM Activities a
-        JOIN ActivityTypes at ON a.activity_type_id = at.activity_type_id
-        WHERE a.user_id = ? AND DATE(a.log_timestamp) = CURDATE()
-        ORDER BY a.log_timestamp DESC
-        """;
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+        String query = "SELECT at.activity_type_id, at.met_value, at.name, a.quantity, a.calories, a.log_date, a.time " +
+                "FROM Activities a JOIN ActivityTypes at ON a.activity_type_id = at.activity_type_id " +
+                "WHERE a.user_id = ? AND a.log_date = CURDATE() ORDER BY a.log_date DESC, a.time DESC";
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, userId);
             ResultSet rs = stmt.executeQuery();
-
             while (rs.next()) {
-                activities.add(new Activity(new ActivityType(rs.getInt("activity_type_id"), rs.getString("name"), rs.getDouble("met_value")),
-                        rs.getTimestamp("log_timestamp").toLocalDateTime(),
-                        "minutes",
-                        rs.getDouble("quantity"),
-                        rs.getDouble("calories")
-                ));
+                String tStr = rs.getString("time");
+                java.time.LocalTime time = (tStr != null && !tStr.isEmpty()) ? java.time.LocalTime.parse(tStr) : java.time.LocalTime.MIDNIGHT;
+                activities.add(new Activity(new ActivityType(rs.getInt("activity_type_id"), rs.getString("name"), rs.getDouble("met_value")), java.time.LocalDateTime.of(rs.getDate("log_date").toLocalDate(), time), "minutes", rs.getDouble("quantity"), rs.getDouble("calories")));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException e) { e.printStackTrace(); }
         return activities;
     }
 
@@ -289,169 +193,73 @@ public class RetrieveData {
 
     public static double fetchUserTodayCaloriesIn(int userId){
         String query = """
-        SELECT COALESCE(SUM(
-            CASE 
-                WHEN c.type = 'food' THEN nd.calories * m.serving_size
-                WHEN c.type = 'foodcombo' THEN (
-                    SELECT COALESCE(SUM(nd2.calories * 1), 0)
-                    FROM ComboItems ci
-                    JOIN Consumables c2 ON ci.consumable_id = c2.consumable_id
-                    LEFT JOIN NutritionalDetails nd2 ON c2.nutri_id = nd2.nutri_id
-                    WHERE ci.combo_id = c.consumable_id
-                ) * m.serving_size
-                ELSE 0
-            END
-        ), 0) AS total_calories
-        FROM Meals m
-        JOIN Consumables c ON m.consumable_id = c.consumable_id
-        LEFT JOIN NutritionalDetails nd ON c.nutri_id = nd.nutri_id
-        WHERE m.user_id = ? AND DATE(m.log_timestamp) = CURDATE()
-        """;
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+    SELECT COALESCE(SUM(CASE 
+        WHEN c.type = 'food' THEN nd.calories
+        WHEN c.type = 'foodcombo' THEN (SELECT COALESCE(SUM(nd2.calories), 0) FROM ComboItems ci JOIN Consumables c2 ON ci.consumable_id = c2.consumable_id LEFT JOIN NutritionalDetails nd2 ON c2.nutri_id = nd2.nutri_id WHERE ci.combo_id = c.consumable_id)
+        ELSE 0 END), 0) AS total_calories
+    FROM Meals m JOIN Consumables c ON m.consumable_id = c.consumable_id LEFT JOIN NutritionalDetails nd ON c.nutri_id = nd.nutri_id
+    WHERE m.user_id = ? AND m.log_date = CURDATE()
+    """;
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, userId);
             ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getDouble("total_calories");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            if (rs.next()) return rs.getDouble("total_calories");
+        } catch (SQLException e) { e.printStackTrace(); }
         return 0;
     }
 
     //test retrieve
     public static List<Meal> fetchUserMeals(int userId) {
         List<Meal> meals = new ArrayList<>();
-        String query = """
-            SELECT m.meal_id, m.meal_type, c.name, m.serving_size, m.serving_units, m.log_timestamp,
-                   nd.calories, nd.protein, nd.fats, nd.carbs, nd.cholesterol, nd.sodium, nd.sugar, nd.fiber
-            FROM Meals m
-            JOIN Consumables c ON m.consumable_id = c.consumable_id
-            LEFT JOIN NutritionalDetails nd ON c.nutri_id = nd.nutri_id
-            WHERE m.user_id = ?
-            ORDER BY m.log_timestamp DESC
-        """;
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-
+        String query = "SELECT m.meal_id, m.meal_type, c.name, m.log_date, m.time, nd.calories, nd.protein, nd.fats, nd.carbs, nd.cholesterol, nd.sodium, nd.sugar, nd.fiber " +
+                "FROM Meals m JOIN Consumables c ON m.consumable_id = c.consumable_id LEFT JOIN NutritionalDetails nd ON c.nutri_id = nd.nutri_id " +
+                "WHERE m.user_id = ? ORDER BY m.log_date DESC, m.time DESC";
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, userId);
             ResultSet rs = stmt.executeQuery();
-
             while(rs.next()) {
-                NutritionDetails nd = new NutritionDetails(
-                        rs.getDouble("calories"), rs.getDouble("protein"), rs.getDouble("fats"),
-                        rs.getDouble("carbs"), rs.getDouble("cholesterol"), rs.getDouble("sodium"),
-                        rs.getDouble("sugar"), rs.getDouble("fiber")
-                );
-
-                Food food = new Food(rs.getString("name"), nd, false);
-
-                MealType type = MealType.valueOf(rs.getString("meal_type").toUpperCase());
-
-                Meal meal = new Meal(
-                        type, food, rs.getTimestamp("log_timestamp").toLocalDateTime(),
-                        rs.getDouble("serving_size"), rs.getString("serving_units")
-                );
-
-                // Map the database ID to the object so delete works
+                NutritionDetails nd = new NutritionDetails(rs.getDouble("calories"), rs.getDouble("protein"), rs.getDouble("fats"), rs.getDouble("carbs"), rs.getDouble("cholesterol"), rs.getDouble("sodium"), rs.getDouble("sugar"), rs.getDouble("fiber"));
+                Meal meal = new Meal(MealType.valueOf(rs.getString("meal_type").toUpperCase()), new Food(rs.getString("name"), nd, false), rs.getDate("log_date").toLocalDate(), rs.getString("time"));
                 meal.setMealId(rs.getInt("meal_id"));
-
                 meals.add(meal);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException e) { e.printStackTrace(); }
         return meals;
     }
 
     public static List<Meal> fetchUserMealsToday(int userId) {
         List<Meal> mealsToday = new ArrayList<>();
-        String query = """
-            SELECT *
-            FROM Meals m
-            JOIN Consumables c ON m.consumable_id = c.consumable_id
-            LEFT JOIN NutritionalDetails nd ON c.nutri_id = nd.nutri_id
-            WHERE m.user_id = ?
-            AND DATE(m.log_timestamp) = CURDATE()
-            ORDER BY m.log_timestamp DESC
-        """;
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-
+        String query = "SELECT m.*, c.name, nd.* FROM Meals m JOIN Consumables c ON m.consumable_id = c.consumable_id LEFT JOIN NutritionalDetails nd ON c.nutri_id = nd.nutri_id WHERE m.user_id = ? AND m.log_date = CURDATE() ORDER BY m.log_date DESC, m.time DESC";
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, userId);
             ResultSet rs = stmt.executeQuery();
-
             while(rs.next()) {
-                NutritionDetails nd = new NutritionDetails(
-                        rs.getDouble("calories"), rs.getDouble("protein"), rs.getDouble("fats"),
-                        rs.getDouble("carbs"), rs.getDouble("cholesterol"), rs.getDouble("sodium"),
-                        rs.getDouble("sugar"), rs.getDouble("fiber")
-                );
+                NutritionDetails nd = new NutritionDetails(rs.getDouble("calories"), rs.getDouble("protein"), rs.getDouble("fats"), rs.getDouble("carbs"), rs.getDouble("cholesterol"), rs.getDouble("sodium"), rs.getDouble("sugar"), rs.getDouble("fiber"));
 
-                Food food = new Food(
-                        rs.getString("name"), nd, false
-                );
+                Meal meal = new Meal(MealType.valueOf(rs.getString("meal_type").toUpperCase()), new Food(rs.getString("name"), nd, false), rs.getDate("log_date").toLocalDate(), rs.getString("time"));
+                meal.setMealId(rs.getInt("meal_id"));
 
-                MealType type =
-                        MealType.valueOf(rs.getString("meal_type").toUpperCase());
-
-                mealsToday.add(new Meal(
-                        type, food, rs.getTimestamp("log_timestamp").toLocalDateTime(),
-                        rs.getDouble("serving_size"), rs.getString("serving_units")
-                ));
+                mealsToday.add(meal);
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException e) { e.printStackTrace(); }
         return mealsToday;
     }
 
     public static List<Meal> fetchWeeklyUserMeals(int userId) {
         List<Meal> mealsThisWeek = new ArrayList<>();
-        String query = """
-            SELECT *
-            FROM Meals m
-            JOIN Consumables c ON m.consumable_id = c.consumable_id
-            LEFT JOIN NutritionalDetails nd ON c.nutri_id = nd.nutri_id
-            WHERE m.user_id = ?
-            AND YEARWEEK(log_timestamp, 1) = YEARWEEK(CURDATE(), 1)
-            ORDER BY m.log_timestamp DESC
-        """;
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-
+        String query = "SELECT m.*, c.name, nd.* FROM Meals m JOIN Consumables c ON m.consumable_id = c.consumable_id LEFT JOIN NutritionalDetails nd ON c.nutri_id = nd.nutri_id WHERE m.user_id = ? AND YEARWEEK(m.log_date, 1) = YEARWEEK(CURDATE(), 1) ORDER BY m.log_date DESC, m.time DESC";
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, userId);
             ResultSet rs = stmt.executeQuery();
-
             while(rs.next()) {
-                NutritionDetails nd = new NutritionDetails(
-                        rs.getDouble("calories"), rs.getDouble("protein"), rs.getDouble("fats"),
-                        rs.getDouble("carbs"), rs.getDouble("cholesterol"), rs.getDouble("sodium"),
-                        rs.getDouble("sugar"), rs.getDouble("fiber")
-                );
+                NutritionDetails nd = new NutritionDetails(rs.getDouble("calories"), rs.getDouble("protein"), rs.getDouble("fats"), rs.getDouble("carbs"), rs.getDouble("cholesterol"), rs.getDouble("sodium"), rs.getDouble("sugar"), rs.getDouble("fiber"));
 
-                Food food = new Food(
-                        rs.getString("name"), nd, false
-                );
+                Meal meal = new Meal(MealType.valueOf(rs.getString("meal_type").toUpperCase()), new Food(rs.getString("name"), nd, false), rs.getDate("log_date").toLocalDate(), rs.getString("time"));
+                meal.setMealId(rs.getInt("meal_id"));
 
-                MealType type =
-                        MealType.valueOf(rs.getString("meal_type").toUpperCase());
-
-                mealsThisWeek.add(new Meal(
-                        type, food, rs.getTimestamp("log_timestamp").toLocalDateTime(),
-                        rs.getDouble("serving_size"), rs.getString("serving_units")
-                ));
+                mealsThisWeek.add(meal);
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException e) { e.printStackTrace(); }
         return mealsThisWeek;
     }
 

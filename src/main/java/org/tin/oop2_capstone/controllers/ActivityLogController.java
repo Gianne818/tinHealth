@@ -150,12 +150,13 @@ public class ActivityLogController {
                         false,
                         true,
                         () -> {
-//                            System.out.println("ID to delete: " + currentActivity.getActivityId());
-                            boolean deleted = deleteActivity(currentActivity.getActivityId());
-                            if (deleted) {
-                                activityGridPanes.clear();
-                                setActivityLog();
-                            }
+                            showDeletePopup(currentActivity.getActivityType().getName(), () -> {
+                                boolean deleted = deleteActivity(currentActivity.getActivityId());
+                                if (deleted) {
+                                    activityGridPanes.clear();
+                                    setActivityLog();
+                                }
+                            });
                         }
                 );
                 activityGridPanes.add(root);
@@ -166,6 +167,25 @@ public class ActivityLogController {
         }
 
         activityLogListView.setItems(activityGridPanes);
+    }
+
+    private void showDeletePopup(String itemName, Runnable onConfirm) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/confirm-popup-view.fxml"));
+            javafx.scene.layout.StackPane popup = loader.load(); // FIX: Changed to StackPane
+            ConfirmPopupController controller = loader.getController();
+
+            javafx.scene.layout.AnchorPane root = (javafx.scene.layout.AnchorPane) activityLogScrollPane.getScene().getRoot();
+            javafx.scene.Node mainContent = root.getChildren().get(0);
+
+            javafx.scene.layout.AnchorPane.setTopAnchor(popup, 0.0);
+            javafx.scene.layout.AnchorPane.setBottomAnchor(popup, 0.0);
+            javafx.scene.layout.AnchorPane.setLeftAnchor(popup, 0.0);
+            javafx.scene.layout.AnchorPane.setRightAnchor(popup, 0.0);
+
+            controller.setupDeleteMode(itemName, onConfirm, mainContent);
+            root.getChildren().add(popup);
+        } catch (IOException e) { e.printStackTrace(); }
     }
 
     private boolean addEntryisVisible = false;
