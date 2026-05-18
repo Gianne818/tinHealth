@@ -18,7 +18,6 @@ import org.tin.oop2_capstone.model.entities.*;
 import org.tin.oop2_capstone.model.state.IdleState;
 import org.tin.oop2_capstone.model.state.LoadingState;
 import org.tin.oop2_capstone.model.state.State;
-import org.tin.oop2_capstone.services.SearchInterpreter;
 import org.tin.oop2_capstone.utils.TimeFormatter;
 
 import org.tin.oop2_capstone.services.FoodParser;

@@ -90,7 +90,7 @@ public class InsertData {
     }
 
     public static void insertIntoComboItems(int comboId, List<Integer> foodIds){
-        String sql = "INSERT INTO ComboItems(combo_id, consumable_id) VALUES(?, ?)";
+        String sql = "INSERT INTO ComboItems(combo_id, consumable_id, quantity) VALUES(?, ?, ?)";
 
         try(Connection conn = DatabaseConnection.getConnection();
         PreparedStatement preparedStatement = conn.prepareStatement(sql)){
@@ -98,6 +98,7 @@ public class InsertData {
             for(int id : foodIds){
                 preparedStatement.setInt(1, comboId);
                 preparedStatement.setInt(2, id);
+                preparedStatement.setDouble(3, 1.0);
                 preparedStatement.addBatch();
             }
             preparedStatement.executeBatch();
