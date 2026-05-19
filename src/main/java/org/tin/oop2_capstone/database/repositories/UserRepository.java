@@ -25,6 +25,14 @@ public class UserRepository {
 
     public void login(String username, String password) {
         currentUser = RetrieveData.fetchUser(username, password);
+
+        if (currentUser != null) {
+            org.tin.oop2_capstone.services.SessionManager.getInstance().setCurrentUser(currentUser);
+
+            // Fetch and set preferences too, to prevent null crashes elsewhere
+            org.tin.oop2_capstone.model.entities.UserPreferences prefs = RetrieveData.fetchUserPreferences(currentUser.getUid());
+            org.tin.oop2_capstone.services.SessionManager.getInstance().setCurrentUserPrefs(prefs);
+        }
     }
 
     public User getUser(){

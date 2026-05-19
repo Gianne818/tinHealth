@@ -240,15 +240,19 @@ public class DashboardController {
         macroDistPieChart.setLegendVisible(false);
         macroDistInnerHoleCircle.radiusProperty().bind(macroDistPieChart.widthProperty().divide(3.5));
 
+        // FIX: Bypass stale repository cache and fetch fresh live data
+        int userId = org.tin.oop2_capstone.services.SessionManager.getInstance().getCurrentUser().getUid();
+        org.tin.oop2_capstone.model.entities.NutritionDetails liveNutrition = org.tin.oop2_capstone.database.RetrieveData.fetchUserWeeklyNutrients(userId);
+
         // Prevent crash if user has no meals logged yet
-        if (nutritionDetails == null) {
+        if (liveNutrition == null) {
             updateMacroDist(0, 0, 0);
             return;
         }
 
-        double protein = nutritionDetails.getProtein();
-        double carbs = nutritionDetails.getCarbs();
-        double fats = nutritionDetails.getFat();
+        double protein = liveNutrition.getProtein();
+        double carbs = liveNutrition.getCarbs();
+        double fats = liveNutrition.getFat();
         double total = protein + carbs + fats;
 
         if (total > 0) {
@@ -260,6 +264,57 @@ public class DashboardController {
         updateMacroDist(protein, carbs, fats);
     }
 
+//    private void initCaloriesLineChart() {
+//        xAxis.setCategories(FXCollections.observableArrayList(
+//                "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"
+//        ));
+//        xAxis.setGapStartAndEnd(false);
+//        xAxis.setTickMarkVisible(false);
+//
+//        Map<String, Double[]> weeklyData = activityRepository.getWeeklyCalories();
+//
+//        LineChart<String, Number> chart = (LineChart<String, Number>) weeklyChart;
+//        XYChart.Series<String, Number> calIn = new XYChart.Series<>();
+//        XYChart.Series<String, Number> calOut = new XYChart.Series<>();
+//
+//        String[] allDays = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+//        LocalDate today = LocalDate.now();
+//        int currentDayIndex = today.getDayOfWeek().getValue() - 1;
+//
+//        for (int i = 0; i <= currentDayIndex; i++) {
+//            String day = allDays[i];
+//            Double[] data = weeklyData.get(day);
+//            calIn.getData().add(new XYChart.Data<>(day, data[0]));
+//            calOut.getData().add(new XYChart.Data<>(day, data[1]));
+//        }
+//
+//        for (int i = currentDayIndex + 1; i < allDays.length; i++) {
+//            String day = allDays[i];
+//            calIn.getData().add(new XYChart.Data<>(day, null));
+//            calOut.getData().add(new XYChart.Data<>(day, null));
+//        }
+//
+//        double maxIn = calIn.getData().stream().filter(d -> d.getYValue() != null).mapToDouble(d -> d.getYValue().doubleValue()).max().orElse(0);
+//        double maxOut = calOut.getData().stream().filter(d -> d.getYValue() != null).mapToDouble(d -> d.getYValue().doubleValue()).max().orElse(0);
+//        double maxValue = Math.max(maxIn, maxOut);
+//
+//        double tickUnit = 550;
+//        double minUpperBound = tickUnit * 4;
+//        double calculatedBound = Math.ceil((maxValue + maxValue * 0.125) / tickUnit) * tickUnit;
+//        double upperBound = Math.max(calculatedBound, minUpperBound);
+//
+//        NumberAxis yAxis = (NumberAxis) chart.getYAxis();
+//        yAxis.setAutoRanging(false);
+//        yAxis.setTickUnit(tickUnit);
+//        yAxis.setLowerBound(0);
+//        yAxis.setUpperBound(upperBound);
+//
+//        chart.getData().clear();
+//        chart.getData().addAll(calIn, calOut);
+//        chart.setLegendVisible(false);
+//        setupGlobalTooltip(chart, calIn, calOut);
+//    }
+
     private void initCaloriesLineChart() {
         xAxis.setCategories(FXCollections.observableArrayList(
                 "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"
@@ -267,7 +322,8 @@ public class DashboardController {
         xAxis.setGapStartAndEnd(false);
         xAxis.setTickMarkVisible(false);
 
-        Map<String, Double[]> weeklyData = activityRepository.getWeeklyCalories();
+        // FIX 1: Bypass stale repository cache, fetch live data directly
+        Map<String, Double[]> weeklyData = org.tin.oop2_capstone.database.RetrieveData.fetchUserWeeklyCalories(userId);
 
         LineChart<String, Number> chart = (LineChart<String, Number>) weeklyChart;
         XYChart.Series<String, Number> calIn = new XYChart.Series<>();
@@ -277,17 +333,12 @@ public class DashboardController {
         LocalDate today = LocalDate.now();
         int currentDayIndex = today.getDayOfWeek().getValue() - 1;
 
+        // FIX 2: Only plot up to today. Do NOT add a second loop with nulls!
         for (int i = 0; i <= currentDayIndex; i++) {
             String day = allDays[i];
-            Double[] data = weeklyData.get(day);
+            Double[] data = weeklyData.getOrDefault(day, new Double[]{0.0, 0.0});
             calIn.getData().add(new XYChart.Data<>(day, data[0]));
             calOut.getData().add(new XYChart.Data<>(day, data[1]));
-        }
-
-        for (int i = currentDayIndex + 1; i < allDays.length; i++) {
-            String day = allDays[i];
-            calIn.getData().add(new XYChart.Data<>(day, null));
-            calOut.getData().add(new XYChart.Data<>(day, null));
         }
 
         double maxIn = calIn.getData().stream().filter(d -> d.getYValue() != null).mapToDouble(d -> d.getYValue().doubleValue()).max().orElse(0);

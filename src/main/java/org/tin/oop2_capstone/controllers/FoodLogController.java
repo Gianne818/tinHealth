@@ -357,7 +357,7 @@ public class FoodLogController {
                 LocalDate logTime = LocalDate.now();
 
                 Meal meal = new Meal(mealType, consumable, logTime, timeTextField.getText());
-                int userId = UserRepository.getInstance().getUser().getUid();
+                int userId = SessionManager.getInstance().getCurrentUser().getUid();
 
                 // Check if food is pending (API call failed)
                 if (consumable.isPending()) {
