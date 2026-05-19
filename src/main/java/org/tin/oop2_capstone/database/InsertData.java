@@ -1,9 +1,6 @@
 package org.tin.oop2_capstone.database;
 
-import org.tin.oop2_capstone.model.entities.Consumable;
-import org.tin.oop2_capstone.model.entities.Food;
-import org.tin.oop2_capstone.model.entities.Meal;
-import org.tin.oop2_capstone.model.entities.NutritionDetails;
+import org.tin.oop2_capstone.model.entities.*;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -16,7 +13,7 @@ public class InsertData {
 
 
     public static boolean insertMeal(int userId, Meal meal) {
-        String insertMealSQL = "INSERT INTO Meals (user_id, consumable_id, meal_type, serving_size, serving_units, log_timestamp) VALUES (?, ?, ?, ?, ?, ?)";
+        String insertMealSQL = "INSERT INTO Meals (user_id, consumable_id, meal_type, log_date, time) VALUES (?, ?, ?, ?, ?)";
 
         int consumableId = insertOrGetConsumable(meal.getConsumable());
         try (Connection conn = DatabaseConnection.getConnection();
@@ -25,13 +22,10 @@ public class InsertData {
             pstmt.setInt(1, userId);
             pstmt.setInt(2, consumableId);
             pstmt.setString(3, meal.getMealType().toString());
-            pstmt.setDouble(4, meal.getQuantity());
-            pstmt.setString(5, meal.getUnit());
-            pstmt.setTimestamp(6, Timestamp.valueOf(meal.getLogDateTime()));
+            pstmt.setDate(4, java.sql.Date.valueOf(meal.getLogDate())); // Today's date
+            pstmt.setString(5, meal.getTime()); // The raw text "12:00 - 14:00"
 
-            int affectedRows = pstmt.executeUpdate();
-
-           return affectedRows > 0;
+            return pstmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -166,5 +160,101 @@ public class InsertData {
         return insertConsumable(consumable);
     }
 
+    public static boolean insertActivity(int userId, int activityTypeId, double quantity, double calories) {
+        String insertActivitySQL = "INSERT INTO Activities (user_id, activity_type_id, quantity, calories) VALUES (?, ?, ?, ?)";
 
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(insertActivitySQL)) {
+
+            pstmt.setInt(1, userId);
+            pstmt.setInt(2, activityTypeId);
+            pstmt.setDouble(3, quantity);
+            pstmt.setDouble(4, calories);
+
+            return pstmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static int insertUser(User user){
+        if(user == null){
+            return -1;
+        }
+        String sql = "INSERT INTO users (fullname, username, email, password_hash, age, date_of_birth, gender, weight_kg, height_cm, activity_level) VALUES " +
+                            "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        int insertedRows = 0;
+        try(Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+
+            pstmt.setString(1, user.getFullname());
+            pstmt.setString(2, user.getUsername());
+            pstmt.setString(3, user.getEmail());
+            pstmt.setString(4, user.getPasswordHashed());
+            pstmt.setInt(5, user.getAge());
+            pstmt.setObject(6, user.getDateOfBirth());
+            pstmt.setString(7, user.getIsMale() ? "Male" : "Female");
+            pstmt.setDouble(8, user.getWeightKg());
+            pstmt.setDouble(9, user.getHeightCm());
+            pstmt.setString(10, user.getActivityLevel());
+
+            insertedRows = pstmt.executeUpdate();
+            System.out.println(insertedRows + " row/s inserted in users table");
+            if(insertedRows > 0){
+                try(ResultSet rs = pstmt.getGeneratedKeys()){
+                    if(rs.next()){
+                        return rs.getInt(1); // Use column index for portability
+                    }
+                }
+            }
+        } catch(SQLException e){
+            e.printStackTrace();
+        } finally {
+            System.out.println(insertedRows + " row/s inserted in users table");
+        }
+        return -1;
+    }
+
+    public static int insertUserPref(UserPreferences userPref, int user_id){
+        if(userPref == null){
+            return -1;
+        }
+        int insertedRows = 0;
+
+        String sql = "INSERT INTO userprefs (user_id, goal, target_weight_kg, enable_exercise_prompts, prompt_freq, theme, exercise_reminders, meal_reminders, achievement_notifications, daily_calorie_in, daily_calorie_out, weekly_activity_goal, exercise_intensity) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try(Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+
+            pstmt.setInt(1, user_id);
+            pstmt.setString(2, userPref.getGoalType());
+            pstmt.setDouble(3, userPref.getTargetWeightKG());
+            pstmt.setBoolean(4, userPref.isEnableExercisePrompts());
+            pstmt.setInt(5, userPref.getPromptFrequencyMins());
+            pstmt.setString(6, userPref.getTheme());
+            pstmt.setBoolean(7, userPref.isExerciseReminders());
+            pstmt.setBoolean(8, userPref.isMealReminders());
+            pstmt.setBoolean(9, userPref.isAchievementNotifications());
+            pstmt.setDouble(10, userPref.getDailyCalorieIn());
+            pstmt.setDouble(11, userPref.getDailyCalorieOut());
+            pstmt.setInt(12, userPref.getWeeklyActivityReps()); // weekly_activity_goal
+            pstmt.setInt(13, userPref.getExerciseIntensity());  // exercise_intensity
+
+            insertedRows = pstmt.executeUpdate();
+            System.out.println(insertedRows + " row/s inserted in users table");
+            if(insertedRows > 0){
+                try(ResultSet rs = pstmt.getGeneratedKeys()){
+                    if(rs.next()){
+                        return rs.getInt(1); // Use column index for portability
+                    }
+                }
+            }
+        } catch(SQLException e){
+            e.printStackTrace();
+        } finally {
+            System.out.println(insertedRows + " row/s inserted in userprefs table");
+        }
+        return -1;
+    }
 }

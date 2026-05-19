@@ -4,26 +4,28 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-//CHECK
-public class FoodAPI {
-    private static final String FOOD_API_KEY = "IyFOfsOqFASMkLhvVoLpIntMChfeFviV04ucj5A6";
 
-    public static String getFoodData(String query) {
+public class FoodAPI {
+    private static final String FOOD_API_KEY = System.getenv("var1");
+
+    public static APIResponse getFoodData(String query) {
         try {
             String urlString = "https://api.nal.usda.gov/fdc/v1/foods/search?query=" + query
                     + "&dataType=Foundation,SR%20Legacy,Branded&pageSize=15&api_key=" + FOOD_API_KEY;
-
-            System.out.println("REached here");
+            System.out.println("QUERY: " + query);
             return fetch(urlString);
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+//            return null;
+            /* instead of returning null if error, we also return the http code error
+                Do this for all actions needing food api query */
+            return new APIResponse(null, -1);
         }
     }
 
     // Fetch the full detail record for a specific food by its fdcId.
     // This is the only endpoint that includes the foodMeasures array (serving sizes).
-    public static String getFoodDetail(int fdcId) {
+    public static APIResponse getFoodDetail(int fdcId) {
         try {
             String urlString = "https://api.nal.usda.gov/fdc/v1/food/" + fdcId
                     + "?api_key=" + FOOD_API_KEY;
@@ -31,11 +33,13 @@ public class FoodAPI {
             return fetch(urlString);
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+//            return null;
+            return new APIResponse(null, -1);
         }
     }
 
-    private static String fetch(String urlString) throws Exception{
+    /* this is for checking web connection */
+    private static APIResponse fetch(String urlString) throws Exception{
         int maxRetries = 5;
         for(int i = 1; i<=maxRetries; i++){
             URL url = new URL(urlString);
@@ -48,7 +52,7 @@ public class FoodAPI {
 
             int responseCode = conn.getResponseCode();
 
-            // 200 is successfull
+            // 200 is successful
             if(responseCode == 200){
                 BufferedReader reader = new BufferedReader(
                     new InputStreamReader(conn.getInputStream())
@@ -60,17 +64,26 @@ public class FoodAPI {
                 }
                 reader.close();
                 conn.disconnect();
-                return response.toString();
+                return new APIResponse(response.toString(), responseCode);
             }
             else {
                 conn.disconnect();
                 System.out.println("API Error: " + responseCode + ", retries: " + i);
-                System.out.println("Retrying");
-                if(responseCode == 404) return null;
-                Thread.sleep(100);
+                /* i added some parts in this area a little bit */
+                switch (responseCode){
+                    case 429:
+                    case 503:
+                    case 504:
+                        System.out.println("Retrying");
+                        Thread.sleep(300 * i); // (300 * i) so that it can wait a little longer as it iterates
+                        break;
+                    default:
+                        return new APIResponse(null, responseCode);
+                }
 
             }
         }
-        return null;
+        // Service unavaillable
+        return new APIResponse(null, 503);
     }
 }

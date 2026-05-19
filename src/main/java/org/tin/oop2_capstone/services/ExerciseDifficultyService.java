@@ -70,10 +70,10 @@ public class ExerciseDifficultyService {
         return currentDiff;
     }
 
-    public int adjustReps(int origReps) {
+    public double adjustMins(double origMins) {
         double multiplier = exerciseDifficulty.get(currentDiff);
 
-        return (int) Math.max(1, Math.round(origReps * multiplier));
+        return (int) Math.max(1, Math.round(origMins * multiplier));
     }
 
     public int getExercisePromptFrequencyMins() {

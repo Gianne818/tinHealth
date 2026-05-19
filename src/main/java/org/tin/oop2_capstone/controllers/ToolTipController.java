@@ -11,15 +11,15 @@ import org.tin.oop2_capstone.services.SessionManager;
 import java.util.List;
 
 public class ToolTipController {
-    @FXML Label dayLabel;
-    @FXML Label calInLabel;
-    @FXML Label calOutLabel;
-    @FXML Label proteinLabel;
-    @FXML Label fatLabel;
-    @FXML Label cholesterolLabel;
-    @FXML Label sodiumLabel;
-    @FXML Label sugarLabel;
-    @FXML Label fiberLabel;
+    @FXML private Label dayLabel;
+    @FXML private Label calInLabel;
+    @FXML private Label calOutLabel;
+    @FXML private Label proteinLabel;
+    @FXML private Label fatLabel;
+    @FXML private Label cholesterolLabel;
+    @FXML private Label sodiumLabel;
+    @FXML private Label sugarLabel;
+    @FXML private Label fiberLabel;
 
     public void setData(String day, double cals, double protein, double carbs,
                         double fat, double cholesterol, double sodium,

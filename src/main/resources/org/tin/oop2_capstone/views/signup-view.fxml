@@ -82,6 +82,8 @@
          <PasswordField fx:id="confirmPasswordTextField" />
          <Label fx:id="genericErrorLabel" managed="false" styleClass="redLabel" text="Make sure all fields are not empty!" visible="false" />
          <Label fx:id="passwordErrorLabel" managed="false" styleClass="redLabel" text="Passwords do not match!" />
+         <Label fx:id="usernameErrorLabel" managed="false" styleClass="redLabel" text="Username already exist!" />
+         <Label fx:id="emailErrorLabel" managed="false" styleClass="redLabel" text="Email already exist!" />
          <Button fx:id="signUpButton" minWidth="268.0" mnemonicParsing="false" onAction="#onSignUpButtonClick" text="Sign Up">
             <VBox.margin>
                <Insets top="5.0" />

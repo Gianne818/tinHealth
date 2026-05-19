@@ -7,6 +7,7 @@ import java.util.List;
 
 public class UserPreferences implements Serializable {
     /** implements serializable to be added for future .ser files **/
+    private static final long serialVersionUID = 1L;
 
     private int userPrefID;
     private String goalType;
@@ -139,6 +140,10 @@ public class UserPreferences implements Serializable {
         return weeklyActivityReps;
     }
 
+    public void setWeeklyActivityReps(int weeklyActivityReps) {
+        this.weeklyActivityReps = weeklyActivityReps;
+    }
+
     public NutritionDetails getTargetMacros(User user) {
         double calories = dailyCalorieIn;
         String goal = goalType.toLowerCase();
@@ -193,4 +198,24 @@ public class UserPreferences implements Serializable {
 
         return new NutritionDetails(calories, proteinG, fatG, carbG, cholesterolMg, sodiumMg, sugarG, fiberG);
     }
+
+//    debugging shtuff
+//    public String toString() {
+//        return "UserPreferences{" +
+//                "userPrefID=" + userPrefID +
+//                ", goalType='" + goalType + '\'' +
+//                ", targetWeightKG=" + targetWeightKG +
+//                ", enableExercisePrompts=" + enableExercisePrompts +
+//                ", exerciseIntensity=" + exerciseIntensity +
+//                ", exerciseReminders=" + exerciseReminders +
+//                ", mealReminders=" + mealReminders +
+//                ", achievementNotifications=" + achievementNotifications +
+//                ", promptFrequencyMins=" + promptFrequencyMins +
+//                ", theme='" + theme + '\'' +
+//                ", dailyCalorieIn=" + dailyCalorieIn +
+//                ", dailyCalorieOut=" + dailyCalorieOut +
+//                ", weeklyActivityReps=" + weeklyActivityReps +
+//                '}';
+//    }
+
 }

@@ -164,13 +164,13 @@
                         <Insets top="10.0" />
                     </GridPane.margin>
                 </Button>
-                <Button fx:id="buttonCancel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onButtonCancelClicked" text="Cancel" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                <Button fx:id="buttonCancel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onButtonCancelClicked" styleClass="cancelButton" text="Cancel" GridPane.columnIndex="2" GridPane.rowIndex="5">
                     <GridPane.margin>
                         <Insets top="10.0" />
                     </GridPane.margin>
                 </Button>
                 <TextField fx:id="textfieldDuration" promptText="30" GridPane.rowIndex="4" />
-                <TextField fx:id="textfieldCaloriesBurned" promptText="200" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+                <TextField fx:id="textfieldCaloriesBurned" editable="false" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4" />
             <ComboBox fx:id="activityTypeComboBox" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnSpan="3" GridPane.rowIndex="2" />
             <VBox.margin>
                <Insets left="10.0" right="10.0" />

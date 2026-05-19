@@ -7,6 +7,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -94,10 +95,10 @@
                      </children>
                   </GridPane>
 
-                   <GridPane fx:id="gridPaneAddEntry" hgap="10.0" managed="true" styleClass="cardContent" vgap="10.0" visible="true">
+                   <GridPane fx:id="gridPaneAddEntry" hgap="10.0" managed="false" styleClass="cardContent" vgap="10.0" visible="false">
                        <columnConstraints>
                            <ColumnConstraints hgrow="NEVER" maxWidth="179.0" minWidth="10.0" />
-                           <ColumnConstraints hgrow="NEVER" minWidth="200.0" />
+                           <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" prefWidth="600.0" />
                            <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" />
                        </columnConstraints>
                        <rowConstraints>
@@ -110,7 +111,6 @@
                        </rowConstraints>
                      <children>
                         <Label styleClass="cardTitle" text="New Food Entry" />
-                        <Label styleClass="fieldLabel" text="Food Name" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
                         <Label styleClass="fieldLabel" text="Calories" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" />
                         <Label styleClass="fieldLabel" text="Meal" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" />
                         <Button fx:id="addEntryButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onButtonAddEntryClicked" text="Add Entry" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="TOP">
@@ -137,6 +137,16 @@
                            <padding>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
+                        </HBox>
+                        <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="1">
+                           <children>
+                              <Label styleClass="fieldLabel" text="Food Name" />
+                              <ProgressIndicator fx:id="apiWaitingProgressIndicator" managed="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="17.0" visible="false">
+                                 <padding>
+                                    <Insets bottom="2.0" />
+                                 </padding>
+                              </ProgressIndicator>
+                           </children>
                         </HBox>
                      </children>
                      <padding>

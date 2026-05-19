@@ -2,6 +2,7 @@ package org.tin.oop2_capstone.model.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.Date;
 
 public class User implements Serializable {
@@ -12,7 +13,7 @@ public class User implements Serializable {
     private String username;
     private double weightKg;
     private double heightCm;
-    private String password;
+    private String passwordHashed;
     private int age;
     private boolean isMale;
     private String activityLevel;
@@ -20,15 +21,15 @@ public class User implements Serializable {
 
     public User() {}
 
-    public User(int uid, String fullname, String email, String username, double weightKg, double heightCm, String password, int age, boolean isMale, String activityLevel, LocalDate dateOfBirth) {
+    public User(int uid, String fullname, String email, String username, double weightKg, double heightCm, String password, boolean isMale, String activityLevel, LocalDate dateOfBirth) {
         this.uid = uid;
         this.fullname = fullname;
         this.email = email;
         this.username = username;
         this.weightKg = weightKg;
         this.heightCm = heightCm;
-        this.password = password;
-        this.age = age;
+        this.passwordHashed = String.valueOf(password.hashCode()); // simple built-in hashing
+        this.age = Period.between(dateOfBirth, LocalDate.now()).getYears();
         this.isMale = isMale;
         this.activityLevel = activityLevel;
         this.dateOfBirth = dateOfBirth;
@@ -51,7 +52,7 @@ public class User implements Serializable {
     public String getUsername() { return username; }
     public double getWeightKg() { return weightKg; }
     public double getHeightCm()  { return heightCm; }
-    public String getPassword() { return password; }
+    public String getPasswordHashed() { return passwordHashed; }
     public boolean getIsMale(){ return isMale; }
 
     public String getActivityLevel() {
@@ -64,6 +65,12 @@ public class User implements Serializable {
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+        /* calculate age diri*/
+        this.age = Period.between(dateOfBirth, LocalDate.now()).getYears();
+    }
+
+    public void setAge(int age){
+        this.age = age;
     }
 
     public void setEmail(String email)       { this.email = email; }
@@ -80,12 +87,14 @@ public class User implements Serializable {
         isMale = male;
     }
 
-    public void setPassword(String password) {
-        // set appropriate hashing algo here
-        // For now wala lang sa
-        // TODO: SET HASHING ALGO
-        this.password = password;
+    public void setPasswordHashed(String password) {
+        this.passwordHashed = String.valueOf(password.hashCode()); // simple built-in hashing
     }
+
+    public void setPasswordNonHashed(String passwordHashed){
+        this.passwordHashed = passwordHashed; // this is for retrieving from database since it is already hashed there
+    }
+
 
     @Override
     public String toString() {
@@ -96,7 +105,7 @@ public class User implements Serializable {
                 ", username='" + username + '\'' +
                 ", weightKg=" + weightKg +
                 ", heightCm=" + heightCm +
-                ", password='" + password + '\'' +
+                ", password='" + passwordHashed + '\'' +
                 ", age=" + age +
                 ", isMale=" + isMale +
                 ", activityLevel='" + activityLevel + '\'' +
@@ -104,7 +113,4 @@ public class User implements Serializable {
                 '}';
     }
 
-    public void setAge(int age) {
-        this.age = age;
-    }
 }

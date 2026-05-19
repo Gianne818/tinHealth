@@ -17,6 +17,7 @@ public class MainApplication extends Application {
     }
     @Override
     public void start(Stage stage) throws IOException {
+
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
 
@@ -24,7 +25,10 @@ public class MainApplication extends Application {
         stage.setWidth(650);
 
         String style = getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm();
+        String lightMode = getClass().getResource("/org/tin/oop2_capstone/styles/lightmode.css").toExternalForm();
         scene.getStylesheets().add(style);
+        scene.getStylesheets().add(lightMode);
+        scene.getRoot().getStyleClass().add("light");
         stage.setResizable(false);
 
         stage.setTitle("Health Tracker");
@@ -33,4 +37,5 @@ public class MainApplication extends Application {
         stage.show();
     }
 
+    // TODO #2: Change the exercise prompt rep to minutes. And scale the minutes based on the exercise intensity of the user.
 }

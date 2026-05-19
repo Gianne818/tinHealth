@@ -1,140 +1,139 @@
-    package org.tin.oop2_capstone.controllers;
-    
-    import javafx.collections.FXCollections;
-    import javafx.collections.ObservableList;
-    import javafx.fxml.FXML;
-    import javafx.scene.chart.*;
-    import javafx.scene.control.Label;
-    import javafx.scene.control.ProgressBar;
-    import javafx.scene.layout.Pane;
-    import javafx.scene.paint.Color;
-    import javafx.scene.shape.Circle;
-    import javafx.scene.shape.Line;
-    import javafx.scene.shape.Polygon;
-    import javafx.scene.text.Text;
-    import javafx.fxml.FXMLLoader;
-    import javafx.geometry.Point2D;
-    import javafx.scene.Node;
-    import javafx.scene.control.PopupControl;
-    import javafx.scene.layout.VBox;
-    import org.tin.oop2_capstone.database.RetrieveData;
-    import org.tin.oop2_capstone.database.repositories.MealRepository;
-    import org.tin.oop2_capstone.model.entities.Meal;
-    import org.tin.oop2_capstone.model.entities.NutritionDetails;
-    import org.tin.oop2_capstone.model.entities.User;
-    import org.tin.oop2_capstone.model.entities.UserPreferences;
-    import org.tin.oop2_capstone.services.SessionManager;
-    
-    import java.io.IOException;
-    import java.util.List;
-    
-    
-    public class HealthController {
-        //PROGRESS BARS START
-        @FXML Label hcaloriesLabel;
-        @FXML ProgressBar caloriesProgressBar;
-        @FXML Label goalCalLabel;
-        @FXML Label caloriesProgressLabel;
-    
-        @FXML Label hcholesterolLabel;
-        @FXML ProgressBar cholesterolProgressBar;
-        @FXML Label goalCholLabel;
-        @FXML Label cholesterolProgressLabel;
-    
-        @FXML Label hproteinLabel;
-        @FXML ProgressBar proteinProgressBar;
-        @FXML Label goalProtLabel;
-        @FXML Label proteinProgressLabel;
-    
-        @FXML Label hsodiumLabel;
-        @FXML ProgressBar sodiumProgressBar;
-        @FXML Label goalSodLabel;
-        @FXML Label sodiumProgressLabel;
-    
-        @FXML Label hfatLabel;
-        @FXML ProgressBar fatProgressBar;
-        @FXML Label goalFatLabel;
-        @FXML Label fatProgressLabel;
-    
-        @FXML Label hsugarLabel;
-        @FXML ProgressBar sugarProgressBar;
-        @FXML Label goalSugarLabel;
-        @FXML Label sugarProgressLabel;
-    
-        @FXML Label hcarbsLabel;
-        @FXML ProgressBar carbsProgressBar;
-        @FXML Label goalCarbsLabel;
-        @FXML Label carbsProgressLabel;
-    
-        @FXML Label hfiberLabel;
-        @FXML ProgressBar fiberProgressBar;
-        @FXML Label goalFiberLabel;
-        @FXML Label fiberProgressLabel;
-        //PROGRESS BARS END
-    
-        //MICRONUTRIENTS START
-        @FXML ProgressBar mnCholesterolProgressBar;
-        @FXML Label mnCholesterolLabel;
-        @FXML Label mnCholesterolGoal;
-    
-        @FXML ProgressBar mnSodiumProgressBar;
-        @FXML Label mnSodiumLabel;
-        @FXML Label mnSodiumGoal;
-    
-        @FXML ProgressBar mnSugarProgressBar;
-        @FXML Label mnSugarLabel;
-        @FXML Label mnSugarGoal;
-    
-        @FXML ProgressBar mnFiberProgressBar;
-        @FXML Label mnFiberLabel;
-        @FXML Label mnFiberGoal;
-    
-        //MICRONUTRIENTS END
-    
-        @FXML PieChart macroDistPieChart;
-        @FXML Circle macroDistInnerHoleCircle;
-        @FXML private LineChart<?, ?> weeklyChart;
-        @FXML private CategoryAxis xAxis;
-        @FXML private NumberAxis yAxis;
-    
-        ObservableList<PieChart.Data> macroDistData;
-    
-        @FXML private Label proteinLabelMacro;
-        @FXML private Label carbsLabelMacro;
-        @FXML private Label fatsLabelMacro;
-    
-        @FXML
-        private Pane radarChartPane;
-    
-        //Monday's index is 0
-        double[] dailyCals = new double[7];
-        double[] dailyProt = new double[7];
-        double[] dailyCarbs = new double[7];
-        double[] dailyFats = new double[7];
-        double[] dailyChol = new double[7];
-        double[] dailySod = new double[7];
-        double[] dailySug = new double[7];
-        double[] dailyFib = new double[7];
+package org.tin.oop2_capstone.controllers;
 
-        public void initialize() {
-            initCaloriesLineChart();
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.chart.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Polygon;
+import javafx.scene.text.Text;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Point2D;
+import javafx.scene.Node;
+import javafx.scene.control.PopupControl;
+import javafx.scene.layout.VBox;
+import org.tin.oop2_capstone.database.RetrieveData;
+import org.tin.oop2_capstone.database.repositories.MealRepository;
+import org.tin.oop2_capstone.model.entities.Meal;
+import org.tin.oop2_capstone.model.entities.NutritionDetails;
+import org.tin.oop2_capstone.model.entities.User;
+import org.tin.oop2_capstone.model.entities.UserPreferences;
+import org.tin.oop2_capstone.services.SessionManager;
 
-            List<Meal> userMeals = RetrieveData.fetchUserMealsToday(SessionManager.getInstance().getCurrentUser().getUid());
-            double calories = 0.0, protein = 0.0, fat = 0.0, cholesterol = 0.0,
-                    carbs = 0.0, sodium = 0.0, sugar = 0.0, fiber = 0.0;
+import java.io.IOException;
+import java.util.List;
 
-            for (Meal m : userMeals) {
-                NutritionDetails nd = m.getNutritionDetails();
-                if (nd != null) {
-                    calories    += nd.getCalories();
-                    protein     += nd.getProtein();
-                    fat         += nd.getFat();
-                    cholesterol += nd.getCholesterol();
-                    sodium      += nd.getSodium();
-                    sugar       += nd.getSugar();
-                    fiber       += nd.getFiber();
-                    carbs       += nd.getCarbs();
-                }
+
+public class HealthController {
+    //PROGRESS BARS START
+    @FXML private  Label hcaloriesLabel;
+    @FXML private ProgressBar caloriesProgressBar;
+    @FXML private Label goalCalLabel;
+    @FXML private Label caloriesProgressLabel;
+
+    @FXML private Label hcholesterolLabel;
+    @FXML private ProgressBar cholesterolProgressBar;
+    @FXML private Label goalCholLabel;
+    @FXML private Label cholesterolProgressLabel;
+
+    @FXML private Label hproteinLabel;
+    @FXML private ProgressBar proteinProgressBar;
+    @FXML private Label goalProtLabel;
+    @FXML private Label proteinProgressLabel;
+
+    @FXML private Label hsodiumLabel;
+    @FXML private ProgressBar sodiumProgressBar;
+    @FXML private Label goalSodLabel;
+    @FXML private Label sodiumProgressLabel;
+
+    @FXML private Label hfatLabel;
+    @FXML private ProgressBar fatProgressBar;
+    @FXML private Label goalFatLabel;
+    @FXML private Label fatProgressLabel;
+
+    @FXML private Label hsugarLabel;
+    @FXML private ProgressBar sugarProgressBar;
+    @FXML private Label goalSugarLabel;
+    @FXML private Label sugarProgressLabel;
+
+    @FXML private Label hcarbsLabel;
+    @FXML private ProgressBar carbsProgressBar;
+    @FXML private Label goalCarbsLabel;
+    @FXML private Label carbsProgressLabel;
+
+    @FXML private Label hfiberLabel;
+    @FXML private ProgressBar fiberProgressBar;
+    @FXML private Label goalFiberLabel;
+    @FXML private Label fiberProgressLabel;
+    //PROGRESS BARS END
+
+    //MICRONUTRIENTS START
+    @FXML private ProgressBar mnCholesterolProgressBar;
+    @FXML private Label mnCholesterolLabel;
+    @FXML private Label mnCholesterolGoal;
+
+    @FXML private ProgressBar mnSodiumProgressBar;
+    @FXML private Label mnSodiumLabel;
+    @FXML private Label mnSodiumGoal;
+
+    @FXML private ProgressBar mnSugarProgressBar;
+    @FXML private Label mnSugarLabel;
+    @FXML private Label mnSugarGoal;
+
+    @FXML private ProgressBar mnFiberProgressBar;
+    @FXML private Label mnFiberLabel;
+    @FXML private Label mnFiberGoal;
+
+    //MICRONUTRIENTS END
+
+    @FXML private PieChart macroDistPieChart;
+    @FXML private Circle macroDistInnerHoleCircle;
+    @FXML private LineChart<?, ?> weeklyChart;
+    @FXML private CategoryAxis xAxis;
+    @FXML private NumberAxis yAxis;
+
+    private ObservableList<PieChart.Data> macroDistData;
+
+    @FXML private Label proteinLabelMacro;
+    @FXML private Label carbsLabelMacro;
+    @FXML private Label fatsLabelMacro;
+
+    @FXML
+    private Pane radarChartPane;
+
+    //Monday's index is 0
+    double[] dailyCals = new double[7];
+    double[] dailyProt = new double[7];
+    double[] dailyCarbs = new double[7];
+    double[] dailyFats = new double[7];
+    double[] dailyChol = new double[7];
+    double[] dailySod = new double[7];
+    double[] dailySug = new double[7];
+    double[] dailyFib = new double[7];
+
+    public void initialize() {
+        initCaloriesLineChart();
+
+        //Same Logic in ToolTipController START
+        List<Meal> userMeals = RetrieveData.fetchUserMealsToday(SessionManager.getInstance().getCurrentUser().getUid());
+        double calories = 0.0,  protein = 0.0, fat = 0.0, cholesterol = 0.0, carbs = 0.0, sodium = 0.0, sugar = 0.0, fiber = 0.0;
+
+        for (Meal m : userMeals) {
+            NutritionDetails nd = m.getNutritionDetails();
+            if (nd != null) {
+                calories += nd.getCalories();
+                protein += nd.getProtein();
+                fat += nd.getFat();
+                cholesterol += nd.getCholesterol();
+                sodium += nd.getSodium();
+                sugar += nd.getSugar();
+                fiber += nd.getFiber();
+                carbs += nd.getCarbs();
             }
 
             User user = SessionManager.getInstance().getCurrentUser();
@@ -263,85 +262,47 @@
             mnFiberGoal.setText(goals.getFiber()+"");
     
         }
-    
-        //For the line chart of Weekly Nutrient Trends
-        private void initCaloriesLineChart() {
-            xAxis.setCategories(FXCollections.observableArrayList("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"));
-            xAxis.setGapStartAndEnd(false);
-            xAxis.setTickMarkVisible(false);
-    
-            LineChart<String, Number> chart = (LineChart<String, Number>) weeklyChart;
-            chart.getData().clear();
-    
-            int userId = SessionManager.getInstance().getCurrentUser().getUid();
-    
-            List<Meal> weeklyMeals = RetrieveData.fetchWeeklyUserMeals(userId);
-    
-            if (weeklyMeals != null) {
-                for (Meal m : weeklyMeals) {
-                    int dayIndex = m.getLogDateTime().getDayOfWeek().getValue() - 1;
-    
-                    double qty = m.getQuantity();
-                    NutritionDetails nd = m.getConsumable().getNutrition();
-    
-                    dailyCals[dayIndex]  += nd.getCalories()     * qty;
-                    dailyProt[dayIndex]  += nd.getProtein()      * qty;
-                    dailyCarbs[dayIndex] += nd.getCarbs()        * qty;
-                    dailyFats[dayIndex]  += nd.getFat()          * qty;
-                    dailyChol[dayIndex]  += nd.getCholesterol()  * qty;
-                    dailySod[dayIndex]   += nd.getSodium()       * qty;
-                    dailySug[dayIndex]   += nd.getSugar()        * qty;
-                    dailyFib[dayIndex]   += nd.getFiber()        * qty;
-                }
-            }
-    
-            //Only plot up to today
-            int todayIndex = java.time.LocalDate.now().getDayOfWeek().getValue() - 1;
-    
-            XYChart.Series<String, Number> calIn = new XYChart.Series<>();
-            calIn.setName("Calories");
-    
-            XYChart.Series<String, Number> protIn = new XYChart.Series<>();
-            protIn.setName("Protein");
-    
-            XYChart.Series<String, Number> carbIn = new XYChart.Series<>();
-            carbIn.setName("Carbs");
-    
-            XYChart.Series<String, Number> fatIn = new XYChart.Series<>();
-            fatIn.setName("Fats");
-    
-            XYChart.Series<String, Number> cholesterolIn = new XYChart.Series<>();
-            cholesterolIn.setName("Cholesterol");
-    
-            XYChart.Series<String, Number> sodiumIn = new XYChart.Series<>();
-            sodiumIn.setName("Sodium");
-    
-            XYChart.Series<String, Number> sugarIn = new XYChart.Series<>();
-            sugarIn.setName("Sugar");
-    
-            XYChart.Series<String, Number> fiberIn = new XYChart.Series<>();
-            fiberIn.setName("Fiber");
-    
-            //Nutrient populate-r
-            String[] days = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
-            for (int i = 0; i < 7; i++) {
-                Number cals = i <= todayIndex ? dailyCals[i]  : null;
-                Number prot = i <= todayIndex ? dailyProt[i]  : null;
-                Number carb = i <= todayIndex ? dailyCarbs[i] : null;
-                Number fat  = i <= todayIndex ? dailyFats[i]  : null;
-                Number chol = i <= todayIndex ? dailyChol[i]  : null;
-                Number sod  = i <= todayIndex ? dailySod[i]   : null;
-                Number sug  = i <= todayIndex ? dailySug[i]   : null;
-                Number fib  = i <= todayIndex ? dailyFib[i]   : null;
-    
-                calIn.getData().add(new XYChart.Data<>(days[i], cals));
-                protIn.getData().add(new XYChart.Data<>(days[i], prot));
-                carbIn.getData().add(new XYChart.Data<>(days[i], carb));
-                fatIn.getData().add(new XYChart.Data<>(days[i], fat));
-                cholesterolIn.getData().add(new XYChart.Data<>(days[i], chol));
-                sodiumIn.getData().add(new XYChart.Data<>(days[i], sod));
-                sugarIn.getData().add(new XYChart.Data<>(days[i], sug));
-                fiberIn.getData().add(new XYChart.Data<>(days[i], fib));
+        mnFiberLabel.setText(fiber+"");
+        mnFiberGoal.setText(goals.getFiber()+"");
+
+    }
+
+    //For the line chart of Weekly Nutrient Trends
+    private void initCaloriesLineChart() {
+        xAxis.setCategories(FXCollections.observableArrayList("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"));
+        xAxis.setGapStartAndEnd(false);
+        xAxis.setTickMarkVisible(false);
+
+        LineChart<String, Number> chart = (LineChart<String, Number>) weeklyChart;
+        chart.getData().clear();
+
+        // Clear arrays completely before re-populating from DB
+        dailyCals = new double[7];
+        dailyProt = new double[7];
+        dailyCarbs = new double[7];
+        dailyFats = new double[7];
+        dailyChol = new double[7];
+        dailySod = new double[7];
+        dailySug = new double[7];
+        dailyFib = new double[7];
+
+        int userId = SessionManager.getInstance().getCurrentUser().getUid();
+
+        List<Meal> weeklyMeals = RetrieveData.fetchWeeklyUserMeals(userId);
+
+        if (weeklyMeals != null) {
+            for (Meal m : weeklyMeals) {
+                int dayIndex = m.getLogDate().getDayOfWeek().getValue() - 1;
+                NutritionDetails nd = m.getConsumable().getNutrition();
+
+                dailyCals[dayIndex]  += nd.getCalories()    ;
+                dailyProt[dayIndex]  += nd.getProtein()     ;
+                dailyCarbs[dayIndex] += nd.getCarbs()       ;
+                dailyFats[dayIndex]  += nd.getFat()         ;
+                dailyChol[dayIndex]  += nd.getCholesterol() ;
+                dailySod[dayIndex]   += nd.getSodium()      ;
+                dailySug[dayIndex]   += nd.getSugar()       ;
+                dailyFib[dayIndex]   += nd.getFiber()       ;
             }
     
             NumberAxis yAxis = (NumberAxis) chart.getYAxis();
@@ -353,76 +314,45 @@
 
             javafx.application.Platform.runLater(() -> setupGlobalTooltip(chart));
         }
-    
-        private void setupGlobalTooltip(LineChart<String, Number> chart) {
-            PopupControl popup = new PopupControl();
-            ToolTipController toolTipController;
-    
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/tool-tip-view.fxml"));
-                VBox root = fxmlLoader.load();
-                popup.getScene().getStylesheets().add(getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm());
-                root.getStyleClass().add("light");
-                popup.getScene().setRoot(root);
-                toolTipController = fxmlLoader.getController();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return;
-            }
-    
-            String[] days = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
-            Node plotArea = chart.lookup(".chart-plot-background");
-            Node chartContent = chart.lookup(".chart-content");
-    
-            // Create vertical line
-            Line verticalLine = new Line();
-            verticalLine.getStyleClass().add("vertical-line");
-            verticalLine.setManaged(false);
-            verticalLine.setVisible(false);
-            ((Pane) chartContent).getChildren().add(verticalLine);
-    
-            plotArea.setOnMouseMoved(e -> {
-                double xInAxis = xAxis.sceneToLocal(e.getSceneX(), e.getSceneY()).getX();
-                String day = xAxis.getValueForDisplay(xInAxis);
-    
-                if (day != null) {
-                    // Get X position of the category
-                    double xPos = xAxis.getDisplayPosition(day);
-                    Point2D chartPoint = chartContent.sceneToLocal(xAxis.localToScene(xPos, 0));
-    
-                    // Get Y bounds of plot area in chartContent coordinates
-                    verticalLine.setVisible(true);
-                    verticalLine.setStartX(chartPoint.getX());
-                    verticalLine.setStartY(chartContent.sceneToLocal(plotArea.localToScene(0, 0)).getY());
-                    verticalLine.setEndX(chartPoint.getX());
-                    verticalLine.setEndY(chartContent.sceneToLocal(plotArea.localToScene(0, plotArea.getBoundsInLocal().getHeight())).getY());
-    
-                    // Find which day index (0=Mon ... 6=Sun) is being hovered
-                    int idx = java.util.Arrays.asList(days).indexOf(day);
-                    if (idx >= 0) {
-                        toolTipController.setData(
-                                day,
-                                dailyCals[idx],
-                                dailyProt[idx],
-                                dailyCarbs[idx],
-                                dailyFats[idx],
-                                dailyChol[idx],
-                                dailySod[idx],
-                                dailySug[idx],
-                                dailyFib[idx]
-                        );
-                        popup.show(plotArea, e.getScreenX() + 15, e.getScreenY() + 15);
-                    }
-                } else {
-                    verticalLine.setVisible(false);
-                    popup.hide();
-                }
-            });
-    
-            plotArea.setOnMouseExited(e -> {
-                popup.hide();
-                verticalLine.setVisible(false);
-            });
+
+        //Only plot up to today
+        int todayIndex = java.time.LocalDate.now().getDayOfWeek().getValue() - 1;
+
+        XYChart.Series<String, Number> calIn = new XYChart.Series<>();
+        calIn.setName("Calories");
+
+        XYChart.Series<String, Number> protIn = new XYChart.Series<>();
+        protIn.setName("Protein");
+
+        XYChart.Series<String, Number> carbIn = new XYChart.Series<>();
+        carbIn.setName("Carbs");
+
+        XYChart.Series<String, Number> fatIn = new XYChart.Series<>();
+        fatIn.setName("Fats");
+
+        XYChart.Series<String, Number> cholesterolIn = new XYChart.Series<>();
+        cholesterolIn.setName("Cholesterol");
+
+        XYChart.Series<String, Number> sodiumIn = new XYChart.Series<>();
+        sodiumIn.setName("Sodium");
+
+        XYChart.Series<String, Number> sugarIn = new XYChart.Series<>();
+        sugarIn.setName("Sugar");
+
+        XYChart.Series<String, Number> fiberIn = new XYChart.Series<>();
+        fiberIn.setName("Fiber");
+
+        //Nutrient populate-r
+        String[] days = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+        for (int i = 0; i < 7; i++) {
+            calIn.getData().add(new XYChart.Data<>(days[i], dailyCals[i]));
+            protIn.getData().add(new XYChart.Data<>(days[i], dailyProt[i]));
+            carbIn.getData().add(new XYChart.Data<>(days[i], dailyCarbs[i]));
+            fatIn.getData().add(new XYChart.Data<>(days[i], dailyFats[i]));
+            cholesterolIn.getData().add(new XYChart.Data<>(days[i], dailyChol[i]));
+            sodiumIn.getData().add(new XYChart.Data<>(days[i], dailySod[i]));
+            sugarIn.getData().add(new XYChart.Data<>(days[i], dailySug[i]));
+            fiberIn.getData().add(new XYChart.Data<>(days[i], dailyFib[i]));
         }
     
         private XYChart.Data<String, Number> findData(XYChart.Series<String, Number> series, String category) {
@@ -492,18 +422,19 @@
     
             radarChartPane.getChildren().add(dataPolygon);
         }
-    
-        //Helper for DrawRadarChart
-        private Polygon createHexagon(double cx, double cy, double maxR, double[] values) {
-            Polygon polygon = new Polygon();
-            for (int i = 0; i < 6; i++) {
-                double angle = Math.PI / 2 + (i * 2 * Math.PI / 6);
-                double pointRadius = maxR * values[i]; // Scale radius by data percentage
-    
-                double x = cx - pointRadius * Math.cos(angle);
-                double y = cy - pointRadius * Math.sin(angle);
-    
-                polygon.getPoints().addAll(x, y);
+        return null;
+    }
+
+    //Draws the Radar Chart for Nutrient Balance Overview
+    private void drawRadarChart(double calories, double protein, double carbs, double fat, double fiber, double sodium) {
+        // Clear out the old radar web and polygons before drawing the fresh ones
+        radarChartPane.getChildren().clear();
+
+        double[] dataValues = {calories, protein, carbs, fat, fiber, sodium};
+        //Avoid OverDrawing
+        for(int i=0; i<dataValues.length; i++){
+            if(dataValues[i] > 1){
+                dataValues[i] = 1;
             }
             return polygon;
         }

@@ -1,5 +1,6 @@
 package org.tin.oop2_capstone.model.entities;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /* todo: logTime should be calculated in our controller.
@@ -8,46 +9,30 @@ import java.time.LocalDateTime;
  */
 
 public class Meal {
+    private int mealId;
     private MealType mealType;
     private Consumable consumable;
-    private LocalDateTime logDateTime;
+    private LocalDate logDate;
+    private String time;
     private NutritionDetails nutritionDetails;
-    private double quantity;
-    private String unit;
 
-    public Meal(MealType mealType, Consumable consumable, LocalDateTime logTime, double quantity, String unit) {
+    public Meal(MealType mealType, Consumable consumable, LocalDate logDate, String time) {
         this.mealType = mealType;
         this.consumable = consumable;
-        this.logDateTime = logTime;
+        this.logDate = logDate;
+        this.time = time;
         this.nutritionDetails = calculateTotal(consumable);
-        this.quantity = quantity;
-        this.unit = unit;
     }
-     private NutritionDetails calculateTotal(Consumable consumable){
+
+    private NutritionDetails calculateTotal(Consumable consumable){
         return consumable.getNutrition();
-     }
-
-    public String getUnit() {
-        return unit;
     }
 
-    public double getQuantity() {
-        return quantity;
-    }
-
-    public MealType getMealType() {
-        return mealType;
-    }
-
-    public Consumable getConsumable() {
-        return consumable;
-    }
-
-    public LocalDateTime getLogDateTime() {
-        return logDateTime;
-    }
-
-    public NutritionDetails getNutritionDetails() {
-        return nutritionDetails;
-    }
+    public MealType getMealType() { return mealType; }
+    public Consumable getConsumable() { return consumable; }
+    public LocalDate getLogDate() { return logDate; }
+    public String getTime() { return time; }
+    public NutritionDetails getNutritionDetails() { return nutritionDetails; }
+    public int getMealId() { return mealId; }
+    public void setMealId(int mealId){ this.mealId = mealId; }
 }

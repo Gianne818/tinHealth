@@ -599,5 +599,7 @@
             return null;
         }
 
+    public static double fetchUserLatestWeight(int userId) {
+        String query = "SELECT weight_kg FROM WeightHistories WHERE user_id = ? ORDER BY log_date DESC LIMIT 1";
 
     }

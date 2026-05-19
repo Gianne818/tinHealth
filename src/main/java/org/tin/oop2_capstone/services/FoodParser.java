@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.tin.oop2_capstone.api.FoodAPI;
+import org.tin.oop2_capstone.api.APIResponse;
 import org.tin.oop2_capstone.model.entities.Food;
 import org.tin.oop2_capstone.model.entities.NutritionDetails;
 
@@ -129,9 +130,9 @@ public class FoodParser {
 
         if (bestFood.has("fdcId")) {
             int fdcId = bestFood.get("fdcId").getAsInt();
-            String detailJson = FoodAPI.getFoodDetail(fdcId);
-            if (detailJson != null && !detailJson.isEmpty()) {
-                detail = JsonParser.parseString(detailJson).getAsJsonObject();
+            APIResponse detailJson = FoodAPI.getFoodDetail(fdcId);
+            if (detailJson.getJson() != null && !detailJson.getJson().isEmpty()) {
+                detail = JsonParser.parseString(detailJson.getJson()).getAsJsonObject();
             }
         }
 

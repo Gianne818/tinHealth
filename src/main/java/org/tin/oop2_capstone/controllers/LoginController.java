@@ -21,13 +21,11 @@ import java.io.IOException;
 public class LoginController {
 
     @FXML public Button buttonLogin;
-    @FXML Label signUpLabel;
-    @FXML TextField usernameField;
-    @FXML PasswordField passwordField;
+    @FXML private Label signUpLabel;
+    @FXML private TextField usernameField;
+    @FXML private PasswordField passwordField;
 
-    @FXML Label invalidCredentialsLabel;
-
-
+    @FXML private Label invalidCredentialsLabel;
 
     @FXML
     public void onLoginButtonClicked(ActionEvent event){
@@ -38,6 +36,7 @@ public class LoginController {
         User user = UserRepository.getInstance().getUser();
         if(user == null) {
             //todo show error message
+
             invalidCredentialsLabel.setManaged(true);
             return;
         }
@@ -63,6 +62,7 @@ public class LoginController {
     public void onSignupClicked(MouseEvent event) throws IOException {
         SceneSwitcher.use(signUpLabel, "signup-view")
                 .setCss("application")
+                .setStyleClasses(new String[]{"light"})
                 .setPrefDimensions(550, 700)
                 .setResizeable(false)
                 .setCentered(true)

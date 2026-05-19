@@ -18,5 +18,6 @@ public class PendingState implements State {
         context.createPendingFoodEntry();
         context.hideLoadingIndicator();
         context.showPendingIndicator();
+        context.enableFoodLogInput();
     }
 }

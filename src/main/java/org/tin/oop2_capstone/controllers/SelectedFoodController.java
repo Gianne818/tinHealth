@@ -16,6 +16,16 @@ public class SelectedFoodController {
     private Runnable onDeleteAction;
     private double origMinWidth;
 
+    private static SelectedFoodController instance;
+
+    public void initialize(){
+        instance = this;
+    }
+
+    public static SelectedFoodController getInstance() {
+        return instance;
+    }
+
     public void setFoodNameLabel(String text){
         foodNameLabel.setText(text);
 
@@ -39,7 +49,7 @@ public class SelectedFoodController {
 
 
     @FXML
-    private void deleteCurrent(){
+    public void deleteCurrent(){
         if(onDeleteAction!=null){
             onDeleteAction.run();
         }
