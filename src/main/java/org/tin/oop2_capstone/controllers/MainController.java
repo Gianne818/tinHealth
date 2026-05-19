@@ -6,10 +6,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SplitPane;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -29,34 +31,32 @@ import org.tin.oop2_capstone.services.ExerciseMonitor;
 import org.tin.oop2_capstone.services.SessionManager;
 
 public class MainController {
-    @FXML private  SplitPane splitPaneMain;
-    @FXML private  AnchorPane rootAnchorPane;
-    @FXML private  AnchorPane anchorPaneSideBar;
-    @FXML private  AnchorPane anchorPaneContent;
-    @FXML private  ImageView imgViewCollapse;
-    @FXML private  Label userFullNameLabel;
+    @FXML public SplitPane splitPaneMain;
+    @FXML public AnchorPane rootAnchorPane;
+    @FXML public AnchorPane anchorPaneSideBar;
+    @FXML public AnchorPane anchorPaneContent;
+    @FXML public ImageView imgViewCollapse;
+    @FXML public Label userFullNameLabel;
 
-    @FXML private  HBox dashboardNav;
-    @FXML private  HBox foodLogNav;
-    @FXML private  HBox activityLogNav;
-    @FXML private  HBox settingsNav;
-    @FXML private  GridPane profileNav;
-    @FXML private  HBox notificationsNav;
-    @FXML private  HBox healthNav;
+    @FXML public HBox dashboardNav;
+    @FXML public HBox foodLogNav;
+    @FXML public HBox activityLogNav;
+    @FXML public HBox settingsNav;
+    @FXML public GridPane profileNav;
+    @FXML public HBox notificationsNav;
+    @FXML public HBox healthNav;
 
-    @FXML private  Label curr_streak_1;
-    @FXML private  Label curr_streak_2;
-    @FXML private  Label calories_today;
-    @FXML private  Label this_week_workout_count;
-    @FXML private  Label total_activities_count;
-    @FXML private StackPane hamburgerButton;
-    @FXML private Label viewProfileLabel;
-    @FXML private StackPane imageStackPane;
+    @FXML public Label curr_streak_1;
+    @FXML public Label curr_streak_2;
+    @FXML public Label calories_today;
+    @FXML public Label this_week_workout_count;
+    @FXML public Label total_activities_count;
+
     ObservableList<Pane> navs;
 
     private boolean isSideBarCollapsed = false;
 
-    @FXML private  Button quickWorkoutButton;
+    @FXML public Button quickWorkoutButton;
 
     private static MainController instance;
 
@@ -65,20 +65,7 @@ public class MainController {
 
     @FXML private Label remainingTimeNumberLabel;
     @FXML private Label remainingTimeUnitLabelk;
-    @FXML private Label sidebarNavLabel1;
-    @FXML private Label sidebarNavLabel2;
-    @FXML private Label sidebarNavLabel3;
-    @FXML private Label sidebarNavLabel4;
-    @FXML private Label sidebarNavLabel5;
-    @FXML private VBox sideBarVbox1;
-    @FXML private VBox sideBarVbox2;
-    @FXML private GridPane streakGridPane;
-    @FXML private Separator separator1;
-    @FXML private Separator separator2;
-    @FXML private Label quickStatsLabel;
-    @FXML private GridPane quickStatsGridPane;
-    @FXML private Label promptLabel1;
-    @FXML private FlowPane upperNavFlowPane;
+
     private ActivityRepository activityRepository = ActivityRepository.getInstance();
 
     private ExerciseMonitor exerciseMonitor = ExerciseMonitor.getInstance();
@@ -90,10 +77,9 @@ public class MainController {
         System.out.println(activityRepository==null);
         instance = this;
         userId = SessionManager.getInstance().getCurrentUser().getUid();
-        String theme = getThemeClass();
-        rootAnchorPane.getStyleClass().add(theme);
-        anchorPaneSideBar.getStyleClass().add(theme);
-        anchorPaneContent.getStyleClass().add(theme);
+        rootAnchorPane.getStyleClass().add("light");
+        anchorPaneSideBar.getStyleClass().add("light");
+        anchorPaneContent.getStyleClass().add("light");
         exerciseMonitor.start();
 
 
@@ -110,62 +96,20 @@ public class MainController {
         navigateToView("dashboard-view", "dashboardScrollPane", dashboardNav);
         loadSideBoardStats();
         startExercisePromptTimer();
-        hamburgerButton.setOnMouseClicked( e ->{
-            toggleSideBar();
-        });
-
-        Platform.runLater(this::applyThemeStylesheet);
     }
 
-    private void toggleSideBar(){
+
+    public void toggleSideBar(){
         double defaultPosition = 0.3;
         if(isSideBarCollapsed){
-            splitPaneMain.setDividerPosition(75, defaultPosition);
+            splitPaneMain.setDividerPosition(0, defaultPosition);
             anchorPaneSideBar.setMinWidth(300);
-            toggleElement(sidebarNavLabel1, true);
-            toggleElement(sidebarNavLabel2, true);
-            toggleElement(sidebarNavLabel3, true);
-            toggleElement(sidebarNavLabel4, true);
-            toggleElement(sidebarNavLabel5, true);
-            toggleElement(userFullNameLabel, true);
-            toggleElement(viewProfileLabel, true);
-            toggleElement(streakGridPane, true);
-            toggleElement(separator1, true);
-            toggleElement(quickStatsLabel, true);
-            toggleElement(quickStatsGridPane, true);
-            toggleElement(promptLabel1, true);
-            quickWorkoutButton.setText("Quick Exercise");
-            upperNavFlowPane.setHgap(170);
-            profileNav.setPadding(new Insets(0, 0, 0, 0));
-        }
-        else {
-            anchorPaneSideBar.setMinWidth(105);
-            anchorPaneSideBar.setMaxWidth(105);
+        } else {
+            anchorPaneSideBar.setMinWidth(0);
+            anchorPaneSideBar.setMaxWidth(0);
             splitPaneMain.setDividerPosition(0, 0);
-            toggleElement(sidebarNavLabel1, false);
-            toggleElement(sidebarNavLabel2, false);
-            toggleElement(sidebarNavLabel3, false);
-            toggleElement(sidebarNavLabel4, false);
-            toggleElement(sidebarNavLabel5, false);
-            toggleElement(userFullNameLabel, false);
-            toggleElement(viewProfileLabel, false);
-            toggleElement(streakGridPane, false);
-            toggleElement(separator1, false);
-            toggleElement(quickStatsLabel, false);
-            toggleElement(quickStatsGridPane, false);
-            toggleElement(promptLabel1, false);
-//            remainingTimeUnitLabelk.setVisible(false);
-//            remainingTimeNumberLabel.setVisible(false);
-            upperNavFlowPane.setHgap(160);
-            quickWorkoutButton.setText("\u29BF");
-            profileNav.setPadding(new Insets(0, 0, 0, 7));
         }
         isSideBarCollapsed = !isSideBarCollapsed;
-    }
-
-    private void toggleElement(Node e, boolean show){
-        e.setManaged(show);
-        e.setVisible(show);
     }
 
     @FXML public void onNavElementClicked(MouseEvent event){
@@ -211,6 +155,15 @@ public class MainController {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/" + filename + ".fxml"));
             view = fxmlLoader.load();
 
+            if (filename.equals("notifications-view")) {
+                NotificationTabController notifCtrl = fxmlLoader.getController();
+                User user = SessionManager.getInstance().getCurrentUser();
+                UserPreferences prefs = SessionManager.getInstance().getCurrentUserPrefs();
+                if (user != null && prefs != null) {
+                    notifCtrl.loadNotifications(user, prefs);
+                }
+            }
+
             AnchorPane.setBottomAnchor(view, 0.0);
             AnchorPane.setTopAnchor(view, 0.0);
             AnchorPane.setRightAnchor(view, 0.0);
@@ -223,21 +176,20 @@ public class MainController {
                 scene.setUserData(this);
             }
 
-            // resolved getUserAppearancePref() to determine if lightmode or darkmode styles, but lightmode for no
-            String theme = getThemeClass();
+            // todo getUserAppearancePref() to determine if lightmode or darkmode styles, but lightmode for now
 
             anchorPaneContent.getStyleClass().clear();
-            anchorPaneContent.getStyleClass().addAll(theme, styleClass);
+            anchorPaneContent.getStyleClass().addAll("light", styleClass);
 
             anchorPaneSideBar.getStyleClass().clear();
-            anchorPaneSideBar.getStyleClass().addAll(theme, styleClass);
+            anchorPaneSideBar.getStyleClass().addAll("light", styleClass);
 
 
-           for(Node p : navs){
-              p.getStyleClass().remove("active");
-           }
+            for(Node p : navs){
+                p.getStyleClass().remove("active");
+            }
 
-           button.getStyleClass().add( "active");
+            button.getStyleClass().add( "active");
 
         } catch (IOException e) {
             System.out.println("File not found!");
@@ -251,7 +203,7 @@ public class MainController {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/exercise-prompt-view.fxml"));
             StackPane overlay = fxmlLoader.load();
 
-            overlay.getStyleClass().add(getThemeClass());
+            overlay.getStyleClass().add("light");
 
             AnchorPane.setTopAnchor(overlay, 0.0);
             AnchorPane.setBottomAnchor(overlay, 0.0);
@@ -343,7 +295,7 @@ public class MainController {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/exercise-prompt-view.fxml"));
                 StackPane overlay = loader.load();
-                overlay.getStyleClass().add(getThemeClass());
+                overlay.getStyleClass().add("light");
 
                 AnchorPane.setTopAnchor(overlay, 0.0);
                 AnchorPane.setBottomAnchor(overlay, 0.0);
@@ -390,5 +342,4 @@ public class MainController {
         anchorPaneContent.getStyleClass().removeIf(s -> s.equals("light") || s.equals("dark"));
         anchorPaneContent.getStyleClass().add(theme);
     }
-
 }
