@@ -364,22 +364,24 @@ public class DashboardController {
 
     private void initDashboardHeader() {
         int userId = SessionManager.getInstance().getCurrentUser().getUid();
-        double caloriesIn = MealRepository.getTodayCaloriesIn(userId);
+
+        // FIX: Bypass stale repository caches and fetch live data directly
+        double caloriesIn = org.tin.oop2_capstone.database.RetrieveData.fetchUserTodayCaloriesIn(userId);
         caloriesInLabel.setText(String.valueOf((int) caloriesIn));
 
-        double caloriesOut = activityRepository.getTodayCaloriesOut();
-        caloriesOutLabel.setText(String.valueOf(caloriesOut));
+        double caloriesOut = org.tin.oop2_capstone.database.RetrieveData.fetchUserTodayCaloriesOut(userId);
+        caloriesOutLabel.setText(String.valueOf((int) caloriesOut));
 
         netCaloriesLabel.setText(String.valueOf((int) (caloriesIn - caloriesOut)));
 
-        int streak = activityRepository.getCurrentStreak();
+        int streak = org.tin.oop2_capstone.database.RetrieveData.fetchUserCurrentStreak(userId);
         activityStreakLabel.setText(String.valueOf(streak));
 
-        int dailyCalorieInGoal = UserPrefRepository.getDailyCalorieInGoal(userId);
+        int dailyCalorieInGoal = org.tin.oop2_capstone.database.RetrieveData.fetchUserDailyCalorieInGoal(userId);
         goalCaloriesLabelCaloriesIn.setText(String.valueOf(dailyCalorieInGoal));
 
-        int todayActivitiesCount = activityRepository.getTodayActivitiesCount();
-        numActLabelCaloriesBurned.setText(todayActivitiesCount + (todayActivitiesCount <= 1 ? " Activity" : " Activities"));
+        int todayActivitiesCount = org.tin.oop2_capstone.database.RetrieveData.fetchUserTodayActivities(userId).size();
+        numActLabelCaloriesBurned.setText(todayActivitiesCount + (todayActivitiesCount == 1 ? " Activity" : " Activities"));
 
         String daysStringDisplay = (streak <= 1 ? "day" : "days in a row");
         daysInARowHeader.setText(daysStringDisplay);
