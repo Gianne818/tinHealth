@@ -303,7 +303,7 @@ public class ActivityLogController {
                     int duration = Integer.parseInt(durationText);
                     int currentUserId = SessionManager.getInstance().getCurrentUser().getUid();
 
-                    double weightKg = activityRepository.getUserCurrentWeight(currentUserId);
+                    double weightKg = SessionManager.getInstance().getCurrentUser().getWeightKg();
                     double calories = calculateCalories(type.getMetValue(), weightKg, duration);
 
                     textfieldCaloriesBurned.setText(String.format("%.2f", calories));
