@@ -287,6 +287,9 @@ public class SignUpController {
     public void onContinueButtonClick(ActionEvent event) throws SQLException {
         // todo: do the storing of ALL user data in here to the database (this is to avoid null values when creating a user)
         int user_id = InsertData.insertUser(user);
+        if(user_id == -1) return;
+
+        user.setUid(user_id);
 
         if (user_id != -1) {
             //For defaulting missed values

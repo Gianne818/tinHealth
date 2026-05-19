@@ -2,6 +2,8 @@ package org.tin.oop2_capstone.database.repositories;
 
 import org.tin.oop2_capstone.database.RetrieveData;
 import org.tin.oop2_capstone.model.entities.User;
+import org.tin.oop2_capstone.model.entities.UserPreferences;
+import org.tin.oop2_capstone.services.SessionManager;
 
 public class UserRepository {
 
@@ -25,6 +27,11 @@ public class UserRepository {
 
     public void login(String username, String password) {
         currentUser = RetrieveData.fetchUser(username, password);
+        if(currentUser != null){
+            SessionManager.getInstance().setCurrentUser(currentUser);
+            UserPreferences prefs = RetrieveData.fetchUserPreferences(currentUser.getUid());
+            SessionManager.getInstance().setCurrentUserPrefs(prefs);
+        }
     }
 
     public User getUser(){
