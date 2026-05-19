@@ -63,6 +63,10 @@ public class User implements Serializable {
         return dateOfBirth;
     }
 
+    public void setPassword(String s){
+        this.passwordHashed = passwordHashed;
+    }
+
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
         /* calculate age diri*/
