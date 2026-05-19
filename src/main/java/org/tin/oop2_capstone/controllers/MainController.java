@@ -280,21 +280,40 @@ public class MainController {
         }
     }
 
-    private void loadSideBoardStats() {
-        // Calories
-        double calories = MealRepository.getTodayCaloriesIn(userId);
+//    private void loadSideBoardStats() {
+//        // Calories
+//        double calories = MealRepository.getTodayCaloriesIn(userId);
+//        calories_today.setText(String.valueOf((int) calories));
+//
+//        // Weekly workouts
+//        int weeklyWorkouts = activityRepository.getWeeklyWorkoutCount();
+//        this_week_workout_count.setText(weeklyWorkouts + (weeklyWorkouts == 1 ? " Workout" : " Workouts"));
+//
+//        // Total activities
+//        int totalActivities = activityRepository.getTotalActivitiesCount();
+//        total_activities_count.setText(String.valueOf(totalActivities));
+//
+//        // Streak
+//        int streak = activityRepository.getCurrentStreak();
+//        String streakText = streak + (streak == 1 ? " Day" : " Days");
+//        curr_streak_1.setText(streakText);
+//        curr_streak_2.setText(streakText);
+//    }
+
+    // Changed to public and bypasses stale repository caches
+    public void loadSideBoardStats() {
+        int userId = SessionManager.getInstance().getCurrentUser().getUid();
+
+        double calories = org.tin.oop2_capstone.database.RetrieveData.fetchUserTodayCaloriesIn(userId);
         calories_today.setText(String.valueOf((int) calories));
 
-        // Weekly workouts
-        int weeklyWorkouts = activityRepository.getWeeklyWorkoutCount();
+        int weeklyWorkouts = org.tin.oop2_capstone.database.RetrieveData.fetchUserWeeklyWorkout(userId);
         this_week_workout_count.setText(weeklyWorkouts + (weeklyWorkouts == 1 ? " Workout" : " Workouts"));
 
-        // Total activities
-        int totalActivities = activityRepository.getTotalActivitiesCount();
+        int totalActivities = org.tin.oop2_capstone.database.RetrieveData.fetchUserTotalActivities(userId);
         total_activities_count.setText(String.valueOf(totalActivities));
 
-        // Streak
-        int streak = activityRepository.getCurrentStreak();
+        int streak = org.tin.oop2_capstone.database.RetrieveData.fetchUserCurrentStreak(userId);
         String streakText = streak + (streak == 1 ? " Day" : " Days");
         curr_streak_1.setText(streakText);
         curr_streak_2.setText(streakText);

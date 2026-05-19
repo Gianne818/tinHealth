@@ -264,6 +264,7 @@ public class FoodLogController {
         foodGridPanes.clear();
 
         updateHeaderValues();
+        MainController.getInstance().loadSideBoardStats();
 
         int currentUserId = SessionManager.getInstance().getCurrentUser().getUid();
         meals = fetchUserMeals(currentUserId);

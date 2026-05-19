@@ -146,6 +146,7 @@ public class ActivityLogController {
         // Good practice: Clear it here automatically
         activityGridPanes.clear();
         updateHeaderValues();
+        MainController.getInstance().loadSideBoardStats();
         int currentUserId = SessionManager.getInstance().getCurrentUser().getUid();
         activities = RetrieveData.fetchUserActivities(currentUserId);
 
