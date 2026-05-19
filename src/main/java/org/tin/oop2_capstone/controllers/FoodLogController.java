@@ -51,7 +51,8 @@ public class FoodLogController {
     @FXML private ProgressIndicator apiWaitingProgressIndicator;
 
     private Map<String, Food> searchRes;
-
+    @FXML private Label totalCaloriesToday;
+    @FXML private Label goalCalories;
 
     private List<Food> selectedFoods;
 
@@ -78,6 +79,20 @@ public class FoodLogController {
             }
         });
         initfoodNameComboBox();
+    }
+
+    private void updateHeaderValues() {
+        int userId = SessionManager.getInstance().getCurrentUser().getUid();
+
+        // Fetch today's total calories
+        double todayCal = org.tin.oop2_capstone.database.RetrieveData.fetchUserTodayCaloriesIn(userId);
+        totalCaloriesToday.setText(String.valueOf((int) todayCal));
+
+        // Fetch user's goal calories
+        UserPreferences prefs = org.tin.oop2_capstone.database.RetrieveData.fetchUserPreferences(userId);
+        if (prefs != null) {
+            goalCalories.setText((int) prefs.getDailyCalorieIn() + " kcal");
+        }
     }
 
     private void addSelectedFood(Food food){
@@ -247,6 +262,8 @@ public class FoodLogController {
         foodLogListView.setItems(null);
         foodLogListView.getSelectionModel().clearSelection();
         foodGridPanes.clear();
+
+        updateHeaderValues();
 
         int currentUserId = SessionManager.getInstance().getCurrentUser().getUid();
         meals = fetchUserMeals(currentUserId);

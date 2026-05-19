@@ -86,7 +86,7 @@
                             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                         </padding>
                         <Label styleClass="lightText" text="Calories Burned" GridPane.columnIndex="1" />
-                        <Label layoutX="113.0" layoutY="17.0" text="465" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                        <Label fx:id="totalCaloriesOut" layoutX="113.0" layoutY="17.0" text="465" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                             <font>
                                 <Font size="25.0" />
                             </font>
@@ -116,7 +116,7 @@
                             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                         </padding>
                         <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="lightText" text="Total Duration" GridPane.columnIndex="1" />
-                        <Label layoutX="113.0" layoutY="17.0" text="67" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                        <Label fx:id="totalDuration" layoutX="113.0" layoutY="17.0" text="67" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                             <font>
                                 <Font size="25.0" />
                             </font>

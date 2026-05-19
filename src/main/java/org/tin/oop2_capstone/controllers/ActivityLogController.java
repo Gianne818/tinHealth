@@ -46,6 +46,9 @@ public class ActivityLogController {
     private ObservableList<GridPane> activityGridPanes;
     private FilteredList<String> filteredList;
 
+    @FXML private Label totalCaloriesOut;
+    @FXML private Label totalDuration;
+
     private ActivityRepository activityRepository = ActivityRepository.getInstance();
 
     public void initialize(){
@@ -64,6 +67,22 @@ public class ActivityLogController {
         setupDynamicCalorieCalculation();
         InputManager.acceptOnlyDouble(textfieldDuration);
         InputManager.acceptOnlyDouble(textfieldCaloriesBurned);
+    }
+
+    private void updateHeaderValues() {
+        int userId = SessionManager.getInstance().getCurrentUser().getUid();
+
+        // Fetch today's total calories burned
+        double todayCalOut = org.tin.oop2_capstone.database.RetrieveData.fetchUserTodayCaloriesOut(userId);
+        totalCaloriesOut.setText(String.valueOf((int) todayCalOut));
+
+        // Fetch today's total duration (summing up activity quantities)
+        List<Activity> todayActivities = org.tin.oop2_capstone.database.RetrieveData.fetchUserTodayActivities(userId);
+        double totalMins = 0;
+        for (Activity a : todayActivities) {
+            totalMins += a.getQuantity();
+        }
+        totalDuration.setText(String.valueOf((int) totalMins));
     }
 
     private void initActivityTypeComboBox(){
@@ -126,6 +145,7 @@ public class ActivityLogController {
     private void setActivityLog() {
         // Good practice: Clear it here automatically
         activityGridPanes.clear();
+        updateHeaderValues();
         int currentUserId = SessionManager.getInstance().getCurrentUser().getUid();
         activities = RetrieveData.fetchUserActivities(currentUserId);
 

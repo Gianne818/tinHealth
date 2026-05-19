@@ -79,7 +79,7 @@
                            </GridPane.margin>
                         </StackPane>
                         <Label styleClass="lightText" text="Total Calories Today" GridPane.columnIndex="1" />
-                        <Label text="70" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Label fx:id = "totalCaloriesToday" text="70" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <font>
                               <Font size="25.0" />
                            </font>
@@ -88,7 +88,7 @@
                               <String fx:value="caloriesDashboard" />
                            </styleClass></Label>
                         <Label styleClass="lightTexr" text="Goal" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
-                        <Label styleClass="cardTitle" text="2000 kcal" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                        <Label fx:id="goalCalories" styleClass="cardTitle" text="2000 kcal" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font></Label>

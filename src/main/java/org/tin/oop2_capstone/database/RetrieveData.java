@@ -213,41 +213,47 @@ public class RetrieveData {
         Map<String, Double[]> weeklyData = new HashMap<>();
         String[] days = {"", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 
-        String query = """
-            SELECT 
-                DAYOFWEEK(m.log_date) AS day,
-                COALESCE(SUM(nd.calories), 0) AS calories_in,
-                COALESCE((SELECT SUM(calories) FROM Activities WHERE user_id = ? AND DAYOFWEEK(log_date) = day AND YEARWEEK(log_date, 1) = YEARWEEK(CURDATE(), 1)), 0) AS calories_out
-            FROM Meals m
-            JOIN Consumables c ON m.consumable_id = c.consumable_id
-            LEFT JOIN NutritionalDetails nd ON c.nutri_id = nd.nutri_id
+        // Initialize all days with 0.0
+        for (String day : days) {
+            if (!day.isEmpty()) weeklyData.put(day, new Double[]{0.0, 0.0});
+        }
+
+        // 1. Fetch Calories IN (Includes foodcombo logic)
+        String inQuery = """
+            SELECT DAYOFWEEK(m.log_date) AS day,
+                   SUM(CASE 
+                       WHEN c.type = 'food' THEN nd.calories
+                       WHEN c.type = 'foodcombo' THEN (SELECT COALESCE(SUM(nd2.calories), 0) FROM ComboItems ci JOIN Consumables c2 ON ci.consumable_id = c2.consumable_id LEFT JOIN NutritionalDetails nd2 ON c2.nutri_id = nd2.nutri_id WHERE ci.combo_id = c.consumable_id)
+                       ELSE 0 END) AS calories_in
+            FROM Meals m JOIN Consumables c ON m.consumable_id = c.consumable_id LEFT JOIN NutritionalDetails nd ON c.nutri_id = nd.nutri_id
             WHERE m.user_id = ? AND YEARWEEK(m.log_date, 1) = YEARWEEK(CURDATE(), 1)
             GROUP BY DAYOFWEEK(m.log_date)
             """;
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(inQuery)) {
             stmt.setInt(1, userId);
-            stmt.setInt(2, userId);
             ResultSet rs = stmt.executeQuery();
-
             while (rs.next()) {
-                int day = rs.getInt("day");
-                double caloriesIn = rs.getDouble("calories_in");
-                double caloriesOut = rs.getDouble("calories_out");
-
-                String dayName = days[day];
-                weeklyData.put(dayName, new Double[]{caloriesIn, caloriesOut});
+                weeklyData.get(days[rs.getInt("day")])[0] = rs.getDouble("calories_in");
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException e) { e.printStackTrace(); }
 
-        // Fill missing days with zeros
-        for (String day : days) {
-            weeklyData.putIfAbsent(day, new Double[]{0.0, 0.0});
-        }
+        // 2. Fetch Calories OUT (Independent of Meals)
+        String outQuery = """
+            SELECT DAYOFWEEK(log_date) AS day, SUM(calories) AS calories_out
+            FROM Activities
+            WHERE user_id = ? AND YEARWEEK(log_date, 1) = YEARWEEK(CURDATE(), 1)
+            GROUP BY DAYOFWEEK(log_date)
+            """;
+
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(outQuery)) {
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                weeklyData.get(days[rs.getInt("day")])[1] = rs.getDouble("calories_out");
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+
         return weeklyData;
     }
 
