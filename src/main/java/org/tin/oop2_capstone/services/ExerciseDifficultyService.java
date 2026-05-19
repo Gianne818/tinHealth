@@ -10,8 +10,8 @@ import java.util.Map;
 public class ExerciseDifficultyService {
 
     /**
-     * This class should calculate the difficulty and hence the intensities of each exercise based user details like BMI and stuff
-     * However user can override it with their own preferences, so perhaps just have some setters for this
+     * This class calculates the difficulty and hence the intensities of each exercise based on user details like BMI.
+     * Users can override this with their own preferences via the provided setters.
      */
 
     public final Map<String, Double> exerciseDifficulty;
@@ -19,9 +19,11 @@ public class ExerciseDifficultyService {
     private static final double BMI_UNDERWEIGHT_MAX = 18.5;
     private static final double BMI_NORMAL_MAX = 25.0;
     private static final double BMI_OVERWEIGHT_MAX = 30.0;
+
     private static final int AGE_YOUNG = 25;
     private static final int AGE_ADULT = 45;
     private static final int AGE_SENIOR = 65;
+
     private static final double MET_LIGHT= 3.0;
     private static final double MET_MODERATE = 6.0;
     private static final double MET_HIGH = 9.0;
@@ -33,11 +35,11 @@ public class ExerciseDifficultyService {
         this.currentDiff = "MODERATE";
         this.manualSet = false;
         exerciseDifficulty = Map.of(
-            "SEDENTARY", 1.2,
-            "LIGHT", 1.375,
-            "MODERATE", 1.55,
-            "HARD", 1.725,
-            "EXTREME", 1.9
+                "SEDENTARY", 1.2,
+                "LIGHT", 1.375,
+                "MODERATE", 1.55,
+                "HARD", 1.725,
+                "EXTREME", 1.9
         );
     }
 
@@ -70,10 +72,16 @@ public class ExerciseDifficultyService {
         return currentDiff;
     }
 
+    /**
+     * Adjusts the exercise duration based on the current difficulty multiplier.
+     * Returns a double rounded to one decimal place.
+     */
     public double adjustMins(double origMins) {
-        double multiplier = exerciseDifficulty.get(currentDiff);
+        double multiplier = exerciseDifficulty.getOrDefault(currentDiff, 1.0);
+        double adjusted = origMins * multiplier;
 
-        return (int) Math.max(1, Math.round(origMins * multiplier));
+        // Ensure it doesn't go below 1.0, and round to 1 decimal place for neatness
+        return Math.max(1.0, Math.round(adjusted * 10.0) / 10.0);
     }
 
     public int getExercisePromptFrequencyMins() {
@@ -88,9 +96,8 @@ public class ExerciseDifficultyService {
     }
 
     public double getCalorieGoalMultiplier() {
-        return exerciseDifficulty.get(currentDiff);
+        return exerciseDifficulty.getOrDefault(currentDiff, 1.55);
     }
-
 
     public List<ActivityType> getAppropriateActivityTypes(List<ActivityType> allActivityTypes) {
         return switch (currentDiff) {
@@ -103,7 +110,7 @@ public class ExerciseDifficultyService {
         };
     }
 
-    /* mga helper methods for some calculations */
+    /* Helper methods for calculations */
     private double computeBMI(double weightKg, double heightCm) {
         double heightM = heightCm / 100.0;
         return weightKg / (heightM * heightM);
@@ -113,7 +120,6 @@ public class ExerciseDifficultyService {
         String bmiCategory = getBMICategory(bmi);
         String ageCategory = getAgeCategory(age);
 
-        //enhanced switch statement daw
         int bmiScore = switch (bmiCategory) {
             case "SEDENTARY" -> 1;
             case "LIGHT" -> 2;
@@ -142,7 +148,6 @@ public class ExerciseDifficultyService {
             case 5 -> "EXTREME";
             default -> "MODERATE";
         };
-
     }
 
     private String getBMICategory(double bmi) {
@@ -170,7 +175,6 @@ public class ExerciseDifficultyService {
         }
         return "LIGHT";
     }
-
 
     private List<ActivityType> filterActivitiesByMET(List<ActivityType> activities, double minMET, double maxMET) {
         List<ActivityType> result = new ArrayList<>();
