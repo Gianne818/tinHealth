@@ -368,28 +368,28 @@ public class SignUpController {
             //Setting activity stuff
             switch(user.getActivityLevel()){
                 case "Sedentary":
-                    userPref.setPromptFrequencyMins(480);
+                    userPref.setPromptFrequencyMins(48);
                     userPref.setWeeklyActivityReps(1);
                     userPref.setExerciseIntensity(2);
                     break;
                 case "Lightly":
-                    userPref.setPromptFrequencyMins(360);
+                    userPref.setPromptFrequencyMins(36);
                     userPref.setWeeklyActivityReps(2);
                     userPref.setExerciseIntensity(4);
                     break;
                 case "Very Active":
-                    userPref.setPromptFrequencyMins(180);
+                    userPref.setPromptFrequencyMins(20);
                     userPref.setWeeklyActivityReps(6);
                     userPref.setExerciseIntensity(8);
                     break;
                 case "Extremely Active":
-                    userPref.setPromptFrequencyMins(120);
+                    userPref.setPromptFrequencyMins(15);
                     userPref.setWeeklyActivityReps(7);
                     userPref.setExerciseIntensity(10);
                     break;
                 case "Moderately":
                 default:
-                    userPref.setPromptFrequencyMins(240);
+                    userPref.setPromptFrequencyMins(10);
                     userPref.setWeeklyActivityReps(4);
                     userPref.setExerciseIntensity(6);
             }

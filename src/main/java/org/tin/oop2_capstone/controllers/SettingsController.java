@@ -67,7 +67,7 @@ public class SettingsController implements Initializable {
 
         promptFrequency.setMin(1);
         promptFrequency.setMax(8);
-        promptFrequency.setValue(4);
+        promptFrequency.setValue(6);
         promptFrequency.setMajorTickUnit(1);
         promptFrequency.setMinorTickCount(0);
         promptFrequency.setSnapToTicks(true);
