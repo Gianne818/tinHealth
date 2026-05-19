@@ -36,36 +36,62 @@ public class ExercisePromptController {
 
     private ExerciseDifficultyService difficultyService;
 
-    private record Exercise(String name, int duration, String unit) {}
+    // Updated to use double mins instead of int reps/duration
+    private record Exercise(String name, double mins, String unit) {}
 
     private static final List<Exercise> EXERCISES = List.of(
-            new Exercise("Push-Ups",      10, "minutes"),
-            new Exercise("Squats",        15, "minutes"),
-            new Exercise("Jumping Jacks", 20, "minutes"),
-            new Exercise("Jog in Place",  60, "minutes"),
-            new Exercise("Plank Hold",    30, "minutes"),
-            new Exercise("Lunges",        10, "minutes"),
-            new Exercise("High Knees",    30, "minutes"),
-            new Exercise("Burpees",        5, "minutes")
+            new Exercise("Push-Ups",      1, "minutes"),
+            new Exercise("Squats",        0.75, "minutes"),
+            new Exercise("Jumping Jacks", 0.5, "minutes"),
+            new Exercise("Jog in Place",  0.5, "minutes"),
+            new Exercise("Plank Hold",    1, "minutes"),
+            new Exercise("Lunges",        1.5, "minutes"),
+            new Exercise("High Knees",    1.5, "minutes"),
+            new Exercise("Burpees",        0.5, "minutes")
     );
+
 
     @FXML
     public void initialize() {
         Exercise ex = EXERCISES.get(new Random().nextInt(EXERCISES.size()));
         exerciseNameLabel.setText(ex.name());
-        minCountLabel.setText(String.valueOf(resolveMins(ex.duration())));
-        unitLabel.setText("(" + ex.unit() + ")");
 
-        // Fade the whole backdrop in on open
+        double adjustedMins = resolveMins(ex.mins());
+        // We don't even need to set the label here anymore,
+        // because the timer will immediately update it.
+
+        // ... (Fade transition code) ...
         FadeTransition fadeIn = new FadeTransition(Duration.millis(200), backdropPane);
         fadeIn.setFromValue(0);
         fadeIn.setToValue(1);
         fadeIn.play();
 
-        startExercisePromptTimer();
 
-
+        // Pass the calculated exercise duration to the timer
+        startExercisePromptTimer(adjustedMins);
     }
+
+    private void startExercisePromptTimer(double exerciseMins) {
+        // Convert the exercise duration to seconds
+        remainingSeconds = (int) (exerciseMins * 60);
+        updateTimerDisplay();
+
+        if (promptTimer != null) {
+            promptTimer.stop();
+        }
+
+        promptTimer = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+            if (remainingSeconds > 0) {
+                remainingSeconds--;
+                updateTimerDisplay();
+            } else {
+                promptTimer.stop(); // Stop at 0
+            }
+        }));
+        promptTimer.setCycleCount(Timeline.INDEFINITE);
+        promptTimer.play();
+    }
+
 
     public static void setOnDismiss(Runnable callback) {
         onDismiss = callback;
@@ -151,6 +177,4 @@ public class ExercisePromptController {
             unitLabel.setText("sec");
         }
     }
-
-
 }
