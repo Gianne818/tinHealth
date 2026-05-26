@@ -15,6 +15,4 @@ module org.tin.oop2_capstone {
     opens org.tin.oop2_capstone.model.entities to javafx.fxml;
     exports org.tin.oop2_capstone.controllers;
     exports org.tin.oop2_capstone.model.state;
-    exports org.tin.oop2_capstone.services;
-    opens org.tin.oop2_capstone.services to javafx.fxml;
 }
