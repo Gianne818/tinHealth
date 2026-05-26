@@ -11,7 +11,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.tin.oop2_capstone.database.repositories.UserPrefRepository;
 import org.tin.oop2_capstone.services.ExerciseDifficultyService;
 import org.tin.oop2_capstone.services.ExerciseMonitor;
 import org.tin.oop2_capstone.services.SessionManager;

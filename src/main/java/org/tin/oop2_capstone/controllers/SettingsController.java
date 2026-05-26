@@ -9,9 +9,8 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.tin.oop2_capstone.database.repositories.SettingsRepository;
+import org.tin.oop2_capstone.database.repositories.UserPrefRepository;
 import org.tin.oop2_capstone.model.entities.UserPreferences;
 import org.tin.oop2_capstone.services.SessionManager;
 import org.tin.oop2_capstone.utils.InputManager;
@@ -37,11 +36,11 @@ public class SettingsController implements Initializable {
     @FXML public ComboBox<Integer> caloriesGoalBurnedComboBox;
     @FXML TextField targetWeightTextField;
 
-    private SettingsRepository settingsRepository;
+    private UserPrefRepository userPrefRepository;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        settingsRepository = SettingsRepository.getInstance();
+        userPrefRepository = UserPrefRepository.getInstance();
         initializeControls();
         loadUserPreferences();
     }
@@ -145,16 +144,12 @@ public class SettingsController implements Initializable {
     }
 
     private void loadUserPreferences() {
-        UserPreferences preferences = settingsRepository.load();
+        UserPreferences preferences = userPrefRepository.load();
         if (preferences != null) {
             exercisePrompts.setSelected(preferences.isEnableExercisePrompts());
 
             //Change to verify before displaying. Also, reminder that DB has no ExerciseIntensity column in UserPreference
-            if (settingsRepository.isExerciseIntensityValid(preferences.getExerciseIntensity())) {
-                exerciseIntensity.setValue(preferences.getExerciseIntensity());
-            } else {
-                exerciseIntensity.setValue(5); //default to mid
-            }
+            exerciseIntensity.setValue(preferences.getExerciseIntensity());
 
             int freqHours = Math.clamp(preferences.getPromptFrequencyMins() / 60, 1, 24);
             promptFrequency.setValue(freqHours);
@@ -323,7 +318,7 @@ public class SettingsController implements Initializable {
 
         int userId = SessionManager.getInstance().getCurrentUser().getUid();
 
-        if (settingsRepository.save(updated, userId)) {
+        if (userPrefRepository.save(updated, userId)) {
             MainController mc = MainController.getInstance();
             if (mc != null) {
                 mc.applyThemeStylesheet();

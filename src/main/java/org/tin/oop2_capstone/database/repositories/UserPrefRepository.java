@@ -1,45 +1,38 @@
 package org.tin.oop2_capstone.database.repositories;
 
-import org.tin.oop2_capstone.database.DatabaseConnection;
 import org.tin.oop2_capstone.database.RetrieveData;
+import org.tin.oop2_capstone.database.UpdateData;
+import org.tin.oop2_capstone.database.data_sources.UserPrefDataSource;
 import org.tin.oop2_capstone.model.entities.UserPreferences;
-
-import java.sql.*;
+import org.tin.oop2_capstone.services.SessionManager;
 
 public class UserPrefRepository {
 
-    public static volatile UserPrefRepository instance;
+    /* This checks if the user inputs (the user preferences) in the settings tab are valid. This also
+    stores them in the database if everything is valid.
+     */
 
-    public UserPreferences userPref;
+    private final UserPrefDataSource userPrefDataSource;
 
-    private UserPrefRepository() {
-        System.out.println("UserPrefRepository is initialized for the first time.");
+    public UserPrefRepository(UserPrefDataSource userPrefDataSource){
+        this.userPrefDataSource = userPrefDataSource;
     }
 
-    public static UserPrefRepository getInstance(){
-        if(instance == null){
-            synchronized (UserPrefRepository.class){
-                if(instance == null){
-                    instance = new UserPrefRepository();
-                }
-            }
-        }
-        return instance;
-    }
-//
-    public static int getDailyCalorieInGoal(int userId) {
-       return RetrieveData.fetchUserDailyCalorieInGoal(userId);
+    //Overload save for SettingsController compatibility
+    public boolean save(UserPreferences preferences, int userId) {
+        return userPrefDataSource.save(preferences, userId);
     }
 
-    public UserPreferences getUserPref(){
-        return userPref;
+    public UserPreferences load() {
+        return SessionManager.getInstance().getCurrentUserPrefs();
     }
 
-    public void setUserPref(int uid){
-        //something something
+    public int getDailyCalorieInGoal(int userId) {
+        return userPrefDataSource.fetchUserDailyCalorieInGoal(userId);
     }
+
 
     public int getPromptFrequency(int userId){
-        return RetrieveData.fetchUserPromptFrequency(userId);
+        return userPrefDataSource.fetchUserPromptFrequency(userId);
     }
 }

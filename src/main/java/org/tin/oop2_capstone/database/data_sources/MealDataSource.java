@@ -1,0 +1,24 @@
+package org.tin.oop2_capstone.database.data_sources;
+
+import org.tin.oop2_capstone.database.InsertData;
+import org.tin.oop2_capstone.database.RetrieveData;
+import org.tin.oop2_capstone.model.entities.Meal;
+
+import java.util.List;
+
+public class MealDataSource implements IMealDataSource{
+    @Override
+    public List<Meal> fetchUserMeals(int userId) {
+        return RetrieveData.fetchUserMeals(userId);
+    }
+
+    @Override
+    public double fetchUserTodayCalories(int userId) {
+        return fetchUserTodayCalories(userId);
+    }
+
+    @Override
+    public boolean insertMeal(int userId, Meal meal) {
+        return InsertData.insertMeal(userId, meal);
+    }
+}
