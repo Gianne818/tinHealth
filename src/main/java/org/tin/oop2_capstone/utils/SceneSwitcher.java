@@ -11,7 +11,7 @@ import java.io.IOException;
  *This is a builder pattern, and returns a generic
  */
 
-public class SceneSwitcher <T> {
+public class SceneSwitcher {
     private final Stage stage;
     private final String fxml;
     private double minWidth = -1;
@@ -93,7 +93,7 @@ public class SceneSwitcher <T> {
         return this;
     }
 
-    public T switchScene(){
+    public <T> T switchScene(){
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/" + fxml + ".fxml"));
             Scene scene = new Scene(fxmlLoader.load());
