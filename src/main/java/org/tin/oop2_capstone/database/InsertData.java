@@ -3,7 +3,9 @@ package org.tin.oop2_capstone.database;
 import org.tin.oop2_capstone.model.entities.*;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -160,7 +162,7 @@ public class InsertData {
     }
 
     public static boolean insertActivity(int userId, int activityTypeId, double quantity, double calories) {
-        String insertActivitySQL = "INSERT INTO Activities (user_id, activity_type_id, quantity, calories) VALUES (?, ?, ?, ?)";
+        String insertActivitySQL = "INSERT INTO Activities (user_id, activity_type_id, quantity, calories, time, log_date) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(insertActivitySQL)) {
@@ -169,6 +171,8 @@ public class InsertData {
             pstmt.setInt(2, activityTypeId);
             pstmt.setDouble(3, quantity);
             pstmt.setDouble(4, calories);
+            pstmt.setString(5, LocalTime.now().toString());
+            pstmt.setDate(6, Date.valueOf(LocalDate.now()));
 
             return pstmt.executeUpdate() > 0;
 
