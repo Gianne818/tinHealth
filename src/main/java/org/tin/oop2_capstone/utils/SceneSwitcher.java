@@ -8,10 +8,10 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
- *This is a builder pattern
+ *This is a builder pattern, and returns a generic
  */
 
-public class SceneSwitcher {
+public class SceneSwitcher <T> {
     private final Stage stage;
     private final String fxml;
     private double minWidth = -1;
@@ -93,7 +93,7 @@ public class SceneSwitcher {
         return this;
     }
 
-    public void switchScene(){
+    public T switchScene(){
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/" + fxml + ".fxml"));
             Scene scene = new Scene(fxmlLoader.load());
@@ -140,12 +140,12 @@ public class SceneSwitcher {
             }
 
             stage.setResizable(isResizeable);
+            return fxmlLoader.getController();
 
 
         } catch(IOException e){
             e.printStackTrace();
+            return null;
         }
-
-
     }
 }
