@@ -15,7 +15,7 @@ public class UserRepository {
 
 
     public void login(String username, String password) {
-        userDataSource.fetchUser(username, password);
+        currentUser = userDataSource.fetchUser(username, password);
     }
 
     public User getUser(){

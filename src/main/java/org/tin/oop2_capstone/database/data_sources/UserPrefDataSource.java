@@ -26,4 +26,9 @@ public class UserPrefDataSource implements IUserPrefDataSource{
     public int fetchUserPromptFrequency(int userId) {
         return RetrieveData.fetchUserPromptFrequency(userId);
     }
+
+    @Override
+    public UserPreferences fetchUserPreferences(int userId) {
+        return RetrieveData.fetchUserPreferences(userId);
+    }
 }

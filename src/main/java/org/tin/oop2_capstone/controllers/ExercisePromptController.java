@@ -11,6 +11,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.tin.oop2_capstone.database.repositories.UserPrefRepository;
+import org.tin.oop2_capstone.model.entities.User;
+import org.tin.oop2_capstone.services.DependencyService;
 import org.tin.oop2_capstone.services.ExerciseDifficultyService;
 import org.tin.oop2_capstone.services.ExerciseMonitor;
 import org.tin.oop2_capstone.services.SessionManager;
@@ -36,6 +39,11 @@ public class ExercisePromptController {
     private ExerciseDifficultyService difficultyService;
 
     private record Exercise(String name, int duration, String unit) {}
+
+    private UserPrefRepository userPrefRepository;
+    public ExercisePromptController(){
+        userPrefRepository = DependencyService.getUserPrefRepository();
+    }
 
     private static final List<Exercise> EXERCISES = List.of(
             new Exercise("Push-Ups",      10, "minutes"),
@@ -112,7 +120,7 @@ public class ExercisePromptController {
 
     private void startExercisePromptTimer() {
         int userId = SessionManager.getInstance().getCurrentUser().getUid();
-        int promptFreqMinutes = UserPrefRepository.getInstance().getPromptFrequency(userId);
+        int promptFreqMinutes = userPrefRepository.getPromptFrequency(userId);
 
         remainingSeconds = promptFreqMinutes * 60;
         updateTimerDisplay();

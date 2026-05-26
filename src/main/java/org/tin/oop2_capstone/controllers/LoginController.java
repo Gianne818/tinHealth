@@ -10,8 +10,10 @@ import javafx.scene.input.MouseEvent;
 import org.tin.oop2_capstone.database.RetrieveData;
 import org.tin.oop2_capstone.database.repositories.ActivityRepository;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
+import org.tin.oop2_capstone.database.repositories.UserPrefRepository;
 import org.tin.oop2_capstone.database.repositories.UserRepository;
 import org.tin.oop2_capstone.model.entities.User;
+import org.tin.oop2_capstone.services.DependencyService;
 import org.tin.oop2_capstone.utils.SceneSwitcher;
 import org.tin.oop2_capstone.services.SessionManager;
 import java.io.IOException;
@@ -25,13 +27,25 @@ public class LoginController {
 
     @FXML private Label invalidCredentialsLabel;
 
+    private UserRepository userRepository;
+    private MealRepository mealRepository;
+    private ActivityRepository activityRepository;
+    private UserPrefRepository userPrefRepository;
+
+    public LoginController() {
+        this.userRepository = DependencyService.getUserRepository();
+        this.mealRepository = DependencyService.getMealRepository();
+        this.activityRepository = DependencyService.getActivityRepository();
+        this.userPrefRepository = DependencyService.getUserPrefRepository();
+    }
+
     @FXML
     public void onLoginButtonClicked(ActionEvent event){
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-        UserRepository.getInstance().login(username, password);
-        User user = UserRepository.getInstance().getUser();
+        userRepository.login(username, password);
+        User user = userRepository.getUser();
         if(user == null) {
             //todo show error message
 
@@ -40,11 +54,13 @@ public class LoginController {
         }
         else {
             SessionManager.getInstance().setCurrentUser(user);
-            SessionManager.getInstance().setCurrentUserPrefs(RetrieveData.fetchUserPreferences(user.getUid()));
-            ActivityRepository activityRepository = ActivityRepository.getInstance();
+
+            userPrefRepository.fetchUserPrefs(user.getUid());
+            SessionManager.getInstance().setCurrentUserPrefs(userPrefRepository.getUserPreferences());
+
             activityRepository.fetchInitialActivityData(user.getUid());
-            MealRepository mealRepository = MealRepository.getInstance();
             mealRepository.fetchInitialMealData(user.getUid());
+
             SceneSwitcher.use(buttonLogin, "main-view")
                     .setCss("application")
                     .setMinDimensions(900, 850)

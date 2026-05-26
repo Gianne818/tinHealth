@@ -10,8 +10,12 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+import org.tin.oop2_capstone.database.repositories.ActivityRepository;
+import org.tin.oop2_capstone.database.repositories.MealRepository;
 import org.tin.oop2_capstone.database.repositories.UserPrefRepository;
+import org.tin.oop2_capstone.database.repositories.UserRepository;
 import org.tin.oop2_capstone.model.entities.UserPreferences;
+import org.tin.oop2_capstone.services.DependencyService;
 import org.tin.oop2_capstone.services.SessionManager;
 import org.tin.oop2_capstone.utils.InputManager;
 
@@ -38,9 +42,11 @@ public class SettingsController implements Initializable {
 
     private UserPrefRepository userPrefRepository;
 
+    public SettingsController() {
+        this.userPrefRepository = DependencyService.getUserPrefRepository();
+    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        userPrefRepository = UserPrefRepository.getInstance();
         initializeControls();
         loadUserPreferences();
     }

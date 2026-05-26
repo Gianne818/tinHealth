@@ -14,7 +14,7 @@ public class MealDataSource implements IMealDataSource{
 
     @Override
     public double fetchUserTodayCalories(int userId) {
-        return fetchUserTodayCalories(userId);
+        return RetrieveData.fetchUserTodayCaloriesIn(userId);
     }
 
     @Override

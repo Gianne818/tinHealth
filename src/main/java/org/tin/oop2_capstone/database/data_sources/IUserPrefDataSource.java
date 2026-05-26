@@ -6,5 +6,6 @@ public interface IUserPrefDataSource {
     boolean save(UserPreferences userPreferences, int userId);
     int fetchUserDailyCalorieInGoal(int userId);
     int fetchUserPromptFrequency(int userId);
+    UserPreferences fetchUserPreferences(int userId);
 
 }

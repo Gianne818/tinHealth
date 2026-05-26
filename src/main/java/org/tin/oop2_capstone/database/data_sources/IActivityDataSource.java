@@ -1,6 +1,7 @@
 package org.tin.oop2_capstone.database.data_sources;
 
 import org.tin.oop2_capstone.model.entities.Activity;
+import org.tin.oop2_capstone.model.entities.ActivityType;
 import org.tin.oop2_capstone.model.entities.NutritionDetails;
 
 import java.util.List;
@@ -15,4 +16,7 @@ public interface IActivityDataSource {
     int getTodayActivitiesCount(int userId);
     boolean insertActivity(int userId, Activity activity);
     double getUserCurrentUserWeight(int userId);
+    int getWeeklyWorkoutCount(int userId);
+    int getTotalActivitiesCount(int userId);
+    List<ActivityType> fetchActivityTypes();
 }

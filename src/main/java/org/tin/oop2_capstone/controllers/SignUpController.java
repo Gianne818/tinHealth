@@ -18,8 +18,11 @@ import org.tin.oop2_capstone.database.InsertData;
 import org.tin.oop2_capstone.database.RetrieveData;
 import org.tin.oop2_capstone.database.repositories.ActivityRepository;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
+import org.tin.oop2_capstone.database.repositories.UserPrefRepository;
+import org.tin.oop2_capstone.database.repositories.UserRepository;
 import org.tin.oop2_capstone.model.entities.User;
 import org.tin.oop2_capstone.model.entities.UserPreferences;
+import org.tin.oop2_capstone.services.DependencyService;
 import org.tin.oop2_capstone.services.ExerciseDifficultyService;
 import org.tin.oop2_capstone.services.SessionManager;
 import org.tin.oop2_capstone.utils.InputManager;
@@ -73,6 +76,11 @@ public class SignUpController {
     int curPanel = 0;
     private User user;
     private UserPreferences userPref;
+
+    private UserRepository userRepository;
+    private MealRepository mealRepository;
+    private ActivityRepository activityRepository;
+    private UserPrefRepository userPrefRepository;
 
     private void checkIfEnableNext(int curPanel){
         // todo check if fields are valid for each panel then setVisible if okay na
@@ -284,9 +292,16 @@ public class SignUpController {
 
     }
 
+
+
     public void onContinueButtonClick(ActionEvent event) throws SQLException {
         // todo: do the storing of ALL user data in here to the database (this is to avoid null values when creating a user)
         int user_id = InsertData.insertUser(user);
+
+        this.userRepository = DependencyService.getUserRepository();
+        this.mealRepository = DependencyService.getMealRepository();
+        this.activityRepository = DependencyService.getActivityRepository();
+        this.userPrefRepository = DependencyService.getUserPrefRepository();
 
         if (user_id != -1) {
             //For defaulting missed values
@@ -398,8 +413,8 @@ public class SignUpController {
             SessionManager.getInstance().setCurrentUser(user);
             SessionManager.getInstance().setCurrentUserPrefs(userPref);
 
-            ActivityRepository.getInstance().fetchInitialActivityData(user_id);
-            MealRepository.getInstance().fetchInitialMealData(user_id);
+            activityRepository.fetchInitialActivityData(user_id);
+            mealRepository.fetchInitialMealData(user_id);
         } else {
             System.out.println("User insert failed, skipping userprefs.");
             return;

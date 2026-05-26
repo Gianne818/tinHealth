@@ -12,9 +12,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import org.tin.oop2_capstone.database.RetrieveData;
 import org.tin.oop2_capstone.database.repositories.ActivityRepository;
+import org.tin.oop2_capstone.database.repositories.MealRepository;
+import org.tin.oop2_capstone.database.repositories.UserPrefRepository;
+import org.tin.oop2_capstone.database.repositories.UserRepository;
 import org.tin.oop2_capstone.model.entities.Activity;
 import org.tin.oop2_capstone.model.entities.ActivityLog;
 import org.tin.oop2_capstone.model.entities.ActivityType;
+import org.tin.oop2_capstone.services.DependencyService;
 import org.tin.oop2_capstone.services.SessionManager;
 import org.tin.oop2_capstone.utils.InputManager;
 import org.tin.oop2_capstone.utils.TimeFormatter;
@@ -46,7 +50,12 @@ public class ActivityLogController {
     private ObservableList<GridPane> activityGridPanes;
     private FilteredList<String> filteredList;
 
-    private ActivityRepository activityRepository = ActivityRepository.getInstance();
+
+    private ActivityRepository activityRepository;
+
+    public ActivityLogController() {
+        this.activityRepository = DependencyService.getActivityRepository();
+    }
 
     public void initialize(){
         activities = FXCollections.observableArrayList();
@@ -226,7 +235,7 @@ public class ActivityLogController {
             newActivity.setLogDateTime(LocalDateTime.now());
 
             // 3. Pass the userId and the created activity object to the repository
-            boolean isAdded = activityRepository.addActivityRecord(currentUserId, newActivity);
+            boolean isAdded = activityRepository.addActivity(newActivity, currentUserId);
 
             if (isAdded) {
                 textfieldDuration.clear();

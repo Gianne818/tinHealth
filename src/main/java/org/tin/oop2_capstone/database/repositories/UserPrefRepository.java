@@ -3,8 +3,12 @@ package org.tin.oop2_capstone.database.repositories;
 import org.tin.oop2_capstone.database.RetrieveData;
 import org.tin.oop2_capstone.database.UpdateData;
 import org.tin.oop2_capstone.database.data_sources.UserPrefDataSource;
+import org.tin.oop2_capstone.model.entities.Activity;
+import org.tin.oop2_capstone.model.entities.ActivityType;
 import org.tin.oop2_capstone.model.entities.UserPreferences;
 import org.tin.oop2_capstone.services.SessionManager;
+
+import java.util.List;
 
 public class UserPrefRepository {
 
@@ -12,6 +16,7 @@ public class UserPrefRepository {
     stores them in the database if everything is valid.
      */
 
+    private UserPreferences userPreferences;
     private final UserPrefDataSource userPrefDataSource;
 
     public UserPrefRepository(UserPrefDataSource userPrefDataSource){
@@ -34,5 +39,13 @@ public class UserPrefRepository {
 
     public int getPromptFrequency(int userId){
         return userPrefDataSource.fetchUserPromptFrequency(userId);
+    }
+
+    public void fetchUserPrefs(int userId){
+        this.userPreferences = userPrefDataSource.fetchUserPreferences(userId);
+    }
+
+    public UserPreferences getUserPreferences() {
+        return userPreferences;
     }
 }

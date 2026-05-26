@@ -23,7 +23,10 @@ import java.util.Map;
 import javafx.scene.shape.Line;
 import org.tin.oop2_capstone.database.repositories.ActivityRepository;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
+import org.tin.oop2_capstone.database.repositories.UserPrefRepository;
+import org.tin.oop2_capstone.database.repositories.UserRepository;
 import org.tin.oop2_capstone.model.entities.*;
+import org.tin.oop2_capstone.services.DependencyService;
 import org.tin.oop2_capstone.services.SessionManager;
 import org.tin.oop2_capstone.utils.TimeFormatter;
 
@@ -88,14 +91,23 @@ public class DashboardController {
     private NutritionDetails nutritionDetails;
     private int userId;
 
-    private ActivityRepository activityRepository = ActivityRepository.getInstance();
-    private MealRepository mealRepository = MealRepository.getInstance();
+    private UserRepository userRepository;
+    private MealRepository mealRepository;
+    private ActivityRepository activityRepository;
+    private UserPrefRepository userPrefRepository;
+
+    public DashboardController() {
+        this.userRepository = DependencyService.getUserRepository();
+        this.mealRepository = DependencyService.getMealRepository();
+        this.activityRepository = DependencyService.getActivityRepository();
+        this.userPrefRepository = DependencyService.getUserPrefRepository();
+    }
 
     public void initialize() {
         userId = SessionManager.getInstance().getCurrentUser().getUid();
         dashboardScrollPane.getStyleClass().add("light");
         macroDistData = FXCollections.observableArrayList();
-        nutritionDetails = activityRepository.getWeeklyNutrients();
+        nutritionDetails = activityRepository.getWeeklyNutrients(userId);
 
         mealsList = new ArrayList<>();
         mealGridPanes = FXCollections.observableArrayList();
@@ -266,7 +278,7 @@ public class DashboardController {
         xAxis.setGapStartAndEnd(false);
         xAxis.setTickMarkVisible(false);
 
-        Map<String, Double[]> weeklyData = activityRepository.getWeeklyCalories();
+        Map<String, Double[]> weeklyData = activityRepository.getWeeklyCalories(userId);
 
         LineChart<String, Number> chart = (LineChart<String, Number>) weeklyChart;
         XYChart.Series<String, Number> calIn = new XYChart.Series<>();
@@ -312,21 +324,21 @@ public class DashboardController {
 
     private void initDashboardHeader() {
         int userId = SessionManager.getInstance().getCurrentUser().getUid();
-        double caloriesIn = MealRepository.getTodayCaloriesIn(userId);
+        double caloriesIn = mealRepository.getTodayCaloriesIn(userId);
         caloriesInLabel.setText(String.valueOf((int) caloriesIn));
 
-        double caloriesOut = activityRepository.getTodayCaloriesOut();
+        double caloriesOut = activityRepository.getTodayCaloriesOut(userId);
         caloriesOutLabel.setText(String.valueOf(caloriesOut));
 
         netCaloriesLabel.setText(String.valueOf((int) (caloriesIn - caloriesOut)));
 
-        int streak = activityRepository.getCurrentStreak();
+        int streak = activityRepository.getCurrentStreak(userId);
         activityStreakLabel.setText(String.valueOf(streak));
 
-        int dailyCalorieInGoal = UserPrefRepository.getDailyCalorieInGoal(userId);
+        int dailyCalorieInGoal = userPrefRepository.getDailyCalorieInGoal(userId);
         goalCaloriesLabelCaloriesIn.setText(String.valueOf(dailyCalorieInGoal));
 
-        int todayActivitiesCount = activityRepository.getTodayActivitiesCount();
+        int todayActivitiesCount = activityRepository.getTodayActivitiesCount(userId);
         numActLabelCaloriesBurned.setText(todayActivitiesCount + (todayActivitiesCount <= 1 ? " Activity" : " Activities"));
 
         String daysStringDisplay = (streak <= 1 ? "day" : "days in a row");

@@ -11,10 +11,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import org.tin.oop2_capstone.api.APIResponse;
 import org.tin.oop2_capstone.api.FoodAPI;
+import org.tin.oop2_capstone.database.repositories.ActivityRepository;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
+import org.tin.oop2_capstone.database.repositories.UserPrefRepository;
 import org.tin.oop2_capstone.database.repositories.UserRepository;
 import org.tin.oop2_capstone.model.entities.*;
 import org.tin.oop2_capstone.model.state.*;
+import org.tin.oop2_capstone.services.DependencyService;
 import org.tin.oop2_capstone.services.SessionManager;
 import org.tin.oop2_capstone.utils.TimeFormatter;
 
@@ -55,11 +58,15 @@ public class FoodLogController {
 
     private List<Food> selectedFoods;
 
-
-    private MealRepository mealRepository = MealRepository.getInstance();
-    private UserRepository = new UserRepository
-
     private State currentState;
+
+    private UserRepository userRepository;
+    private MealRepository mealRepository;
+
+    public FoodLogController() {
+        this.userRepository = DependencyService.getUserRepository();
+        this.mealRepository = DependencyService.getMealRepository();
+    }
 
     public void initialize(){
         foodLogScrollPane.getStyleClass().add("light");
@@ -341,7 +348,7 @@ public class FoodLogController {
                 LocalDate logTime = LocalDate.now();
 
                 Meal meal = new Meal(mealType, consumable, logTime, timeTextField.getText());
-                int userId = UserRepository.getUser().getUid();
+                int userId = userRepository.getUser().getUid();
 
                 // Check if food is pending (API call failed)
                 if (consumable.isPending()) {

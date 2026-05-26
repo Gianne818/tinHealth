@@ -21,8 +21,11 @@ import java.io.IOException;
 
 import org.tin.oop2_capstone.database.repositories.ActivityRepository;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
+import org.tin.oop2_capstone.database.repositories.UserPrefRepository;
+import org.tin.oop2_capstone.database.repositories.UserRepository;
 import org.tin.oop2_capstone.model.entities.User;
 import org.tin.oop2_capstone.model.entities.UserPreferences;
+import org.tin.oop2_capstone.services.DependencyService;
 import org.tin.oop2_capstone.services.ExerciseMonitor;
 import org.tin.oop2_capstone.services.SessionManager;
 
@@ -77,12 +80,23 @@ public class MainController {
     @FXML private GridPane quickStatsGridPane;
     @FXML private Label promptLabel1;
     @FXML private FlowPane upperNavFlowPane;
-    private ActivityRepository activityRepository = ActivityRepository.getInstance();
-
     private ExerciseMonitor exerciseMonitor = ExerciseMonitor.getInstance();
 
     private int userId;
 
+
+
+    private UserRepository userRepository;
+    private MealRepository mealRepository;
+    private ActivityRepository activityRepository;
+    private UserPrefRepository userPrefRepository;
+
+    public MainController() {
+        this.userRepository = DependencyService.getUserRepository();
+        this.mealRepository = DependencyService.getMealRepository();
+        this.activityRepository = DependencyService.getActivityRepository();
+        this.userPrefRepository = DependencyService.getUserPrefRepository();
+    }
 
     public void initialize(){
         System.out.println(activityRepository==null);
@@ -99,20 +113,40 @@ public class MainController {
         navs = FXCollections.observableArrayList();
         navs.addAll(dashboardNav, foodLogNav, activityLogNav, settingsNav, profileNav, notificationsNav, healthNav);
 
-        // Set user full name from session
+        hamburgerButton.setOnMouseClicked( e ->{
+            toggleSideBar();
+        });
+
+        this.userId = SessionManager.getInstance().getCurrentUser().getUid();
+
         User currentUser = SessionManager.getInstance().getCurrentUser();
         if (currentUser != null && userFullNameLabel != null) {
             userFullNameLabel.setText(currentUser.getFullname());
         }
 
-        navigateToView("dashboard-view", "dashboardScrollPane", dashboardNav);
         loadSideBoardStats();
         startExercisePromptTimer();
-        hamburgerButton.setOnMouseClicked( e ->{
-            toggleSideBar();
-        });
+        navigateToView("dashboard-view", "dashboardScrollPane", dashboardNav);
 
         Platform.runLater(this::applyThemeStylesheet);
+    }
+
+    public void setRepositories(UserRepository userRepository, MealRepository mealRepository, ActivityRepository activityRepository, UserPrefRepository userPrefRepository) {
+        this.userRepository = userRepository;
+        this.mealRepository = mealRepository;
+        this.activityRepository = activityRepository;
+        this.userPrefRepository = userPrefRepository;
+
+        this.userId = SessionManager.getInstance().getCurrentUser().getUid();
+
+        User currentUser = SessionManager.getInstance().getCurrentUser();
+        if (currentUser != null && userFullNameLabel != null) {
+            userFullNameLabel.setText(currentUser.getFullname());
+        }
+
+        loadSideBoardStats();
+        startExercisePromptTimer();
+        navigateToView("dashboard-view", "dashboardScrollPane", dashboardNav);
     }
 
     private void toggleSideBar(){
@@ -272,19 +306,19 @@ public class MainController {
 
     private void loadSideBoardStats() {
         // Calories
-        double calories = MealRepository.getTodayCaloriesIn(userId);
+        double calories = mealRepository.getTodayCaloriesIn(userId);
         calories_today.setText(String.valueOf((int) calories));
 
         // Weekly workouts
-        int weeklyWorkouts = activityRepository.getWeeklyWorkoutCount();
+        int weeklyWorkouts = activityRepository.getWeeklyWorkoutCount(userId);
         this_week_workout_count.setText(weeklyWorkouts + (weeklyWorkouts == 1 ? " Workout" : " Workouts"));
 
         // Total activities
-        int totalActivities = activityRepository.getTotalActivitiesCount();
+        int totalActivities = activityRepository.getTotalActivitiesCount(userId);
         total_activities_count.setText(String.valueOf(totalActivities));
 
         // Streak
-        int streak = activityRepository.getCurrentStreak();
+        int streak = activityRepository.getCurrentStreak(userId);
         String streakText = streak + (streak == 1 ? " Day" : " Days");
         curr_streak_1.setText(streakText);
         curr_streak_2.setText(streakText);
@@ -292,7 +326,7 @@ public class MainController {
 
     private void startExercisePromptTimer() {
         int userId = SessionManager.getInstance().getCurrentUser().getUid();
-        int promptFreqMinutes = UserPrefRepository.getInstance().getPromptFrequency(userId);
+        int promptFreqMinutes = userPrefRepository.getPromptFrequency(userId);
 
         remainingSeconds = promptFreqMinutes * 60;
         updateTimerDisplay();

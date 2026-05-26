@@ -3,6 +3,7 @@ package org.tin.oop2_capstone.database.data_sources;
 import org.tin.oop2_capstone.database.InsertData;
 import org.tin.oop2_capstone.database.RetrieveData;
 import org.tin.oop2_capstone.model.entities.Activity;
+import org.tin.oop2_capstone.model.entities.ActivityType;
 import org.tin.oop2_capstone.model.entities.NutritionDetails;
 
 import java.util.List;
@@ -45,7 +46,23 @@ public class ActivityDataSource implements IActivityDataSource{
     }
 
     @Override
+    public int getTotalActivitiesCount(int userId) {
+        return RetrieveData.fetchUserTotalActivities(userId);
+    }
+
+    @Override
+    public int getWeeklyWorkoutCount(int userId) {
+        return RetrieveData.fetchUserWeeklyWorkout(userId);
+    }
+
+    @Override
     public double getUserCurrentUserWeight(int userId) {
         return RetrieveData.fetchUserLatestWeight(userId);
     }
+
+    @Override
+    public List<ActivityType> fetchActivityTypes() {
+        return RetrieveData.fetchActivityTypes();
+    }
+
 }
