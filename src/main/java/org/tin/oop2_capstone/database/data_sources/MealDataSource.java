@@ -1,6 +1,5 @@
 package org.tin.oop2_capstone.database.data_sources;
 
-import org.tin.oop2_capstone.database.DeleteData;
 import org.tin.oop2_capstone.database.InsertData;
 import org.tin.oop2_capstone.database.RetrieveData;
 import org.tin.oop2_capstone.model.entities.Meal;
@@ -31,9 +30,5 @@ public class MealDataSource implements IMealDataSource{
     @Override
     public List<Meal> fetchUserMealsToday(int userId){
         return RetrieveData.fetchUserMealsToday(userId);
-    }
-
-    public boolean deleteMeal(int mealId){
-        return DeleteData.deleteMeal(mealId);
     }
 }

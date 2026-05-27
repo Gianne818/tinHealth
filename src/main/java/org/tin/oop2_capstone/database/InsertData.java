@@ -27,15 +27,7 @@ public class InsertData {
             pstmt.setDate(4, java.sql.Date.valueOf(meal.getLogDate())); // Today's date
             pstmt.setString(5, meal.getTime()); // The raw text "12:00 - 14:00"
 
-            int affectedRows = pstmt.executeUpdate();
-            if(affectedRows > 0){
-                try(ResultSet generatedKeys = pstmt.getGeneratedKeys()){
-                   if(generatedKeys.next()){
-                       meal.setMealId(generatedKeys.getInt(1));
-                   }
-                }
-            }
-            return true;
+            return pstmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
             e.printStackTrace();

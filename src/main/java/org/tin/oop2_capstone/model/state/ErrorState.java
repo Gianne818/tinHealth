@@ -13,5 +13,6 @@ public class ErrorState implements State {
         // Enable food log input for retry
         context.showErrorMessage();
         context.hideLoadingIndicator();
+        context.enableFoodLogInput();
     }
 }
