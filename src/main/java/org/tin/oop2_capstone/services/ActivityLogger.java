@@ -37,7 +37,7 @@ public class ActivityLogger extends Logger<ActivityLogObserver> {
 
     @Override
     public boolean isValid() {
-        return activityLog != null && !activityLog.getActivities().isEmpty();
+        return activityLog != null;
     }
 
     public boolean addActivity(Activity activity){

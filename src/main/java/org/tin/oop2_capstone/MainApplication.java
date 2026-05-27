@@ -63,18 +63,9 @@ public class MainApplication extends Application {
         stage.show();
     }
 
-    /* koan do james. here is what to do.
-
-    1. Update ActivityLogger such that it would extend Logger<ActivityLogObserver> i think.
-        and have it hold the userRepository = DependencyService.getActRepo.... as well as userID so that it can handle saveToDB.
-        and perhaps on activityLogger also add like...deleteActivtyLog, then after deletion, notigy the observers.
-
-    2. on ActivtyLogController, make it implement ActivtyLogObnbserver, then override the method wherein you update the UI inside the activLogChjanged.
-        also perhaps on initialize(), do like.. ActivityLogger.addObserver(this). then on addEntryButton, call the activtyLogger.logData().
-        oh also call diay the activityLogger.deleteACtivtyLog() on delete sa activtyController
-
-
-    */
+    /* 1. Activity logging and deleting doesn't work
+        2. implement Health Controller and Dashbboard Controller
+     */
 
 
 }

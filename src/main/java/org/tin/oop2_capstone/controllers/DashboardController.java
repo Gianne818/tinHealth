@@ -26,12 +26,14 @@ import org.tin.oop2_capstone.database.repositories.MealRepository;
 import org.tin.oop2_capstone.database.repositories.UserPrefRepository;
 import org.tin.oop2_capstone.database.repositories.UserRepository;
 import org.tin.oop2_capstone.model.entities.*;
+import org.tin.oop2_capstone.model.observer.ActivityLogObserver;
+import org.tin.oop2_capstone.model.observer.MealLogObserver;
 import org.tin.oop2_capstone.services.DependencyService;
 import org.tin.oop2_capstone.services.SessionManager;
 import org.tin.oop2_capstone.utils.TimeFormatter;
 
 
-public class DashboardController {
+public class DashboardController implements MealLogObserver, ActivityLogObserver {
     @FXML
     private ScrollPane dashboardScrollPane;
     @FXML
@@ -358,5 +360,15 @@ public class DashboardController {
     private void goToView(MouseEvent event) {
         MainController main = MainController.getInstance();
         main.onNavElementClicked(event);
+    }
+
+    @Override
+    public void onActivityLogChanged() {
+        /* update UI related to ActivityLog */
+    }
+
+    @Override
+    public void onMealLogChanged() {
+        /* update UI related to MealLog */
     }
 }

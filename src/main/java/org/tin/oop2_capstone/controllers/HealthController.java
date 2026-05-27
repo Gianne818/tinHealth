@@ -25,6 +25,8 @@ import org.tin.oop2_capstone.model.entities.Meal;
 import org.tin.oop2_capstone.model.entities.NutritionDetails;
 import org.tin.oop2_capstone.model.entities.User;
 import org.tin.oop2_capstone.model.entities.UserPreferences;
+import org.tin.oop2_capstone.model.observer.ActivityLogObserver;
+import org.tin.oop2_capstone.model.observer.MealLogObserver;
 import org.tin.oop2_capstone.services.DependencyService;
 import org.tin.oop2_capstone.services.SessionManager;
 
@@ -32,7 +34,7 @@ import java.io.IOException;
 import java.util.List;
 
 
-public class HealthController {
+public class HealthController implements MealLogObserver, ActivityLogObserver {
     //PROGRESS BARS START
     @FXML private  Label hcaloriesLabel;
     @FXML private ProgressBar caloriesProgressBar;
@@ -529,4 +531,13 @@ public class HealthController {
         fatsLabelMacro.setText(String.format("%.2fg", fats));
     }
 
+    @Override
+    public void onActivityLogChanged() {
+        /* update UI related by activity */
+    }
+
+    @Override
+    public void onMealLogChanged() {
+        /* update Ui related by meal */
+    }
 }

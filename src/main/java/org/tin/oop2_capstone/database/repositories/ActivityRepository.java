@@ -5,6 +5,7 @@ import org.tin.oop2_capstone.database.data_sources.ActivityDataSource;
 import org.tin.oop2_capstone.model.entities.Activity;
 import org.tin.oop2_capstone.model.entities.ActivityType;
 import org.tin.oop2_capstone.model.entities.NutritionDetails;
+import javafx.collections.FXCollections;
 
 import java.util.*;
 
@@ -66,13 +67,11 @@ public class ActivityRepository {
     }
 
     public boolean addActivity(Activity activity, int userId) {
-        if (activityDataSource.insertActivity(userId, activity)) {
-            if (userActivities != null) {
-                userActivities.add(0, activity);
-            } else {
-                userActivities = new ArrayList<>();
-                userActivities.add(activity);
-            }
+        // First, attempt to insert the new activity into the database.
+        boolean success = activityDataSource.insertActivity(userId, activity);
+
+        if (success) {
+            this.userActivities = activityDataSource.fetchUserActivities(userId);
             return true;
         }
         return false;
@@ -88,7 +87,8 @@ public class ActivityRepository {
     }
 
     public ObservableList<ActivityType> getActivityTypes(){
-        return (ObservableList<ActivityType>) activityDataSource.fetchActivityTypes();
+        List<ActivityType> fetchedTypes = activityDataSource.fetchActivityTypes();
+        return FXCollections.observableArrayList(fetchedTypes);
     }
     public double getUserCurrentWeight(int userId) {
         return activityDataSource.getUserCurrentUserWeight(userId);

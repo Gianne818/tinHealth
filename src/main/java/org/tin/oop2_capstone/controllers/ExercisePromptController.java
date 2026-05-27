@@ -130,7 +130,7 @@ public class ExercisePromptController {
                 return;
             }
             else {
-                stage.close();
+                stage.hide();
             }
         }
         dismiss();
