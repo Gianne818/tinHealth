@@ -1,6 +1,5 @@
 package org.tin.oop2_capstone.database.data_sources;
 
-import org.tin.oop2_capstone.database.DeleteData;
 import org.tin.oop2_capstone.database.InsertData;
 import org.tin.oop2_capstone.database.RetrieveData;
 import org.tin.oop2_capstone.model.entities.Activity;
@@ -47,12 +46,6 @@ public class ActivityDataSource implements IActivityDataSource{
     @Override
     public boolean insertActivity(int userId, Activity activity) {
         return InsertData.insertActivity(userId, activity.getActivityType().getActivityTypeId(), activity.getQuantity(), activity.getCalories());
-    }
-
-    /*just followed template sa insertActivity */
-    @Override
-    public boolean deleteActivity(int activityId){
-        return DeleteData.deleteActivity(activityId);
     }
 
     @Override
