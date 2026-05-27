@@ -41,9 +41,10 @@ toward healthier and more informed lifestyle choices.
 
 ### Creational Patterns
 - **Singleton Pattern:** Manages unique application-wide instances such as the database connection (`DatabaseConnection`) and active session state (`SessionManager`).
+- **Builder Pattern:** The `SceneSwitcher` uses a builder pattern to adapt to the many ways in which the program switches views.
 
 ### Structural Patterns
-- **Adapter Pattern:** Adapts external nutritional API responses to internal application models (`NutritionApiAdapter`).
+- **Adapter Pattern:** Adapts external nutritional API responses to internal application models (`FoodParser` & `FoodSelector`).
 
 ### Behavioral Patterns
 - **Observer Pattern:** Implemented for activity and food logging to trigger updates on data changes, as well as to trigger exercise prompts by observing the current active app running (`ActivityLogObserver`, `MealLogObserver`, `ExerciseObserver`).
