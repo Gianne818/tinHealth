@@ -308,7 +308,7 @@
 
 /*Colors for health analytics card*/
 /*start*/
-#hcarbsLabel{
+#hcarbsLabel, #todayCaloriesLabel{
     -fx-text-fill: -green;
 }
 
@@ -316,7 +316,7 @@
     -fx-text-fill: -dark-green;
 }
 
-#hcaloriesOutLabel, #hfatLabel{
+#hcaloriesOutLabel, #hfatLabel, #totalDurationLabel{
     -fx-text-fill: -orange;
 }
 
@@ -328,7 +328,7 @@
     -fx-text-fill: -purple;
 }
 
-#hproteinLabel, #hsugarLabel{
+#hproteinLabel, #hsugarLabel, #caloriesBurnedLabel{
     -fx-text-fill: -vibrant-red;
 }
 

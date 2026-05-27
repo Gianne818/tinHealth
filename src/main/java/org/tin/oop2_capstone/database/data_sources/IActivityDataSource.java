@@ -14,6 +14,7 @@ public interface IActivityDataSource {
     double getTodayCaloriesOut(int userId);
     int getCurrentStreak(int userId);
     int getTodayActivitiesCount(int userId);
+    List<Activity> getTodayActivities(int userId);
     boolean insertActivity(int userId, Activity activity);
     double getUserCurrentUserWeight(int userId);
     int getWeeklyWorkoutCount(int userId);

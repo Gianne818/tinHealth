@@ -49,6 +49,14 @@ public class ActivityRepository {
         return activityDataSource.getTodayActivitiesCount(userId);
     }
 
+    public double getTodayActivitiesDuration(int userId) {
+        double totalDurationToday = 0;
+        for(Activity activity : activityDataSource.getTodayActivities(userId)) {
+            totalDurationToday += activity.getQuantity();
+        }
+        return totalDurationToday;
+    }
+
     public int getWeeklyWorkoutCount(int userId) {
         return activityDataSource.getWeeklyWorkoutCount(userId);
     }
