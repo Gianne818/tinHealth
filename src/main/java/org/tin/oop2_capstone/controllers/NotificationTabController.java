@@ -21,52 +21,52 @@ public class NotificationTabController {
     @FXML private Button markAllReadButton;
 
     private record Notification(int id, String type, String title, String message, String time, boolean read) {}
-//
-//    private List<Notification> notifications = new ArrayList<>(List.of(
-//            new Notification(1, "achievement", "7-Day Streak!",        "Congratulations! You've maintained your daily activity streak for a full week.", "2 hours ago",  false),
-//            new Notification(2, "reminder",    "Time for Exercise",     "It's time for your scheduled workout. Don't break your streak!",                  "3 hours ago",  false),
-//            new Notification(3, "goal",        "Calorie Goal Reached",  "You've reached your daily calorie goal of 2000 calories.",                        "5 hours ago",  true),
-//            new Notification(4, "activity",    "New Activity Logged",   "Running - 30 minutes logged. Great job!",                                         "1 day ago",    true),
-//            new Notification(5, "achievement", "Weekly Goal Completed", "You completed 5 workouts this week. Keep up the excellent work!",                 "2 days ago",   true),
-//            new Notification(6, "reminder",    "Log Your Meals",        "Don't forget to log your dinner to track your daily nutrition.",                  "3 days ago",   true)
-//    ));
-//
-//    @FXML
-//    public void initialize() {
-//        renderNotifications();
-//    }
-//
-//
-//    @FXML SVGPath notificationsIcon;
-//    @FXML
-//    private void onMarkAllRead() {
-//        notifications.replaceAll(n -> new Notification(n.id(), n.type(), n.title(), n.message(), n.time(), true));
-//        renderNotifications();
-//    }
-//
-//    private void renderNotifications() {
-//        notificationsContainer.getChildren().clear();
-//
-//        long unread = notifications.stream().filter(n -> !n.read()).count();
-//
-//        subtitleLabel.setText(unread > 0
-//                ? "You have " + unread + " unread notification" + (unread > 1 ? "s" : "")
-//                : "All caught up!");
-//
-//        markAllReadButton.setVisible(unread > 0);
-//        markAllReadButton.setManaged(unread > 0);
-//
-//        if (notifications.isEmpty()) {
-//            Label empty = new Label("No notifications — you're all caught up!");
-//            empty.getStyleClass().add("lightText");
-//            notificationsContainer.getChildren().add(empty);
-//            return;
-//        }
 
-//        for (Notification n : new ArrayList<>(notifications)) {
-//            notificationsContainer.getChildren().add(buildCard(n));
-//        }
-//    }
+    private List<Notification> notifications = new ArrayList<>(List.of(
+            new Notification(1, "achievement", "7-Day Streak!",        "Congratulations! You've maintained your daily activity streak for a full week.", "2 hours ago",  false),
+            new Notification(2, "reminder",    "Time for Exercise",     "It's time for your scheduled workout. Don't break your streak!",                  "3 hours ago",  false),
+            new Notification(3, "goal",        "Calorie Goal Reached",  "You've reached your daily calorie goal of 2000 calories.",                        "5 hours ago",  true),
+            new Notification(4, "activity",    "New Activity Logged",   "Running - 30 minutes logged. Great job!",                                         "1 day ago",    true),
+            new Notification(5, "achievement", "Weekly Goal Completed", "You completed 5 workouts this week. Keep up the excellent work!",                 "2 days ago",   true),
+            new Notification(6, "reminder",    "Log Your Meals",        "Don't forget to log your dinner to track your daily nutrition.",                  "3 days ago",   true)
+    ));
+
+    @FXML
+    public void initialize() {
+        renderNotifications();
+    }
+
+
+    @FXML SVGPath notificationsIcon;
+    @FXML
+    private void onMarkAllRead() {
+        notifications.replaceAll(n -> new Notification(n.id(), n.type(), n.title(), n.message(), n.time(), true));
+        renderNotifications();
+    }
+
+    private void renderNotifications() {
+        notificationsContainer.getChildren().clear();
+
+        long unread = notifications.stream().filter(n -> !n.read()).count();
+
+        subtitleLabel.setText(unread > 0
+                ? "You have " + unread + " unread notification" + (unread > 1 ? "s" : "")
+                : "All caught up!");
+
+        markAllReadButton.setVisible(unread > 0);
+        markAllReadButton.setManaged(unread > 0);
+
+        if (notifications.isEmpty()) {
+            Label empty = new Label("No notifications — you're all caught up!");
+            empty.getStyleClass().add("lightText");
+            notificationsContainer.getChildren().add(empty);
+            return;
+        }
+
+        for (Notification n : new ArrayList<>(notifications)) {
+            notificationsContainer.getChildren().add(buildCard(n));
+        }
+    }
 
     private HBox buildCard(Notification n) {
         // Icon circle with image
