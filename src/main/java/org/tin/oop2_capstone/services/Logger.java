@@ -8,11 +8,13 @@ public abstract class Logger<T> {
     protected final List<T> observers = new ArrayList<>();
 
     // this is our template pattern
-    public final void logData(){
+    public final boolean logData(){
         if(isValid()){
             saveToDB();
             notifyObservers();
+            return true;
         }
+        return false;
     }
 
     public final void addObserver(T observer){
@@ -24,6 +26,6 @@ public abstract class Logger<T> {
     }
 
     public abstract boolean isValid();
-    public abstract void saveToDB();
+    public abstract boolean saveToDB();
     public abstract  void notifyObservers();
 }

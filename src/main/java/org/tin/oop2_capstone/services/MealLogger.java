@@ -17,6 +17,8 @@ public class MealLogger extends Logger<MealLogObserver> {
     private MealRepository mealRepository = DependencyService.getMealRepository();
     private int userID = SessionManager.getInstance().getCurrentUser().getUid();
 
+    private Meal mealToAdd;
+
 
     private MealLogger() {
         this.mealLog = new MealLog();
@@ -30,14 +32,24 @@ public class MealLogger extends Logger<MealLogObserver> {
         return instance;
     }
 
+    public boolean addMeal(Meal meal){
+        this.mealToAdd = meal;
+        return logData();
+    }
+
+
     @Override
     public boolean isValid() {
-        return mealLog != null && !mealLog.getMeals().isEmpty();
+        return mealLog != null;
     }
 
     @Override
-    public void saveToDB() {
-        // wala pay database
+    public boolean saveToDB() {
+        if(mealRepository.addMeal(mealToAdd, userID)){
+            mealToAdd = null;
+            return true;
+        }
+        return false;
     }
 
     @Override

@@ -360,10 +360,7 @@ public class FoodLogController implements MealLogObserver {
                 LocalDate logTime = LocalDate.now();
 
                 Meal meal = new Meal(mealType, consumable, logTime, timeTextField.getText());
-                int userId = userRepository.getUser().getUid();
-
-                    // Food has valid nutrition data, proceed normally
-                if(mealRepository.addMeal(meal, userId)){
+                if(mealLogger.addMeal(meal)){
                     Platform.runLater(() -> {
                         setState(new SuccessState());
                         clearAddEntryForm();

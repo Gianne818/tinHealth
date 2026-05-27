@@ -30,8 +30,9 @@ public class ActivityLogger extends Logger {
     }
 
     @Override
-    public void saveToDB() {
+    public boolean saveToDB() {
         // wala pay database
+        return true;
     }
 
     @Override
