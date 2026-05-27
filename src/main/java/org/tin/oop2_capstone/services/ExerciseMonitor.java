@@ -44,6 +44,11 @@ public class ExerciseMonitor implements ExerciseObserver {
     }
 
     public void start(){
+        if(thread != null && thread.isAlive()){
+            return;
+        }
+        thread = new Thread(activeAppService);
+        thread.setDaemon(true);
         activeAppService.startMonitoring();
         thread.start();
     }

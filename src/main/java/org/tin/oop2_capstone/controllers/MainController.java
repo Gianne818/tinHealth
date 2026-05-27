@@ -423,4 +423,8 @@ public class MainController {
         anchorPaneContent.getStyleClass().add(theme);
     }
 
+    public AnchorPane getAnchorPaneContent() {
+        return anchorPaneContent;
+    }
+
 }
