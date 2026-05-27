@@ -21,4 +21,14 @@ public class MealDataSource implements IMealDataSource{
     public boolean insertMeal(int userId, Meal meal) {
         return InsertData.insertMeal(userId, meal);
     }
+
+    @Override
+    public List<Meal> fetchUserWeeklyMeals(int userId){
+        return RetrieveData.fetchWeeklyUserMeals(userId);
+    }
+
+    @Override
+    public List<Meal> fetchUserMealsToday(int userId){
+        return RetrieveData.fetchUserMealsToday(userId);
+    }
 }

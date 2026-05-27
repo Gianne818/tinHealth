@@ -161,7 +161,8 @@ public class InsertData {
         return insertConsumable(consumable);
     }
 
-    public static boolean insertActivity(int userId, int activityTypeId, double quantity, double calories) {
+
+        public static boolean insertActivity(int userId, int activityTypeId, double quantity, double calories) {
         String insertActivitySQL = "INSERT INTO Activities (user_id, activity_type_id, quantity, calories, time, log_date) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();

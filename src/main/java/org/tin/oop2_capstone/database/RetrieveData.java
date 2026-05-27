@@ -211,19 +211,75 @@ public class RetrieveData {
     //test retrieve
     public static List<Meal> fetchUserMeals(int userId) {
         List<Meal> meals = new ArrayList<>();
-        String query = "SELECT m.meal_id, m.meal_type, c.name, m.log_date, m.time, nd.calories, nd.protein, nd.fats, nd.carbs, nd.cholesterol, nd.sodium, nd.sugar, nd.fiber " +
-                "FROM Meals m JOIN Consumables c ON m.consumable_id = c.consumable_id LEFT JOIN NutritionalDetails nd ON c.nutri_id = nd.nutri_id " +
-                "WHERE m.user_id = ? ORDER BY m.log_date DESC, m.time DESC";
-        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+
+        String query = """
+        SELECT m.*, c.name, c.type,
+               CASE 
+                   WHEN c.type = 'food' THEN nd.calories
+                   WHEN c.type = 'foodcombo' THEN (
+                       SELECT COALESCE(SUM(nd2.calories), 0)
+                       FROM ComboItems ci
+                       JOIN Consumables c2 
+                            ON ci.consumable_id = c2.consumable_id
+                       LEFT JOIN NutritionalDetails nd2 
+                            ON c2.nutri_id = nd2.nutri_id
+                       WHERE ci.combo_id = c.consumable_id
+                   )
+                   ELSE 0
+               END AS calories,
+
+               CASE WHEN c.type = 'food' THEN nd.protein ELSE 0 END AS protein,
+               CASE WHEN c.type = 'food' THEN nd.fats ELSE 0 END AS fats,
+               CASE WHEN c.type = 'food' THEN nd.carbs ELSE 0 END AS carbs,
+               CASE WHEN c.type = 'food' THEN nd.cholesterol ELSE 0 END AS cholesterol,
+               CASE WHEN c.type = 'food' THEN nd.sodium ELSE 0 END AS sodium,
+               CASE WHEN c.type = 'food' THEN nd.sugar ELSE 0 END AS sugar,
+               CASE WHEN c.type = 'food' THEN nd.fiber ELSE 0 END AS fiber
+
+        FROM Meals m
+        JOIN Consumables c 
+            ON m.consumable_id = c.consumable_id
+        LEFT JOIN NutritionalDetails nd 
+            ON c.nutri_id = nd.nutri_id
+        WHERE m.user_id = ?
+        ORDER BY m.log_date DESC, m.time DESC
+    """;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
             stmt.setInt(1, userId);
+
             ResultSet rs = stmt.executeQuery();
-            while(rs.next()) {
-                NutritionDetails nd = new NutritionDetails(rs.getDouble("calories"), rs.getDouble("protein"), rs.getDouble("fats"), rs.getDouble("carbs"), rs.getDouble("cholesterol"), rs.getDouble("sodium"), rs.getDouble("sugar"), rs.getDouble("fiber"));
-                Meal meal = new Meal(MealType.valueOf(rs.getString("meal_type").toUpperCase()), new Food(rs.getString("name"), nd, false), rs.getDate("log_date").toLocalDate(), rs.getString("time"));
+
+            while (rs.next()) {
+
+                NutritionDetails nd = new NutritionDetails(
+                        rs.getDouble("calories"),
+                        rs.getDouble("protein"),
+                        rs.getDouble("fats"),
+                        rs.getDouble("carbs"),
+                        rs.getDouble("cholesterol"),
+                        rs.getDouble("sodium"),
+                        rs.getDouble("sugar"),
+                        rs.getDouble("fiber")
+                );
+
+                Food food = new Food(rs.getString("name"), nd,false
+                );
+                Meal meal = new Meal(
+                        MealType.valueOf(rs.getString("meal_type").toUpperCase()),
+                        food,
+                        rs.getDate("log_date").toLocalDate(),
+                        rs.getString("time")
+                );
+
                 meal.setMealId(rs.getInt("meal_id"));
                 meals.add(meal);
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return meals;
     }
 
