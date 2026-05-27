@@ -1,5 +1,6 @@
 package org.tin.oop2_capstone.controllers;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -107,21 +108,21 @@ public class DashboardController implements MealLogObserver, ActivityLogObserver
         userId = SessionManager.getInstance().getCurrentUser().getUid();
         dashboardScrollPane.getStyleClass().add("light");
         macroDistData = FXCollections.observableArrayList();
-        nutritionDetails = activityRepository.getWeeklyNutrients(userId);
 
         mealsList = new ArrayList<>();
         mealGridPanes = FXCollections.observableArrayList();
 
         activityGridPanes = FXCollections.observableArrayList();
 
-        initRecentActivitiesList();
-        initRecentMealsList();
-        initDashboardHeader();
-        initMacroDist();
-        initCaloriesLineChart();
+        // Perform one-time UI setups
+        setupMacroDist();
+        setupCaloriesLineChart();
+
+        // Load all dynamic data into the UI
+        refreshUI();
     }
 
-    private void initRecentMealsList(){
+    private void updateRecentMealsList(){
         // Clear the old layout panes before fetching updated data
         mealGridPanes.clear();
         mealsList = mealRepository.getUserMeals();
@@ -147,7 +148,7 @@ public class DashboardController implements MealLogObserver, ActivityLogObserver
         recentFoodsListView.setItems(mealGridPanes);
     }
 
-    private void initRecentActivitiesList(){
+    private void updateRecentActivitiesList(){
         // Clear the old layout panes before fetching updated data
         activityGridPanes.clear();
         activityList = activityRepository.getUserActivities();
@@ -245,38 +246,13 @@ public class DashboardController implements MealLogObserver, ActivityLogObserver
         return null;
     }
 
-    private void initMacroDist() {
+    private void setupMacroDist() {
         macroDistPieChart.setData(macroDistData);
         macroDistPieChart.setLegendVisible(false);
         macroDistInnerHoleCircle.radiusProperty().bind(macroDistPieChart.widthProperty().divide(3.5));
-
-        // Prevent crash if user has no meals logged yet
-        if (nutritionDetails == null) {
-            updateMacroDist(0, 0, 0);
-            return;
-        }
-
-        double protein = nutritionDetails.getProtein();
-        double carbs = nutritionDetails.getCarbs();
-        double fats = nutritionDetails.getFat();
-        double total = protein + carbs + fats;
-
-        if (total > 0) {
-            protein = (protein / total) * 100;
-            carbs = (carbs / total) * 100;
-            fats = (fats / total) * 100;
-        }
-
-        updateMacroDist(protein, carbs, fats);
     }
 
-    private void initCaloriesLineChart() {
-        xAxis.setCategories(FXCollections.observableArrayList(
-                "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"
-        ));
-        xAxis.setGapStartAndEnd(false);
-        xAxis.setTickMarkVisible(false);
-
+    private void updateCaloriesLineChartData() {
         Map<String, Double[]> weeklyData = activityRepository.getWeeklyCalories(userId);
 
         LineChart<String, Number> chart = (LineChart<String, Number>) weeklyChart;
@@ -317,11 +293,19 @@ public class DashboardController implements MealLogObserver, ActivityLogObserver
 
         chart.getData().clear();
         chart.getData().addAll(calIn, calOut);
-        chart.setLegendVisible(false);
         setupGlobalTooltip(chart, calIn, calOut);
     }
 
-    private void initDashboardHeader() {
+    private void setupCaloriesLineChart() {
+        xAxis.setCategories(FXCollections.observableArrayList(
+                "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"
+        ));
+        xAxis.setGapStartAndEnd(false);
+        xAxis.setTickMarkVisible(false);
+        weeklyChart.setLegendVisible(false);
+    }
+
+    private void updateDashboardHeader() {
         int userId = SessionManager.getInstance().getCurrentUser().getUid();
         double caloriesIn = mealRepository.getTodayCaloriesIn(userId);
         caloriesInLabel.setText(String.valueOf((int) caloriesIn));
@@ -344,6 +328,27 @@ public class DashboardController implements MealLogObserver, ActivityLogObserver
         daysInARowHeader.setText(daysStringDisplay);
     }
 
+    private void updateMacroDistData() {
+        // Prevent crash if user has no meals logged yet
+        if (nutritionDetails == null) {
+            updateMacroDist(0, 0, 0);
+            return;
+        }
+
+        double protein = nutritionDetails.getProtein();
+        double carbs = nutritionDetails.getCarbs();
+        double fats = nutritionDetails.getFat();
+        double total = protein + carbs + fats;
+
+        if (total > 0) {
+            protein = (protein / total) * 100;
+            carbs = (carbs / total) * 100;
+            fats = (fats / total) * 100;
+        }
+
+        updateMacroDist(protein, carbs, fats);
+    }
+
     private void updateMacroDist(double protein, double carbs, double fats) {
         macroDistData.clear();
         macroDistData.add(new Data("Protein", protein));
@@ -355,6 +360,18 @@ public class DashboardController implements MealLogObserver, ActivityLogObserver
         fatsLabelMacro.setText(String.format("%.1f%%", fats));
     }
 
+    private void refreshUI() {
+        // Re-fetch data that might have changed
+        nutritionDetails = activityRepository.getWeeklyNutrients(userId);
+
+        // Refresh all UI components
+        updateRecentActivitiesList();
+        updateRecentMealsList();
+        updateDashboardHeader();
+        updateMacroDistData();
+        updateCaloriesLineChartData();
+    }
+
 
     @FXML
     private void goToView(MouseEvent event) {
@@ -364,11 +381,14 @@ public class DashboardController implements MealLogObserver, ActivityLogObserver
 
     @Override
     public void onActivityLogChanged() {
-        /* update UI related to ActivityLog */
+        // When an activity log changes, refresh the entire dashboard UI.
+        // Platform.runLater ensures this happens safely on the JavaFX Application Thread.
+        Platform.runLater(() -> refreshUI());
     }
 
     @Override
     public void onMealLogChanged() {
-        /* update UI related to MealLog */
+        // When a meal log changes, refresh the entire dashboard UI.
+        Platform.runLater(() -> refreshUI());
     }
 }
