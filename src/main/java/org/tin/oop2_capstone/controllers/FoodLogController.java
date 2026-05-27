@@ -35,6 +35,8 @@ import java.util.List;
 import java.util.Map;
 //CHECK
 public class FoodLogController {
+    @FXML Label todayCaloriesLabel;
+    @FXML Label todayCaloriesGoalLabel;
     @FXML ListView <GridPane> foodLogListView;
     @FXML Button buttonAddFood;
     @FXML GridPane gridPaneAddEntry;
@@ -84,6 +86,8 @@ public class FoodLogController {
                 updateTimeBasedOnMeal();
             }
         });
+        setCaloriesToday();
+        setCalorieGoalToday();
         initfoodNameComboBox();
     }
 
@@ -507,6 +511,18 @@ public class FoodLogController {
     public void setState(State state) {
         this.currentState = state;
         currentState.handle(this);
+    }
+
+    public void setCaloriesToday(){
+        Double caloriesToday = mealRepository.getTodayCaloriesIn(SessionManager.getInstance().getCurrentUser().getUid());
+        String showCaloriesToday = String.format("%.1f", caloriesToday);
+        todayCaloriesLabel.setText(showCaloriesToday);
+    }
+
+    public void setCalorieGoalToday(){
+        Double goalCalorieToday = SessionManager.getInstance().getCurrentUserPrefs().getDailyCalorieIn();
+        String showGoalToday = String.format("%.0f", goalCalorieToday);
+        todayCaloriesGoalLabel.setText(showGoalToday + " kcal");
     }
 
     /** End of State Functions */
