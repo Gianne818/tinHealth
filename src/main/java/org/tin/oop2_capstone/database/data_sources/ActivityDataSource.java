@@ -41,9 +41,6 @@ public class ActivityDataSource implements IActivityDataSource{
     }
 
     @Override
-    public List<Activity> getTodayActivities(int userId){ return RetrieveData.fetchUserTodayActivities(userId);}
-
-    @Override
     public boolean insertActivity(int userId, Activity activity) {
         return InsertData.insertActivity(userId, activity.getActivityType().getActivityTypeId(), activity.getQuantity(), activity.getCalories());
     }

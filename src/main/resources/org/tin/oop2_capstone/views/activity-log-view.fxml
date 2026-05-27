@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
 
-<ScrollPane fx:id="activityLogScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="activityLogScrollPane" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.ActivityLogController">
+<ScrollPane fx:id="activityLogScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="activityLogScrollPane" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.ActivityLogController">
     <padding>
         <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
     </padding>
@@ -76,10 +86,14 @@
                             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                         </padding>
                         <Label styleClass="lightText" text="Calories Burned" GridPane.columnIndex="1" />
-                        <Label fx:id="caloriesBurnedLabel" layoutX="113.0" layoutY="17.0" styleClass="caloriesDashboard" text="465" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                        <Label layoutX="113.0" layoutY="17.0" text="465" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                             <font>
                                 <Font size="25.0" />
                             </font>
+                     <styleClass>
+                        <String fx:value="greenLabel" />
+                        <String fx:value="caloriesDashboard" />
+                     </styleClass>
                         </Label>
                         <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="70.0" minWidth="70.0" prefHeight="70.0" prefWidth="70.0" style="-fx-background-color: #DB2627; -fx-background-radius: 500;" GridPane.halignment="RIGHT" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
                             <padding>
@@ -102,10 +116,14 @@
                             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                         </padding>
                         <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="lightText" text="Total Duration" GridPane.columnIndex="1" />
-                        <Label fx:id="totalDurationLabel" layoutX="113.0" layoutY="17.0" styleClass="caloriesDashboard" text="67" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                        <Label layoutX="113.0" layoutY="17.0" text="67" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                             <font>
                                 <Font size="25.0" />
                             </font>
+                     <styleClass>
+                        <String fx:value="orangeLabel" />
+                        <String fx:value="caloriesDashboard" />
+                     </styleClass>
                         </Label>
                         <Label layoutX="10.0" layoutY="17.0" styleClass="lightText" text="minutes" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="70.0" minWidth="70.0" prefHeight="70.0" prefWidth="70.0" style="-fx-background-color: #F97315; -fx-background-radius: 500;" GridPane.halignment="RIGHT" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">

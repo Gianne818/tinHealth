@@ -1,158 +1,183 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
 
-<ScrollPane fx:id="foodLogScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="foodLogScrollPane" vbarPolicy="AS_NEEDED" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.FoodLogController">
-    <padding>
-        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
-    </padding>
-    <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-        <padding>
-            <Insets left="10.0" right="10.0" />
-        </padding>
-        <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <padding>
-                <Insets bottom="10.0" left="10.0" right="40.0" top="10.0" />
-            </padding>
-            <GridPane>
-                <columnConstraints>
-                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="567.0" minWidth="55.0" prefWidth="160.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" prefWidth="420.0" />
-                </columnConstraints>
-                <rowConstraints>
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                </rowConstraints>
-                <padding>
-                    <Insets right="10.0" />
-                </padding>
-                <Label text="Food Log">
-                    <styleClass>
-                        <String fx:value="tabTitle" />
-                        <String fx:value="greenLabel" />
-                    </styleClass>
-                </Label>
-                <Label styleClass="lightText" text="Track Your Daily Expenses" GridPane.rowIndex="1" />
-                <Button fx:id="buttonAddFood" mnemonicParsing="false" onAction="#onButtonAddFoodClicked" text="+ Add Food" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2">
-                    <GridPane.margin>
-                        <Insets />
-                    </GridPane.margin>
-                </Button>
-            </GridPane>
-
-            <GridPane styleClass="cardContent">
-                <columnConstraints>
-                    <ColumnConstraints hgrow="NEVER" />
-                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="315.0" minWidth="10.0" prefWidth="315.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                </columnConstraints>
-                <rowConstraints>
-                    <RowConstraints vgrow="NEVER" />
-                    <RowConstraints vgrow="NEVER" />
-                </rowConstraints>
-                <padding>
-                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                </padding>
-                <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="50.0" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: #11B981; -fx-background-radius: 500;" GridPane.halignment="CENTER" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
-                    <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                    </padding>
-                    <GridPane.margin>
+<ScrollPane fx:id="foodLogScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="foodLogScrollPane" vbarPolicy="AS_NEEDED" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.FoodLogController">
+   <content>
+      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+         <children>
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <GridPane>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="567.0" minWidth="55.0" prefWidth="160.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" prefWidth="420.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <Label text="Food Log">
+                           <styleClass>
+                              <String fx:value="tabTitle" />
+                              <String fx:value="greenLabel" />
+                           </styleClass></Label>
+                        <Label styleClass="lightText" text="Track Your Daily Expenses" GridPane.rowIndex="1" />
+                        <Button fx:id="buttonAddFood" mnemonicParsing="false" onAction="#onButtonAddFoodClicked" text="+ Add Food" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </Button>
+                     </children>
+                     <padding>
                         <Insets right="10.0" />
-                    </GridPane.margin>
-                    <SVGPath content="M9.99984 17.45C11.2498 17.45 12.2915 18.3333 13.3332 18.3333C15.8332 18.3333 18.3332 11.6666 18.3332 8.14998C18.3048 7.07058 17.8509 6.04617 17.0704 5.30002C16.2899 4.55387 15.2461 4.14648 14.1665 4.16665C12.3165 4.16665 10.8332 5.36665 9.99984 5.83331C9.1665 5.36665 7.68317 4.16665 5.83317 4.16665C4.75296 4.14428 3.70792 4.55094 2.92695 5.29755C2.14597 6.04416 1.69273 7.06986 1.6665 8.14998C1.6665 11.6666 4.1665 18.3333 6.6665 18.3333C7.70817 18.3333 8.74984 17.45 9.99984 17.45Z M8.3335 1.66669C9.16683 2.08335 10.0002 3.33335 10.0002 5.83335" fill="TRANSPARENT" scaleX="1.3" scaleY="1.3" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="1.66667" />
-                </StackPane>
-                <Label styleClass="lightText" text="Total Calories Today" GridPane.columnIndex="1" />
-                <Label fx:id="todayCaloriesLabel" styleClass="caloriesDashboard" text="70" textFill="#11b981" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                    <font>
-                        <Font name="Inter Semi Bold" size="30.0" />
-                    </font>
-                </Label>
-                <Label styleClass="lightTexr" text="Goal" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
-                <Label fx:id="todayCaloriesGoalLabel" styleClass="cardTitle" text="2000 kcal" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
-                    <font>
-                        <Font name="System Bold" size="16.0" />
-                    </font>
-                </Label>
-            </GridPane>
+                     </padding>
+                  </GridPane>
 
-            <GridPane fx:id="gridPaneAddEntry" hgap="10.0" managed="false" styleClass="cardContent" vgap="10.0" visible="false">
-                <columnConstraints>
-                    <ColumnConstraints hgrow="NEVER" maxWidth="179.0" minWidth="10.0" />
-                    <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" prefWidth="600.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" />
-                </columnConstraints>
-                <rowConstraints>
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                </rowConstraints>
-                <children>
-                    <Label styleClass="cardTitle" text="New Food Entry" />
-                    <Label styleClass="fieldLabel" text="Calories" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" />
-                    <Label styleClass="fieldLabel" text="Meal" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" />
-                    <Button fx:id="addEntryButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onButtonAddEntryClicked" text="Add Entry" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="TOP">
-                        <GridPane.margin>
-                            <Insets top="10.0" />
-                        </GridPane.margin>
-                    </Button>
-                    <Button fx:id="cancelButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onButtonCancelClicked" styleClass="cancelButton" text="Cancel" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="TOP">
-                        <GridPane.margin>
-                            <Insets top="10.0" />
-                        </GridPane.margin>
-                    </Button>
-                    <TextField fx:id="timeTextField" editable="false" focusTraversable="false" mouseTransparent="true" promptText="- -" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                    <ChoiceBox fx:id="mealChoiceBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                    <Label layoutX="202.0" layoutY="153.0" styleClass="fieldLabel" text="Time" GridPane.columnIndex="2" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" />
-                    <TextField fx:id="caloriesTextField" editable="false" focusTraversable="false" mouseTransparent="true" promptText="- -" GridPane.rowIndex="4" />
-                    <HBox fx:id="foodNameEntryHBox" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="10.0" styleClass="hboxContainer" GridPane.columnSpan="3" GridPane.rowIndex="2">
-                        <children>
-                            <ComboBox fx:id="foodNameComboBox" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-                        </children>
-                        <GridPane.margin>
-                            <Insets />
-                        </GridPane.margin>
-                        <padding>
-                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                        </padding>
-                    </HBox>
-                    <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="1">
-                        <children>
-                            <Label styleClass="fieldLabel" text="Food Name" />
-                            <ProgressIndicator fx:id="apiWaitingProgressIndicator" managed="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="17.0" visible="false">
-                                <padding>
+                  <GridPane styleClass="cardContent">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="NEVER" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="315.0" minWidth="10.0" prefWidth="315.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints vgrow="NEVER" />
+                      <RowConstraints vgrow="NEVER" />
+                    </rowConstraints>
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                     <children>
+                        <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="50.0" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: #11B981; -fx-background-radius: 500;" GridPane.halignment="CENTER" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                           <children>
+                              <SVGPath content="M9.99984 17.45C11.2498 17.45 12.2915 18.3333 13.3332 18.3333C15.8332 18.3333 18.3332 11.6666 18.3332 8.14998C18.3048 7.07058 17.8509 6.04617 17.0704 5.30002C16.2899 4.55387 15.2461 4.14648 14.1665 4.16665C12.3165 4.16665 10.8332 5.36665 9.99984 5.83331C9.1665 5.36665 7.68317 4.16665 5.83317 4.16665C4.75296 4.14428 3.70792 4.55094 2.92695 5.29755C2.14597 6.04416 1.69273 7.06986 1.6665 8.14998C1.6665 11.6666 4.1665 18.3333 6.6665 18.3333C7.70817 18.3333 8.74984 17.45 9.99984 17.45Z M8.3335 1.66669C9.16683 2.08335 10.0002 3.33335 10.0002 5.83335" fill="TRANSPARENT" scaleX="1.3" scaleY="1.3" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="1.66667" />
+                           </children>
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin>
+                        </StackPane>
+                        <Label styleClass="lightText" text="Total Calories Today" GridPane.columnIndex="1" />
+                        <Label text="70" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <font>
+                              <Font size="25.0" />
+                           </font>
+                           <styleClass>
+                              <String fx:value="greenLabel" />
+                              <String fx:value="caloriesDashboard" />
+                           </styleClass></Label>
+                        <Label styleClass="lightTexr" text="Goal" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
+                        <Label styleClass="cardTitle" text="2000 kcal" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font></Label>
+                     </children>
+                  </GridPane>
+
+                   <GridPane fx:id="gridPaneAddEntry" hgap="10.0" managed="false" styleClass="cardContent" vgap="10.0" visible="false">
+                       <columnConstraints>
+                           <ColumnConstraints hgrow="NEVER" maxWidth="179.0" minWidth="10.0" />
+                           <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" prefWidth="600.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" />
+                       </columnConstraints>
+                       <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                       </rowConstraints>
+                     <children>
+                        <Label styleClass="cardTitle" text="New Food Entry" />
+                        <Label styleClass="fieldLabel" text="Calories" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" />
+                        <Label styleClass="fieldLabel" text="Meal" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" />
+                        <Button fx:id="addEntryButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onButtonAddEntryClicked" text="Add Entry" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="TOP">
+                           <GridPane.margin>
+                              <Insets top="10.0" />
+                           </GridPane.margin>
+                        </Button>
+                        <Button fx:id="cancelButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onButtonCancelClicked" styleClass="cancelButton" text="Cancel" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="TOP">
+                           <GridPane.margin>
+                              <Insets top="10.0" />
+                           </GridPane.margin>
+                        </Button>
+                        <TextField fx:id="timeTextField" editable="false" focusTraversable="false" mouseTransparent="true" promptText="- -" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                        <ChoiceBox fx:id="mealChoiceBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Label layoutX="202.0" layoutY="153.0" styleClass="fieldLabel" text="Time" GridPane.columnIndex="2" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" />
+                        <TextField fx:id="caloriesTextField" editable="false" focusTraversable="false" mouseTransparent="true" promptText="- -" GridPane.rowIndex="4" />
+                        <HBox fx:id="foodNameEntryHBox" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="10.0" styleClass="hboxContainer" GridPane.columnSpan="3" GridPane.rowIndex="2">
+                           <children>
+                              <ComboBox fx:id="foodNameComboBox" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
+                           </children>
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="1">
+                           <children>
+                              <Label styleClass="fieldLabel" text="Food Name" />
+                              <ProgressIndicator fx:id="apiWaitingProgressIndicator" managed="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="17.0" visible="false">
+                                 <padding>
                                     <Insets bottom="2.0" />
-                                </padding>
-                            </ProgressIndicator>
-                        </children>
-                    </HBox>
-                </children>
-                <padding>
-                    <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
-                </padding>
-                <opaqueInsets>
-                    <Insets />
-                </opaqueInsets>
-                <VBox.margin>
-                    <Insets />
-                </VBox.margin>
-            </GridPane>
-            <Label styleClass="cardTitle" text="Your Food Logs">
-                <padding>
-                    <Insets top="20.0" />
-                </padding>
-            </Label>
+                                 </padding>
+                              </ProgressIndicator>
+                           </children>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
+                     </padding>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                   </GridPane>
+                  <Label styleClass="cardTitle" text="Your Food Logs">
+                     <padding>
+                        <Insets top="20.0" />
+                     </padding></Label>
 
-            <ListView fx:id="foodLogListView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS" />
+                  <ListView fx:id="foodLogListView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS" />
 
-        </VBox>
-    </AnchorPane>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="40.0" top="10.0" />
+               </padding>
+            </VBox>
+         </children>
+         <padding>
+            <Insets left="10.0" right="10.0" />
+         </padding>
+      </AnchorPane>
+   </content>
+   <padding>
+      <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+   </padding>
 </ScrollPane>
