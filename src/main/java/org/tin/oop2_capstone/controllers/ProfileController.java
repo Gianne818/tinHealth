@@ -1,15 +1,13 @@
 package org.tin.oop2_capstone.controllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import org.tin.oop2_capstone.model.entities.User;
 import org.tin.oop2_capstone.services.SessionManager;
 import org.tin.oop2_capstone.utils.InputManager;
 import org.tin.oop2_capstone.utils.TimeFormatter;
 
+import java.awt.event.ActionEvent;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 
@@ -18,16 +16,20 @@ public class ProfileController {
     private final User u = SessionManager.getInstance().getCurrentUser();
     @FXML
     private ScrollPane profileScrollPane;
+
+    @FXML private DatePicker bdayDatePicker;
     @FXML
     private TextField emailTextField,
             fullnameTextField,
-            birthdateTextField,
             weightTextField,
             heightTextField;
     @FXML
     private ChoiceBox<String> genderChoiceBox, activityLevelChoiceBox;
     @FXML
     private Label fullnameLabel, emailLabel;
+
+    @FXML
+    Button signOutButton, saveSettingsButton;
 
     public void initialize(){
         String gender = u.getIsMale() ? "Male" : "Female";
@@ -38,7 +40,7 @@ public class ProfileController {
 
         emailTextField.setText(u.getEmail());
         fullnameTextField.setText(u.getFullname());
-        birthdateTextField.setText(formattedDOB);
+        bdayDatePicker.getEditor().setText(formattedDOB);
         weightTextField.setText(String.format("%.1f", u.getWeightKg()));
         genderChoiceBox.getItems().addAll("Male", "Female");
         activityLevelChoiceBox.getItems().addAll(
@@ -56,6 +58,16 @@ public class ProfileController {
 
         InputManager.acceptOnlyDouble(weightTextField);
         InputManager.acceptOnlyDouble(heightTextField);
+    }
+
+    @FXML
+    private void onSignOutButtonClick(){
+        // TODO: also call confirm popup (sample on settings controller)
+    }
+
+    @FXML
+    private void onSaveSettingsClick(){
+        // TODO: also call confirm popup (sample on settings controller)
     }
 
 
