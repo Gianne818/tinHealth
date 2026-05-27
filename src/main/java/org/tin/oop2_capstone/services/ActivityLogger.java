@@ -1,36 +1,20 @@
 package org.tin.oop2_capstone.services;
 
-import org.tin.oop2_capstone.database.repositories.ActivityRepository;
-import org.tin.oop2_capstone.database.repositories.MealRepository;
-import org.tin.oop2_capstone.database.repositories.UserRepository;
 import org.tin.oop2_capstone.model.entities.Activity;
 import org.tin.oop2_capstone.model.entities.ActivityLog;
-import org.tin.oop2_capstone.model.entities.MealLog;
 import org.tin.oop2_capstone.model.observer.ActivityLogObserver;
-import org.tin.oop2_capstone.model.observer.MealLogObserver;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActivityLogger extends Logger<ActivityLogObserver> {
+public class ActivityLogger extends Logger {
     private static ActivityLogger instance;
     private ActivityLog activityLog;
     private final List<ActivityLogObserver> observers;
-    private ActivityRepository activityRepository;
-    private int userID;
-
-    private Activity activityToAdd;
-//    private static MealLogger instance;
-//    private MealLog mealLog;
-//    private final List<MealLogObserver> observers;
-//    private MealRepository mealRepository = DependencyService.getMealRepository();
-//    private int userID = SessionManager.getInstance().getCurrentUser().getUid();
 
     private ActivityLogger() {
         this.activityLog = new ActivityLog();
         this.observers = new ArrayList<>();
-        this.userID = SessionManager.getInstance().getCurrentUser().getUid();
-        this.activityRepository = DependencyService.getActivityRepository();
     }
 
     public static synchronized ActivityLogger getInstance() {
@@ -45,33 +29,19 @@ public class ActivityLogger extends Logger<ActivityLogObserver> {
         return activityLog != null && !activityLog.getActivities().isEmpty();
     }
 
-    public boolean addActivity(Activity activity){
-        this.activityToAdd = activity;
-        return logData();
-    }
-
     @Override
     public boolean saveToDB() {
-        if(activityRepository.addActivity(activityToAdd, userID)){
-            activityToAdd = null;
-            return true;
-        }
-        return false;
+        // wala pay database
+        return true;
     }
 
     @Override
     public void notifyObservers() {
-        for (ActivityLogObserver activityLogObserver : observers) {
-            activityLogObserver.onActivityLogChanged();
+        for (ActivityLogObserver observer : observers) {
+            for (Activity activity : activityLog.getActivities()) {
+                observer.onActivityLogChanged(activity);
+            }
         }
-    }
-
-    public boolean deleteActivityLog(int activityId){
-        if(activityRepository.deleteActivity(activityId)){
-            notifyObservers();
-            return true;
-        }
-        return false;
     }
 
     public void addObserver(ActivityLogObserver observer) {
@@ -91,5 +61,4 @@ public class ActivityLogger extends Logger<ActivityLogObserver> {
     public void setActivityLog(ActivityLog activityLog) {
         this.activityLog = activityLog;
     }
-
 }
