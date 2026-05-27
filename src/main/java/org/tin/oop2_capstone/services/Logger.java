@@ -5,7 +5,7 @@ import java.util.List;
 
 public abstract class Logger<T> {
 
-    protected final List<T> observers = new ArrayList<>();
+    protected List<T> observers = new ArrayList<>();
 
     // this is our template pattern
     public final boolean logData(){
@@ -17,15 +17,16 @@ public abstract class Logger<T> {
         return false;
     }
 
-    public final void addObserver(T observer){
+    public void addObserver(T observer){
         observers.add(observer);
     }
 
-    public final void removeObserver(T observer){
+    public void removeObserver(T observer){
         observers.remove(observer);
     }
 
     public abstract boolean isValid();
     public abstract boolean saveToDB();
-    public abstract  void notifyObservers();
+    public abstract void notifyObservers();
+
 }

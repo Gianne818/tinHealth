@@ -17,6 +17,8 @@ import org.tin.oop2_capstone.database.repositories.UserRepository;
 import org.tin.oop2_capstone.model.entities.Activity;
 import org.tin.oop2_capstone.model.entities.ActivityLog;
 import org.tin.oop2_capstone.model.entities.ActivityType;
+import org.tin.oop2_capstone.model.observer.ActivityLogObserver;
+import org.tin.oop2_capstone.services.ActivityLogger;
 import org.tin.oop2_capstone.services.DependencyService;
 import org.tin.oop2_capstone.services.SessionManager;
 import org.tin.oop2_capstone.utils.InputManager;
@@ -31,7 +33,7 @@ import java.util.function.Predicate;
 
 import static org.tin.oop2_capstone.database.DeleteData.deleteActivity;
 
-public class ActivityLogController {
+public class ActivityLogController implements ActivityLogObserver {
     @FXML private Label caloriesBurnedLabel;
     @FXML private Label totalDurationLabel;
     @FXML private Button buttonAddEntry;
@@ -54,8 +56,11 @@ public class ActivityLogController {
 
     private ActivityRepository activityRepository;
 
+    private ActivityLogger activityLogger;
+
     public ActivityLogController() {
         this.activityRepository = DependencyService.getActivityRepository();
+        this.activityLogger = ActivityLogger.getInstance();
     }
 
     public void initialize(){
@@ -76,6 +81,8 @@ public class ActivityLogController {
         setupDynamicCalorieCalculation();
         InputManager.acceptOnlyDouble(textfieldDuration);
         InputManager.acceptOnlyDouble(textfieldCaloriesBurned);
+
+        activityLogger.addObserver(this);
     }
 
     private void initActivityTypeComboBox(){
@@ -163,10 +170,13 @@ public class ActivityLogController {
                         true,
                         () -> {
                             showDeletePopup(currentActivity.getActivityType().getName(), () -> {
-                                boolean deleted = deleteActivity(currentActivity.getActivityId());
+                                boolean deleted = activityRepository.deleteActivity(currentActivity.getActivityId());
                                 if (deleted) {
-                                    activityGridPanes.clear();
-                                    setActivityLog();
+                                    /* added deleteActivityLog() here */
+                                    activityLogger.deleteActivityLog(currentActivity.getActivityId());
+                                    /*commmented out since UI updating is already done sa onActivityChanged */
+//                                    activityGridPanes.clear();
+//                                    setActivityLog();
                                 }
                             });
                         }
@@ -226,6 +236,8 @@ public class ActivityLogController {
                 return;
             }
 
+
+
             double duration = Double.parseDouble(textfieldDuration.getText());
             double calories = Double.parseDouble(textfieldCaloriesBurned.getText());
             int currentUserId = SessionManager.getInstance().getCurrentUser().getUid();
@@ -240,14 +252,19 @@ public class ActivityLogController {
             // 3. Pass the userId and the created activity object to the repository
             boolean isAdded = activityRepository.addActivity(newActivity, currentUserId);
 
+
             if (isAdded) {
+                /* save to db */
+                activityLogger.logData();
+
                 textfieldDuration.clear();
                 textfieldCaloriesBurned.clear();
                 activityTypeComboBox.getSelectionModel().clearSelection();
                 activityTypeComboBox.getEditor().clear();
 
-                activityGridPanes.clear();
-                setActivityLog();
+                /* commented because OnActivityChange does the Ui update now */
+//                activityGridPanes.clear();
+//                setActivityLog();
             }
         } catch (NumberFormatException e) {
             System.out.println("Invalid numeric input.");
@@ -320,4 +337,14 @@ public class ActivityLogController {
         totalDurationLabel.setText(showTotalDurationToday);
     }
 
+    @Override
+    public void onActivityLogChanged() {
+        //updateUI
+        Platform.runLater(() -> {
+            setActivityLog();
+            setCaloriesBurnedToday();
+            setTotalDurationToday();
+        });
+    }
 }
+

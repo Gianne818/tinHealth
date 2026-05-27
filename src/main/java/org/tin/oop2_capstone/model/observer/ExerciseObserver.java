@@ -7,6 +7,6 @@ public interface ExerciseObserver {
      * implemented by the ExerciseMonitor
      */
 
-    public void onAppChanged(String appName);
+    void onAppChanged(String appName);
 
 }
