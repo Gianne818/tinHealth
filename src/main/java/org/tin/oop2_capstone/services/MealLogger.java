@@ -22,7 +22,6 @@ public class MealLogger extends Logger<MealLogObserver> {
 
     private MealLogger() {
         this.mealLog = new MealLog();
-        this.observers = new ArrayList<>();
     }
 
     public static synchronized MealLogger getInstance() {
@@ -40,7 +39,7 @@ public class MealLogger extends Logger<MealLogObserver> {
 
     @Override
     public boolean isValid() {
-        return mealLog != null && !mealLog.getMeals().isEmpty();
+        return mealLog != null;
     }
 
     @Override
