@@ -19,7 +19,7 @@
              </VBox.margin>
           </SVGPath>
           <Label fx:id="notifyTitleLabel" styleClass="cardTitle" text="notifyTitleLabel" />
-          <Label fx:id="notifyMessageLabel" styleClass="popup-message" text="notifyMessageLabel" textAlignment="CENTER" wrapText="true">
+          <Label fx:id="notifyMessageLabel" styleClass="lightText" text="notifyMessageLabel" textAlignment="CENTER" wrapText="true">
              <font>
                 <Font size="14.0" />
              </font>

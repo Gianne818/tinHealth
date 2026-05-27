@@ -18,7 +18,7 @@
             </Label>
         </top>
         <center>
-            <Label fx:id="confirmMessageLabel" text="confirmMessageLabel" textAlignment="CENTER" wrapText="true" BorderPane.alignment="CENTER">
+            <Label fx:id="confirmMessageLabel" styleClass="lightText" text="confirmMessageLabel" textAlignment="CENTER" wrapText="true" BorderPane.alignment="CENTER">
                 <font>
                     <Font size="15.0" />
                 </font>

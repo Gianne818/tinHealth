@@ -168,7 +168,7 @@ public class SettingsController implements Initializable {
             mealReminders.setSelected(preferences.isMealReminders());
             achievementNotifications.setSelected(preferences.isAchievementNotifications());
 
-            targetWeightTextField.setText(preferences.getTargetWeightKG() > 0 ? String.valueOf(preferences.getTargetWeightKG()) : "");
+            targetWeightTextField.setText(preferences.getTargetWeightKG() > 0 ? String.valueOf(preferences.getTargetWeightKG()) : "0");
 
             //Snap calorieInG to nearest 100 in list
             int calIn = (int) Math.round(preferences.getDailyCalorieIn() / 100.0) * 100;
@@ -232,7 +232,7 @@ public class SettingsController implements Initializable {
             if(targetWeight == 0){
                 showConfirmPopup(() -> {
                     SessionManager.getInstance().getCurrentUserPrefs().setGoalType("Maintain");
-                    savePreferences(validatedWeight);
+                    savePreferences(0);
                 });
                 return;
             }
@@ -248,7 +248,7 @@ public class SettingsController implements Initializable {
 
 
             //if goal is Lose but target weight is HIGHER than current. My solution is to treat it as a typo by the user since the user explicitly selected lose weight in registration.
-            //BUT long time user wanting to switch goals might need to be evalutade so ill mark this TODO:
+            //BUT long time user wanting to switch goals might need to be evalutade so ill mark this
             if (targetWeight > currentWeight) {
                 showConfirmPopup(() -> {
                     SessionManager.getInstance().getCurrentUserPrefs().setGoalType("Gain");
