@@ -54,10 +54,22 @@
     -vibrant-blue: #3B82F6;
     -shadow-plain: #00000014;
     -shadow-hover: #00000026;
+    -grey: #808080FF;
 
     /* dark mode colors */
     -dark-blue: #1E2330; /*for sidebar bg*/
     -midnight-blue: #14161F; /*for bg*/
     -lighter-grey: #808491; /*for lightText colors*/
     -lighter-midnight-blue: #1A1E2B; /*for cards*/
+    -bit-darker-white: #EFF3FF;
+    -cobalt-blue: #252A3A;
+    -dark-blue-grey: #333848;
+
+    -dark-pastel-pink: #572b3b;
+    -dark-pastel-red: #552626;
+    -dark-pastel-green: #203940;
+    -dark-pastel-purple: #472b57;
+    -dark-pastel-orange: #4e312c;
+
+
 }

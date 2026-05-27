@@ -17,6 +17,7 @@ import org.tin.oop2_capstone.database.repositories.UserRepository;
 import org.tin.oop2_capstone.model.entities.Activity;
 import org.tin.oop2_capstone.model.entities.ActivityLog;
 import org.tin.oop2_capstone.model.entities.ActivityType;
+import org.tin.oop2_capstone.model.entities.UserPreferences;
 import org.tin.oop2_capstone.services.DependencyService;
 import org.tin.oop2_capstone.services.SessionManager;
 import org.tin.oop2_capstone.utils.InputManager;
@@ -146,7 +147,7 @@ public class ActivityLogController {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/log-card.fxml"));
                 GridPane root = fxmlLoader.load();
                 root.getStylesheets().add(getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm());
-                root.getStyleClass().addAll("light", "activityLogScrollPane");
+                root.getStyleClass().addAll("getThemeClass()", "activityLogScrollPane");
 
                 LogCardController logCardController = fxmlLoader.getController();
 
@@ -318,6 +319,14 @@ public class ActivityLogController {
         Double totalDurationToday = activityRepository.getTodayActivitiesDuration(SessionManager.getInstance().getCurrentUser().getUid());
         String showTotalDurationToday = String.format("%.0f", totalDurationToday);
         totalDurationLabel.setText(showTotalDurationToday);
+    }
+
+    private String getThemeClass() {
+        UserPreferences prefs = SessionManager.getInstance().getCurrentUserPrefs();
+        if (prefs != null && "Dark".equalsIgnoreCase(prefs.getTheme())) {
+            return "dark";
+        }
+        return "light";
     }
 
 }

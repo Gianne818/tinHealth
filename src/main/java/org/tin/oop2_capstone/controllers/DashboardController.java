@@ -103,7 +103,7 @@ public class DashboardController {
 
     public void initialize() {
         userId = SessionManager.getInstance().getCurrentUser().getUid();
-        dashboardScrollPane.getStyleClass().add("light");
+        dashboardScrollPane.getStyleClass().add(getThemeClass());
         macroDistData = FXCollections.observableArrayList();
         nutritionDetails = activityRepository.getWeeklyNutrients(userId);
 
@@ -129,7 +129,7 @@ public class DashboardController {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/log-card.fxml"));
                 GridPane root = fxmlLoader.load();
                 root.getStylesheets().add(getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm());
-                root.getStyleClass().addAll("light", "foodLogScrollPane");
+                root.getStyleClass().addAll(getThemeClass(), "foodLogScrollPane");
                 root.getStyleClass().remove("cardContent");
 
                 LogCardController logCardController = fxmlLoader.getController();
@@ -154,7 +154,7 @@ public class DashboardController {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/log-card.fxml"));
                 GridPane root = fxmlLoader.load();
                 root.getStylesheets().add(getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm());
-                root.getStyleClass().addAll("light", "activityLogScrollPane");
+                root.getStyleClass().addAll(getThemeClass(), "activityLogScrollPane");
                 root.getStyleClass().remove("cardContent");
 
                 LogCardController logCardController = fxmlLoader.getController();
@@ -177,7 +177,7 @@ public class DashboardController {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/tool-tip-view.fxml"));
             VBox root = fxmlLoader.load();
             popup.getScene().getStylesheets().add(getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm());
-            root.getStyleClass().add("light");
+            root.getStyleClass().add(getThemeClass());
             popup.getScene().setRoot(root);
             toolTipController = fxmlLoader.getController();
         } catch (IOException e) {
@@ -353,6 +353,13 @@ public class DashboardController {
         fatsLabelMacro.setText(String.format("%.1f%%", fats));
     }
 
+    private String getThemeClass() {
+        UserPreferences prefs = SessionManager.getInstance().getCurrentUserPrefs();
+        if (prefs != null && "Dark".equalsIgnoreCase(prefs.getTheme())) {
+            return "dark";
+        }
+        return "light";
+    }
 
     @FXML
     private void goToView(MouseEvent event) {
