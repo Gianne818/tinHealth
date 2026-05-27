@@ -2,7 +2,7 @@
 
 ## About Us
 This project was done in compliance with the requirements of CSIT228 - Objet Oriented Programming 2, but also done with the passion of the developers. As such, <mark>**Vibecoding was strictly prohibited**</mark> in the making of this project. [Here](
-https://docs.google.com/document/d/1fqUmNk6RI_klp43MLD7dBzI8g5GCK382ezChQ8j83qg/edit?usp=sharing) is a google documents link for some of the sources used in this project, that were shared among the group.
+https://docs.google.com/document/d/1fqUmNk6RI_klp43MLD7dBzI8g5GCK382ezChQ8j83qg/edit?usp=sharing) is a google documents link for some of the sources used in this project that were shared among the group.
 
 **Members**
 - Mc Cauley B. Bacalla -  Backend, Database Operations, UI Behavior, Class Diagrams
@@ -35,9 +35,9 @@ toward healthier and more informed lifestyle choices.
 
 ### Architectural Patterns
 - **Model-View-Controller (MVC):** Separation of application logic (`DashboardController`, `FoodLogController`), user interface (`dashboard-view.fxml`, `food-log-view.fxml`), and data models (`Meal`, `Activity`, `User`).
-- **Repository Pattern:** Abstracts database operations for specific entities (e.g., `UserRepository`, `MealRepository`, `ActivityRepository`).
-- **Data Access Object (DAO) Pattern:** Required to properly follow the dependency inversion principle. Uses abstracted DataSources (e.g., `IUserDataSource`, `IMealDataSource`, `MealDataSource`) to communicate with Database Operations.
-- - **Dependency Injection Pattern:** Was used in conjunction with the DAO pattern in order to folllow the dependency inversion principle. This was done via `DependencyService` that injects the dependencies on the controllers.
+- **Repository Pattern:** Abstracts data access layer for specific entities (e.g., `UserRepository`, `MealRepository`, `ActivityRepository`).
+- **Data Access Object (DAO) Pattern:** Required to properly follow the dependency inversion principle. Uses abstracted DataSources (e.g., `IUserDataSource`, `IMealDataSource`, `MealDataSource`) to communicate with Database Operations. This is also used in conjunction with the Repository Pattern in order for us the developers to interact with data sources without needing to know the details of the underlying database.
+-  **Dependency Injection Pattern:** Was used in conjunction with the DAO pattern in order to folllow the dependency inversion principle. This was done via `DependencyService` that injects the dependencies on the controllers.
 
 ### Creational Patterns
 - **Singleton Pattern:** Manages unique application-wide instances such as the database connection (`DatabaseConnection`) and active session state (`SessionManager`).
