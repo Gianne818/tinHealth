@@ -77,7 +77,7 @@ public class ProfileController {
             popupController.setOnConfirmAction(() ->
                     SceneSwitcher.use(signOutButton, "login-view")
                             .setCss("application")
-                            .setPrefDimensions(650, 400)
+                            .setPrefDimensions(400, 650)
                             .setMaximized(false)
                             .setResizeable(false)
                             .setTitle("+inHealth")
