@@ -101,22 +101,38 @@ public class ExercisePromptController {
     }
 
     private void dismiss() {
-        FadeTransition fadeOut = new FadeTransition(Duration.millis(180), backdropPane);
-        fadeOut.setFromValue(1);
-        fadeOut.setToValue(0);
-        fadeOut.setOnFinished(e -> {
-            if (onDismiss != null) onDismiss.run();
-            Stage stage = (Stage) backdropPane.getScene().getWindow();
-            stage.hide();
-        });
-        fadeOut.play();
+        if (promptTimer != null) promptTimer.stop();
+
+        if (backdropPane != null) {
+            FadeTransition fadeOut = new FadeTransition(Duration.millis(180), backdropPane);
+            fadeOut.setFromValue(1);
+            fadeOut.setToValue(0);
+            fadeOut.setOnFinished(e -> {
+                if (onDismiss != null) onDismiss.run();
+            });
+            fadeOut.play();
+        } else if (onDismiss != null) {
+            onDismiss.run();
+        }
     }
 
-    private void closeWindow(boolean isCompleted){
-        if(isCompleted){
+    private void closeWindow(boolean isCompleted) {
+        if (isCompleted) {
             //todo: save on db the activity
         }
+
         ExerciseMonitor.getInstance().resume();
+        if (promptTimer != null) promptTimer.stop();
+
+        if (completeButton != null && completeButton.getScene() != null && completeButton.getScene().getWindow() instanceof Stage stage) {
+            if (completeButton.getScene().getRoot() == backdropPane) {
+                dismiss();
+                return;
+            }
+            else {
+                stage.close();
+            }
+        }
         dismiss();
     }
 

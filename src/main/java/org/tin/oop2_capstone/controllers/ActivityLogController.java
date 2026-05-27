@@ -172,11 +172,8 @@ public class ActivityLogController implements ActivityLogObserver {
                             showDeletePopup(currentActivity.getActivityType().getName(), () -> {
                                 boolean deleted = activityRepository.deleteActivity(currentActivity.getActivityId());
                                 if (deleted) {
-                                    /* added deleteActivityLog() here */
                                     activityLogger.deleteActivityLog(currentActivity.getActivityId());
-                                    /*commmented out since UI updating is already done sa onActivityChanged */
-//                                    activityGridPanes.clear();
-//                                    setActivityLog();
+
                                 }
                             });
                         }
@@ -250,7 +247,7 @@ public class ActivityLogController implements ActivityLogObserver {
             newActivity.setLogDateTime(LocalDateTime.now());
 
             // 3. Pass the userId and the created activity object to the repository
-            boolean isAdded = activityRepository.addActivity(newActivity, currentUserId);
+            boolean isAdded = activityLogger.addActivity(newActivity);
 
 
             if (isAdded) {
