@@ -13,7 +13,6 @@ import java.util.List;
 public class MealLogger extends Logger<MealLogObserver> {
     private static MealLogger instance;
     private MealLog mealLog;
-    private final List<MealLogObserver> observers;
     private MealRepository mealRepository = DependencyService.getMealRepository();
     private int userID = SessionManager.getInstance().getCurrentUser().getUid();
 
@@ -22,7 +21,6 @@ public class MealLogger extends Logger<MealLogObserver> {
 
     private MealLogger() {
         this.mealLog = new MealLog();
-        this.observers = new ArrayList<>();
     }
 
     public static synchronized MealLogger getInstance() {
@@ -40,7 +38,7 @@ public class MealLogger extends Logger<MealLogObserver> {
 
     @Override
     public boolean isValid() {
-        return mealLog != null && !mealLog.getMeals().isEmpty();
+        return mealLog != null;
     }
 
     @Override
