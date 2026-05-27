@@ -1,5 +1,6 @@
 package org.tin.oop2_capstone.controllers;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -21,18 +22,18 @@ import org.tin.oop2_capstone.database.repositories.ActivityRepository;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
 import org.tin.oop2_capstone.database.repositories.UserPrefRepository;
 import org.tin.oop2_capstone.database.repositories.UserRepository;
-import org.tin.oop2_capstone.model.entities.Meal;
-import org.tin.oop2_capstone.model.entities.NutritionDetails;
-import org.tin.oop2_capstone.model.entities.User;
-import org.tin.oop2_capstone.model.entities.UserPreferences;
+import org.tin.oop2_capstone.model.entities.*;
+import org.tin.oop2_capstone.model.observer.ActivityLogObserver;
+import org.tin.oop2_capstone.model.observer.MealLogObserver;
 import org.tin.oop2_capstone.services.DependencyService;
 import org.tin.oop2_capstone.services.SessionManager;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 
-public class HealthController {
+public class HealthController implements MealLogObserver, ActivityLogObserver {
     //PROGRESS BARS START
     @FXML private  Label hcaloriesLabel;
     @FXML private ProgressBar caloriesProgressBar;
@@ -133,38 +134,13 @@ public class HealthController {
 
 
     public void initialize() {
-        initCaloriesLineChart();
-
-        //Same Logic in ToolTipController START
-        List<Meal> userMealsToday = mealRepository.getUserMealsToday();
-        double calories = 0.0,  protein = 0.0, fat = 0.0, cholesterol = 0.0, carbs = 0.0, sodium = 0.0, sugar = 0.0, fiber = 0.0;
-
-        for (Meal m : userMealsToday) {
-            NutritionDetails nd = m.getNutritionDetails();
-            if (nd != null) {
-                calories += nd.getCalories();
-                protein += nd.getProtein();
-                fat += nd.getFat();
-                cholesterol += nd.getCholesterol();
-                sodium += nd.getSodium();
-                sugar += nd.getSugar();
-                fiber += nd.getFiber();
-                carbs += nd.getCarbs();
-            }
-        }
-        //Same Logic in ToolTipController END
-        User user = SessionManager.getInstance().getCurrentUser();
-        UserPreferences userpreferences = SessionManager.getInstance().getCurrentUserPrefs();
-        NutritionDetails goals = userpreferences.getTargetMacros(user);
-
-        //Load Values into ProgressBars
-        setLabelsAndProgressBars(calories, cholesterol, protein, sodium, fat, sugar, carbs, fiber, goals);
-        drawRadarChart(calories/goals.getCalories(), protein/goals.getProtein(), carbs/goals.getCarbs(), fat/goals.getFat(), fiber/goals.getFiber(), sodium/goals.getSodium());
-
+        // remove the old initialize setup logic and made a separate method for that (for reusability)
         macroDistData = FXCollections.observableArrayList();
-        updateMacroDist(protein, carbs, fat);
-
         initMacroDist();
+        setupWeeklyChart();
+
+        // Initial data load and UI population
+        refreshDashboard();
     }
 
     private void setLabelsAndProgressBars(Double calories, Double cholesterol, Double protein, Double sodium, Double fat, Double sugar, Double carbs, Double fiber, NutritionDetails goals) {
@@ -265,12 +241,22 @@ public class HealthController {
         mnFiberGoal.setText(String.format("%.2f", goals.getFiber()));
     }
 
-    //For the line chart of Weekly Nutrient Trends
-    private void initCaloriesLineChart() {
+    private void setupWeeklyChart() {
         xAxis.setCategories(FXCollections.observableArrayList("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"));
         xAxis.setGapStartAndEnd(false);
         xAxis.setTickMarkVisible(false);
 
+        LineChart<String, Number> chart = (LineChart<String, Number>) weeklyChart;
+        chart.setLegendVisible(true);
+
+        NumberAxis yAxis = (NumberAxis) chart.getYAxis();
+        yAxis.setAutoRanging(true);
+
+        setupGlobalTooltip(chart);
+    }
+
+    //For the line chart of Weekly Nutrient Trends
+    private void updateWeeklyChartData() {
         LineChart<String, Number> chart = (LineChart<String, Number>) weeklyChart;
         chart.getData().clear();
 
@@ -344,14 +330,7 @@ public class HealthController {
             fiberIn.getData().add(new XYChart.Data<>(days[i], dailyFib[i]));
         }
 
-        NumberAxis yAxis = (NumberAxis) chart.getYAxis();
-        yAxis.setAutoRanging(true);
-
         chart.getData().addAll(calIn, protIn, carbIn, fatIn, cholesterolIn, sugarIn, sodiumIn, fiberIn);
-
-        chart.setLegendVisible(true);
-
-        setupGlobalTooltip(chart);
     }
 
     private void setupGlobalTooltip(LineChart<String, Number> chart) {
@@ -529,6 +508,61 @@ public class HealthController {
         fatsLabelMacro.setText(String.format("%.2fg", fats));
     }
 
+    private void refreshDashboard() {
+        // --- Part 1: Recalculate Today's Summary ---
+        List<Meal> userMealsToday = mealRepository.getUserMealsToday();
+        double caloriesConsumed = 0.0, protein = 0.0, fat = 0.0, cholesterol = 0.0, carbs = 0.0, sodium = 0.0, sugar = 0.0, fiber = 0.0;
+
+        for (Meal m : userMealsToday) {
+            NutritionDetails nd = m.getNutritionDetails();
+            if (nd != null) {
+                caloriesConsumed += nd.getCalories();
+                protein += nd.getProtein();
+                fat += nd.getFat();
+                cholesterol += nd.getCholesterol();
+                sodium += nd.getSodium();
+                sugar += nd.getSugar();
+                fiber += nd.getFiber();
+                carbs += nd.getCarbs();
+            }
+        }
+
+        User user = SessionManager.getInstance().getCurrentUser();
+        int userId = user.getUid();
+
+//        double caloriesBurned = activityRepository.getTodayCaloriesBurned(userId);
+        double caloriesBurned = 0.0;
+        List<Activity> userActivities = activityRepository.getUserActivities();
+        if(userActivities != null){
+            for(Activity activity: userActivities){
+                if(activity.getLogDateTime().toLocalDate().equals(LocalDate.now())){
+                    caloriesBurned += activity.getCalories();
+                }
+            }
+        }
+        double netCalories = caloriesConsumed - caloriesBurned;
+
+        UserPreferences userpreferences = SessionManager.getInstance().getCurrentUserPrefs();
+        NutritionDetails goals = userpreferences.getTargetMacros(user);
+
+        setLabelsAndProgressBars(netCalories, cholesterol, protein, sodium, fat, sugar, carbs, fiber, goals);
+        drawRadarChart(netCalories / goals.getCalories(), protein / goals.getProtein(), carbs / goals.getCarbs(), fat / goals.getFat(), fiber / goals.getFiber(), sodium / goals.getSodium());
+        updateMacroDist(protein, carbs, fat);
+        updateWeeklyChartData();
+    }
+
+    @Override
+    public void onActivityLogChanged() {
+        // when an activity is logged, refresh the entire dashboard to update net calories.
+        Platform.runLater(() -> refreshDashboard());
+    }
+
+    @Override
+    public void onMealLogChanged() {
+        // when a meal is logged, refresh the entire dashboard.
+        Platform.runLater(() -> refreshDashboard());
+    }
+  
     private String getThemeClass() {
         UserPreferences prefs = SessionManager.getInstance().getCurrentUserPrefs();
         if (prefs != null && "Dark".equalsIgnoreCase(prefs.getTheme())) {

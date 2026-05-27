@@ -171,11 +171,7 @@ public class ActivityLogController implements ActivityLogObserver {
                         true,
                         () -> {
                             showDeletePopup(currentActivity.getActivityType().getName(), () -> {
-                                boolean deleted = activityRepository.deleteActivity(currentActivity.getActivityId());
-                                if (deleted) {
-                                    activityLogger.deleteActivityLog(currentActivity.getActivityId());
-
-                                }
+                                activityLogger.deleteActivityLog(currentActivity.getActivityId());
                             });
                         }
                 );
@@ -246,14 +242,13 @@ public class ActivityLogController implements ActivityLogObserver {
             newActivity.setQuantity(duration);
             newActivity.setCalories(calories);
             newActivity.setLogDateTime(LocalDateTime.now());
+            newActivity.setUnit("minutes");
 
             // 3. Pass the userId and the created activity object to the repository
             boolean isAdded = activityLogger.addActivity(newActivity);
 
 
             if (isAdded) {
-                /* save to db */
-                activityLogger.logData();
 
                 textfieldDuration.clear();
                 textfieldCaloriesBurned.clear();
@@ -352,4 +347,3 @@ public class ActivityLogController implements ActivityLogObserver {
         return "light";
     }
 }
-
