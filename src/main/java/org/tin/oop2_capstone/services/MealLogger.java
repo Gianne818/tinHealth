@@ -13,7 +13,6 @@ import java.util.List;
 public class MealLogger extends Logger<MealLogObserver> {
     private static MealLogger instance;
     private MealLog mealLog;
-    private final List<MealLogObserver> observers;
     private MealRepository mealRepository = DependencyService.getMealRepository();
     private int userID = SessionManager.getInstance().getCurrentUser().getUid();
 
