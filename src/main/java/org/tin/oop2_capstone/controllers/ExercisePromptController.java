@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.tin.oop2_capstone.database.repositories.UserPrefRepository;
 import org.tin.oop2_capstone.model.entities.User;
+import org.tin.oop2_capstone.model.entities.UserPreferences;
 import org.tin.oop2_capstone.services.DependencyService;
 import org.tin.oop2_capstone.services.ExerciseDifficultyService;
 import org.tin.oop2_capstone.services.ExerciseMonitor;
@@ -174,6 +175,7 @@ public class ExercisePromptController {
             unitLabel.setText("sec");
         }
     }
+
 
 
 }

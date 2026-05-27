@@ -18,8 +18,11 @@
     -bg-default2: white;
     -bg-default3: -brand-black;
     -bg-default4: -off-white;
+    -bg-default5: black;
     -bg-default-border: -even-lighter-grey;
     -bg-default-border2: -light-grey;
+    -light-text-color: -grey;
+    -svg-colors: -brand-black;
 }
 
 .light .dashboardScrollPane,
@@ -65,21 +68,4 @@
     -accent-color: -hot-pink;
     -light-accent-color: -pink;
     -bg-color-accent: -pastel-pink;
-}
-
-
-#anchorPaneSideBar .label {
-    -fx-text-fill: -brand-black;
-}
-
-#anchorPaneSideBar .icon-nav,
-#anchorPaneSideBar .notificationsIcon{
-    -fx-stroke: -brand-black;
-    -fx-fill: transparent;
-}
-
-#anchorPaneSideBar .icon-nav-dashboard,
-#anchorPaneSideBar .icon-nav-settings {
-    -fx-fill: -brand-black;
-    -fx-stroke: transparent;
 }

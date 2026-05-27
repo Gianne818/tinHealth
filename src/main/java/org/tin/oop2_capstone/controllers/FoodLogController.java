@@ -83,7 +83,7 @@ public class FoodLogController implements MealLogObserver {
 
     public void initialize(){
         mealLogger.addObserver(this);
-        foodLogScrollPane.getStyleClass().add("light");
+        foodLogScrollPane.getStyleClass().add(getThemeClass());
         meals = FXCollections.observableArrayList();
         foodGridPanes = FXCollections.observableArrayList();
         setFoodLog();
@@ -281,7 +281,7 @@ public class FoodLogController implements MealLogObserver {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/log-card.fxml"));
                     GridPane root = fxmlLoader.load();
                     root.getStylesheets().add(getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm());
-                    root.getStyleClass().addAll("light", "foodLogScrollPane");
+                    root.getStyleClass().addAll(getThemeClass(), "foodLogScrollPane");
 
                     LogCardController logCardController = fxmlLoader.getController();
 
@@ -486,5 +486,13 @@ public class FoodLogController implements MealLogObserver {
     }
 
     /** End of State Functions */
+
+    private String getThemeClass() {
+        UserPreferences prefs = SessionManager.getInstance().getCurrentUserPrefs();
+        if (prefs != null && "Dark".equalsIgnoreCase(prefs.getTheme())) {
+            return "dark";
+        }
+        return "light";
+    }
 }
 
