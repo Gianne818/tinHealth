@@ -16,8 +16,10 @@ import org.tin.oop2_capstone.database.repositories.MealRepository;
 import org.tin.oop2_capstone.database.repositories.UserPrefRepository;
 import org.tin.oop2_capstone.database.repositories.UserRepository;
 import org.tin.oop2_capstone.model.entities.*;
+import org.tin.oop2_capstone.model.observer.MealLogObserver;
 import org.tin.oop2_capstone.model.state.*;
 import org.tin.oop2_capstone.services.DependencyService;
+import org.tin.oop2_capstone.services.MealLogger;
 import org.tin.oop2_capstone.services.SessionManager;
 import org.tin.oop2_capstone.utils.TimeFormatter;
 
@@ -34,7 +36,7 @@ import java.util.List;
 
 import java.util.Map;
 //CHECK
-public class FoodLogController {
+public class FoodLogController implements MealLogObserver {
     @FXML Label todayCaloriesLabel;
     @FXML Label todayCaloriesGoalLabel;
     @FXML ListView <GridPane> foodLogListView;
@@ -64,12 +66,23 @@ public class FoodLogController {
     private UserRepository userRepository;
     private MealRepository mealRepository;
 
+    private MealLogger mealLogger = MealLogger.getInstance();
     public FoodLogController() {
         this.userRepository = DependencyService.getUserRepository();
         this.mealRepository = DependencyService.getMealRepository();
     }
 
+
+    @Override
+    public void onMealLogChanged() {
+        Platform.runLater(() -> {
+            refreshFoodLog();
+            setCaloriesToday();
+        });
+    }
+
     public void initialize(){
+        mealLogger.addObserver(this);
         foodLogScrollPane.getStyleClass().add("light");
         meals = FXCollections.observableArrayList();
         foodGridPanes = FXCollections.observableArrayList();
@@ -291,11 +304,7 @@ public class FoodLogController {
                             true,
                             () -> {
                                 showDeletePopup(foodName, () -> {
-                                    boolean deleted = org.tin.oop2_capstone.database.DeleteData.deleteMeal(currentMeal.getMealId());
-                                    if (deleted) {
-                                        foodGridPanes.clear();
-                                        setFoodLog();
-                                    }
+                                     mealLogger.deleteMealLog(currentMeal.getMealId());
                                 });
                             }
                     );
@@ -351,32 +360,15 @@ public class FoodLogController {
                 LocalDate logTime = LocalDate.now();
 
                 Meal meal = new Meal(mealType, consumable, logTime, timeTextField.getText());
-                int userId = userRepository.getUser().getUid();
-
-                // Check if food is pending (API call failed)
-                if (consumable.isPending()) {
-                    // Food already pending, just save it
-                    if(mealRepository.addMeal(meal, userId)){
-                        Platform.runLater(() -> {
-                            setState(new PendingState());
-                            refreshFoodLog();
-                            clearAddEntryForm();
-                        });
-                    } else {
-                        Platform.runLater(() -> setState(new ErrorState()));
-                    }
+                if(mealLogger.addMeal(meal)){
+                    Platform.runLater(() -> {
+                        setState(new SuccessState());
+                        clearAddEntryForm();
+                    });
                 } else {
-                    // Food has valid nutrition data, proceed normally
-                    if(mealRepository.addMeal(meal, userId)){
-                        Platform.runLater(() -> {
-                            setState(new SuccessState());
-                            refreshFoodLog();
-                            clearAddEntryForm();
-                        });
-                    } else {
-                        Platform.runLater(() -> setState(new ErrorState()));
-                    }
+                    Platform.runLater(() -> setState(new ErrorState()));
                 }
+
 
             } catch (Exception e) {
                 Platform.runLater(() -> setState(new ErrorState()));
@@ -385,12 +377,6 @@ public class FoodLogController {
         }).start();
     }
 
-    private boolean isRetryable(int httpCode) {
-        return httpCode == 429  // Rate limited
-                || httpCode == 503  // Service unavailable
-                || httpCode == 504  // Gateway timeout
-                || httpCode == -1;  // Connection error
-    }
 
     private void handleAPIError(int httpCode) {
         Platform.runLater(() -> {
@@ -428,11 +414,6 @@ public class FoodLogController {
         foodNameEntryHBox.getChildren().removeIf(node -> node != foodNameComboBox);
     }
 
-    private void showError(String message) {
-        // TODO: Show error on actual UI
-        System.out.println("Error: " + message);
-    }
-
     public void onButtonCancelClicked(ActionEvent actionEvent) {
         // TODO: Pressing this, will empty everything...
         gridPaneAddEntry.setVisible(!addEntryisVisible);
@@ -462,16 +443,6 @@ public class FoodLogController {
 
     /** Mga State Functions */
 
-    public void enableFoodLogInput() {
-//        buttonAddFood.setDisable(false);
-//        addEntryButton.setDisable(false);
-    }
-
-    public void disableFoodLogInput() {
-//        buttonAddFood.setDisable(true);
-//        addEntryButton.setDisable(true);
-    }
-
     public void showLoadingIndicator() {
         apiWaitingProgressIndicator.setManaged(true);
         apiWaitingProgressIndicator.setVisible(true);
@@ -491,17 +462,6 @@ public class FoodLogController {
         // TODO: Implement error message hiding
     }
 
-    public void showPendingIndicator() {
-        // TODO: Implement pending indicator display
-        // e.g., show a message indicating data is pending sync
-    }
-
-    public void createPendingFoodEntry() {
-        // TODO: Implement pending food entry creation
-        // Create food object with isPending = true
-        // Set API values to zero
-        // Proceed with SyncMonitor
-    }
 
     public void populateFoodList() {
         // Refresh the food list view
