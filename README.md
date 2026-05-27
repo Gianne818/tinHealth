@@ -47,7 +47,7 @@ toward healthier and more informed lifestyle choices.
 - **Adapter Pattern:** Adapts external nutritional API responses to internal application models (`FoodParser` & `FoodSelector`).
 
 ### Behavioral Patterns
-- **Observer Pattern:** Implemented for activity and food logging to trigger updates on data changes, as well as to trigger exercise prompts by observing the current active app running (`ActivityLogObserver`, `MealLogObserver`, `ExerciseObserver`).
+- **Observer Pattern:** Implemented for activity and food logging to trigger updates on data changes, as well as to trigger exercise prompts by observing the current active app running (`ActivityLogObserver`, `MealLogObserver`, `ExerciseObserver`). This exercise observer currently only works for mac.
 - **State Pattern:** Manages execution states including loading, error, success, and idle states (`State`, `LoadingState`, `ErrorState`, `SuccessState`, `IdleState`).
 - **Template Pattern:** Implemented in the abstract `Logger<T>` class. It defines the exact skeleton of the data logging workflow inside the final `logData()` method, enforcing a sequence of conditional validation (`isValid()`), persistence (`saveToDB()`), and event signaling (`notifyObservers()`), while deferring the execution specifics to concrete subclasses (`MealLogger`, `ActivityLogger`).
 
