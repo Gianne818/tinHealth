@@ -20,11 +20,6 @@ public class ActivityLogger extends Logger<ActivityLogObserver> {
     private int userID;
 
     private Activity activityToAdd;
-//    private static MealLogger instance;
-//    private MealLog mealLog;
-//    private final List<MealLogObserver> observers;
-//    private MealRepository mealRepository = DependencyService.getMealRepository();
-//    private int userID = SessionManager.getInstance().getCurrentUser().getUid();
 
     private ActivityLogger() {
         this.activityLog = new ActivityLog();
