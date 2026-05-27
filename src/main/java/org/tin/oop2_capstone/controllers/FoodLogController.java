@@ -523,7 +523,7 @@ public class FoodLogController {
     public void setCalorieGoalToday(){
         Double goalCalorieToday = SessionManager.getInstance().getCurrentUserPrefs().getDailyCalorieIn();
         String showGoalToday = String.format("%.0f", goalCalorieToday);
-        todayCaloriesGoalLabel.setText(showGoalToday);
+        todayCaloriesGoalLabel.setText(showGoalToday + " kcal");
     }
 
     /** End of State Functions */
