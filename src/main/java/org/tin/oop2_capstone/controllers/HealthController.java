@@ -18,11 +18,15 @@ import javafx.scene.Node;
 import javafx.scene.control.PopupControl;
 import javafx.scene.layout.VBox;
 import org.tin.oop2_capstone.database.RetrieveData;
+import org.tin.oop2_capstone.database.repositories.ActivityRepository;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
+import org.tin.oop2_capstone.database.repositories.UserPrefRepository;
+import org.tin.oop2_capstone.database.repositories.UserRepository;
 import org.tin.oop2_capstone.model.entities.Meal;
 import org.tin.oop2_capstone.model.entities.NutritionDetails;
 import org.tin.oop2_capstone.model.entities.User;
 import org.tin.oop2_capstone.model.entities.UserPreferences;
+import org.tin.oop2_capstone.services.DependencyService;
 import org.tin.oop2_capstone.services.SessionManager;
 
 import java.io.IOException;
@@ -116,14 +120,27 @@ public class HealthController {
     double[] dailySug = new double[7];
     double[] dailyFib = new double[7];
 
+    private UserRepository userRepository;
+    private MealRepository mealRepository;
+    private ActivityRepository activityRepository;
+    private UserPrefRepository userPrefRepository;
+
+    public HealthController() {
+        this.userRepository = DependencyService.getUserRepository();
+        this.mealRepository = DependencyService.getMealRepository();
+        this.activityRepository = DependencyService.getActivityRepository();
+        this.userPrefRepository = DependencyService.getUserPrefRepository();
+    }
+
+
     public void initialize() {
         initCaloriesLineChart();
 
         //Same Logic in ToolTipController START
-        List<Meal> userMeals = RetrieveData.fetchUserMealsToday(SessionManager.getInstance().getCurrentUser().getUid());
+        List<Meal> userMealsToday = mealRepository.getUserMealsToday();
         double calories = 0.0,  protein = 0.0, fat = 0.0, cholesterol = 0.0, carbs = 0.0, sodium = 0.0, sugar = 0.0, fiber = 0.0;
 
-        for (Meal m : userMeals) {
+        for (Meal m : userMealsToday) {
             NutritionDetails nd = m.getNutritionDetails();
             if (nd != null) {
                 calories += nd.getCalories();
@@ -144,6 +161,7 @@ public class HealthController {
         //Load Values into ProgressBars
         setLabelsAndProgressBars(calories, cholesterol, protein, sodium, fat, sugar, carbs, fiber, goals);
         drawRadarChart(calories/goals.getCalories(), protein/goals.getProtein(), carbs/goals.getCarbs(), fat/goals.getFat(), fiber/goals.getFiber(), sodium/goals.getSodium());
+
         macroDistData = FXCollections.observableArrayList();
         updateMacroDist(protein, carbs, fat);
 
@@ -271,7 +289,7 @@ public class HealthController {
 
         int userId = SessionManager.getInstance().getCurrentUser().getUid();
 
-        List<Meal> weeklyMeals = RetrieveData.fetchWeeklyUserMeals(userId);
+        List<Meal> weeklyMeals = mealRepository.getWeeklyUserMeals();
 
         if (weeklyMeals != null) {
             for (Meal m : weeklyMeals) {
