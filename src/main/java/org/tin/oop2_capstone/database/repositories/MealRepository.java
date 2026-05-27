@@ -57,9 +57,12 @@ public class MealRepository {
                 userMeals = new ArrayList<>();
                 userMeals.add(meal);
             }
-            fetchInitialMealData(userId);
             return true;
         }
         return false;
+    }
+
+    public boolean deleteMeal(int mealId){
+        return mealDataSource.deleteMeal(mealId);
     }
 }

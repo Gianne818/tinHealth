@@ -1,20 +1,67 @@
 package org.tin.oop2_capstone.services;
 
-public class MealLogger extends Logger {
-    // todo: implement this class. Should be a singleton
+import org.tin.oop2_capstone.database.repositories.MealRepository;
+import org.tin.oop2_capstone.model.entities.Activity;
+import org.tin.oop2_capstone.model.entities.Meal;
+import org.tin.oop2_capstone.model.entities.MealLog;
+import org.tin.oop2_capstone.model.observer.MealLogObserver;
+import org.tin.oop2_capstone.model.observer.MealLogObserver;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MealLogger extends Logger<MealLogObserver> {
+    private static MealLogger instance;
+    private MealLog mealLog;
+    private final List<MealLogObserver> observers;
+    private MealRepository mealRepository = DependencyService.getMealRepository();
+    private int userID = SessionManager.getInstance().getCurrentUser().getUid();
+
+
+    private MealLogger() {
+        this.mealLog = new MealLog();
+        this.observers = new ArrayList<>();
+    }
+
+    public static synchronized MealLogger getInstance() {
+        if (instance == null) {
+            instance = new MealLogger();
+        }
+        return instance;
+    }
+
     @Override
     public boolean isValid() {
-        return false;
+        return mealLog != null && !mealLog.getMeals().isEmpty();
     }
 
     @Override
     public void saveToDB() {
-
+        // wala pay database
     }
 
     @Override
     public void notifyObservers() {
+        for(MealLogObserver mealLogObserver : observers){
+            mealLogObserver.onMealLogChanged();
+        }
 
+    }
+
+    public boolean deleteMealLog(int mealId){
+        if(mealRepository.deleteMeal(mealId)){
+            notifyObservers();
+            return true;
+        }
+        return false;
+    }
+
+    public MealLog getActivityLog() {
+        return mealLog;
+    }
+
+    public void setMealLog(MealLog mealLog) {
+        this.mealLog = mealLog;
     }
 
 }
