@@ -308,7 +308,7 @@
 
 /*Colors for health analytics card*/
 /*start*/
-#hcarbsLabel{
+#hcarbsLabel, #todayCaloriesLabel{
     -fx-text-fill: -green;
 }
 
