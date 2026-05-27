@@ -106,7 +106,7 @@ public class DashboardController implements MealLogObserver, ActivityLogObserver
 
     public void initialize() {
         userId = SessionManager.getInstance().getCurrentUser().getUid();
-        dashboardScrollPane.getStyleClass().add("light");
+        dashboardScrollPane.getStyleClass().add(getThemeClass());
         macroDistData = FXCollections.observableArrayList();
 
         mealsList = new ArrayList<>();
@@ -132,7 +132,7 @@ public class DashboardController implements MealLogObserver, ActivityLogObserver
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/log-card.fxml"));
                 GridPane root = fxmlLoader.load();
                 root.getStylesheets().add(getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm());
-                root.getStyleClass().addAll("light", "foodLogScrollPane");
+                root.getStyleClass().addAll(getThemeClass(), "foodLogScrollPane");
                 root.getStyleClass().remove("cardContent");
 
                 LogCardController logCardController = fxmlLoader.getController();
@@ -157,7 +157,7 @@ public class DashboardController implements MealLogObserver, ActivityLogObserver
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/log-card.fxml"));
                 GridPane root = fxmlLoader.load();
                 root.getStylesheets().add(getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm());
-                root.getStyleClass().addAll("light", "activityLogScrollPane");
+                root.getStyleClass().addAll(getThemeClass(), "activityLogScrollPane");
                 root.getStyleClass().remove("cardContent");
 
                 LogCardController logCardController = fxmlLoader.getController();
@@ -180,7 +180,7 @@ public class DashboardController implements MealLogObserver, ActivityLogObserver
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/tool-tip-view.fxml"));
             VBox root = fxmlLoader.load();
             popup.getScene().getStylesheets().add(getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm());
-            root.getStyleClass().add("light");
+            root.getStyleClass().add(getThemeClass());
             popup.getScene().setRoot(root);
             toolTipController = fxmlLoader.getController();
         } catch (IOException e) {
@@ -390,5 +390,13 @@ public class DashboardController implements MealLogObserver, ActivityLogObserver
     public void onMealLogChanged() {
         // When a meal log changes, refresh the entire dashboard UI.
         Platform.runLater(() -> refreshUI());
+    }
+  
+    private String getThemeClass() {
+        UserPreferences prefs = SessionManager.getInstance().getCurrentUserPrefs();
+        if (prefs != null && "Dark".equalsIgnoreCase(prefs.getTheme())) {
+            return "dark";
+        }
+        return "light";
     }
 }

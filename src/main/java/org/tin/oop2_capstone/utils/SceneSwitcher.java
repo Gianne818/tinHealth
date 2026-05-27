@@ -97,7 +97,7 @@ public class SceneSwitcher {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/" + fxml + ".fxml"));
             Scene scene = new Scene(fxmlLoader.load());
-
+            stage.setMaximized(false);
             stage.setScene(scene);
 
             if(minHeight!=-1 && minWidth!=-1){

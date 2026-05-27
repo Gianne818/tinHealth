@@ -341,7 +341,7 @@ public class HealthController implements MealLogObserver, ActivityLogObserver {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/tool-tip-view.fxml"));
             VBox root = fxmlLoader.load();
             popup.getScene().getStylesheets().add(getClass().getResource("/org/tin/oop2_capstone/styles/application.css").toExternalForm());
-            root.getStyleClass().add("light");
+            root.getStyleClass().add(getThemeClass());
             popup.getScene().setRoot(root);
             toolTipController = fxmlLoader.getController();
         } catch (IOException e) {
@@ -545,12 +545,9 @@ public class HealthController implements MealLogObserver, ActivityLogObserver {
         UserPreferences userpreferences = SessionManager.getInstance().getCurrentUserPrefs();
         NutritionDetails goals = userpreferences.getTargetMacros(user);
 
-        // Update Progress Bars, Radar Chart, and Pie Chart
         setLabelsAndProgressBars(netCalories, cholesterol, protein, sodium, fat, sugar, carbs, fiber, goals);
         drawRadarChart(netCalories / goals.getCalories(), protein / goals.getProtein(), carbs / goals.getCarbs(), fat / goals.getFat(), fiber / goals.getFiber(), sodium / goals.getSodium());
         updateMacroDist(protein, carbs, fat);
-
-        // --- Part 2: Recalculate Weekly Chart ---
         updateWeeklyChartData();
     }
 
@@ -565,4 +562,13 @@ public class HealthController implements MealLogObserver, ActivityLogObserver {
         // when a meal is logged, refresh the entire dashboard.
         Platform.runLater(() -> refreshDashboard());
     }
+  
+    private String getThemeClass() {
+        UserPreferences prefs = SessionManager.getInstance().getCurrentUserPrefs();
+        if (prefs != null && "Dark".equalsIgnoreCase(prefs.getTheme())) {
+            return "dark";
+        }
+        return "light";
+    }
+
 }
