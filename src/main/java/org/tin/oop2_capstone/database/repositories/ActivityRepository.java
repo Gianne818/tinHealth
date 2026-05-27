@@ -78,6 +78,15 @@ public class ActivityRepository {
         return false;
     }
 
+    public boolean deleteActivity(int activityID){
+        if(activityDataSource.deleteActivity(activityID)){
+            if (userActivities != null) {
+                return userActivities.removeIf(activity -> activity.getActivityId() == activityID);
+            }
+        }
+        return false;
+    }
+
     public ObservableList<ActivityType> getActivityTypes(){
         return (ObservableList<ActivityType>) activityDataSource.fetchActivityTypes();
     }
