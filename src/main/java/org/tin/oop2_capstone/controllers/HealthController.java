@@ -25,7 +25,9 @@ import org.tin.oop2_capstone.database.repositories.UserRepository;
 import org.tin.oop2_capstone.model.entities.*;
 import org.tin.oop2_capstone.model.observer.ActivityLogObserver;
 import org.tin.oop2_capstone.model.observer.MealLogObserver;
+import org.tin.oop2_capstone.services.ActivityLogger;
 import org.tin.oop2_capstone.services.DependencyService;
+import org.tin.oop2_capstone.services.MealLogger;
 import org.tin.oop2_capstone.services.SessionManager;
 
 import java.io.IOException;
@@ -135,6 +137,8 @@ public class HealthController implements MealLogObserver, ActivityLogObserver {
 
     public void initialize() {
         // remove the old initialize setup logic and made a separate method for that (for reusability)
+        MealLogger.getInstance().addObserver(this);
+        ActivityLogger.getInstance().addObserver(this);
         macroDistData = FXCollections.observableArrayList();
         initMacroDist();
         setupWeeklyChart();
@@ -509,7 +513,6 @@ public class HealthController implements MealLogObserver, ActivityLogObserver {
     }
 
     private void refreshDashboard() {
-        // --- Part 1: Recalculate Today's Summary ---
         List<Meal> userMealsToday = mealRepository.getUserMealsToday();
         double caloriesConsumed = 0.0, protein = 0.0, fat = 0.0, cholesterol = 0.0, carbs = 0.0, sodium = 0.0, sugar = 0.0, fiber = 0.0;
 
@@ -559,8 +562,11 @@ public class HealthController implements MealLogObserver, ActivityLogObserver {
 
     @Override
     public void onMealLogChanged() {
-        // when a meal is logged, refresh the entire dashboard.
-        Platform.runLater(() -> refreshDashboard());
+        System.out.println(">>> HealthController: Observer Triggered! A meal was added.");
+
+        Platform.runLater(() -> {
+            refreshDashboard();
+        });
     }
   
     private String getThemeClass() {

@@ -52,9 +52,12 @@ public class MealRepository {
     public boolean addMeal(Meal meal, int userId) {
         if(mealDataSource.insertMeal(userId, meal)){
             if (userMeals != null) {
+                userMealsToday.addFirst(meal);
                 userMeals.add(0, meal); // Add to beginning of list
             } else {
                 userMeals = new ArrayList<>();
+                userMealsToday = new ArrayList<>();
+                userMealsToday.add(meal);
                 userMeals.add(meal);
             }
             return true;
