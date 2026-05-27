@@ -131,7 +131,6 @@ public class SettingsController implements Initializable {
             StackPane popup = loader.load();
             NotifyPopupController controller = loader.getController();
             AnchorPane root = (javafx.scene.layout.AnchorPane) settingsScrollPane.getScene().getRoot();
-            Node mainContent = root.getChildren().getFirst();
 
             AnchorPane.setTopAnchor(popup, 0.0);
             AnchorPane.setBottomAnchor(popup, 0.0);
