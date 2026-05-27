@@ -55,4 +55,9 @@
     -shadow-plain: #00000014;
     -shadow-hover: #00000026;
 
+    /* dark mode colors */
+    -dark-blue: #1E2330; /*for sidebar bg*/
+    -midnight-blue: #14161F; /*for bg*/
+    -lighter-grey: #808491; /*for lightText colors*/
+    -lighter-midnight-blue: #1A1E2B; /*for cards*/
 }

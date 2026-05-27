@@ -1,161 +1,54 @@
 /*TODO:Change this to preferred darkmode colors, as this was js used for debugging with how darkmode is gonna be displayed on all screens*/
 @import "palettes.css";
 
-/*
- ONLY ADD STYLES HERE FOR DARK MODE COLORS.
- THIS IS SO THAT WE CAN SWITCH FROM LIGHT MODE TO DARK MODE,
-  BY ADDING STYLECLASS LIGHT, OR DARK.
-  GO TO APPLICATIONS.CSS
-*/
-
 .dark {
-    -bg-nav: #1E2330;
+    -bg-nav: -dark-blue;
     -accent-color: -orange-to-red-orange;
     -light-accent-color: -peach-to-orange;
-    -bg-content: #12151F;
+    -bg-content: -midnight-blue;
 
-    -brand-text-color: -light-orange;
-    -bg-default: #1A1E2B;
-    -bg-default2: #1A1E2B;
-    -bg-default3: #F1F5F9;
-    -bg-default4: #12151F;
-    -bg-default-border: #2C3347;
-    -bg-default-border2: #3A4259;
+    -brand-text-color: -dark-orange;
+    -bg-default: white;
+    -bg-default2: white;
+    -bg-default3: -brand-black;
+    -bg-default4: -off-white;
+    -bg-default-border: -even-lighter-grey;
+    -bg-default-border2: -light-grey;
 }
 
 .dark .dashboardScrollPane,
 .dark .profileScrollPane,
 .dark .settingsScrollPane {
-    -bg-content: #12151F;
+    -bg-content: -midnight-blue;
     -accent-color: -orange-to-red-orange;
     -light-accent-color: -light-orange;
-    -bg-color-accent: #2E2318;
+    -bg-color-accent: -dark-pastel-orange;
 }
 
 .dark .foodLogScrollPane {
-    -bg-content: #111A16;
+    -bg-content: -midnight-blue;
     -accent-color: -dark-green;
     -light-accent-color: -green;
-    -bg-color-accent: #1A2B22;
+    -bg-color-accent: -dark-pastel-green;
 }
 
 .dark .activityLogScrollPane {
-    -bg-content: #1A1214;
+    -bg-content: -midnight-blue;
     -accent-color: -vibrant-red;
     -light-accent-color: -orange;
-    -bg-color-accent: #2B1A1A;
+    -bg-color-accent: -dark-pastel-red;
 }
 
 .dark .notificationsScrollPane {
-    -bg-content: #151220;
+    -bg-content: -midnight-blue;
     -accent-color: -dark-purple;
     -light-accent-color: -purple;
-    -bg-color-accent: #1E1A30;
+    -bg-color-accent: -dark-pastel-purple;
 }
 
 .dark .healthScrollPane {
-    -bg-content: #1A1218;
+    -bg-content: -midnight-blue;
     -accent-color: -hot-pink;
     -light-accent-color: -pink;
-    -bg-color-accent: #2B1A25;
-}
-
-/* Text colors */
-.dark .label,
-.dark Label {
-    -fx-text-fill: #E2E8F0;
-}
-
-.dark .lightText {
-    -fx-text-fill: #94A3B8;
-}
-
-/* Cards */
-.dark .card,
-.dark .cardContent {
-    -fx-background-color: #1A1E2B;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 10, 0, 0, 5);
-}
-
-/* Input fields */
-.dark .text-field,
-.dark .text-area,
-.dark .combo-box,
-.dark .choice-box {
-    -fx-background-color: #252A3A;
-    -fx-text-fill: #E2E8F0;
-    -fx-border-color: #3A4259;
-    -fx-border-radius: 6;
-    -fx-background-radius: 6;
-    -fx-prompt-text-fill: #64748B;
-}
-
-.dark .combo-box .list-cell,
-.dark .choice-box .list-cell {
-    -fx-background-color: #252A3A;
-    -fx-text-fill: #E2E8F0;
-}
-
-.dark .combo-box-popup .list-view,
-.dark .combo-box-popup .list-cell {
-    -fx-background-color: #252A3A;
-    -fx-text-fill: #E2E8F0;
-}
-
-.dark .combo-box-popup .list-cell:hover,
-.dark .combo-box-popup .list-cell:filled:hover {
-    -fx-background-color: #2E3650;
-}
-
-/* Scroll pane */
-.dark .scroll-pane,
-.dark .scroll-pane > .viewport {
-    -fx-background-color: #12151F;
-}
-
-.dark .scroll-bar {
-    -fx-background-color: #1A1E2B;
-}
-
-.dark .scroll-bar .thumb {
-    -fx-background-color: #3A4259;
-    -fx-background-radius: 4;
-}
-
-.dark .scroll-bar .thumb:hover {
-    -fx-background-color: #4A5370;
-}
-
-/* Separator */
-.dark .separator .line {
-    -fx-border-color: #2C3347;
-}
-
-/* Toggle buttons */
-.dark .toggle-button {
-    -fx-background-color: #252A3A;
-    -fx-text-fill: #E2E8F0;
-    -fx-border-color: #3A4259;
-    -fx-border-radius: 6;
-    -fx-background-radius: 6;
-}
-
-.dark .toggle-button:selected {
-    -fx-background-color: -orange-to-red-orange;
-    -fx-text-fill: white;
-    -fx-border-color: transparent;
-}
-
-/* Slider */
-.dark .slider .track {
-    -fx-background-color: #3A4259;
-}
-
-.dark .slider .thumb {
-    -fx-background-color: -vibrant-orange;
-}
-
-/* Split pane divider */
-.dark .split-pane-divider {
-    -fx-background-color: #2C3347;
+    -bg-color-accent: -dark-pastel-pink;
 }
