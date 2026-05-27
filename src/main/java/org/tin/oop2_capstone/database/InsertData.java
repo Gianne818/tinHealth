@@ -181,7 +181,6 @@ public class InsertData {
             return false;
         }
     }
-
     public static int insertUser(User user){
         if(user == null){
             return -1;
