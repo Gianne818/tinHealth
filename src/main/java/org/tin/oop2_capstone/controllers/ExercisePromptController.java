@@ -31,6 +31,7 @@ public class ExercisePromptController {
     @FXML private Label skipButton;
 
     private Timeline promptTimer;
+    private double remainingMinutes;
     private int remainingSeconds;
 
     /** Called by MainController so we can remove ourselves from the overlay. */
@@ -38,7 +39,7 @@ public class ExercisePromptController {
 
     private ExerciseDifficultyService difficultyService;
 
-    private record Exercise(String name, int duration, String unit) {}
+    private record Exercise(String name, double duration, String unit) {}
 
     private UserPrefRepository userPrefRepository;
     public ExercisePromptController(){
@@ -46,21 +47,23 @@ public class ExercisePromptController {
     }
 
     private static final List<Exercise> EXERCISES = List.of(
-            new Exercise("Push-Ups",      10, "minutes"),
-            new Exercise("Squats",        15, "minutes"),
-            new Exercise("Jumping Jacks", 20, "minutes"),
-            new Exercise("Jog in Place",  60, "minutes"),
-            new Exercise("Plank Hold",    30, "minutes"),
-            new Exercise("Lunges",        10, "minutes"),
-            new Exercise("High Knees",    30, "minutes"),
-            new Exercise("Burpees",        5, "minutes")
+            new Exercise("Push-Ups",      0.25, "minutes"),
+            new Exercise("Squats",        0.333333, "minutes"),
+            new Exercise("Jumping Jacks", 0.333333, "minutes"),
+            new Exercise("Jog in Place",  0.5, "minutes"),
+            new Exercise("Plank Hold",    0.166667, "minutes"),
+            new Exercise("Lunges",        0.333333, "minutes"),
+            new Exercise("High Knees",    0.333333, "minutes"),
+            new Exercise("Burpees",        0.25, "minutes")
     );
 
     @FXML
     public void initialize() {
+        difficultyService = new ExerciseDifficultyService();
         Exercise ex = EXERCISES.get(new Random().nextInt(EXERCISES.size()));
         exerciseNameLabel.setText(ex.name());
         minCountLabel.setText(String.valueOf(resolveMins(ex.duration())));
+        remainingMinutes = resolveMins(ex.duration());
         unitLabel.setText("(" + ex.unit() + ")");
 
         // Fade the whole backdrop in on open
@@ -80,7 +83,6 @@ public class ExercisePromptController {
 
     @FXML
     private void onCompleteButtonClick(ActionEvent event) {
-        // todo saving current activity to the database and activity log
         closeWindow(true);
     }
 
@@ -89,8 +91,8 @@ public class ExercisePromptController {
     }
 
     private double resolveMins(double baseMins) {
-        if (difficultyService == null) return baseMins;
-        return difficultyService.adjustMins(baseMins);
+        int userId = SessionManager.getInstance().getCurrentUser().getUid();
+        return difficultyService.adjustMins(baseMins, userPrefRepository.getExerciseIntensity(userId));
     }
 
     @FXML
@@ -104,6 +106,8 @@ public class ExercisePromptController {
         fadeOut.setToValue(0);
         fadeOut.setOnFinished(e -> {
             if (onDismiss != null) onDismiss.run();
+            Stage stage = (Stage) backdropPane.getScene().getWindow();
+            stage.hide();
         });
         fadeOut.play();
     }
@@ -113,16 +117,12 @@ public class ExercisePromptController {
             //todo: save on db the activity
         }
         ExerciseMonitor.getInstance().resume();
-        Stage stage = (Stage) completeButton.getScene().getWindow();
-
-        stage.close();
+        dismiss();
     }
 
+    /* fixed timer */
     private void startExercisePromptTimer() {
-        int userId = SessionManager.getInstance().getCurrentUser().getUid();
-        int promptFreqMinutes = userPrefRepository.getPromptFrequency(userId);
-
-        remainingSeconds = promptFreqMinutes * 60;
+        remainingSeconds = (int) Math.round(remainingMinutes * 60);
         updateTimerDisplay();
 
         if (promptTimer != null) {
@@ -134,20 +134,20 @@ public class ExercisePromptController {
                 remainingSeconds--;
                 updateTimerDisplay();
 
-                // Check if time reaches 00:00
-                if (remainingSeconds == 0) {
-                    // Reset timer
-                    remainingSeconds = promptFreqMinutes * 60;
-                    updateTimerDisplay();
+                if(remainingSeconds == 0){
+                    promptTimer.stop();
+                    closeWindow(true);
                 }
             }
+
         }));
         promptTimer.setCycleCount(Timeline.INDEFINITE);
         promptTimer.play();
     }
 
+    /* fixed updateTimer */
     private void updateTimerDisplay() {
-        int minutes = (remainingSeconds % 3600) / 60;
+        int minutes = remainingSeconds / 60;
         int seconds = remainingSeconds % 60;
 
         if (minutes > 0) {

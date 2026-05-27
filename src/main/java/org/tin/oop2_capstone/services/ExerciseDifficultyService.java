@@ -2,6 +2,7 @@ package org.tin.oop2_capstone.services;
 
 import org.tin.oop2_capstone.model.entities.ActivityType;
 import org.tin.oop2_capstone.model.entities.User;
+import org.tin.oop2_capstone.model.entities.UserPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +27,10 @@ public class ExerciseDifficultyService {
     private static final double MET_MODERATE = 6.0;
     private static final double MET_HIGH = 9.0;
 
+
     private String currentDiff;
     private boolean manualSet;
+
 
     public ExerciseDifficultyService() {
         this.currentDiff = "MODERATE";
@@ -70,10 +73,43 @@ public class ExerciseDifficultyService {
         return currentDiff;
     }
 
-    public double adjustMins(double origMins) {
-        double multiplier = exerciseDifficulty.get(currentDiff);
+    /* removed multiplier depending on exerciseDiff */
+    public double adjustMins(double baseMins, int exerciseIntensity) {
+        double multiplier = 1.0;
+        switch(exerciseIntensity){
+            case 1:
+                multiplier = 1.0;
+                break;
+            case 2:
+                multiplier = 1.3;
+                break;
+            case 3:
+                multiplier = 1.6;
+                break;
+            case 4:
+                multiplier = 2.0;
+                break;
+            case 5:
+                multiplier = 2.5;
+                break;
+            case 6:
+                multiplier = 3.0;
+                break;
+            case 7:
+                multiplier = 3.5;
+                break;
+            case 8:
+                multiplier = 4.0;
+                break;
+            case 9:
+                multiplier = 4.5;
+                break;
+            case 10:
+                multiplier = 5.0;
+                break;
+        }
 
-        return (int) Math.max(1, Math.round(origMins * multiplier));
+        return baseMins * multiplier;
     }
 
     public int getExercisePromptFrequencyMins() {
