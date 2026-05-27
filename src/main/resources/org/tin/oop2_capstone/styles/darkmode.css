@@ -16,6 +16,7 @@
     -bg-default-border: -dark-blue-grey;
     -bg-default-border2: -lighter-grey;
     -light-text-color: -lighter-grey;
+    -svg-colors: -off-white;
 }
 
 .dark .dashboardScrollPane,

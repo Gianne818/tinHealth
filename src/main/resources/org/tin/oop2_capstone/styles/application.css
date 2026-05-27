@@ -71,6 +71,7 @@
     -fx-pref-width: 0.5px;
     -fx-padding: 0 2;
     -fx-effect: dropshadow(three-pass-box, -shadow-hover, 20, 0.7, 4, 0);
+    -fx-background-color: -bg-default;
 }
 
 .currentSVG{
@@ -137,6 +138,14 @@
 
 .navButton.active .icon-nav-dashboard, .navButton.active .icon-nav-settings{
     -fx-fill: -accent-color;
+}
+
+.icon-nav-dashboard, .icon-nav-settings{
+    -fx-fill: -svg-colors;
+}
+
+.icon-nav{
+    -fx-stroke: -svg-colors;
 }
 
 .navButton.active .label,

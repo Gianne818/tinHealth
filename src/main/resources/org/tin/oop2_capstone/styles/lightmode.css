@@ -22,6 +22,7 @@
     -bg-default-border: -even-lighter-grey;
     -bg-default-border2: -light-grey;
     -light-text-color: -grey;
+    -svg-colors: -brand-black;
 }
 
 .light .dashboardScrollPane,
