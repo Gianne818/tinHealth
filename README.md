@@ -65,7 +65,7 @@ toward healthier and more informed lifestyle choices.
 
 
 ## Class Diagram
-![Class Diagram](ClassDiagram.png)
+![Class Diagram](ClassDiagram.svg)
 
 ## Use Case Diagram
 ![Use Case Diagram](UseCaseDiagram.png)
