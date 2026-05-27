@@ -17,7 +17,6 @@ import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.PopupControl;
 import javafx.scene.layout.VBox;
-import org.tin.oop2_capstone.database.RetrieveData;
 import org.tin.oop2_capstone.database.repositories.ActivityRepository;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
 import org.tin.oop2_capstone.database.repositories.UserPrefRepository;

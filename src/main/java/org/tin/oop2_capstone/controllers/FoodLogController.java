@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.tin.oop2_capstone.database.RetrieveData.fetchUserMeals;
 
 import java.util.Map;
 //CHECK
@@ -257,7 +256,7 @@ public class FoodLogController {
         foodGridPanes.clear();
 
         int currentUserId = SessionManager.getInstance().getCurrentUser().getUid();
-        meals = fetchUserMeals(currentUserId);
+        meals = mealRepository.getUserMeals();
 
         if (meals != null) {
             for (Meal m : meals) {

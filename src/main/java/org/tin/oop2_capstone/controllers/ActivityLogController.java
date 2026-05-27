@@ -10,7 +10,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
-import org.tin.oop2_capstone.database.RetrieveData;
 import org.tin.oop2_capstone.database.repositories.ActivityRepository;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
 import org.tin.oop2_capstone.database.repositories.UserPrefRepository;
@@ -136,7 +135,7 @@ public class ActivityLogController {
         // Good practice: Clear it here automatically
         activityGridPanes.clear();
         int currentUserId = SessionManager.getInstance().getCurrentUser().getUid();
-        activities = RetrieveData.fetchUserActivities(currentUserId);
+        activities = activityRepository.getUserActivities();
 
         for (Activity a : activities) {
             try {
