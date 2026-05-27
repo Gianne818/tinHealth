@@ -63,6 +63,9 @@ public class MealRepository {
     }
 
     public boolean deleteMeal(int mealId){
+        userMeals.removeIf(meal -> meal.getMealId() == mealId);
+        userMealsToday.removeIf(meal -> meal.getMealId() == mealId);
+        weeklyUserMeals.removeIf(meal -> meal.getMealId() == mealId);
         return mealDataSource.deleteMeal(mealId);
     }
 }
