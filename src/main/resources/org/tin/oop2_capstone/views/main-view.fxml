@@ -1,24 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.SVGPath?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="rootAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.MainController">
+<AnchorPane fx:id="rootAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tin.oop2_capstone.controllers.MainController">
    <children>
       <SplitPane fx:id="splitPaneMain" dividerPositions="0.3" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -28,19 +17,19 @@
                      <FlowPane fx:id="upperNavFlowPane" alignment="TOP_CENTER" columnHalignment="CENTER" hgap="170.0" vgap="10.0">
                         <children>
                             <StackPane fx:id="hamburgerButton" maxHeight="40" maxWidth="40" style="-fx-cursor: hand;">
-                                <ImageView fitHeight="30" fitWidth="30" preserveRatio="true">
-                                    <Image url="@../assets/icons/hamburger.png" />
-                                 <StackPane.margin>
-                                    <Insets />
-                                 </StackPane.margin>
-                                </ImageView>
-                              <FlowPane.margin>
-                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                              </FlowPane.margin>
+                                <SVGPath content="M14.166 10C14.6263 10 15 10.3728 15 10.833C15 11.2932 14.6263 11.666 14.166 11.666H0.833008C0.372918 11.6658 0 11.2931 0 10.833C0 10.3729 0.372918 10.0002 0.833008 10H14.166ZM14.166 5C14.6263 5 15 5.37277 15 5.83301C15 6.29325 14.6263 6.66602 14.166 6.66602H0.833008C0.372918 6.66584 0 6.29314 0 5.83301C0 5.37288 0.372918 5.00017 0.833008 5H14.166ZM14.166 0C14.6263 0 15 0.372771 15 0.833008C15 1.29325 14.6263 1.66602 14.166 1.66602H0.833008C0.372918 1.66584 0 1.29314 0 0.833008C0 0.372877 0.372918 0.000172977 0.833008 0H14.166Z"
+                                         styleClass="icon-nav-dashboard" scaleX="1.1" scaleY="1.1">
+                                    <StackPane.margin>
+                                        <Insets />
+                                    </StackPane.margin>
+                                </SVGPath>
+                                <FlowPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                </FlowPane.margin>
                             </StackPane>
 
                             <HBox fx:id="notificationsNav" alignment="CENTER" maxHeight="40.0" maxWidth="40.0" onMouseClicked="#onNavElementClicked" style="-fx-cursor: hand;" styleClass="navButton">
-                              <SVGPath fx:id="notificationsIcon" content="M16.5567 25.5C16.703 25.7533 16.9134 25.9637 17.1667 26.11C17.4201 26.2563 17.7075 26.3333 18 26.3333C18.2926 26.3333 18.5799 26.2563 18.8333 26.11C19.0867 25.9637 19.2971 25.7533 19.4433 25.5 M10.7183 20.7716C10.6095 20.8909 10.5376 21.0393 10.5115 21.1987C10.4855 21.3581 10.5063 21.5217 10.5714 21.6695C10.6366 21.8173 10.7433 21.9429 10.8785 22.0312C11.0138 22.1195 11.1718 22.1665 11.3333 22.1666H24.6667C24.8282 22.1667 24.9862 22.1198 25.1216 22.0317C25.2569 21.9436 25.3637 21.8181 25.4291 21.6704C25.4944 21.5227 25.5154 21.3592 25.4895 21.1998C25.4637 21.0404 25.392 20.8919 25.2833 20.7725C24.175 19.63 23 18.4158 23 14.6666C23 13.3405 22.4732 12.0688 21.5355 11.1311C20.5979 10.1934 19.3261 9.66663 18 9.66663C16.6739 9.66663 15.4021 10.1934 14.4645 11.1311C13.5268 12.0688 13 13.3405 13 14.6666C13 18.4158 11.8242 19.63 10.7183 20.7716Z" fill="TRANSPARENT" stroke="BLACK" strokeWidth="1.5" styleClass="notificationsIcon" />
+                              <SVGPath fx:id="notificationsIcon" content="M16.5567 25.5C16.703 25.7533 16.9134 25.9637 17.1667 26.11C17.4201 26.2563 17.7075 26.3333 18 26.3333C18.2926 26.3333 18.5799 26.2563 18.8333 26.11C19.0867 25.9637 19.2971 25.7533 19.4433 25.5 M10.7183 20.7716C10.6095 20.8909 10.5376 21.0393 10.5115 21.1987C10.4855 21.3581 10.5063 21.5217 10.5714 21.6695C10.6366 21.8173 10.7433 21.9429 10.8785 22.0312C11.0138 22.1195 11.1718 22.1665 11.3333 22.1666H24.6667C24.8282 22.1667 24.9862 22.1198 25.1216 22.0317C25.2569 21.9436 25.3637 21.8181 25.4291 21.6704C25.4944 21.5227 25.5154 21.3592 25.4895 21.1998C25.4637 21.0404 25.392 20.8919 25.2833 20.7725C24.175 19.63 23 18.4158 23 14.6666C23 13.3405 22.4732 12.0688 21.5355 11.1311C20.5979 10.1934 19.3261 9.66663 18 9.66663C16.6739 9.66663 15.4021 10.1934 14.4645 11.1311C13.5268 12.0688 13 13.3405 13 14.6666C13 18.4158 11.8242 19.63 10.7183 20.7716Z" fill="TRANSPARENT" stroke="BLACK" strokeWidth="1.5" styleClass="notificationsIcon"  />
                               <padding>
                                  <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                               </padding>

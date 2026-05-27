@@ -159,3 +159,19 @@
 .dark .split-pane-divider {
     -fx-background-color: #2C3347;
 }
+
+#anchorPaneSideBar .label {
+    -fx-text-fill: -off-white;
+}
+
+#anchorPaneSideBar .icon-nav,
+#anchorPaneSideBar .notificationsIcon{
+    -fx-stroke: -off-white;
+    -fx-fill: transparent;
+}
+
+#anchorPaneSideBar .icon-nav-dashboard,
+#anchorPaneSideBar .icon-nav-settings {
+    -fx-fill: -off-white;
+    -fx-stroke: transparent;
+}
