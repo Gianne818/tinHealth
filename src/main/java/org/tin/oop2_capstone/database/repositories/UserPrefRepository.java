@@ -41,6 +41,11 @@ public class UserPrefRepository {
         return userPrefDataSource.fetchUserPromptFrequency(userId);
     }
 
+    /* im just adding this */
+    public int getExerciseIntensity(int userId){
+        return userPrefDataSource.fetchUserPreferences(userId).getExerciseIntensity();
+    }
+
     public void fetchUserPrefs(int userId){
         this.userPreferences = userPrefDataSource.fetchUserPreferences(userId);
     }
@@ -48,4 +53,6 @@ public class UserPrefRepository {
     public UserPreferences getUserPreferences() {
         return userPreferences;
     }
+
+
 }

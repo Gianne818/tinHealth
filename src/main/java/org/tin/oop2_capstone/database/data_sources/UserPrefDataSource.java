@@ -31,4 +31,5 @@ public class UserPrefDataSource implements IUserPrefDataSource{
     public UserPreferences fetchUserPreferences(int userId) {
         return RetrieveData.fetchUserPreferences(userId);
     }
+
 }
