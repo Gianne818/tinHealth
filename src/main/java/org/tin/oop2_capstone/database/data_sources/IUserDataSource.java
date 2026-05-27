@@ -4,4 +4,5 @@ import org.tin.oop2_capstone.model.entities.User;
 
 public interface IUserDataSource {
     User fetchUser(String username, String password);
+    int insertUser(User user);
 }

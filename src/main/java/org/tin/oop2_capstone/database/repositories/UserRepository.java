@@ -22,4 +22,9 @@ public class UserRepository {
         return currentUser;
     }
 
+    public int insertUser(User user){
+        this.currentUser = user;
+        return userDataSource.insertUser(user);
+    }
+
 }
