@@ -55,7 +55,6 @@ public class SettingsController implements Initializable {
         exerciseIntensity.getItems().addAll(IntStream.rangeClosed(1, 10).boxed().toList());
         theme.getItems().addAll("Light", "Dark");
         weeklyActivityGoalComboBox.getItems().addAll(IntStream.rangeClosed(1, 7).boxed().toList());
-        System.out.println("TEST");
 
         //populate options for calorieG cbox
         for (int i = 500; i <= 5000; i += 100) {

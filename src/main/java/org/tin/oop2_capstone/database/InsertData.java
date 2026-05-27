@@ -27,7 +27,15 @@ public class InsertData {
             pstmt.setDate(4, java.sql.Date.valueOf(meal.getLogDate())); // Today's date
             pstmt.setString(5, meal.getTime()); // The raw text "12:00 - 14:00"
 
-            return pstmt.executeUpdate() > 0;
+            int affectedRows = pstmt.executeUpdate();
+            if(affectedRows > 0){
+                try(ResultSet generatedKeys = pstmt.getGeneratedKeys()){
+                   if(generatedKeys.next()){
+                       meal.setMealId(generatedKeys.getInt(1));
+                   }
+                }
+            }
+            return true;
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -161,7 +169,8 @@ public class InsertData {
         return insertConsumable(consumable);
     }
 
-    public static boolean insertActivity(int userId, int activityTypeId, double quantity, double calories) {
+
+        public static boolean insertActivity(int userId, int activityTypeId, double quantity, double calories) {
         String insertActivitySQL = "INSERT INTO Activities (user_id, activity_type_id, quantity, calories, time, log_date) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -181,7 +190,6 @@ public class InsertData {
             return false;
         }
     }
-
     public static int insertUser(User user){
         if(user == null){
             return -1;

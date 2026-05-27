@@ -10,7 +10,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
-import org.tin.oop2_capstone.database.RetrieveData;
 import org.tin.oop2_capstone.database.repositories.ActivityRepository;
 import org.tin.oop2_capstone.database.repositories.MealRepository;
 import org.tin.oop2_capstone.database.repositories.UserPrefRepository;
@@ -33,6 +32,8 @@ import java.util.function.Predicate;
 import static org.tin.oop2_capstone.database.DeleteData.deleteActivity;
 
 public class ActivityLogController {
+    @FXML private Label caloriesBurnedLabel;
+    @FXML private Label totalDurationLabel;
     @FXML private Button buttonAddEntry;
     @FXML private Button buttonCancel;
     @FXML private ComboBox<String> activityTypeComboBox;
@@ -65,6 +66,8 @@ public class ActivityLogController {
 
         setActivityLog();
         setActivityTypes();
+        setCaloriesBurnedToday();
+        setTotalDurationToday();
         initActivityTypeComboBox();
 
         filteredList = new FilteredList<>(activityTypeNames);
@@ -136,7 +139,7 @@ public class ActivityLogController {
         // Good practice: Clear it here automatically
         activityGridPanes.clear();
         int currentUserId = SessionManager.getInstance().getCurrentUser().getUid();
-        activities = RetrieveData.fetchUserActivities(currentUserId);
+        activities = activityRepository.getUserActivities();
 
         for (Activity a : activities) {
             try {
@@ -305,5 +308,16 @@ public class ActivityLogController {
         }
     }
 
+    public void setCaloriesBurnedToday(){
+        Double caloriesBurnedToday = activityRepository.getTodayCaloriesOut(SessionManager.getInstance().getCurrentUser().getUid());
+        String showCaloriesBurnedToday = String.format("%.1f", caloriesBurnedToday);
+        caloriesBurnedLabel.setText(showCaloriesBurnedToday);
+    }
+
+    public void setTotalDurationToday(){
+        Double totalDurationToday = activityRepository.getTodayActivitiesDuration(SessionManager.getInstance().getCurrentUser().getUid());
+        String showTotalDurationToday = String.format("%.0f", totalDurationToday);
+        totalDurationLabel.setText(showTotalDurationToday);
+    }
 
 }

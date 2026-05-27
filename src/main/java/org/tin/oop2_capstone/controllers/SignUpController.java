@@ -296,12 +296,16 @@ public class SignUpController {
 
     public void onContinueButtonClick(ActionEvent event) throws SQLException {
         // todo: do the storing of ALL user data in here to the database (this is to avoid null values when creating a user)
-        int user_id = InsertData.insertUser(user);
+
 
         this.userRepository = DependencyService.getUserRepository();
         this.mealRepository = DependencyService.getMealRepository();
         this.activityRepository = DependencyService.getActivityRepository();
         this.userPrefRepository = DependencyService.getUserPrefRepository();
+
+        int user_id = userRepository.insertUser(user);
+
+        SessionManager.getInstance().setCurrentUser(userRepository.getUser());
 
         if (user_id != -1) {
             //For defaulting missed values

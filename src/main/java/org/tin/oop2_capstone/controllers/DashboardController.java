@@ -30,8 +30,6 @@ import org.tin.oop2_capstone.services.DependencyService;
 import org.tin.oop2_capstone.services.SessionManager;
 import org.tin.oop2_capstone.utils.TimeFormatter;
 
-import static org.tin.oop2_capstone.database.RetrieveData.fetchUserActivities;
-import static org.tin.oop2_capstone.database.RetrieveData.fetchUserMeals;
 
 public class DashboardController {
     @FXML
@@ -124,8 +122,7 @@ public class DashboardController {
     private void initRecentMealsList(){
         // Clear the old layout panes before fetching updated data
         mealGridPanes.clear();
-        // Bypass the repository's stale cache by pulling live data straight from the database
-        mealsList = fetchUserMeals(userId);
+        mealsList = mealRepository.getUserMeals();
 
         for(Meal a : mealsList){
             try{
@@ -151,7 +148,7 @@ public class DashboardController {
     private void initRecentActivitiesList(){
         // Clear the old layout panes before fetching updated data
         activityGridPanes.clear();
-        activityList = fetchUserActivities(userId);
+        activityList = activityRepository.getUserActivities();
         for(Activity a : activityList){
             try{
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/tin/oop2_capstone/views/log-card.fxml"));

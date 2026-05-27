@@ -18,6 +18,8 @@ public class MealRepository {
      */
 
     private List<Meal> userMeals;
+    private List<Meal> userMealsToday;
+    private  List<Meal> weeklyUserMeals;
     private final MealDataSource mealDataSource;
 
     public MealRepository(MealDataSource mealDataSource){
@@ -26,15 +28,25 @@ public class MealRepository {
 
 
     public void fetchInitialMealData(int userId) {
-        mealDataSource.fetchUserTodayCalories(userId);
+        userMealsToday = mealDataSource.fetchUserMealsToday(userId);
+        weeklyUserMeals = mealDataSource.fetchUserWeeklyMeals(userId);
+        userMeals = mealDataSource.fetchUserMeals(userId);
     }
 
     public List<Meal> getUserMeals() {
         return userMeals;
     }
 
+    public List<Meal> getWeeklyUserMeals() {
+        return weeklyUserMeals;
+    }
+
     public double getTodayCaloriesIn(int userId) {
         return mealDataSource.fetchUserTodayCalories(userId);
+    }
+
+    public List<Meal> getUserMealsToday() {
+        return userMealsToday;
     }
 
     public boolean addMeal(Meal meal, int userId) {
@@ -48,5 +60,12 @@ public class MealRepository {
             return true;
         }
         return false;
+    }
+
+    public boolean deleteMeal(int mealId){
+        userMeals.removeIf(meal -> meal.getMealId() == mealId);
+        userMealsToday.removeIf(meal -> meal.getMealId() == mealId);
+        weeklyUserMeals.removeIf(meal -> meal.getMealId() == mealId);
+        return mealDataSource.deleteMeal(mealId);
     }
 }

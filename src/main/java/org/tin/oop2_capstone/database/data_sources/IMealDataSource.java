@@ -8,4 +8,7 @@ public interface IMealDataSource {
     List<Meal> fetchUserMeals(int userId);
     double fetchUserTodayCalories(int userId);
     boolean insertMeal(int userId, Meal meal);
+    List<Meal> fetchUserWeeklyMeals(int userId);
+    List<Meal> fetchUserMealsToday(int userId);
+    boolean deleteMeal(int mealId);
 }

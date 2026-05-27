@@ -2,7 +2,7 @@ package org.tin.oop2_capstone.services;
 
 import org.tin.oop2_capstone.model.entities.Activity;
 import org.tin.oop2_capstone.model.entities.ActivityLog;
-import org.tin.oop2_capstone.model.observer.LogObserver;
+import org.tin.oop2_capstone.model.observer.ActivityLogObserver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
 public class ActivityLogger extends Logger {
     private static ActivityLogger instance;
     private ActivityLog activityLog;
-    private final List<LogObserver> observers;
+    private final List<ActivityLogObserver> observers;
 
     private ActivityLogger() {
         this.activityLog = new ActivityLog();
@@ -30,26 +30,27 @@ public class ActivityLogger extends Logger {
     }
 
     @Override
-    public void saveToDB() {
+    public boolean saveToDB() {
         // wala pay database
+        return true;
     }
 
     @Override
     public void notifyObservers() {
-        for (LogObserver observer : observers) {
+        for (ActivityLogObserver observer : observers) {
             for (Activity activity : activityLog.getActivities()) {
                 observer.onActivityLogChanged(activity);
             }
         }
     }
 
-    public void addObserver(LogObserver observer) {
+    public void addObserver(ActivityLogObserver observer) {
         if (observer != null && !observers.contains(observer)) {
             observers.add(observer);
         }
     }
 
-    public void removeObserver(LogObserver observer) {
+    public void removeObserver(ActivityLogObserver observer) {
         observers.remove(observer);
     }
 
